@@ -34,7 +34,7 @@ figcaption {
 
 /* a 링크 초기화 */
 a {
-  color: #555;
+  color: #222a1a;
   text-decoration: none;
 }
 
@@ -45,7 +45,7 @@ textarea,
 select,
 button,
 table {
-  color: #555;
+  color: #222a1a;
   font-size: 14px;
 }
 
@@ -76,6 +76,8 @@ h6 {
 /* 버튼 초기화 */
 button {
   border: 0;
+  cursor: pointer;
+  background-color: transparent;
 }
 
 /* input */
