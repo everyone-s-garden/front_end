@@ -1,8 +1,8 @@
-import React from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
-import { BREAK_POINT, FONT_WEIGHT } from '../constants/style';
+import { BREAK_POINT, COLOR, FONT_WEIGHT } from '../constants/style';
 import logoImg from '../assets/logo.png';
 import mapImg from '../assets/map-logo.png';
 import homiImg from '../assets/homi-logo.png';
@@ -49,14 +49,16 @@ const ButtonContainer = styled.div`
   align-items: center;
 `;
 
-const MapButton = styled.button`
-  margin-left: 30px;
+const MapButton = styled.button<{ active: boolean }>`
+  padding: 10px 20px;
   display: flex;
   align-items: center;
+  background-color: ${props => (props.active ? COLOR.GREEN[0] : 'transparent')};
+  border-radius: 15px;
+  transition: all 0.2s ease-in;
 
   &:hover {
     transform: translateY(-3px);
-    transition: all 0.2s ease-in;
   }
 `;
 
@@ -71,6 +73,7 @@ const ButtonSpan = styled.span`
 
 const Nav = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <>
@@ -80,11 +83,11 @@ const Nav = () => {
             <LogoImage src={logoImg} alt="로고" />
           </LogoImageContainer>
           <ButtonContainer>
-            <MapButton onClick={() => navigate(`/map`)}>
+            <MapButton active={location.pathname === '/map'} onClick={() => navigate(`/map`)}>
               <ButtonImage src={mapImg} alt="맵아이콘" />
               <ButtonSpan>내 주변 분양</ButtonSpan>
             </MapButton>
-            <MapButton onClick={() => navigate(`/my`)}>
+            <MapButton active={location.pathname === '/my'} onClick={() => navigate(`/my`)}>
               <ButtonImage src={homiImg} alt="맵아이콘" />
               <ButtonSpan>마이페이지</ButtonSpan>
             </MapButton>

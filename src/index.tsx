@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Nav from './components/Nav';
 import Main from './pages/Main/Main';
 import Map from './pages/Map/Map';
+import My from './pages/My/My';
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
       {
         path: '/map',
         element: <Map />,
+      },
+      {
+        path: '/my',
+        element: <My />,
       },
     ],
   },
