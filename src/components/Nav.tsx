@@ -3,9 +3,9 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
 import { BREAK_POINT, COLOR, FONT_WEIGHT } from '../constants/style';
-import logoImg from '../assets/logo.png';
-import mapImg from '../assets/map-logo.png';
-import homiImg from '../assets/homi-logo.png';
+import logoImg from '../assets/logo-horizon.svg';
+import mapImg from '../assets/map-icon.svg';
+import homiImg from '../assets/homi-icon.svg';
 
 const Container = styled.div`
   margin: 0 auto;
