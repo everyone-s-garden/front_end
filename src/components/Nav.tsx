@@ -7,6 +7,36 @@ import logoImg from '../assets/logo-horizon.svg';
 import mapImg from '../assets/map-icon.svg';
 import homiImg from '../assets/homi-icon.svg';
 
+const Nav = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  return (
+    <>
+      <Container>
+        <Navbar>
+          <LogoImageContainer onClick={() => navigate(`/`)}>
+            <LogoImage src={logoImg} alt="로고" />
+          </LogoImageContainer>
+          <ButtonContainer>
+            <MapButton active={location.pathname === '/map'} onClick={() => navigate(`/map`)}>
+              <ButtonImage src={mapImg} alt="맵아이콘" />
+              <ButtonSpan>내 주변 분양</ButtonSpan>
+            </MapButton>
+            <MapButton active={location.pathname === '/my'} onClick={() => navigate(`/my`)}>
+              <ButtonImage src={homiImg} alt="맵아이콘" />
+              <ButtonSpan>마이페이지</ButtonSpan>
+            </MapButton>
+          </ButtonContainer>
+        </Navbar>
+      </Container>
+      <Outlet />
+    </>
+  );
+};
+
+export default Nav;
+
 const Container = styled.div`
   margin: 0 auto;
   padding: 0 1rem;
@@ -70,33 +100,3 @@ const ButtonSpan = styled.span`
   margin-left: 10px;
   font-weight: ${FONT_WEIGHT.BOLD};
 `;
-
-const Nav = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  return (
-    <>
-      <Container>
-        <Navbar>
-          <LogoImageContainer onClick={() => navigate(`/`)}>
-            <LogoImage src={logoImg} alt="로고" />
-          </LogoImageContainer>
-          <ButtonContainer>
-            <MapButton active={location.pathname === '/map'} onClick={() => navigate(`/map`)}>
-              <ButtonImage src={mapImg} alt="맵아이콘" />
-              <ButtonSpan>내 주변 분양</ButtonSpan>
-            </MapButton>
-            <MapButton active={location.pathname === '/my'} onClick={() => navigate(`/my`)}>
-              <ButtonImage src={homiImg} alt="맵아이콘" />
-              <ButtonSpan>마이페이지</ButtonSpan>
-            </MapButton>
-          </ButtonContainer>
-        </Navbar>
-      </Container>
-      <Outlet />
-    </>
-  );
-};
-
-export default Nav;

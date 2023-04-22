@@ -4,6 +4,25 @@ import styled from 'styled-components';
 import { BREAK_POINT, FONT_WEIGHT } from '../../constants/style';
 import testImg from '../../assets/garden-image1.jpg';
 
+const Main = () => {
+  return (
+    <Container>
+      <Banner>
+        <BannerImage src={testImg} alt="배너 이미지" />
+      </Banner>
+      <Title>최근 본 공고</Title>
+      <PostContainer>
+        <Post>최근 본 공고</Post>
+        <Post>최근 본 공고</Post>
+        <Post>최근 본 공고</Post>
+        <Post>최근 본 공고</Post>
+      </PostContainer>
+    </Container>
+  );
+};
+
+export default Main;
+
 const Container = styled.div`
   margin: 40px auto;
   padding: 0 1rem;
@@ -61,22 +80,3 @@ const Post = styled.div`
   color: white;
   background-color: gray;
 `;
-
-const Main = () => {
-  return (
-    <Container>
-      <Banner>
-        <BannerImage src={testImg} alt="배너 이미지" />
-      </Banner>
-      <Title>최근 본 공고</Title>
-      <PostContainer>
-        <Post>최근 본 공고</Post>
-        <Post>최근 본 공고</Post>
-        <Post>최근 본 공고</Post>
-        <Post>최근 본 공고</Post>
-      </PostContainer>
-    </Container>
-  );
-};
-
-export default Main;
