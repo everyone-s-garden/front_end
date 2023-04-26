@@ -1,40 +1,21 @@
 @charset "utf-8";
-/* 여백 초기화 */
-body,
-div,
-ul,
-li,
-dl,
-dd,
-dt,
-ol,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-input,
-fieldset,
-legend,
-p,
-select,
-table,
-th,
-td,
-tr,
-textarea,
-button,
-form,
-figure,
-figcaption {
+/* 초기 세팅 */
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* a 링크 초기화 */
 a {
-  color: #555;
+  color: #222a1a;
   text-decoration: none;
 }
 
@@ -45,7 +26,7 @@ textarea,
 select,
 button,
 table {
-  color: #555;
+  color: #222a1a;
   font-size: 14px;
 }
 
@@ -76,6 +57,11 @@ h6 {
 /* 버튼 초기화 */
 button {
   border: 0;
+  cursor: pointer;
+  background-color: transparent;
+}
+button:active {
+  outline: none;
 }
 
 /* input */

@@ -1,0 +1,93 @@
+.marker {
+  width: 70px;
+  height: 90px;
+  color: #afd082;
+  background-color: transparent;
+}
+
+.marker:hover {
+  transform: translateY(-4px);
+  transition: all 0.5s;
+}
+
+.marker_icon {
+  width: 68px;
+  height: 88px;
+  cursor: pointer;
+}
+
+.marker_image {
+  position: absolute;
+  top: 4px;
+  left: 5px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+}
+
+.cluster_marker1 {
+  width: 70px;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: white;
+  background-color: #a8d178;
+  opacity: 0.8;
+  border-radius: 50%;
+}
+
+.cluster_marker2 {
+  width: 70px;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: white;
+  background-color: #414c38;
+  opacity: 0.8;
+  border-radius: 50%;
+}
+
+.cluster_marker1:hover,
+.cluster_marker2:hover {
+  opacity: 1;
+  transform: scale(1.1);
+  transition: all 0.2s ease-in;
+}
+
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  background-color: #f97700;
+  width: 20px;
+  height: 20px;
+  opacity: 0;
+  animation: scaleIn 2s infinite ease-in;
+}
+
+.innerCircle {
+  position: absolute;
+  border-radius: 50%;
+  background-color: #f97700;
+  box-shadow: 0 0 0 2px #fff inset;
+  width: 20px;
+  height: 20px;
+  animation: none;
+  cursor: grab;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(1, 1);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(2, 2);
+    opacity: 0;
+  }
+}
