@@ -1,8 +1,14 @@
+import axios from 'axios';
 import React from 'react';
 import styled from 'styled-components';
 
+const LoginGoogle = async () => {
+  const response = await axios('');
+  console.log(response);
+};
+
 const Google = () => {
-  return <GoogleBtn>구글로 로그인하기</GoogleBtn>;
+  return <GoogleBtn onClick={LoginGoogle}>구글로 로그인하기</GoogleBtn>;
 };
 
 export default Google;
