@@ -38,9 +38,10 @@ const Nav = () => {
 export default Nav;
 
 const Container = styled.div`
-  margin: 0 auto;
   padding: 0 1rem;
-  max-width: 1200px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     padding: 0 1.5rem;
@@ -52,9 +53,12 @@ const Container = styled.div`
 `;
 
 const Navbar = styled.div`
-  margin-top: 70px;
+  padding-top: 70px;
+  z-index: 1000;
   position: relative;
-  height: 40px;
+  flex-grow: 1;
+  max-width: 1200px;
+  height: 110px;
   display: flex;
   justify-content: space-between;
   align-items: center;
