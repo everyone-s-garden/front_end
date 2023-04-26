@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
 import { BREAK_POINT, COLOR, FONT_WEIGHT } from '../constants/style';
-import logoImg from '../assets/logo-horizon.svg';
-import mapImg from '../assets/map-icon.svg';
-import homiImg from '../assets/homi-icon.svg';
+import logoImg from 'assets/logo-horizon.svg';
+import mapImg from 'assets/map-icon.svg';
+import homiImg from 'assets/homi-icon.svg';
 
 const Nav = () => {
   const navigate = useNavigate();
@@ -38,9 +38,10 @@ const Nav = () => {
 export default Nav;
 
 const Container = styled.div`
-  margin: 0 auto;
   padding: 0 1rem;
-  max-width: 1200px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     padding: 0 1.5rem;
@@ -52,9 +53,12 @@ const Container = styled.div`
 `;
 
 const Navbar = styled.div`
-  margin-top: 70px;
+  padding-top: 70px;
+  z-index: 1000;
   position: relative;
-  height: 40px;
+  flex-grow: 1;
+  max-width: 1200px;
+  height: 110px;
   display: flex;
   justify-content: space-between;
   align-items: center;

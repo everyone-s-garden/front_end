@@ -17,6 +17,7 @@ interface ICOLOR {
   BLACK: IPALETTE;
   ORANGE: IPALETTE;
   YELLOW: IPALETTE;
+  BACKGROUND: string;
 }
 
 export const COLOR: ICOLOR = {
@@ -68,6 +69,7 @@ export const COLOR: ICOLOR = {
     800: '#EE9B46',
     900: '#EA803D',
   },
+  BACKGROUND: '#ffffff',
 };
 
 // 폰트 굵기

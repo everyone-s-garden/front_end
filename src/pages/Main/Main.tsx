@@ -24,9 +24,12 @@ const Main = () => {
 export default Main;
 
 const Container = styled.div`
-  margin: 40px auto;
+  margin: 40px 0;
   padding: 0 1rem;
-  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     padding: 0 1.5rem;

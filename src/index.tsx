@@ -2,6 +2,8 @@ import './reset.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { NavermapsProvider } from 'react-naver-maps';
+
 import Nav from './components/Nav';
 import Main from './pages/Main/Main';
 import Map from './pages/Map/Map';
@@ -31,6 +33,8 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <NavermapsProvider ncpClientId="jij6pc5oav">
+      <RouterProvider router={router} />
+    </NavermapsProvider>
   </React.StrictMode>,
 );
