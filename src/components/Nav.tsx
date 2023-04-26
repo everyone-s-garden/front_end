@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
 import { BREAK_POINT, COLOR, FONT_WEIGHT } from '../constants/style';
-import logoImg from '../assets/logo-horizon.svg';
-import mapImg from '../assets/map-icon.svg';
-import homiImg from '../assets/homi-icon.svg';
+import logoImg from 'assets/logo-horizon.svg';
+import mapImg from 'assets/map-icon.svg';
+import homiImg from 'assets/homi-icon.svg';
 
 const Nav = () => {
   const navigate = useNavigate();
