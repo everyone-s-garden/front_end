@@ -26,7 +26,7 @@ const Container = styled.section`
   display: flex;
   position: absolute;
   top: 0px;
-  z-index: 999999999999999;
+  z-index: 9999;
   background-color: white;
 `;
 
