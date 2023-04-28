@@ -3,13 +3,16 @@ import styled from 'styled-components';
 import logo from '../../assets/logo-horizon.svg';
 import Kakao from './Kakao/Kakao';
 import Google from './Google/Google';
+import Bubble from '../.././assets/Bubble.png';
 
-const My = () => {
+const Login = () => {
   return (
     <Container>
       <BackBtn />
       <Content>
-        <Span>3초 만에 로그인</Span>
+        <BubbleBox>
+          <Span>3초만에 로그인</Span>
+        </BubbleBox>
         <img src={logo}></img>
         <Kakao />
         <Google />
@@ -18,7 +21,7 @@ const My = () => {
   );
 };
 
-export default My;
+export default Login;
 
 const Container = styled.section`
   width: 100vw;
@@ -37,18 +40,25 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   img {
-    width: 398px;
-    height: 68px;
-    margin: 31px auto;
+    width: 270px;
+    height: 46px;
+    margin: 13px auto;
     margin-bottom: 0px;
   }
 `;
 
 const Span = styled.span`
-  font-size: 28px;
+  width: fit-content;
+  height: 21px;
+  font-family: 'Pretendard';
+  font-style: normal;
   font-weight: 600;
-  display: inline;
-  margin: 0 auto;
+  font-size: 18px;
+  line-height: 21px;
+  text-align: center;
+  margin-top: 13px;
+  display: inline-block;
+  color: #414c38;
 `;
 
 const BackBtn = styled.button`
@@ -58,4 +68,14 @@ const BackBtn = styled.button`
   background-color: #d9d9d9;
   margin-top: 89px;
   margin-left: 93px;
+`;
+
+const BubbleBox = styled.div`
+  width: 163px !important;
+  height: 72px !important;
+  background-image: url(${Bubble});
+  background-repeat: no-repeat;
+  background-size: contain;
+  text-align: center;
+  margin: 0 auto;
 `;

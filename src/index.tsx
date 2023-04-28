@@ -8,8 +8,8 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import Nav from './components/Nav';
 import Main from './pages/Main/Main';
 import Map from './pages/Map/Map';
-import My from './pages/My/My';
-import KaKaoUtil from 'pages/My/Kakao/KaKaoUtil';
+import Login from './pages/Login/Login';
+import KaKaoUtil from 'pages/Login/Kakao/KaKaoUtil';
 
 const router = createBrowserRouter([
   {
@@ -26,7 +26,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/my',
-        element: <My />,
+        element: <Login />,
       },
       {
         path: '/my/oauth/kakao',
@@ -40,7 +40,7 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <NavermapsProvider ncpClientId="jij6pc5oav">
-      <GoogleOAuthProvider clientId="1048953217886-4pd4p4daua01k3h42o4mjejqnla288je.apps.googleusercontent.com">
+      <GoogleOAuthProvider clientId="999513273898-9fa6iu0cm3jbeancg8f82mjs53trr355.apps.googleusercontent.com">
         <RouterProvider router={router} />
       </GoogleOAuthProvider>
     </NavermapsProvider>

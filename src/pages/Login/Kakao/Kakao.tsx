@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import KakaoLogo from '../../../assets/logo_kakao.svg';
 
 const REST_API_KEY = 'ff1f23ca4a518f6537d85a65694027cf';
 const REDIRECT_URI = 'http://localhost:3000/my/oauth/kakao';
@@ -11,17 +12,35 @@ const KaKao = () => {
   const Login = async () => {
     window.location.href = KAKAO_URL;
   };
-  return <KakaoBtn onClick={Login}>카카오로 로그인하기</KakaoBtn>;
+  return (
+    <KakaoBtn onClick={Login}>
+      <Logo src={KakaoLogo} />
+      카카오로 로그인하기
+    </KakaoBtn>
+  );
 };
 
 export default KaKao;
 
 const KakaoBtn = styled.button`
-  margin-top: 109px;
   width: 532px;
-  height: 116px;
-  background-color: #ffd764;
-  border-radius: 30px;
-  font-size: 28px;
-  font-weight: 600;
+  height: 81px;
+  margin-top: 61px;
+  background: #fee500;
+  border: 1.3px solid #fee500;
+  border-radius: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 500;
+  position: relative;
+`;
+
+const Logo = styled.img`
+  width: 50px !important;
+  height: 50px !important;
+  position: absolute;
+  left: 22px;
+  bottom: 14px;
 `;
