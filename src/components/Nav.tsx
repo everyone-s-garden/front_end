@@ -53,7 +53,7 @@ const Container = styled.div`
 `;
 
 const Navbar = styled.div`
-  padding-top: 70px;
+  padding-top: calc(100vh * 7 / 108);
   z-index: 1000;
   position: relative;
   flex-grow: 1;

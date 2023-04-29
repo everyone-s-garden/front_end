@@ -7,16 +7,18 @@ import testImg from '../../assets/garden-image1.jpg';
 const Main = () => {
   return (
     <Container>
-      <Banner>
-        <BannerImage src={testImg} alt="배너 이미지" />
-      </Banner>
-      <Title>최근 본 공고</Title>
-      <PostContainer>
-        <Post>최근 본 공고</Post>
-        <Post>최근 본 공고</Post>
-        <Post>최근 본 공고</Post>
-        <Post>최근 본 공고</Post>
-      </PostContainer>
+      <MainDiv>
+        <Banner>
+          <BannerImage src={testImg} alt="배너 이미지" />
+        </Banner>
+        <Title>최근 본 공고</Title>
+        <PostContainer>
+          <Post>최근 본 공고</Post>
+          <Post>최근 본 공고</Post>
+          <Post>최근 본 공고</Post>
+          <Post>최근 본 공고</Post>
+        </PostContainer>
+      </MainDiv>
     </Container>
   );
 };
@@ -24,10 +26,8 @@ const Main = () => {
 export default Main;
 
 const Container = styled.div`
-  margin: 40px 0;
   padding: 0 1rem;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   width: 100%;
 
@@ -38,6 +38,15 @@ const Container = styled.div`
   @media (min-width: ${BREAK_POINT.LABTOP}) {
     padding: 0 2rem;
   }
+`;
+
+const MainDiv = styled.div`
+  margin: 40px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
 `;
 
 const Banner = styled.div`

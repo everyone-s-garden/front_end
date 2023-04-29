@@ -3,14 +3,20 @@ import { NaverMap, useNavermaps } from 'react-naver-maps';
 
 import MarkerCluster from './MarkerCluster';
 import MyLocationBtn from './MyLocationBtn';
+import ExpandBtn from './ExpandBtn';
 import MyLocationMarker from './MyLocationMarker';
 import findMyGeoLocation from 'utils/findMyGeoLocation';
+import MiniLoader from 'components/MiniLoader';
 
 interface MyMapProps {
+  isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsInitializing: React.Dispatch<React.SetStateAction<boolean>>;
+  isExpand: boolean;
+  setIsExpand: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const MyMap = ({ setIsLoading }: MyMapProps) => {
+const MyMap = ({ isLoading, setIsLoading, setIsInitializing, isExpand, setIsExpand }: MyMapProps) => {
   const navermaps = useNavermaps();
   const myLocation = useRef<{
     lat: number;
@@ -25,14 +31,16 @@ const MyMap = ({ setIsLoading }: MyMapProps) => {
     myLocation.current = location;
     map.setCenter(new navermaps.LatLng(location.lat, location.lng));
 
-    setIsLoading(false);
-  }, [map, navermaps.LatLng, setIsLoading]);
+    setIsInitializing(false);
+  }, [map, navermaps.LatLng, setIsInitializing]);
 
   const moveMyLocation = async () => {
     if (!map) return;
+    setIsLoading(true);
 
     const { location } = await findMyGeoLocation();
     map.panTo(new navermaps.LatLng(location.lat, location.lng));
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -41,7 +49,6 @@ const MyMap = ({ setIsLoading }: MyMapProps) => {
 
   return (
     <>
-      {/* <Loader isLoading={isLoading} /> */}
       <NaverMap
         ref={setMap}
         defaultCenter={new navermaps.LatLng(37.3595704, 127.105399)}
@@ -52,8 +59,11 @@ const MyMap = ({ setIsLoading }: MyMapProps) => {
           position: navermaps.Position.TOP_LEFT,
         }}
       >
+        <MiniLoader isLoading={isLoading} />
+
         <MarkerCluster />
         <MyLocationBtn onClick={moveMyLocation} />
+        <ExpandBtn map={map} isExpand={isExpand} setIsExpand={setIsExpand} />
 
         {myLocation.current && <MyLocationMarker myLocation={myLocation} />}
       </NaverMap>

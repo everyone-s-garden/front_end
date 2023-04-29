@@ -81,7 +81,7 @@ interface IFONT_WEIGHT {
 }
 
 export const FONT_WEIGHT: IFONT_WEIGHT = {
-  REGULAR: '300',
+  REGULAR: '400',
   MEDIUM: '500',
   SEMIBOLD: '600',
   BOLD: '700',

@@ -4,6 +4,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-size: 14px;
 }
 
 #root {
@@ -27,7 +28,6 @@ select,
 button,
 table {
   color: #222a1a;
-  font-size: 14px;
 }
 
 /* 폰트 스타일 초기화 */

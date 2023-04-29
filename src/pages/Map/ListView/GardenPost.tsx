@@ -2,17 +2,21 @@ import React from 'react';
 import styled from 'styled-components';
 
 import testImg from 'assets/garden-image1.jpg';
+import { BREAK_POINT, COLOR, FONT_WEIGHT } from 'constants/style';
 
 function GardenPost() {
   return (
     <Post>
       <Image src={testImg} alt="텃밭 이미지"></Image>
-      <Status>
-        모집 중 <Dot />
-      </Status>
-      <Title>양주 공공텃밭</Title>
+
       <Info>
-        <strong>면적</strong> 8평 <strong>가격</strong> 평당 15,000원
+        <Status>
+          <Dot />
+          <Text>모집 중</Text>
+        </Status>
+        <Title>양주 공공텃밭</Title>
+        <Value>8평</Value>
+        <Value>평당 15,000원</Value>
       </Info>
     </Post>
   );
@@ -22,33 +26,53 @@ export default GardenPost;
 
 const Post = styled.div`
   position: relative;
-  padding: 40px;
+  padding: 20px;
+  display: flex;
   width: 100%;
-  border-bottom: 1px solid gray;
+  height: 160px;
+  min-width: 300px;
+  border-right: 1px solid ${COLOR.BLACK[500]};
+
+  @media (min-width: ${BREAK_POINT.MOBILE}) {
+    border-bottom: 1px solid ${COLOR.BLACK[500]};
+  }
 `;
 
 const Image = styled.img`
-  width: 100%;
-  height: 250px;
+  flex-shrink: 0;
+  height: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 5px;
+  object-fit: cover;
+  object-position: center;
 `;
 
-const Status = styled.span`
-  z-index: 10;
-  padding: 5px 10px;
-  position: absolute;
-  top: 50px;
-  right: 50px;
+const Info = styled.div`
+  padding-left: 16px;
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+`;
+
+const Status = styled.div`
+  margin-bottom: auto;
+  padding: 6px 14px;
+  width: fit-content;
   display: flex;
   align-items: center;
-  font-size: 1rem;
-  font-weight: bold;
   border: 1px solid gray;
-  border-radius: 20px;
+  border-radius: 8px;
   background-color: white;
 `;
 
+const Text = styled.span`
+  padding-top: 2px;
+  font-size: 0.8rem;
+  font-weight: ${FONT_WEIGHT.SEMIBOLD};
+`;
+
 const Dot = styled.div`
-  margin-left: 8px;
+  margin-right: 10px;
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -56,10 +80,12 @@ const Dot = styled.div`
   box-shadow: 0px 0px 2px 2px #ff6a00;
 `;
 
-const Title = styled.h1`
+const Title = styled.button`
   font-size: 1.2rem;
+  font-weight: ${FONT_WEIGHT.BOLD};
 `;
 
-const Info = styled.div`
+const Value = styled.span`
   font-size: 1rem;
+  margin-top: 8px;
 `;

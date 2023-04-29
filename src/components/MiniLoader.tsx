@@ -1,8 +1,13 @@
-import styled, { keyframes } from "styled-components";
+import React from 'react';
+import styled, { keyframes } from 'styled-components';
 
-function MiniLoader() {
+interface MiniLoaderProps {
+  isLoading: boolean;
+}
+
+function MiniLoader({ isLoading }: MiniLoaderProps) {
   return (
-    <MiniLoaderDiv>
+    <MiniLoaderDiv isLoading={isLoading}>
       <Dot1></Dot1>
       <Dot2></Dot2>
       <Dot></Dot>
@@ -12,7 +17,9 @@ function MiniLoader() {
 
 export default MiniLoader;
 
-const MiniLoaderDiv = styled.div`
+const MiniLoaderDiv = styled.div<{ isLoading: boolean }>`
+  visibility: ${props => (props.isLoading ? 'visible' : 'hidden')};
+  opacity: ${props => (props.isLoading ? '1' : '0')};
   z-index: 500;
   position: absolute;
   top: 10px;
