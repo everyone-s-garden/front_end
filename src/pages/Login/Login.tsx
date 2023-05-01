@@ -4,11 +4,17 @@ import logo from '../../assets/logo-horizon.svg';
 import Kakao from './Kakao/Kakao';
 import Google from './Google/Google';
 import Bubble from '../.././assets/Bubble.png';
+import left from '../.././assets/left_vector.svg';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const nav = useNavigate();
+
   return (
     <Container>
-      <BackBtn />
+      <BackBtn>
+        <img src={left} onClick={() => nav('/')} />
+      </BackBtn>
       <Content>
         <BubbleBox>
           <Span>3초만에 로그인</Span>
@@ -62,12 +68,11 @@ const Span = styled.span`
 `;
 
 const BackBtn = styled.button`
-  width: 105px;
-  height: 105px;
+  width: 22px !important;
+  height: 39px !important;
   position: absolute;
-  background-color: #d9d9d9;
-  margin-top: 89px;
-  margin-left: 93px;
+  margin-top: 76px;
+  margin-left: 57px;
 `;
 
 const BubbleBox = styled.div`

@@ -9,7 +9,8 @@ import Nav from './components/Nav';
 import Main from './pages/Main/Main';
 import Map from './pages/Map/Map';
 import Login from './pages/Login/Login';
-import KaKaoUtil from 'pages/Login/Kakao/KaKaoUtil';
+import Mypage from 'pages/My/My';
+import Token from 'pages/Login/Kakao/token/token';
 
 const router = createBrowserRouter([
   {
@@ -26,11 +27,15 @@ const router = createBrowserRouter([
       },
       {
         path: '/my',
+        element: <Mypage />,
+      },
+      {
+        path: '/login',
         element: <Login />,
       },
       {
         path: '/my/oauth/kakao',
-        element: <KaKaoUtil />,
+        element: <Token />,
       },
     ],
   },

@@ -3,10 +3,8 @@ import styled from 'styled-components';
 import axios from 'axios';
 import KakaoLogo from '../../../assets/logo_kakao.svg';
 
-const REST_API_KEY = 'ff1f23ca4a518f6537d85a65694027cf';
-const REDIRECT_URI = 'http://localhost:3000/my/oauth/kakao';
 const HOST = 'https://kauth.kakao.com';
-const KAKAO_URL = `${HOST}/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`;
+const KAKAO_URL = `${HOST}/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}`;
 
 const KaKao = () => {
   const Login = async () => {

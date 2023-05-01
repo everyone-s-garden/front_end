@@ -4,9 +4,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
 import GoogleLogo from '../../../assets/logo_google.svg';
-
-const CLIENT_ID = '999513273898-9fa6iu0cm3jbeancg8f82mjs53trr355.apps.googleusercontent.com';
-const CLIENT_SECRET = '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';
+import { getToken } from './token/token';
 
 const Google = () => {
   const nav = useNavigate();
@@ -15,17 +13,7 @@ const Google = () => {
     onSuccess: async responseToken => {
       const token = responseToken.code;
       //token 값을 보내서 id_token, refresh, access 토큰 값 가져옴
-      const res = await axios.post('https://oauth2.googleapis.com/token', {
-        code: token,
-        clientId: CLIENT_ID,
-        client_secret: CLIENT_SECRET,
-        //redirect_rui 를 http://localhost:3000/my 로 하면 에러가난다
-        //구글 클라우드 콘솔에서 http://localhost:3000/my와
-        //http://localhostL3000둘 다 추가해줘야함
-        redirect_uri: 'http://localhost:3000',
-        grant_type: 'authorization_code',
-      });
-      console.log(res);
+      getToken(token);
     },
     onError: error => {
       console.log(error);
