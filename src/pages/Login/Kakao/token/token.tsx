@@ -19,25 +19,24 @@ const Token = () => {
       },
       {
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
         },
       },
     );
-
-    const data: IData = res_kakao.data;
-    console.log(data.access_token);
-    const res_server = await axios.post(
-      'http://garden.jinkyumpark.com/auth/kakao',
-      {
-        accessToken: data.access_token,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${data.access_token}`,
-        },
-      },
-    );
-    console.log(res_server);
+    console.log(res_kakao);
+    // const data: IData = res_kakao.data;
+    // const res_server = await axios.post(
+    //   'http://garden.jinkyumpark.com/auth/kakao',
+    //   {
+    //     accessToken: data.access_token,
+    //   },
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${data.access_token}`,
+    //     },
+    //   },
+    // );
+    // console.log(res_server);
   };
   useEffect(() => {
     getCode();

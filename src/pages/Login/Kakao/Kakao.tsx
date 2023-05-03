@@ -5,7 +5,7 @@ import KakaoLogo from '../../../assets/logo_kakao.svg';
 import { BREAK_POINT } from 'constants/style';
 //카카오 로그인 잘못됨 accessToken 다른방식으로
 const HOST: string = 'https://kauth.kakao.com' as const;
-const KAKAO_URL: string = `${HOST}/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}`;
+const KAKAO_URL: string = `${HOST}/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}&response_type=code`;
 const KaKao = () => {
   const Login = async () => {
     window.location.href = KAKAO_URL;
