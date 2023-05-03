@@ -1,23 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { motion } from 'framer-motion';
 import Loader from 'components/Loader';
+import { IData } from './type';
 
-interface IData {
-  access_token: string;
-  token_type: string;
-  refresh_token: string;
-  expires_in: number;
-  refresh_token_expires_in: number;
-}
 const Token = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const nav = useNavigate();
 
   const getCode = async () => {
-    const code = new URLSearchParams(window.location.search).get('code');
+    const code: string | null = new URLSearchParams(window.location.search).get('code');
+
     const res_kakao = await axios.post<IData>(
       `https://kauth.kakao.com/oauth/token`,
       {
@@ -33,7 +26,7 @@ const Token = () => {
     );
     const data: IData = res_kakao.data;
     console.log(data);
-    // const res_server = await axios.post('http://localhost:8080/auth/kakao', {
+    // const res_server = await axios.post('http://localhost:8080/login/oauth2/code/kakao', {
     //   accessToken: data.access_token,
     // });
     // console.log(res_server);

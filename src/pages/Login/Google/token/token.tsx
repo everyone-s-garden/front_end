@@ -1,14 +1,5 @@
 import axios from 'axios';
-
-interface IData {
-  access_token: string;
-  expires_in: number;
-  id_token: string;
-  refresh_token: string;
-  scope: string;
-  token_type: string;
-}
-
+import { IData } from './type';
 //redirect_rui 를 http://localhost:3000/my 로 하면 에러가난다
 //구글 클라우드 콘솔에서 http://localhost:3000/my와
 //http://localhostL3000둘 다 추가해줘야함

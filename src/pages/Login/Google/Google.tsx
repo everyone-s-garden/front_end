@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +10,7 @@ const Google = () => {
   // button custom을 하기위해서 useGoogleLogin사용
   const login = useGoogleLogin({
     onSuccess: async responseToken => {
-      const token = responseToken.code;
+      const token: string = responseToken.code;
       //token 값을 보내서 id_token, refresh, access 토큰 값 가져옴
       getToken(token);
     },
@@ -20,7 +19,7 @@ const Google = () => {
     },
     //flow "auth-code" 설정을 해줘야만 id_token으로 반환해줌. 아니면 access토큰만 줌.
     flow: 'auth-code',
-    scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+    scope: process.env.REACT_APP_GOOGLE_SCOPE,
   });
 
   return (
@@ -48,6 +47,11 @@ const GoogleBtn = styled.button`
   font-size: 26px;
   font-weight: 500;
   position: relative;
+  transition: 0.3s ease-in-out;
+  :hover {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+  }
 `;
 //왜인지 몰르겠으나 새로고침시 이미지크기가 자꾸변동됨(부모에서 상속되는것 같다.)
 //40px로 지정해줘도 공간을 잡아먹어서 important로 고정위치잡아줌.

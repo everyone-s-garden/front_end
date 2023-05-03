@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import axios from 'axios';
 import KakaoLogo from '../../../assets/logo_kakao.svg';
 
-const HOST = 'https://kauth.kakao.com';
-const KAKAO_URL = `${HOST}/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}`;
+const HOST: string = 'https://kauth.kakao.com' as const;
+const KAKAO_URL: string = `${HOST}/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}`;
 
 const KaKao = () => {
   const Login = async () => {
@@ -24,7 +24,7 @@ const KakaoBtn = styled.button`
   width: 532px;
   height: 81px;
   margin-top: 61px;
-  background: #fee500;
+  background-color: #fee500;
   border: 1.3px solid #fee500;
   border-radius: 17px;
   display: flex;
