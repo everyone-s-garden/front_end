@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import KakaoLogo from '../../../assets/logo_kakao.svg';
+import { BREAK_POINT } from 'constants/style';
 
 const HOST: string = 'https://kauth.kakao.com' as const;
 const KAKAO_URL: string = `${HOST}/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}`;
@@ -33,6 +34,13 @@ const KakaoBtn = styled.button`
   font-size: 26px;
   font-weight: 500;
   position: relative;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: 267px;
+    height: 60px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+  }
 `;
 
 const Logo = styled.img`
@@ -41,4 +49,8 @@ const Logo = styled.img`
   position: absolute;
   left: 22px;
   bottom: 14px;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: 25px !important;
+    height: 25px !important;
+  }
 `;

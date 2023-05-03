@@ -13,16 +13,16 @@ export const getToken = async (token: string) => {
   });
   const data: IData = res_google.data;
   console.log(data);
-  //   const res_server = await axios.post(
-  //     'https://localhost:8080/auth/google',
-  //     {
-  //       id_token: data.id_token,
-  //     },
-  //     {
-  //       headers: {
-  //         Authorization: `Bearer ${data.access_token}`,
-  //       },
-  //     },
-  //   );
-  //   console.log(res_server);
+  const res_server = await axios.post(
+    'https://localhost:8080/auth/google',
+    {
+      id_token: data.id_token,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${data.access_token}`,
+      },
+    },
+  );
+  console.log(res_server);
 };

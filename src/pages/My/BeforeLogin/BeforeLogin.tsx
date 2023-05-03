@@ -3,6 +3,7 @@ import calendar from '../../../assets/calendar.svg';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Item from './Item/Item';
+import { BREAK_POINT } from 'constants/style';
 
 const BeforeLogin = () => {
   const nav = useNavigate();
@@ -37,11 +38,20 @@ const Content = styled.section`
   display: flex;
   margin-top: 173px;
   align-items: end;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    flex-direction: column;
+    align-items: center;
+    margin: 173px auto;
+  }
 `;
 
 const Icon = styled.img`
   width: 255px;
   height: 248px;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: 177px;
+    height: 171px;
+  }
 `;
 const ItemBox = styled.div`
   width: fit-content;
@@ -56,6 +66,10 @@ const ItemBox = styled.div`
     font-weight: 600;
     font-size: 30px;
     color: #414c38;
+    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+      font-size: 20px !important;
+      line-height: 24px;
+    }
   }
   button {
     margin-top: 19px;
@@ -67,6 +81,16 @@ const ItemBox = styled.div`
     line-height: 29px;
     font-weight: 600;
     color: #414c38;
+    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+      width: 261px;
+      height: 57px;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 19px;
+    }
+  }
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    margin: 0 auto;
   }
 `;
 const Content2 = styled.section`
@@ -85,4 +109,7 @@ const Ul = styled.div`
   height: fit-content;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;

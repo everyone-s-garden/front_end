@@ -6,6 +6,7 @@ import Google from './Google/Google';
 import Bubble from '../.././assets/Bubble.png';
 import left from '../.././assets/left_vector.svg';
 import { useNavigate } from 'react-router-dom';
+import { BREAK_POINT } from 'constants/style';
 
 const Login = () => {
   const nav = useNavigate();
@@ -19,7 +20,7 @@ const Login = () => {
         <BubbleBox>
           <Span>3초만에 로그인</Span>
         </BubbleBox>
-        <img src={logo}></img>
+        <Logo src={logo}></Logo>
         <Kakao />
         <Google />
       </Content>
@@ -45,11 +46,16 @@ const Content = styled.div`
   margin: 263px auto;
   display: flex;
   flex-direction: column;
-  img {
-    width: 270px;
-    height: 46px;
-    margin: 13px auto;
-    margin-bottom: 0px;
+`;
+
+const Logo = styled.img`
+  width: 270px;
+  height: 46px;
+  margin: 13px auto;
+  margin-bottom: 0px;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: 199.57px;
+    height: 34px;
   }
 `;
 
@@ -65,6 +71,10 @@ const Span = styled.span`
   margin-top: 13px;
   display: inline-block;
   color: #414c38;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    font-size: 12px;
+    line-height: 14px;
+  }
 `;
 
 const BackBtn = styled.button`
@@ -83,4 +93,8 @@ const BubbleBox = styled.div`
   background-size: contain;
   text-align: center;
   margin: 0 auto;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: 116px !important;
+    height: 49px !important;
+  }
 `;

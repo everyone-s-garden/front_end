@@ -26,10 +26,10 @@ const Token = () => {
     );
     const data: IData = res_kakao.data;
     console.log(data);
-    // const res_server = await axios.post('http://localhost:8080/login/oauth2/code/kakao', {
-    //   accessToken: data.access_token,
-    // });
-    // console.log(res_server);
+    const res_server = await axios.post('http://localhost:8080/login/oauth2/code/kakao', {
+      accessToken: data.access_token,
+    });
+    console.log(res_server);
   };
   useEffect(() => {
     getCode();
