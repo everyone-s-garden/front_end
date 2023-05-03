@@ -86,7 +86,7 @@ const MarkerCluster = () => {
     return cluster;
   });
 
-  return <Overlay element={cluster} />;
+  return <Overlay element={cluster as any} />;
 };
 
 export default MarkerCluster;
