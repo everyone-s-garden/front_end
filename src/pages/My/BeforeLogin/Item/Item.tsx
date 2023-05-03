@@ -33,10 +33,10 @@ export default Item;
 
 const Li = styled.div`
   width: fit-content;
-  margin-top: 17px;
   margin-right: 43px;
   display: flex;
   cursor: pointer;
+  margin-bottom: 19px;
 `;
 const ImageBox = styled.div`
   width: 218px;

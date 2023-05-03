@@ -10,7 +10,6 @@ const Token = () => {
 
   const getCode = async () => {
     const code: string | null = new URLSearchParams(window.location.search).get('code');
-
     const res_kakao = await axios.post<IData>(
       `https://kauth.kakao.com/oauth/token`,
       {
@@ -24,11 +23,20 @@ const Token = () => {
         },
       },
     );
+
     const data: IData = res_kakao.data;
-    console.log(data);
-    const res_server = await axios.post('http://localhost:8080/login/oauth2/code/kakao', {
-      accessToken: data.access_token,
-    });
+    console.log(data.access_token);
+    const res_server = await axios.post(
+      'http://garden.jinkyumpark.com/auth/kakao',
+      {
+        accessToken: data.access_token,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${data.access_token}`,
+        },
+      },
+    );
     console.log(res_server);
   };
   useEffect(() => {

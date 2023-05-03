@@ -58,6 +58,7 @@ const GoogleBtn = styled.button`
     font-weight: 500;
     font-size: 14px;
     line-height: 17px;
+    margin-top: 11.38px;
   }
 `;
 //왜인지 몰르겠으나 새로고침시 이미지크기가 자꾸변동됨(부모에서 상속되는것 같다.)

@@ -14,9 +14,9 @@ export const getToken = async (token: string) => {
   const data: IData = res_google.data;
   console.log(data);
   const res_server = await axios.post(
-    'https://localhost:8080/auth/google',
+    'http://garden.jinkyumpark.com/auth/google',
     {
-      id_token: data.id_token,
+      accessToken: data.id_token,
     },
     {
       headers: {
