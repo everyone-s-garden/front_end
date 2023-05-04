@@ -10,9 +10,14 @@ const Google = () => {
   // button custom을 하기위해서 useGoogleLogin사용
   const login = useGoogleLogin({
     onSuccess: async responseToken => {
-      const token: string = responseToken.code;
-      //token 값을 보내서 id_token, refresh, access 토큰 값 가져옴
-      getToken(token);
+      try {
+        const token: string = responseToken.code;
+        //token 값을 보내서 id_token, refresh, access 토큰 값 가져옴
+        getToken(token);
+        nav('/');
+      } catch (err) {
+        console.log(err);
+      }
     },
     onError: error => {
       console.log(error);

@@ -6,3 +6,8 @@ export interface IData {
   scope: string;
   token_type: string;
 }
+
+export interface IData_Sever {
+  appToken: string;
+  isNewMember: boolean;
+}

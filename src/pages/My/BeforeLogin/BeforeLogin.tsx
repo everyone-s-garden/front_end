@@ -3,7 +3,7 @@ import calendar from '../../../assets/calendar.svg';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Item from './Item/Item';
-import { BREAK_POINT } from 'constants/style';
+import { BREAK_POINT, COLOR } from 'constants/style';
 
 const BeforeLogin = () => {
   const nav = useNavigate();
@@ -51,8 +51,9 @@ const Content = styled.section`
   width: fit-content;
   height: fit-content;
   display: flex;
-  margin-top: 173px;
+  margin-top: 130px;
   align-items: end;
+  margin-left: 54px;
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     flex-direction: column;
     align-items: center;
@@ -61,8 +62,8 @@ const Content = styled.section`
 `;
 
 const Icon = styled.img`
-  width: 255px;
-  height: 248px;
+  width: 197px;
+  height: 191px;
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     width: 177px;
     height: 171px;
@@ -73,28 +74,28 @@ const ItemBox = styled.div`
   height: fit-content;
   display: flex;
   flex-direction: column;
-  margin-left: 39px;
+  margin-left: 65px;
   margin-bottom: 20px;
   span {
     font-size: 26px !important;
     line-height: 36px;
     font-weight: 600;
-    font-size: 30px;
+    font-size: 20px !important;
     color: #414c38;
     @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-      font-size: 20px !important;
       line-height: 24px;
       margin-top: 32px;
     }
   }
   button {
-    margin-top: 19px;
-    width: 393px;
-    height: 86px;
+    margin-top: 15.99px;
+    margin-bottom: 12px;
+    width: 300px;
+    height: 58.31px;
     border: 1.3px solid #afd082;
     border-radius: 15px;
-    font-size: 24px;
-    line-height: 29px;
+    font-size: 16px;
+    line-height: 19px;
     font-weight: 600;
     color: #414c38;
     transition: 0.3s ease-in-out;
@@ -106,7 +107,7 @@ const ItemBox = styled.div`
       line-height: 19px;
     }
     :hover {
-      background-color: #afd082;
+      background-color: ${COLOR.GREEN[300]};
     }
   }
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
@@ -123,7 +124,7 @@ const Ul = styled.div`
   height: fit-content;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  margin-top: 23px;
+  margin-top: 35px;
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     grid-template-columns: repeat(1, 1fr);
   }
@@ -131,8 +132,8 @@ const Ul = styled.div`
 const Span = styled.span`
   color: #414c38;
   font-weight: 600;
-  font-size: 22px;
-  line-height: 26px;
+  font-size: 20px;
+  line-height: 24px;
   display: inline-block;
 `;
 

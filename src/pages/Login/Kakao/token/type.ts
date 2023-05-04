@@ -5,3 +5,8 @@ export interface IData {
   expires_in: number;
   refresh_token_expires_in: number;
 }
+
+export interface IData_Sever {
+  appToken: string;
+  isNewMember: boolean;
+}

@@ -43,11 +43,9 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <React.StrictMode>
-    <NavermapsProvider ncpClientId="jij6pc5oav">
-      <GoogleOAuthProvider clientId="999513273898-9fa6iu0cm3jbeancg8f82mjs53trr355.apps.googleusercontent.com">
-        <RouterProvider router={router} />
-      </GoogleOAuthProvider>
-    </NavermapsProvider>
-  </React.StrictMode>,
+  <NavermapsProvider ncpClientId="jij6pc5oav">
+    <GoogleOAuthProvider clientId="999513273898-9fa6iu0cm3jbeancg8f82mjs53trr355.apps.googleusercontent.com">
+      <RouterProvider router={router} />
+    </GoogleOAuthProvider>
+  </NavermapsProvider>,
 );
