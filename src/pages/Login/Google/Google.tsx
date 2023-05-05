@@ -5,16 +5,25 @@ import { useGoogleLogin } from '@react-oauth/google';
 import GoogleLogo from '../../../assets/logo_google.svg';
 import { getToken } from './token/token';
 import { BREAK_POINT } from 'constants/style';
+import { useSetRecoilState } from 'recoil';
+import { isLoginAtom } from 'utils/atom';
 const Google = () => {
   const nav = useNavigate();
+  const setIsLogin = useSetRecoilState<boolean>(isLoginAtom);
+
   // button custom을 하기위해서 useGoogleLogin사용
   const login = useGoogleLogin({
     onSuccess: async responseToken => {
       try {
         const token: string = responseToken.code;
         //token 값을 보내서 id_token, refresh, access 토큰 값 가져옴
-        getToken(token);
-        nav('/');
+        const result = await getToken(token);
+        if (result) {
+          setIsLogin(true);
+          nav('/');
+        } else {
+          console.log('login not succeed');
+        }
       } catch (err) {
         console.log(err);
       }

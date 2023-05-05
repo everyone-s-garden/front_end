@@ -4,11 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import Loader from 'components/Loader';
 import { IData, IData_Sever } from './type';
 import { setItem } from 'utils/session';
-
+import { isLoginAtom } from 'utils/atom';
+import { useSetRecoilState } from 'recoil';
 const Token = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const nav = useNavigate();
-
+  const setIsLogin = useSetRecoilState<boolean>(isLoginAtom);
   const getCode = async () => {
     const code: string | null = new URLSearchParams(window.location.search).get('code');
 
@@ -35,6 +36,7 @@ const Token = () => {
     });
     setItem('access_token', res_server.data.appToken);
     setItem('isLogin', 'true');
+    setIsLogin(true);
     nav('/');
   };
   useEffect(() => {

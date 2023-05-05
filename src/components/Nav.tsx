@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
@@ -7,17 +7,39 @@ import logoImg from 'assets/logo-horizon.svg';
 import mapImg from 'assets/map-icon.svg';
 import homiImg from 'assets/homi-icon.svg';
 import Footer from './Footer';
-
+import { getItem } from 'utils/session';
+import { useRecoilState } from 'recoil';
+import { isLoginAtom } from 'utils/atom';
 const Nav = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
+  const getIsLogin = async () => {
+    const getLogin = await Boolean(getItem('isLogin'));
+    setIsLogin(getLogin);
+  };
+  useEffect(() => {
+    getIsLogin();
+  }, [isLogin]);
 
+  const login = () => {
+    navigate('/login');
+  };
+  const logout = () => {
+    sessionStorage.clear();
+    setIsLogin(false);
+    navigate('/');
+  };
   return (
     <>
       <Container>
         <Navbar>
           <LoginBar>
-            <LoginBtn>로그인</LoginBtn>
+            {isLogin === true ? (
+              <LoginBtn onClick={logout}>로그아웃</LoginBtn>
+            ) : (
+              <LoginBtn onClick={login}>로그인</LoginBtn>
+            )}
           </LoginBar>
           <MenuBar>
             <LogoImageContainer onClick={() => navigate(`/`)}>
