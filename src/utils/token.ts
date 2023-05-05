@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { getItem } from './session';
+import { Axios } from 'axios';
 
 // 요청 인터셉터 타입
 type RequestInterceptor = (config: AxiosRequestConfig) => AxiosRequestConfig | Promise<AxiosRequestConfig>;
@@ -40,3 +41,10 @@ instance.interceptors.response.use(
 );
 
 export const axiosInstance: AxiosInstance = instance;
+
+// const url = config.url;
+// if (url.startsWith('/api/auth')) {
+//   const access_token = getItem('access_token');
+//   const token = access_token ? JSON.parse(access_token) : null;
+//   config.headers.Authorization = `Bearer ${token}`;
+// }
