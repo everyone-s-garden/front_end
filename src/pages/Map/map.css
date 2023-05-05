@@ -1,7 +1,9 @@
 .marker {
-  width: 70px;
-  height: 90px;
-  color: #afd082;
+  width: 40px;
+  height: 67px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: transparent;
 }
 
@@ -11,51 +13,24 @@
 }
 
 .marker_icon {
-  width: 68px;
-  height: 88px;
   cursor: pointer;
 }
 
-.marker_image {
-  position: absolute;
-  top: 4px;
-  left: 5px;
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-}
-
 .cluster_marker1 {
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 1.4rem;
   font-weight: bold;
   color: white;
-  background-color: #a8d178;
-  opacity: 0.8;
+  background-color: rgba(255, 215, 100, 0.8);
   border-radius: 50%;
 }
 
-.cluster_marker2 {
-  width: 70px;
-  height: 70px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: white;
-  background-color: #414c38;
-  opacity: 0.8;
-  border-radius: 50%;
-}
-
-.cluster_marker1:hover,
-.cluster_marker2:hover {
-  opacity: 1;
+.cluster_marker1:hover {
+  background-color: rgba(255, 215, 100, 1);
   transform: scale(1.1);
   transition: all 0.2s ease-in;
 }

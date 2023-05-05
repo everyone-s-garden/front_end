@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { useNavermaps, useMap, Overlay } from 'react-naver-maps';
 
-import testImage from 'assets/garden-image1.jpg';
 import { makeMarkerClustering } from 'utils/makeMarkerClustering';
 import testData from 'utils/testData';
 
-const MarkerCluster = () => {
+interface MarkerClusterProps {
+  setSelectedGarden: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const MarkerCluster = ({ setSelectedGarden }: MarkerClusterProps) => {
   const navermaps = useNavermaps();
   const map = useMap();
 
@@ -13,11 +16,6 @@ const MarkerCluster = () => {
 
   const clusterMarker1 = {
     content: `<div class="cluster_marker1"></div>`,
-    size: new navermaps.Size(40, 40),
-    anchor: new navermaps.Point(20, 20),
-  };
-  const clusterMarker2 = {
-    content: `<div class="cluster_marker2"></div>`,
     size: new navermaps.Size(40, 40),
     anchor: new navermaps.Point(20, 20),
   };
@@ -34,24 +32,22 @@ const MarkerCluster = () => {
           position: latlng,
           icon: {
             content: `<div class="marker">
-                <svg
-                  class="marker_icon"
-                  viewBox="0 0 384 512"
-                  fill="currentColor"
-                  stroke="white" stroke-width="10"
-                >
-                  <path d="M384 192c0 87.4-117 243-168.3 307.2-12.3 15.3-35.1 15.3-47.4 0C117 435 0 279.4 0 192 0 86 86 0 192 0s192 86 192 192z" />
+                <svg width="33" height="55" viewBox="0 0 33 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M32.5 17.5455C32.5 21.1141 31.4904 25.2181 29.9527 29.3895C28.4172 33.5551 26.3667 37.7569 24.3114 41.5124C22.2567 45.2667 20.2013 48.5672 18.6594 50.9293C17.8887 52.1101 17.2466 53.0558 16.7976 53.7058C16.6862 53.8671 16.5866 54.0102 16.5 54.1341C16.4134 54.0102 16.3138 53.8671 16.2024 53.7058C15.7534 53.0558 15.1114 52.1101 14.3406 50.9293C12.7987 48.5672 10.7433 45.2667 8.68861 41.5124C6.63325 37.7569 4.58282 33.5551 3.04727 29.3895C1.50957 25.2181 0.5 21.1141 0.5 17.5455C0.5 8.57047 7.69829 0.5 16.5 0.5C25.3017 0.5 32.5 8.57047 32.5 17.5455Z" fill="#9ACD79" stroke="#DDE9C8"/>
+                  <path d="M16.1144 16.9607C18.4617 16.9607 20.3646 15.0374 20.3646 12.6649C20.3646 10.2924 18.4617 8.36914 16.1144 8.36914C13.7671 8.36914 11.8643 10.2924 11.8643 12.6649C11.8643 15.0374 13.7671 16.9607 16.1144 16.9607Z" fill="#DDE9C8"/>
+                  <path d="M14.1507 18.4033C16.8988 21.1809 16.2843 26.3048 16.2843 26.3048C16.2843 26.3048 11.2148 26.9259 8.46671 24.1483C5.71861 21.3707 6.33309 16.2468 6.33309 16.2468C6.33309 16.2468 11.4026 15.6257 14.1507 18.4033Z" fill="#DDE9C8"/>
+                  <path d="M17.9853 18.4033C15.2372 21.1809 15.8516 26.3048 15.8516 26.3048C15.8516 26.3048 20.9211 26.9259 23.6692 24.1483C26.4173 21.3707 25.8028 16.2468 25.8028 16.2468C25.8028 16.2468 20.7334 15.6257 17.9853 18.4033Z" fill="#DDE9C8"/>
+                  <path d="M19.3746 12.695L16.0957 9.38086L12.8168 12.695L16.0957 16.0091L19.3746 12.695Z" fill="#9ACD79"/>
                 </svg>
-                <img class="marker_image" src=${testImage} alt="텃밭 이미지" />
               </div>`,
-            origin: new naver.maps.Point(0, 90),
-            anchor: new naver.maps.Point(35, 90),
+            origin: new naver.maps.Point(0, 67),
+            anchor: new naver.maps.Point(20, 67),
           },
         });
 
       // 마커 이벤트 등록
       const onClickHandler = () => {
-        console.log(spot.x_coord);
+        setSelectedGarden(true);
       };
       // 마우스 호버시 마커를 앞으로 가져옴
       const onMouseOverHandler = () => {
@@ -74,9 +70,8 @@ const MarkerCluster = () => {
       map: map,
       markers: markers,
       disableClickZoom: false,
-      gridSize: 180,
-      icons: [clusterMarker1, clusterMarker2],
-      indexGenerator: [10, 100],
+      gridSize: 120,
+      icons: [clusterMarker1],
       stylingFunction: function (clusterMarker: any, count: number) {
         clusterMarker.getElement().querySelector('div:first-child').innerText = count;
       },

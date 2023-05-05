@@ -33,21 +33,21 @@ const Button = styled.button`
   bottom: 0px;
   right: 50%;
   transform: translate(50%, 0);
-  width: 72px;
-  height: 28px;
-  border-radius: 10px 10px 0 0;
-  border: 1px solid ${COLOR.BLACK[500]};
+  width: 55px;
+  height: 21px;
+  border-radius: 5px 5px 0 0;
+  border: 1px solid #afafaf;
   border-bottom: 0;
   background-color: ${COLOR.BACKGROUND};
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     top: 50%;
     right: 0px;
-    transform: translate(0, -50%);
-    width: 28px;
-    height: 72px;
-    border-radius: 10px 0 0 10px;
-    border: 1px solid ${COLOR.BLACK[500]};
+    transform: translate(0, -80%);
+    width: 21px;
+    height: 55px;
+    border-radius: 5px 0 0 5px;
+    border: 1px solid #afafaf;
     border-right: 0;
   }
 `;
@@ -55,10 +55,12 @@ const Button = styled.button`
 const ArrowIcon = styled.img<{ isExpand: boolean }>`
   margin-top: 4px;
   height: 15px;
+  color: #afafaf;
   transform: ${props => (props.isExpand ? 'rotate(90deg)' : 'rotate(270deg)')};
   transition: all 0.3s ease-in;
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
+    margin-bottom: 2px;
     margin-left: 4px;
     transform: ${props => (props.isExpand ? 'rotate(0deg)' : 'rotate(180deg)')};
   }

@@ -1,10 +1,21 @@
 @charset "utf-8";
+/* Pretendard 폰트 가져오기 */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/variable/pretendardvariable.css');
+
 /* 초기 세팅 */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-size: 14px;
+  color: #414c38;
+  font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue',
+    'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', sans-serif;
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
 }
 
 #root {
@@ -60,7 +71,7 @@ button {
   cursor: pointer;
   background-color: transparent;
 }
-button:active {
+button:focus {
   outline: none;
 }
 

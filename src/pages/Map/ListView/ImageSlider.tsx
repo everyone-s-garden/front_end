@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-import arrowIcon from 'assets/img-arrow-icon.svg';
+import arrowIcon from 'assets/image-arrow-icon.svg';
 import { COLOR } from 'constants/style';
 
 function ImageSlider() {
@@ -37,10 +37,10 @@ function ImageSlider() {
       </ImageContainer>
 
       <SliderButtonLeft onClick={onLeftBtnClicked}>
-        <img src={arrowIcon} alt="버튼 아이콘" />
+        <img src={arrowIcon} alt="버튼 아이콘" style={{ transform: 'rotate(180deg)' }} />
       </SliderButtonLeft>
       <SliderButtonRight onClick={onRightBtnClicked}>
-        <img src={arrowIcon} alt="버튼 아이콘" style={{ transform: 'rotate(180deg)' }} />
+        <img src={arrowIcon} alt="버튼 아이콘" />
       </SliderButtonRight>
 
       <Dots>
@@ -79,23 +79,28 @@ const Image = styled.img`
 const SliderButtonLeft = styled.button`
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
   left: 10px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
   transition: scale 0.1s ease-in;
 
   &:hover {
-    scale: 1.05;
+    scale: 1.1;
   }
 `;
+
 const SliderButtonRight = styled.button`
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
   right: 10px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
   transition: scale 0.1s ease-in;
 
   &:hover {
-    scale: 1.05;
+    scale: 1.1;
   }
 `;
 

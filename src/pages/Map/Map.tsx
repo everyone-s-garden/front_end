@@ -35,9 +35,10 @@ const Map = () => {
             setIsInitializing={setIsInitializing}
             isExpand={isExpand}
             setIsExpand={setIsExpand}
+            setSelectedGarden={setSelectedGarden}
           />
         </MapDiv>
-        <ListView isExpand={isExpand} />
+        <ListView isExpand={isExpand} selectedGarden={selectedGarden} setSelectedGarden={setSelectedGarden} />
       </MapViewer>
     </MapPage>
   );

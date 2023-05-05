@@ -14,9 +14,17 @@ interface MyMapProps {
   setIsInitializing: React.Dispatch<React.SetStateAction<boolean>>;
   isExpand: boolean;
   setIsExpand: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedGarden: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const MyMap = ({ isLoading, setIsLoading, setIsInitializing, isExpand, setIsExpand }: MyMapProps) => {
+const MyMap = ({
+  isLoading,
+  setIsLoading,
+  setIsInitializing,
+  isExpand,
+  setIsExpand,
+  setSelectedGarden,
+}: MyMapProps) => {
   const navermaps = useNavermaps();
   const myLocation = useRef<{
     lat: number;
@@ -61,7 +69,7 @@ const MyMap = ({ isLoading, setIsLoading, setIsInitializing, isExpand, setIsExpa
       >
         <MiniLoader isLoading={isLoading} />
 
-        <MarkerCluster />
+        <MarkerCluster setSelectedGarden={setSelectedGarden} />
         <MyLocationBtn onClick={moveMyLocation} />
         <ExpandBtn map={map} isExpand={isExpand} setIsExpand={setIsExpand} />
 

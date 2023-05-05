@@ -3,11 +3,29 @@ import styled from 'styled-components';
 
 import ImageSlider from './ImageSlider';
 import { COLOR, FONT_WEIGHT } from 'constants/style';
+import arrowIcon from 'assets/back-icon.svg';
+import axios from 'axios';
 
-function GardenDetail() {
+interface GardenDetailProps {
+  setSelectedGarden: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function GardenDetail({ setSelectedGarden }: GardenDetailProps) {
+  const HttpRequest = axios.create({
+    baseURL: 'http://garden.jinkyumpark.com/',
+  });
+
+  const testDataFetch = async () => {
+    const testData = await HttpRequest.get('');
+    console.log(testData);
+  };
+
   return (
     <DetailDiv>
       <ImageSlider />
+      <BackBtn onClick={() => setSelectedGarden(false)}>
+        <img src={arrowIcon} alt="뒤로가기"></img>
+      </BackBtn>
 
       <Body>
         <Title>양주 공동텃밭</Title>
@@ -35,7 +53,7 @@ function GardenDetail() {
       </Body>
 
       <Buttons>
-        <ZzimButton>찜하기</ZzimButton>
+        <ZzimButton onClick={testDataFetch}>찜하기</ZzimButton>
         <ApplyButton>신청하기</ApplyButton>
       </Buttons>
     </DetailDiv>
@@ -52,46 +70,56 @@ const DetailDiv = styled.div`
   height: 100%;
 `;
 
+const BackBtn = styled.button`
+  position: absolute;
+  top: 30px;
+  left: 20px;
+  height: 15px;
+`;
+
 const Body = styled.div`
-  padding: 30px 40px;
+  padding: 25px 36px;
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
 `;
 
 const Title = styled.h1`
-  margin-bottom: 30px;
-  font-size: 1.3rem;
-  font-weight: ${FONT_WEIGHT.SEMIBOLD};
+  margin-bottom: 25px;
+  font-size: 20px;
+  font-weight: ${FONT_WEIGHT.BOLD};
 `;
 
 const Row = styled.div`
-  margin-bottom: 40px;
+  margin-bottom: 21px;
   display: flex;
   align-items: flex-start;
-  font-size: 1.1rem;
+  font-size: 16px;
+  font-weight: ${FONT_WEIGHT.MEDIUM};
 `;
 
 const Key = styled.span`
   flex-shrink: 0;
-  width: 80px;
-  font-size: 1.1rem;
-  font-weight: ${FONT_WEIGHT.MEDIUM};
+  width: 90px;
+  font-size: 16px;
+  font-weight: ${FONT_WEIGHT.SEMIBOLD};
 `;
 
 const Label = styled.button`
   margin-right: 10px;
-  padding: 6px 14px;
+  padding: 0 12px;
+  height: 26px;
   flex-shrink: 0;
-  font-size: 1.1rem;
-  color: ${COLOR.BLACK[400]};
-  border-radius: 10px;
-  border: 1px solid ${COLOR.BLACK[400]};
+  font-size: 14px;
+  font-weight: ${FONT_WEIGHT.MEDIUM};
+  color: #afafaf;
+  border-radius: 13px;
+  border: 1px solid #afafaf;
   transition: all 0.2s;
 
   &:hover {
-    color: ${COLOR.BLACK[800]};
-    border: 1px solid ${COLOR.BLACK[800]};
+    color: ${COLOR.BLACK};
+    border: 1px solid ${COLOR.BLACK};
   }
 `;
 
@@ -108,34 +136,34 @@ const Buttons = styled.div`
 
 const ZzimButton = styled.button`
   width: 120px;
-  height: 48px;
+  height: 44px;
   font-size: 1.1rem;
   font-weight: ${FONT_WEIGHT.SEMIBOLD};
-  color: ${COLOR.GREEN[500]};
-  border: 1px solid ${COLOR.GREEN[500]};
+  color: ${COLOR.GREEN};
+  border: 1px solid ${COLOR.GREEN};
   border-radius: 15px;
   background-color: ${COLOR.BACKGROUND};
   transition: all 0.2s;
 
   &:hover {
     color: ${COLOR.BACKGROUND};
-    background-color: ${COLOR.GREEN[500]};
+    background-color: ${COLOR.GREEN};
   }
 `;
 
 const ApplyButton = styled.button`
   width: 160px;
-  height: 48px;
+  height: 44px;
   font-size: 1.1rem;
   font-weight: ${FONT_WEIGHT.SEMIBOLD};
-  border: 1px solid ${COLOR.GREEN[500]};
+  border: 1px solid ${COLOR.GREEN};
   border-radius: 15px;
   color: ${COLOR.BACKGROUND};
-  background-color: ${COLOR.GREEN[500]};
+  background-color: ${COLOR.GREEN};
   transition: all 0.2s;
 
   &:hover {
-    color: ${COLOR.GREEN[500]};
+    color: ${COLOR.GREEN};
     background-color: ${COLOR.BACKGROUND};
   }
 `;

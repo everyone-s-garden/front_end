@@ -7,13 +7,18 @@ import GardenDetail from './GardenDetail';
 
 interface ListViewProps {
   isExpand: boolean;
+  selectedGarden: boolean;
+  setSelectedGarden: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function ListView({ isExpand }: ListViewProps) {
+function ListView({ isExpand, selectedGarden, setSelectedGarden }: ListViewProps) {
   return (
     <ListDiv isExpand={isExpand}>
-      <GardenList />
-      {/* <GardenDetail /> */}
+      {selectedGarden ? (
+        <GardenDetail setSelectedGarden={setSelectedGarden} />
+      ) : (
+        <GardenList setSelectedGarden={setSelectedGarden} />
+      )}
     </ListDiv>
   );
 }
@@ -26,15 +31,15 @@ const ListDiv = styled.div<{ isExpand: boolean }>`
   height: ${props => (props.isExpand ? '0%' : '280px')};
   display: flex;
   flex-direction: row;
-  border-top: 1px solid ${COLOR.BLACK[500]};
+  border-top: 1px solid #afafaf;
   overflow-y: auto;
   transition: all 0.2s ease-in;
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
-    width: ${props => (props.isExpand ? '0%' : '400px')};
+    width: ${props => (props.isExpand ? '0%' : '379px')};
     height: 100%;
     flex-direction: column;
     border-top: 0;
-    border-left: 1px solid ${COLOR.BLACK[500]};
+    border-left: 1px solid #afafaf;
   }
 `;
