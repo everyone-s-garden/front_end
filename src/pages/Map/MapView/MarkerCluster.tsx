@@ -4,6 +4,7 @@ import { useNavermaps, useMap, Overlay } from 'react-naver-maps';
 import testImage from 'assets/garden-image1.jpg';
 import { makeMarkerClustering } from 'utils/makeMarkerClustering';
 import testData from 'utils/testData';
+import { OverlayProps } from 'react-naver-maps';
 
 const MarkerCluster = () => {
   const navermaps = useNavermaps();
@@ -85,7 +86,7 @@ const MarkerCluster = () => {
     return cluster;
   });
 
-  return <Overlay element={cluster} />;
+  return <Overlay element={cluster as any} />;
 };
 
 export default MarkerCluster;
