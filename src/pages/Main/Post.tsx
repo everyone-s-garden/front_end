@@ -4,12 +4,9 @@ import styled from 'styled-components';
 import testImg from 'assets/garden-image1.jpg';
 import { BREAK_POINT, FONT_WEIGHT } from 'constants/style';
 
-interface GardenPostProps {
-  setSelectedGarden: React.Dispatch<React.SetStateAction<boolean>>;
-}
-function GardenPost({ setSelectedGarden }: GardenPostProps) {
+function Post() {
   return (
-    <Post>
+    <PostContainer>
       <Image src={testImg} alt="텃밭 이미지"></Image>
 
       <InfoDiv>
@@ -17,33 +14,39 @@ function GardenPost({ setSelectedGarden }: GardenPostProps) {
           <Dot />
           <Text>모집 중</Text>
         </Status>
-        <Title onClick={() => setSelectedGarden(true)}>양주 공공텃밭</Title>
+        <Title>양주 공공텃밭보다 길면 어떻게</Title>
         <Value>8평</Value>
         <Value>평당 15,000원</Value>
       </InfoDiv>
-    </Post>
+    </PostContainer>
   );
 }
 
-export default GardenPost;
+export default Post;
 
-const Post = styled.div`
-  position: relative;
-  padding: 20px;
-  display: flex;
+const PostContainer = styled.div`
   width: 100%;
-  height: 170px;
-  min-width: 300px;
-  border-right: 1px solid #afafaf;
+  height: 100%;
+  display: flex;
+  min-width: 0;
+  cursor: pointer;
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
-    border-bottom: 1px solid #afafaf;
+    &:nth-child(3) {
+      display: none;
+    }
+  }
+
+  @media (min-width: ${BREAK_POINT.LABTOP}) {
+    &:nth-child(3) {
+      display: flex;
+    }
   }
 `;
 
 const Image = styled.img`
   flex-shrink: 0;
-  height: 100%;
+  height: 135px;
   aspect-ratio: 4 / 3;
   border-radius: 5px;
   object-fit: cover;
@@ -51,10 +54,12 @@ const Image = styled.img`
 `;
 
 const InfoDiv = styled.div`
+  flex-grow: 1;
   padding-left: 16px;
   display: flex;
   flex-direction: column;
-  font-size: 1rem;
+  /* align-items: flex-start; */
+  min-width: 100px;
 `;
 
 const Status = styled.div`
@@ -82,12 +87,15 @@ const Dot = styled.div`
   box-shadow: 0px 0px 2.16px 1.08px #ff6a00;
 `;
 
-const Title = styled.button`
-  font-size: 16px;
+const Title = styled.h1`
+  font-size: 1.2rem;
   font-weight: ${FONT_WEIGHT.BOLD};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const Value = styled.span`
-  font-size: 14px;
-  margin-top: 7px;
+  font-size: 1rem;
+  margin-top: 6px;
 `;

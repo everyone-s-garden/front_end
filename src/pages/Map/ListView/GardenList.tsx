@@ -1,18 +1,20 @@
 import React from 'react';
+import styled from 'styled-components';
 
 import GardenPost from './GardenPost';
 
-function GardenList() {
+interface GardenListProps {
+  setSelectedGarden: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function GardenList({ setSelectedGarden }: GardenListProps) {
   return (
-    <>
-      <GardenPost />
-      <GardenPost />
-      <GardenPost />
-      <GardenPost />
-      <GardenPost />
-      <GardenPost />
-    </>
+    <ListContainer>
+      <GardenPost setSelectedGarden={setSelectedGarden} />
+    </ListContainer>
   );
 }
 
 export default GardenList;
+
+const ListContainer = styled.ol``;
