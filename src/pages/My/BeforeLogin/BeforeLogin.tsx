@@ -107,7 +107,7 @@ const ItemBox = styled.div`
       line-height: 19px;
     }
     :hover {
-      background-color: ${COLOR.GREEN[300]};
+      background-color: #afd082;
     }
   }
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {

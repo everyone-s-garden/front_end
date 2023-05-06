@@ -12,6 +12,8 @@ import Map from './pages/Map/Map';
 import Login from './pages/Login/Login';
 import Mypage from 'pages/My/My';
 import Token from 'pages/Login/Kakao/token/token';
+import RegisterUser from 'pages/register_user/RegisterUser';
+import RegisterSeller from 'pages/register_seller/RegisterSeller';
 
 const router = createBrowserRouter([
   {
@@ -37,6 +39,14 @@ const router = createBrowserRouter([
       {
         path: '/my/oauth/kakao',
         element: <Token />,
+      },
+      {
+        path: '/garden-register-user',
+        element: <RegisterUser />,
+      },
+      {
+        path: '/garden-register-seller',
+        element: <RegisterSeller />,
       },
     ],
   },
