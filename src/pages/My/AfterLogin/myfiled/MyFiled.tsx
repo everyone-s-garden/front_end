@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import icon from 'assets/field.png';
 import groundicon from 'assets/groundicon.svg';
 import dateicon from 'assets/dateicon.svg';
+import { BREAK_POINT } from 'constants/style';
 
 const MyFiled = () => {
   return (
@@ -43,6 +44,8 @@ const MyField = styled.div`
   margin: 0 auto;
   text-align: center;
   margin-top: 62px;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+  }
 `;
 const H1 = styled.h1`
   font-weight: 400;
@@ -58,14 +61,26 @@ const Img = styled.img`
   height: 166px;
   border-radius: 2rem;
   margin-bottom: 28px;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: 350px;
+    height: 166px;
+  }
 `;
 const Content = styled.section`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
-const Info = styled.div``;
+const Info = styled.div`
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    margin-bottom: 38.65px;
+  }
+`;
 const Ground = styled.div`
   width: fit-content;
   display: flex;
@@ -115,6 +130,9 @@ const MapBox = styled.div`
   height: 159.89px;
   background-color: grey;
   border-radius: 1rem;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    margin: 0 auto;
+  }
 `;
 const Edit = styled.div`
   text-align: end;

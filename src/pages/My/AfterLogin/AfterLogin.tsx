@@ -5,9 +5,10 @@ import Post from './Post';
 import EmptyFiled from './emptfiled/EmptyFiled';
 import MyFiled from './myfiled/MyFiled';
 import { useForm } from 'react-hook-form';
+import { BREAK_POINT } from 'constants/style';
 const AfterLogin = () => {
-  const [list, setList] = useState([]);
-  const [field, setFiled] = useState(null);
+  const [list, setList] = useState([1, 2]);
+  const [field, setFiled] = useState(undefined);
   return (
     <Container>
       {field === null ? <EmptyFiled /> : <MyFiled />}
@@ -57,6 +58,11 @@ const LikeWrapper = styled.div`
   width: fit-content;
   height: fit-content;
   margin: 92px auto;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    margin-top: 54px;
+    width: 100%;
+    padding: 0px 20px;
+  }
 `;
 const MoreView = styled.span`
   font-weight: 400;
@@ -69,9 +75,16 @@ const MoreView = styled.span`
 const LikeUl = styled.ul`
   width: 864px;
   height: fit-content;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: fit-content;
+    margin: 0 auto;
+  }
 `;
 const EmptyList = styled.div`
   width: 864px;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: fit-content;
+  }
 `;
 const NoLikeListBox = styled.div`
   width: fit-content;
@@ -84,6 +97,9 @@ const NoLikeListBox = styled.div`
     font-weight: 500;
     font-size: 16px;
     line-height: 19px;
+  }
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    margin: 20px auto;
   }
 `;
 const Img = styled.img`
@@ -99,6 +115,8 @@ const Span = styled.span`
   line-height: 16px;
   margin-top: 30px;
   display: inline-block;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+  }
 `;
 const UnderLine = styled.span`
   text-decoration: underline;
