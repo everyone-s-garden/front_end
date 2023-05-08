@@ -1,5 +1,5 @@
-import React from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Outlet, useLocation, useMatch, useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
 import { BREAK_POINT, FONT_WEIGHT } from '../constants/style';
@@ -7,34 +7,66 @@ import logoImg from 'assets/logo-horizon.svg';
 import mapImg from 'assets/map-icon.svg';
 import homiImg from 'assets/homi-icon.svg';
 import Footer from './Footer';
-
+import { getItem } from 'utils/session';
+import { useRecoilState } from 'recoil';
+import { isLoginAtom } from 'utils/atom';
 const Nav = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
+  const [width, setWidth] = useState(window.innerWidth);
+  const mainMatch = useMatch('/');
+  const mapMatch = useMatch('/map');
+  const getIsLogin = async () => {
+    const getLogin = await Boolean(getItem('isLogin'));
+    setIsLogin(getLogin);
+  };
+  useEffect(() => {
+    getIsLogin();
+  }, [isLogin]);
 
+  const login = () => {
+    navigate('/login');
+  };
+  const logout = () => {
+    sessionStorage.clear();
+    setIsLogin(false);
+    navigate('/');
+  };
+  useEffect(() => {
+    window.onresize = () => {
+      setWidth(window.innerWidth);
+    };
+  }, []);
   return (
     <>
       <Container>
-        <Navbar>
-          <LoginBar>
-            <LoginBtn>로그인</LoginBtn>
-          </LoginBar>
-          <MenuBar>
-            <LogoImageContainer onClick={() => navigate(`/`)}>
-              <LogoImage src={logoImg} alt="로고" />
-            </LogoImageContainer>
-            <ButtonContainer>
-              <Button active={location.pathname === '/map'} onClick={() => navigate(`/map`)}>
-                <ButtonImage src={mapImg} alt="맵아이콘" />
-                <ButtonSpan>내 주변 분양</ButtonSpan>
-              </Button>
-              <Button active={location.pathname === '/my'} onClick={() => navigate(`/my`)}>
-                <ButtonImage src={homiImg} alt="맵아이콘" />
-                <ButtonSpan>마이페이지</ButtonSpan>
-              </Button>
-            </ButtonContainer>
-          </MenuBar>
-        </Navbar>
+        {(width > 687 || mainMatch !== null || mapMatch !== null) && (
+          <Navbar>
+            <LoginBar>
+              {isLogin === true ? (
+                <LoginBtn onClick={logout}>로그아웃</LoginBtn>
+              ) : (
+                <LoginBtn onClick={login}>로그인</LoginBtn>
+              )}
+            </LoginBar>
+            <MenuBar>
+              <LogoImageContainer onClick={() => navigate(`/`)}>
+                <LogoImage src={logoImg} alt="로고" />
+              </LogoImageContainer>
+              <ButtonContainer>
+                <Button active={location.pathname === '/map'} onClick={() => navigate(`/map`)}>
+                  <ButtonImage src={mapImg} alt="맵아이콘" />
+                  <ButtonSpan>내 주변 분양</ButtonSpan>
+                </Button>
+                <Button active={location.pathname === '/my'} onClick={() => navigate(`/my`)}>
+                  <ButtonImage src={homiImg} alt="맵아이콘" />
+                  <ButtonSpan>마이페이지</ButtonSpan>
+                </Button>
+              </ButtonContainer>
+            </MenuBar>
+          </Navbar>
+        )}
       </Container>
       <Main>
         <Outlet />

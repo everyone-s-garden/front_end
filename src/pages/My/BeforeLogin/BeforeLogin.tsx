@@ -7,6 +7,7 @@ import { BREAK_POINT, COLOR } from 'constants/style';
 
 const BeforeLogin = () => {
   const nav = useNavigate();
+  //css로 변경
   const [width, setWidth] = useState<number>(window.innerWidth);
   const mobile_size: number = Number(BREAK_POINT.MOBILE.replaceAll(/[a-z]/gi, ''));
   useEffect(() => {
@@ -32,7 +33,6 @@ const BeforeLogin = () => {
         ) : (
           <Span>로그인 하고 찜한 목록도 확인해보세요!</Span>
         )}
-
         <Ul>
           <Item />
         </Ul>
@@ -107,7 +107,7 @@ const ItemBox = styled.div`
       line-height: 19px;
     }
     :hover {
-      background-color: ${COLOR.GREEN[300]};
+      background-color: #afd082;
     }
   }
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
