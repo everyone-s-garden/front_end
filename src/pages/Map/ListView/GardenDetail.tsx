@@ -1,23 +1,24 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
+import { Player } from '@lottiefiles/react-lottie-player';
 
 import ImageSlider from './ImageSlider';
 import { COLOR, FONT_WEIGHT } from 'constants/style';
 import arrowIcon from 'assets/back-icon.svg';
-import axios from 'axios';
+import * as animationData from 'assets/like-animation.json';
 
 interface GardenDetailProps {
   setSelectedGarden: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function GardenDetail({ setSelectedGarden }: GardenDetailProps) {
-  const HttpRequest = axios.create({
-    baseURL: 'http://garden.jinkyumpark.com/',
-  });
+  const animationRef = useRef<Player>(null);
+  const [like, isLike] = useState<boolean>(false);
 
-  const testDataFetch = async () => {
-    const testData = await HttpRequest.get('');
-    console.log(testData);
+  const play = () => {
+    isLike(!like);
+    animationRef.current?.setPlayerDirection(like ? -1 : 1);
+    animationRef.current?.play();
   };
 
   return (
@@ -53,7 +54,10 @@ function GardenDetail({ setSelectedGarden }: GardenDetailProps) {
       </Body>
 
       <Buttons>
-        <ZzimButton onClick={testDataFetch}>찜하기</ZzimButton>
+        <ZzimButton onClick={play}>
+          <Player ref={animationRef} autoplay={false} loop={false} keepLastFrame={true} src={animationData} />
+          찜하기
+        </ZzimButton>
         <ApplyButton>신청하기</ApplyButton>
       </Buttons>
     </DetailDiv>
