@@ -20,4 +20,5 @@ export const getToken = async (token: string) => {
   });
   setItem('access_token', res_server.data.appToken);
   setItem('isLogin', 'true');
+  return true;
 };
