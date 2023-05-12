@@ -1,74 +1,64 @@
-import React, { useEffect, useState } from 'react';
-import { Outlet, useLocation, useMatch, useNavigate } from 'react-router-dom';
-
+import React, { useCallback, useEffect } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
+
 import { BREAK_POINT, FONT_WEIGHT } from '../constants/style';
 import logoImg from 'assets/logo-horizon.svg';
 import mapImg from 'assets/map-icon.svg';
 import homiImg from 'assets/homi-icon.svg';
-import Footer from './Footer';
 import { getItem } from 'utils/session';
-import { useRecoilState } from 'recoil';
 import { isLoginAtom } from 'utils/atom';
+
 const Nav = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
-  const [width, setWidth] = useState(window.innerWidth);
-  const mainMatch = useMatch('/');
-  const mapMatch = useMatch('/map');
-  const getIsLogin = async () => {
-    const getLogin = await Boolean(getItem('isLogin'));
+
+  const getIsLogin = useCallback(() => {
+    const getLogin = Boolean(getItem('isLogin'));
     setIsLogin(getLogin);
-  };
+  }, [setIsLogin]);
+
   useEffect(() => {
     getIsLogin();
-  }, [isLogin]);
+  }, [getIsLogin, isLogin]);
 
   const login = () => {
     navigate('/login');
   };
+
   const logout = () => {
     sessionStorage.clear();
     setIsLogin(false);
     navigate('/');
   };
-  useEffect(() => {
-    window.onresize = () => {
-      setWidth(window.innerWidth);
-    };
-  }, []);
+
   return (
     <>
       <Container>
-        {(width > 687 || mainMatch !== null || mapMatch !== null) && (
-          <Navbar>
-            <LoginBar>
-              {isLogin === true ? (
-                <LoginBtn onClick={logout}>로그아웃</LoginBtn>
-              ) : (
-                <LoginBtn onClick={login}>로그인</LoginBtn>
-              )}
-            </LoginBar>
-            <MenuBar>
-              <LogoImageContainer onClick={() => navigate(`/`)}>
-                <LogoImage src={logoImg} alt="로고" />
-              </LogoImageContainer>
-              <ButtonContainer>
-                <Button active={location.pathname === '/map'} onClick={() => navigate(`/map`)}>
-                  <ButtonImage src={mapImg} alt="맵아이콘" />
-                  <ButtonSpan>내 주변 분양</ButtonSpan>
-                </Button>
-                <Button active={location.pathname === '/my'} onClick={() => navigate(`/my`)}>
-                  <ButtonImage src={homiImg} alt="맵아이콘" />
-                  <ButtonSpan>마이페이지</ButtonSpan>
-                </Button>
-              </ButtonContainer>
-            </MenuBar>
-          </Navbar>
-        )}
+        <Navbar url={location.pathname}>
+          <LoginBar>
+            {isLogin ? <LoginBtn onClick={logout}>로그아웃</LoginBtn> : <LoginBtn onClick={login}>로그인</LoginBtn>}
+          </LoginBar>
+          <MenuBar>
+            <LogoImageContainer onClick={() => navigate(`/`)}>
+              <LogoImage src={logoImg} alt="로고" />
+            </LogoImageContainer>
+            <ButtonContainer>
+              <Button active={location.pathname === '/map'} onClick={() => navigate(`/map`)}>
+                <ButtonImage src={mapImg} alt="맵아이콘" />
+                <ButtonSpan>내 주변 분양</ButtonSpan>
+              </Button>
+              <Button active={location.pathname === '/my'} onClick={() => navigate(`/my`)}>
+                <ButtonImage src={homiImg} alt="맵아이콘" />
+                <ButtonSpan>마이페이지</ButtonSpan>
+              </Button>
+            </ButtonContainer>
+          </MenuBar>
+        </Navbar>
       </Container>
-      <Main>
+      <Main url={location.pathname}>
         <Outlet />
       </Main>
     </>
@@ -92,13 +82,18 @@ const Container = styled.div`
   }
 `;
 
-const Navbar = styled.nav`
+const Navbar = styled.nav<{ url: string }>`
   z-index: 1000;
   position: relative;
   flex-grow: 1;
   max-width: 1200px;
   display: flex;
   flex-direction: column;
+  display: ${props => (props.url === '/' || props.url === '/map' ? 'flex' : 'none')};
+
+  @media (min-width: ${BREAK_POINT.MOBILE}) {
+    display: flex;
+  }
 `;
 
 const LoginBar = styled.div`
@@ -199,7 +194,8 @@ const ButtonSpan = styled.span`
   }
 `;
 
-const Main = styled.main`
+const Main = styled.main<{ url: string }>`
+  flex: 1 1 auto;
   width: 100%;
-  height: 100%;
+  overflow: ${props => (props.url === '/map' ? 'hidden' : 'visible')};
 `;

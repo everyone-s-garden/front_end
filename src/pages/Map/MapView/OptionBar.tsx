@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { BREAK_POINT, COLOR, FONT_WEIGHT } from 'constants/style';
+import SelectList from 'components/SelectList';
 
 function OptionBar() {
   const [provider, setProvider] = useState<string>('둘다 표시');
@@ -10,15 +11,20 @@ function OptionBar() {
     <Container>
       <Option>
         <OptionTitle>분양주체</OptionTitle>
-        <OptionButton active={provider === '공공'} onClick={() => setProvider('공공')}>
-          공공
-        </OptionButton>
-        <OptionButton active={provider === '개인'} onClick={() => setProvider('개인')}>
-          개인
-        </OptionButton>
-        <OptionButton active={provider === '둘다 표시'} onClick={() => setProvider('둘다 표시')}>
-          둘다 표시
-        </OptionButton>
+
+        <OptionBox>
+          <OptionButton active={provider === '공공'} onClick={() => setProvider('공공')}>
+            공공
+          </OptionButton>
+          <OptionButton active={provider === '개인'} onClick={() => setProvider('개인')}>
+            개인
+          </OptionButton>
+          <OptionButton active={provider === '둘다 표시'} onClick={() => setProvider('둘다 표시')}>
+            둘다 표시
+          </OptionButton>
+        </OptionBox>
+
+        <SelectList />
       </Option>
     </Container>
   );
@@ -54,9 +60,23 @@ const Option = styled.div`
 `;
 
 const OptionTitle = styled.span`
-  margin-right: 36px;
+  margin: 0 18px;
   font-size: 15px;
   font-weight: ${FONT_WEIGHT.MEDIUM};
+
+  @media (min-width: ${BREAK_POINT.MOBILE}) {
+    margin-left: 0;
+    margin-right: 36px;
+  }
+`;
+
+const OptionBox = styled.div`
+  display: none;
+  align-items: center;
+
+  @media (min-width: ${BREAK_POINT.MOBILE}) {
+    display: flex;
+  }
 `;
 
 const OptionButton = styled.button<{ active: boolean }>`

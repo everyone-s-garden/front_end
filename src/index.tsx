@@ -1,5 +1,5 @@
 import './reset.css';
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { NavermapsProvider } from 'react-naver-maps';
@@ -55,8 +55,8 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <RecoilRoot>
-    <NavermapsProvider ncpClientId="jij6pc5oav">
-      <GoogleOAuthProvider clientId="999513273898-9fa6iu0cm3jbeancg8f82mjs53trr355.apps.googleusercontent.com">
+    <NavermapsProvider ncpClientId={process.env.REACT_APP_NAVER_CLIENT_ID!}>
+      <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID!}>
         <RouterProvider router={router} />
       </GoogleOAuthProvider>
     </NavermapsProvider>

@@ -34,10 +34,10 @@ const Post = styled.div`
   width: 100%;
   height: 170px;
   min-width: 300px;
-  border-right: 1px solid #afafaf;
+  border-bottom: 1px solid #afafaf;
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
-    border-bottom: 1px solid #afafaf;
+    border-right: 1px solid #afafaf;
   }
 `;
 

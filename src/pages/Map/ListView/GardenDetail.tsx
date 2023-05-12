@@ -72,6 +72,7 @@ const DetailDiv = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 `;
 
 const BackBtn = styled.button`
@@ -85,7 +86,7 @@ const Body = styled.div`
   padding: 25px 36px;
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
+  overflow: scroll;
 `;
 
 const Title = styled.h1`
