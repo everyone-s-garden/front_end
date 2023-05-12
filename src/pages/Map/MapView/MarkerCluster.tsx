@@ -3,7 +3,6 @@ import { useNavermaps, useMap, Overlay } from 'react-naver-maps';
 
 import { makeMarkerClustering } from 'utils/makeMarkerClustering';
 import testData from 'utils/testData';
-import { OverlayProps } from 'react-naver-maps';
 
 interface MarkerClusterProps {
   setSelectedGarden: React.Dispatch<React.SetStateAction<boolean>>;
