@@ -7,8 +7,8 @@ import MyFiled from './myfiled/MyFiled';
 import { useForm } from 'react-hook-form';
 import { BREAK_POINT } from 'constants/style';
 const AfterLogin = () => {
-  const [list, setList] = useState([1, 2, 3, 4, 5, 6]);
-  const [field, setFiled] = useState(undefined);
+  const [list, setList] = useState([]);
+  const [field, setFiled] = useState(null);
 
   return (
     <Container>
