@@ -64,6 +64,7 @@ const Img = styled.img`
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     width: 350px;
     height: 166px;
+    margin-bottom: 16px;
   }
 `;
 const Content = styled.section`
@@ -78,13 +79,17 @@ const Content = styled.section`
 
 const Info = styled.div`
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    margin-bottom: 38.65px;
+    margin-bottom: 28.65px;
   }
 `;
 const Ground = styled.div`
   width: fit-content;
   display: flex;
   align-items: center;
+  margin-bottom: 33.71px;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    margin-bottom: 29px;
+  }
 `;
 const IconBox = styled.div`
   width: 45px;
@@ -95,6 +100,8 @@ const IconBox = styled.div`
   align-items: center;
   justify-content: center;
   margin-right: 15.67px;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+  }
 `;
 const FieldIcon = styled.img`
   width: 25.26px;
@@ -111,10 +118,11 @@ const Span = styled.span`
   }
 `;
 const Date = styled.div`
-  margin-top: 33.71px;
   display: flex;
   align-items: center;
   width: fit-content;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+  }
 `;
 const TextBox = styled.div`
   display: flex;

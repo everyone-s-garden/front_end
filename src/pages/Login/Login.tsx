@@ -7,7 +7,6 @@ import Bubble from '../.././assets/Bubble.png';
 import left from '../.././assets/left_vector.svg';
 import { useNavigate } from 'react-router-dom';
 import { BREAK_POINT } from 'constants/style';
-import left_mobile from '../.././assets/left_vector_mobile.svg';
 
 const Login = () => {
   const nav = useNavigate();
@@ -21,15 +20,9 @@ const Login = () => {
 
   return (
     <Container>
-      {width < mobile_size ? (
-        <BackBtnMobile>
-          <img src={left_mobile} onClick={() => nav('/')} />
-        </BackBtnMobile>
-      ) : (
-        <BackBtn>
-          <img src={left} onClick={() => nav('/')} />
-        </BackBtn>
-      )}
+      <BackBtn>
+        <img src={left} onClick={() => nav('/')} />
+      </BackBtn>
       <Content>
         <BubbleBox>
           <Span>3초만에 로그인</Span>
@@ -101,6 +94,9 @@ const BackBtn = styled.button`
   position: absolute;
   margin-top: 76px;
   margin-left: 57px;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    display: none;
+  }
 `;
 
 const BubbleBox = styled.div`
@@ -124,3 +120,8 @@ const BackBtnMobile = styled.button`
   margin-top: 56px;
   margin-left: 20px;
 `;
+// {width < mobile_size ? (
+//   <BackBtnMobile>
+//     <img src={left_mobile} onClick={() => nav('/')} />
+//   </BackBtnMobile>
+// ) : (

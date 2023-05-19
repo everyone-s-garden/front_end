@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Icon from 'assets/add_img.png';
 import Form from './Form';
 import delete_icon from 'assets/delete_icon.png';
+import { BREAK_POINT } from 'constants/style';
 
 const RegisterSeller = () => {
   const [images, setImages] = useState<number[]>([]);
@@ -58,6 +59,9 @@ const Container = styled.div`
   width: fit-content;
   margin: 0 auto;
   height: fit-content;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    margin-top: 80px;
+  }
 `;
 
 const H1 = styled.h1`
@@ -70,6 +74,9 @@ const H1 = styled.h1`
   margin-bottom: 20px;
   margin-top: 80px;
   text-align: center;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    display: none;
+  }
 `;
 
 const ImgContainer = styled.div`

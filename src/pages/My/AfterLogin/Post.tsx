@@ -52,6 +52,9 @@ const Image = styled.img`
   border-radius: 5px;
   object-fit: cover;
   object-position: center;
+  @media screen {
+    width: 174px;
+  }
 `;
 
 const InfoDiv = styled.div`
@@ -61,6 +64,9 @@ const InfoDiv = styled.div`
   flex-direction: column;
   /* align-items: flex-start; */
   min-width: 100px;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: 161px !important;
+  }
 `;
 
 const Status = styled.div`

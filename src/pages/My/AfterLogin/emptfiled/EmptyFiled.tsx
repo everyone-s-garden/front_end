@@ -29,7 +29,6 @@ const Container = styled.div`
   height: 197px;
   margin: 0 auto;
   margin-top: 182px;
-
   display: flex;
   justify-content: space-between;
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {

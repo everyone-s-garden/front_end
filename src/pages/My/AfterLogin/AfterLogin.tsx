@@ -45,6 +45,7 @@ export default AfterLogin;
 const Container = styled.section`
   width: 100%;
   height: fit-content;
+  margin-top: 54px;
 `;
 const SpanBox = styled.div`
   display: flex;
@@ -60,7 +61,7 @@ const LikeWrapper = styled.div`
   height: fit-content;
   margin: 92px auto;
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    margin-top: 54px;
+    margin-top: 32px;
     width: 100%;
     padding: 0px 20px;
   }
@@ -76,6 +77,7 @@ const MoreView = styled.span`
 const LikeUl = styled.ul`
   width: 864px;
   height: fit-content;
+
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     width: fit-content;
     margin: 0 auto;
@@ -83,6 +85,7 @@ const LikeUl = styled.ul`
 `;
 const EmptyList = styled.div`
   width: 864px;
+
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     width: fit-content;
   }

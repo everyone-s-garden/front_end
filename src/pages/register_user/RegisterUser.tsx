@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import add from 'assets/add_img.png';
 import Form from './Form';
+import { BREAK_POINT } from 'constants/style';
 const RegisterUser = () => {
   const [value, setValue] = useState('');
 
@@ -28,6 +29,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    align-items: end;
+    margin-top: 75px;
+  }
 `;
 const H1 = styled.h1`
   font-weight: 400;
@@ -35,6 +40,9 @@ const H1 = styled.h1`
   line-height: 27px;
   color: #414c38;
   margin-bottom: 20px;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    display: none;
+  }
 `;
 
 const ImgRegister = styled.div`
@@ -53,6 +61,10 @@ const ImgRegister = styled.div`
     line-height: 18px;
     color: #afd082;
   }
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: 346px;
+    height: 182px;
+  }
 `;
 const AddImg = styled.img`
   width: 33px;
@@ -66,4 +78,7 @@ const Tip = styled.span`
   line-height: 15px;
   color: #414c38;
   margin-bottom: 6px;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    font-size: 10px;
+  }
 `;

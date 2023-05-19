@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import icon from '../../assets/search_icon.svg';
+import { BREAK_POINT } from 'constants/style';
 const Form = () => {
   return (
     <InfoBox>
@@ -73,6 +74,12 @@ const InfoBox = styled.div`
     font-weight: 400;
     font-size: 16px;
     color: #000000;
+    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+      white-space: nowrap;
+    }
+  }
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: 334px;
   }
 `;
 
@@ -86,6 +93,14 @@ const Content1 = styled.div`
       width: 334px;
       border: none;
       border-bottom: 1.3px solid #afd082;
+      @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+        width: 234px;
+      }
+    }
+  }
+  span {
+    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+      margin-right: 45px;
     }
   }
 `;
@@ -94,12 +109,19 @@ const Content2 = styled.div`
   width: 100%;
   justify-content: space-between;
   margin-bottom: 49px;
-
   div {
     input {
       width: 87px;
       border: none;
       border-bottom: 1.3px solid #afd082;
+      @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+        width: 61px;
+      }
+    }
+  }
+  span {
+    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+      margin-right: 80px;
     }
   }
 `;
@@ -108,12 +130,19 @@ const Content3 = styled.div`
   width: 100%;
   justify-content: space-between;
   margin-bottom: 43px;
-
   div {
     input {
       width: 49px;
       border: none;
       border-bottom: 1.3px solid #afd082;
+      @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+        width: 35px;
+      }
+    }
+  }
+  span {
+    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+      margin-right: 80px;
     }
   }
 `;
@@ -124,6 +153,7 @@ const Content4 = styled.div`
   margin-bottom: 66px;
   span {
     margin-top: 10px;
+    margin-right: 70px;
   }
   div {
     display: flex;
@@ -139,12 +169,22 @@ const Content4 = styled.div`
       display: flex;
       align-items: center;
       cursor: pointer;
+      @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+        font-size: 12px;
+        padding: 6px 9px;
+      }
     }
     div:nth-child(2) {
       padding: 6px 18px;
+      @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+        padding: 6px 9px;
+      }
     }
     :nth-child(3) {
       padding: 6px 16px;
+      @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+        padding: 6px 12px;
+      }
     }
   }
 `;
@@ -169,6 +209,9 @@ const Content5 = styled.div`
     padding-left: 17px;
     color: #c8c8c8;
     cursor: default;
+    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+      width: 234px;
+    }
   }
 `;
 const Content6 = styled.div`
@@ -182,6 +225,9 @@ const Content6 = styled.div`
     border-radius: 16px;
     resize: none;
     padding: 21px 22px;
+    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+      width: 237px;
+    }
   }
 `;
 
@@ -190,7 +236,15 @@ const FormInput = styled.div`
   display: flex;
   height: fit-content;
   input {
-    margin-top: 18px;
+    padding: 8px 12px;
+    text-align: center;
+    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+      margin-top: 0;
+      padding: 0;
+    }
+  }
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    align-items: center;
   }
 `;
 
@@ -217,8 +271,11 @@ const Circle = styled.div`
 `;
 
 const Unit = styled.span`
-  margin-bottom: 12px;
   display: block;
+  margin-top: 6px;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    margin-top: 0;
+  }
 `;
 
 const Icon = styled.img`
