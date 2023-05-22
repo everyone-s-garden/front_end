@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import icon from '../../assets/search_icon.svg';
 import { BREAK_POINT } from 'constants/style';
+import Postcode from 'components/PostCode';
 const Form = () => {
   return (
     <InfoBox>
@@ -40,7 +40,7 @@ const Form = () => {
         <span>위치</span>
         <div>
           위치검색
-          <Icon src={icon} />
+          <Postcode />
         </div>
       </Content5>
       <Content4>
@@ -188,7 +188,7 @@ const Content4 = styled.div`
     }
   }
 `;
-const Content5 = styled.div`
+const Content5 = styled.form`
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -276,13 +276,4 @@ const Unit = styled.span`
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     margin-top: 0;
   }
-`;
-
-const Icon = styled.img`
-  width: 20px;
-  height: 19px;
-  position: absolute;
-  top: 8px;
-  right: 20px;
-  cursor: pointer;
 `;

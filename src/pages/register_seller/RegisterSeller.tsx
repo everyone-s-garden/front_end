@@ -4,6 +4,7 @@ import Icon from 'assets/add_img.png';
 import Form from './Form';
 import delete_icon from 'assets/delete_icon.png';
 import { BREAK_POINT } from 'constants/style';
+import Postcode from 'components/PostCode';
 
 const RegisterSeller = () => {
   const [images, setImages] = useState<number[]>([]);
@@ -44,7 +45,6 @@ const RegisterSeller = () => {
         </ScrollBox>
         <ShadowBox count={count} />
       </ImgContainer>
-
       <Form />
     </Container>
   );

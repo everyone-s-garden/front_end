@@ -3,10 +3,13 @@ import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import searchIcon from 'assets/search.svg';
 import { BREAK_POINT } from 'constants/style';
+import DaumPostcode from 'react-daum-postcode';
+
 const Form = () => {
   const { watch, getValues, register } = useForm();
   const [check, setCheck] = useState<boolean>(false);
 
+  const getPost = () => {};
   return (
     <>
       <FormBox>
@@ -18,7 +21,7 @@ const Form = () => {
         <Content>
           <FirstItem>
             <RelItem>
-              <Input check={check} placeholder="텃밭 검색" />
+              <Input check={check} disabled={!check} placeholder="텃밭 검색" />
               <SearchImg check={check} src={searchIcon} />
             </RelItem>
             <CheckWrapper>
@@ -37,8 +40,8 @@ const Form = () => {
             </End>
           </DateBox>
           <RelItem>
-            <Input check={check} placeholder="위치 검색" />
-            <SearchImg check={check} src={searchIcon} />
+            <Input check={check} disabled={!check} placeholder="위치 검색" />
+            <SearchImg onClick={getPost} check={check} src={searchIcon} />
           </RelItem>
         </Content>
       </FormBox>

@@ -6,9 +6,11 @@ import EmptyFiled from './emptfiled/EmptyFiled';
 import MyFiled from './myfiled/MyFiled';
 import { useForm } from 'react-hook-form';
 import { BREAK_POINT } from 'constants/style';
+import { useNavigate } from 'react-router-dom';
 const AfterLogin = () => {
-  const [list, setList] = useState([]);
+  const [list, setList] = useState([1, 2, 3, 4, 5, 6]);
   const [field, setFiled] = useState(null);
+  const nav = useNavigate();
 
   return (
     <Container>
@@ -32,7 +34,8 @@ const AfterLogin = () => {
         </LikeUl>
         {field !== null && (
           <Span>
-            판매하고 싶은 밭이 있나요? <UnderLine>분양 밭 등록하기</UnderLine>
+            판매하고 싶은 밭이 있나요?{' '}
+            <UnderLine onClick={() => nav('/garden-register-seller')}>분양 밭 등록하기</UnderLine>
           </Span>
         )}
       </LikeWrapper>
@@ -44,8 +47,11 @@ export default AfterLogin;
 
 const Container = styled.section`
   width: 100%;
-  height: fit-content;
+  height: 150vh;
   margin-top: 54px;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    height: 200vh;
+  }
 `;
 const SpanBox = styled.div`
   display: flex;
@@ -60,6 +66,7 @@ const LikeWrapper = styled.div`
   width: fit-content;
   height: fit-content;
   margin: 92px auto;
+  margin-bottom: 120px;
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     margin-top: 32px;
     width: 100%;
