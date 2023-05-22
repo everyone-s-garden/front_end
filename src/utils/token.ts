@@ -1,50 +1,87 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { getItem } from './session';
-import { Axios } from 'axios';
+import axios, {
+  AxiosError,
+  AxiosInstance,
+  // AxiosRequestConfig, // Change to InternalAxiosRequestConfig
+  InternalAxiosRequestConfig,
+  AxiosResponse,
+  AxiosRequestConfig,
+  Axios,
+} from 'axios';
+import { getItem, removeItem } from './session';
+// Request Interceptor
+const onRequest = (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
+  const { method, url } = config;
+  // Set Headers Here
+  // Check Authentication Here
+  // Set Loading Start Here
+  const token = getItem('access_token') as string;
+  let replaced_str = token.replaceAll('"', '');
+  if (method === 'get') {
+    config.timeout = 15000;
+    config.headers.Authorization = `Bearer ${replaced_str}`;
+  } else if (method === 'post') {
+    config.timeout = 15000;
+    config.headers.Authorization = `Bearer ${replaced_str}`;
+  }
+  return config;
+};
+const onResponse = (response: AxiosResponse): AxiosResponse => {
+  const { method, url } = response.config;
+  const { status } = response;
+  // Set Loading End Here
+  // Handle Response Data Here
+  return response;
+};
+const onErrorResponse = (error: AxiosError | Error): Promise<AxiosError> => {
+  if (axios.isAxiosError(error)) {
+    const { message } = error;
+    const { method, url } = error.config as AxiosRequestConfig;
+    const { statusText, status } = (error.response as AxiosResponse) ?? {};
 
-// 요청 인터셉터 타입
-type RequestInterceptor = (config: AxiosRequestConfig) => AxiosRequestConfig | Promise<AxiosRequestConfig>;
+    switch (status) {
+      case 401: {
+        // "Login required"
+        break;
+      }
+      case 403: {
+        // "Permission denied"
+        break;
+      }
+      case 404: {
+        // "Invalid request"
+        break;
+      }
+      case 500: {
+        // "Server error"
+        break;
+      }
+      default: {
+        // "Unknown error occurred"
+        break;
+      }
+    }
 
-// 응답 인터셉터 타입
-type ResponseInterceptor<T> = (response: AxiosResponse<T>) => AxiosResponse<T> | Promise<AxiosResponse<T>>;
+    if (status === 401) {
+      // Delete Token & Go To Login Page if you required.
+      removeItem('access_token');
+    }
+  } else {
+    console.log(error);
+  }
 
-// axios instance 생성 함수
-const instance = axios.create({
-  baseURL: process.env.API_BASE_URL,
-  timeout: 5000,
+  return Promise.reject(error);
+};
+const setupInterceptors = (instance: AxiosInstance): AxiosInstance => {
+  instance.interceptors.request.use(onRequest, onErrorResponse);
+  instance.interceptors.response.use(onResponse, onErrorResponse);
+
+  return instance;
+};
+
+const api = axios.create({
+  baseURL: `${process.env.REACT_APP_API_BASE_URL}`,
 });
-const access_token = getItem('access_token');
-const token = access_token ? JSON.parse(access_token) : null;
-// 요청 인터셉터 등록
-instance.interceptors.request.use(
-  config => {
-    // 요청이 시작되기 전에 수행할 작업 (ex. 토큰을 헤더에 추가)
-    config.headers.Authorization = `Bearer ${token}`;
-    return config;
-  },
-  error => {
-    // 요청에 실패한 경우 수행할 작업
-    return Promise.reject(error);
-  },
-);
 
-// 응답 인터셉터 등록
-instance.interceptors.response.use(
-  response => {
-    // 응답 데이터를 가공한 후 반환
-    return response;
-  },
-  error => {
-    // 응답 에러를 처리
-    return Promise.reject(error);
-  },
-);
+const customAxios = setupInterceptors(api);
 
-export const axiosInstance: AxiosInstance = instance;
-
-// const url = config.url;
-// if (url.startsWith('/api/auth')) {
-//   const access_token = getItem('access_token');
-//   const token = access_token ? JSON.parse(access_token) : null;
-//   config.headers.Authorization = `Bearer ${token}`;
-// }
+export default customAxios;

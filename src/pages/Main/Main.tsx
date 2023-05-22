@@ -7,8 +7,6 @@ import RecentPost from './RecentPost';
 import TodayIngred from './TodayIngred';
 import { setItem } from 'utils/session';
 const Main = () => {
-  setItem('isLogin', 'true');
-
   return (
     <Container>
       <MainDiv>

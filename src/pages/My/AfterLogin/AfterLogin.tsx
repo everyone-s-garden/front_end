@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Heart from '../../../assets/empty_heart.svg';
 import Post from './Post';
@@ -7,11 +7,19 @@ import MyFiled from './myfiled/MyFiled';
 import { useForm } from 'react-hook-form';
 import { BREAK_POINT } from 'constants/style';
 import { useNavigate } from 'react-router-dom';
+import customAxios from 'utils/token';
+
 const AfterLogin = () => {
   const [list, setList] = useState([1, 2, 3, 4, 5, 6]);
   const [field, setFiled] = useState(null);
   const nav = useNavigate();
-
+  const initial = async () => {
+    const res = await customAxios.get(`v1/garden/mine`);
+    console.log(res);
+  };
+  useEffect(() => {
+    initial();
+  }, []);
   return (
     <Container>
       {field === null ? <EmptyFiled /> : <MyFiled />}
