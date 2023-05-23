@@ -1,27 +1,70 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { BREAK_POINT } from 'constants/style';
-import Postcode from 'components/PostCode';
-const Form = () => {
+import { useForm } from 'react-hook-form';
+import icon from '../../assets/search_icon.svg';
+import { useDaumPostcodePopup } from 'react-daum-postcode';
+
+import handleComplete from 'components/PostCode';
+import { useNavermaps } from 'react-naver-maps';
+import customAxios from 'utils/token';
+interface IImage {
+  id: string;
+  imageUrl: string;
+}
+interface IProps {
+  images: IImage[];
+}
+
+interface ILocation {
+  address: string;
+  lat: string;
+  lng: string;
+}
+const Form = ({ images }: IProps) => {
+  const { register, watch, getValues, handleSubmit } = useForm();
+  const open = useDaumPostcodePopup('https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js');
+  const [location, setLocation] = useState<ILocation>();
+  const uploadField = async () => {
+    const uploadData = {
+      name: getValues('name'),
+      price: getValues('name'),
+      size: getValues('size'),
+      address: location?.address,
+      latitude: location?.lat,
+      longitude: location?.lng,
+      images,
+    };
+    const res = await customAxios.post('/v1/garden', uploadData);
+    console.log(res);
+  };
+  const getPost = () => {
+    open({
+      onComplete: async location => {
+        const data: ILocation | undefined = await handleComplete(location);
+        setLocation(data);
+      },
+    });
+  };
   return (
-    <InfoBox>
+    <InfoBox onSubmit={handleSubmit(uploadField)}>
       <Content1>
         <span>텃밭 이름*</span>
         <FormInput>
-          <input />
+          <input {...register('name')} />
         </FormInput>
       </Content1>
       <Content2>
         <span>가격</span>
         <FormInput>
-          <input />
+          <input {...register('price')} />
           <Unit>원</Unit>
         </FormInput>
       </Content2>
       <Content3>
         <span>면적</span>
         <FormInput>
-          <input />
+          <input {...register('size')} />
           <Unit>평</Unit>
         </FormInput>
       </Content3>
@@ -37,10 +80,10 @@ const Form = () => {
         </FormInput>
       </Content4>
       <Content5>
-        <span>위치</span>
+        <span style={{ marginTop: '8px' }}>위치</span>
         <div>
-          위치검색
-          <Postcode />
+          <span>{location?.address ? location.address : '위치검색'}</span>
+          <PostBtn onClick={getPost} src={icon}></PostBtn>
         </div>
       </Content5>
       <Content4>
@@ -63,7 +106,7 @@ const Form = () => {
 };
 
 export default Form;
-const InfoBox = styled.div`
+const InfoBox = styled.form`
   width: 497px;
   display: flex;
   flex-direction: column;
@@ -188,27 +231,30 @@ const Content4 = styled.div`
     }
   }
 `;
-const Content5 = styled.form`
+const Content5 = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
   margin-bottom: 66px;
 
-  span {
-    margin-top: 8px;
-  }
   div {
     position: relative;
     width: 334px;
     height: 37px;
-    background-color: grey;
     background: #f0f0f0;
     border-radius: 11px;
     display: flex;
     align-items: center;
-    padding-left: 17px;
-    color: #c8c8c8;
     cursor: default;
+    span {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      color: #c8c8c8;
+      width: 80%;
+      padding-left: 5%;
+      font-size: 13px;
+    }
     @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
       width: 234px;
     }
@@ -276,4 +322,12 @@ const Unit = styled.span`
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     margin-top: 0;
   }
+`;
+const PostBtn = styled.img`
+  width: 20px;
+  height: 19px;
+  position: absolute;
+  top: 8px;
+  right: 20px;
+  cursor: pointer;
 `;

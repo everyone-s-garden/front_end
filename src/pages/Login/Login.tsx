@@ -120,8 +120,3 @@ const BackBtnMobile = styled.button`
   margin-top: 56px;
   margin-left: 20px;
 `;
-// {width < mobile_size ? (
-//   <BackBtnMobile>
-//     <img src={left_mobile} onClick={() => nav('/')} />
-//   </BackBtnMobile>
-// ) : (

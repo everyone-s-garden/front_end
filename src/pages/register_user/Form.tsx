@@ -5,14 +5,24 @@ import searchIcon from 'assets/search.svg';
 import { BREAK_POINT } from 'constants/style';
 import DaumPostcode from 'react-daum-postcode';
 
-const Form = () => {
+interface IImage {
+  id: string;
+  imageUrl: string;
+}
+
+interface IProps {
+  img: IImage | undefined;
+  setImg: React.Dispatch<React.SetStateAction<IImage | undefined>>;
+}
+const Form = ({ img, setImg }: IProps) => {
   const { watch, getValues, register } = useForm();
   const [check, setCheck] = useState<boolean>(false);
 
   const getPost = () => {};
+  const uploadMyField = async () => {};
   return (
     <>
-      <FormBox>
+      <FormBox onSubmit={uploadMyField}>
         <NameTag>
           <span>텃밭 정보</span>
           <span>기간</span>

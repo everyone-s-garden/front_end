@@ -4,56 +4,75 @@ import Icon from 'assets/add_img.png';
 import Form from './Form';
 import delete_icon from 'assets/delete_icon.png';
 import { BREAK_POINT } from 'constants/style';
-import Postcode from 'components/PostCode';
+import customAxios from 'utils/token';
 
+interface IImage {
+  id: string;
+  imageUrl: string;
+}
 const RegisterSeller = () => {
-  const [images, setImages] = useState<number[]>([]);
-  const [count, setCount] = useState<number>(0);
+  const [images, setImages] = useState<IImage[]>([]);
 
-  const addImage = () => {
-    if (count === 19) {
+  const addImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (images.length === 20) {
       alert('최대 20장까지 등록할 수 있습니다.');
-    } else {
-      setCount(prevCount => prevCount + 1);
-      setImages(prevImages => [...prevImages, count]);
+      return;
+    }
+    if (event.currentTarget.files) {
+      const uploadImg = event.currentTarget.files[0];
+      const formData = new FormData();
+      formData.append('file', uploadImg);
+      try {
+        const res = await customAxios.post(`/v1/garden/images`, formData);
+        console.log(res.data);
+        const newImage: IImage = { id: res.data.id, imageUrl: res.data.imageUrl };
+        setImages(prevImages => [newImage, ...prevImages]);
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
   const deleteImage = (index: number) => {
     setImages(prevImages => prevImages.filter((_, i) => i !== index));
-    setCount(prevCount => prevCount - 1);
   };
   return (
     <Container>
       <H1>판매 텃밭 등록하기</H1>
       <ImgContainer>
-        <ImgAddBtnBox count={count}>
-          <ImgAddBtn count={count}>
-            <ImgAddIcon src={Icon} onClick={addImage} />
+        <ImgAddBtnBox len={images.length}>
+          <ImgAddBtn len={images.length}>
+            <input accept="image/*" type="file" id="fileInput" onChange={addImage} style={{ display: 'none' }} />
+            <label htmlFor="fileInput">
+              <ImgAddIcon src={Icon} />
+            </label>
             <span>사진 등록</span>
             <span>(최대 20장)</span>
           </ImgAddBtn>
         </ImgAddBtnBox>
-        <ScrollBox count={count}>
+        <ScrollBox len={images.length}>
           <ImageList>
             {images.map((image, index) => (
-              <ImgBox key={index}>
-                {image}
+              <ImgBox srcUrl={image.imageUrl} key={index}>
                 <Delete onClick={() => deleteImage(index)} src={delete_icon} />
               </ImgBox>
             ))}
           </ImageList>
         </ScrollBox>
-        <ShadowBox count={count} />
+        <ShadowBox len={images.length} />
       </ImgContainer>
-      <Form />
+      <Form images={images} />
     </Container>
   );
 };
 
 export default RegisterSeller;
 
-interface ICount {
-  count: number;
+interface ILen {
+  len: number;
+}
+
+interface IUrl {
+  srcUrl: string;
 }
 const Container = styled.div`
   width: fit-content;
@@ -86,12 +105,12 @@ const ImgContainer = styled.div`
   margin: 0 auto;
   margin-bottom: 72px;
 `;
-const ImgAddBtnBox = styled.div<ICount>`
-  height: ${props => (props.count >= 3 ? '200px' : '220px')};
+const ImgAddBtnBox = styled.div<ILen>`
+  height: ${props => (props.len >= 3 ? '200px' : '220px')};
   display: flex;
   align-items: center;
 `;
-const ImgAddBtn = styled.div<ICount>`
+const ImgAddBtn = styled.div<ILen>`
   width: 166px;
   height: 166px;
   background-color: #f0fbe4;
@@ -100,7 +119,7 @@ const ImgAddBtn = styled.div<ICount>`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin-right: ${props => (props.count >= 1 ? '21px' : '0px')};
+  margin-right: ${props => (props.len >= 1 ? '21px' : '0px')};
   transition: 0.3s ease-in-out;
   cursor: pointer;
   span {
@@ -118,10 +137,10 @@ const ImgAddIcon = styled.img`
   margin-bottom: 7px;
 `;
 
-const ScrollBox = styled.div<ICount>`
+const ScrollBox = styled.div<ILen>`
   width: 480px;
   height: 220px;
-  display: ${props => (props.count >= 1 ? 'flex' : 'none')};
+  display: ${props => (props.len >= 1 ? 'flex' : 'none')};
   align-items: center;
   overflow-x: auto !important;
   scrollbar-width: thin;
@@ -164,21 +183,24 @@ const ImageList = styled.div`
   display: flex;
   width: fit-content;
 `;
-const ShadowBox = styled.div<ICount>`
-  display: ${props => (props.count >= 3 ? 'block' : 'none')};
+const ShadowBox = styled.div<ILen>`
+  display: ${props => (props.len >= 3 ? 'block' : 'none')};
   box-shadow: -6px 0px 25px 30px white;
   width: 10px;
   height: 180px;
   z-index: 99;
 `;
 
-const ImgBox = styled.div`
+const ImgBox = styled.div<IUrl>`
   width: 166px;
   height: 166px;
   margin-right: 21px;
-  background-color: green;
   position: relative;
   border-radius: 17px;
+  background-image: ${props => props.srcUrl && `url(${props.srcUrl})`};
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 `;
 
 const Delete = styled.img`

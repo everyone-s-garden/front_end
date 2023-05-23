@@ -3,18 +3,42 @@ import styled from 'styled-components';
 import add from 'assets/add_img.png';
 import Form from './Form';
 import { BREAK_POINT } from 'constants/style';
-const RegisterUser = () => {
-  const [value, setValue] = useState('');
+import customAxios from 'utils/token';
 
+interface IImage {
+  id: string;
+  imageUrl: string;
+}
+const RegisterUser = () => {
+  const [img, setImg] = useState<IImage>();
+  const handleImg = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.currentTarget.files) {
+      const uploadImg = event.currentTarget.files[0];
+      const formData = new FormData();
+      formData.append('file', uploadImg);
+      try {
+        const res = await customAxios.post(`/v1/garden/images`, formData);
+        console.log(res.data);
+
+        setImg(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+  console.log(img);
   return (
     <Container>
       <H1>나의 텃밭 등록하기</H1>
       <ImgRegister>
-        <AddImg src={add} />
+        <input accept="image/*" type="file" id="fileInput" onChange={handleImg} style={{ display: 'none' }} />
+        <label htmlFor="fileInput">
+          <AddImg src={add} />
+        </label>
         <span>사진등록</span>
       </ImgRegister>
       <Tip>텃밭을 검색해서 등록하면 기한, 위치가 자동으로 불러와져요</Tip>
-      <Form />
+      <Form img={img} setImg={setImg} />
     </Container>
   );
 };
@@ -69,7 +93,7 @@ const ImgRegister = styled.div`
 const AddImg = styled.img`
   width: 33px;
   height: 33px;
-  margin-bottom: 13px;
+  margin-bottom: 5px;
   cursor: pointer;
 `;
 const Tip = styled.span`

@@ -1,42 +1,65 @@
-import React from 'react';
-import { useDaumPostcodePopup } from 'react-daum-postcode';
-import styled from 'styled-components';
-import icon from '../assets/search_icon.svg';
+import axios, { AxiosResponse } from 'axios';
 
-const Postcode = () => {
-  const open = useDaumPostcodePopup('https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js');
+const handleComplete = async (data: IAddressData) => {
+  let fullAddress = data.address;
+  let extraAddress = '';
 
-  const handleComplete = (data: any) => {
-    let fullAddress = data.address;
-    let extraAddress = '';
-
-    if (data.addressType === 'R') {
-      if (data.bname !== '') {
-        extraAddress += data.bname;
-      }
-      if (data.buildingName !== '') {
-        extraAddress += extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
-      }
-      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
+  if (data.addressType === 'R') {
+    if (data.bname !== '') {
+      extraAddress += data.bname;
     }
-
-    console.log(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
-  };
-
-  const handleClick = () => {
-    open({ onComplete: handleComplete });
-  };
-
-  return <PostBtn src={icon} onClick={handleClick} />;
+    if (data.buildingName !== '') {
+      extraAddress += extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
+    }
+    fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
+  }
+  const postCode: string = data.zonecode;
+  const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(postCode)}&key=${
+    process.env.REACT_APP_GOOGLE_API_KEY
+  }` as const;
+  const res: AxiosResponse<{ results: IResponse[] }> = await axios.get(apiUrl);
+  const potential_address = res.data.results.find((i: IResponse) => i.formatted_address.startsWith('대한민국'));
+  if (potential_address) {
+    const { lat, lng } = potential_address.geometry.location;
+    const address_data = {
+      lat: lat.toString(),
+      lng: lng.toString(),
+      address: fullAddress,
+    };
+    return address_data;
+  } else {
+    alert('주소를 찾을 수 없습니다.');
+  }
 };
 
-export default Postcode;
+export default handleComplete;
 
-const PostBtn = styled.img`
-  width: 20px;
-  height: 19px;
-  position: absolute;
-  top: 8px;
-  right: 20px;
-  cursor: pointer;
-`;
+interface ILatLng {
+  lat: string;
+  lng: string;
+}
+
+interface IGeometry {
+  bounds: {
+    northeast: ILatLng;
+    southwest: ILatLng;
+  };
+  location: ILatLng;
+  viewport: {
+    northeast: ILatLng;
+    southwest: ILatLng;
+  };
+}
+
+interface IResponse {
+  formatted_address: string;
+  geometry: IGeometry;
+}
+interface IAddressData {
+  address: string;
+  addressType: string;
+  bname: string;
+  buildingName: string;
+  zonecode: string;
+  // ... 추가적인 필드들을 필요에 따라 정의할 수 있습니다.
+}

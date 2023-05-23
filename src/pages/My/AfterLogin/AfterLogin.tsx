@@ -10,12 +10,15 @@ import { useNavigate } from 'react-router-dom';
 import customAxios from 'utils/token';
 
 const AfterLogin = () => {
-  const [list, setList] = useState([1, 2, 3, 4, 5, 6]);
+  const [likeList, setLikeList] = useState([]);
   const [field, setFiled] = useState(null);
   const nav = useNavigate();
   const initial = async () => {
-    const res = await customAxios.get(`v1/garden/mine`);
-    console.log(res);
+    const res_like = await customAxios.get(`/v1/garden/like/all`);
+    console.log(res_like);
+    setLikeList(res_like.data);
+    const res_using = await customAxios.get(`/v1/garden/using`);
+    console.log(res_using);
   };
   useEffect(() => {
     initial();
@@ -26,10 +29,10 @@ const AfterLogin = () => {
       <LikeWrapper>
         <SpanBox>
           <LikeSpan>찜한 목록</LikeSpan>
-          {list.length > 5 && <MoreView>더보기</MoreView>}
+          {likeList.length > 5 && <MoreView>더보기</MoreView>}
         </SpanBox>
         <LikeUl>
-          {list.length === 0 ? (
+          {likeList.length === 0 ? (
             <EmptyList>
               <NoLikeListBox>
                 <Img src={Heart} />
@@ -37,7 +40,7 @@ const AfterLogin = () => {
               </NoLikeListBox>
             </EmptyList>
           ) : (
-            list.map(i => <Post key={i}></Post>)
+            likeList.map(i => <Post key={i}></Post>)
           )}
         </LikeUl>
         {field !== null && (
@@ -55,7 +58,7 @@ export default AfterLogin;
 
 const Container = styled.section`
   width: 100%;
-  height: 150vh;
+  height: fit-content;
   margin-top: 54px;
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     height: 200vh;
