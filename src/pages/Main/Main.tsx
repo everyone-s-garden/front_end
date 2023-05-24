@@ -5,7 +5,7 @@ import { BREAK_POINT } from 'constants/style';
 import testImg from 'assets/garden-image1.jpg';
 import RecentPost from './RecentPost';
 import TodayIngred from './TodayIngred';
-
+import { setItem } from 'utils/session';
 const Main = () => {
   return (
     <Container>

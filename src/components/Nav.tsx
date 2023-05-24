@@ -10,6 +10,7 @@ import Footer from './Footer';
 import { getItem } from 'utils/session';
 import { useRecoilState } from 'recoil';
 import { isLoginAtom } from 'utils/atom';
+import left_mobile from '../assets/left_vector_mobile.svg';
 const Nav = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -17,6 +18,11 @@ const Nav = () => {
   const [width, setWidth] = useState(window.innerWidth);
   const mainMatch = useMatch('/');
   const mapMatch = useMatch('/map');
+  const registerMatch = useMatch('/garden-register-user');
+  const sellerMatch = useMatch('/garden-register-seller');
+  const myMatch = useMatch('/my');
+  const loginMatch = useMatch('/login');
+
   const getIsLogin = async () => {
     const getLogin = await Boolean(getItem('isLogin'));
     setIsLogin(getLogin);
@@ -41,7 +47,7 @@ const Nav = () => {
   return (
     <>
       <Container>
-        {(width > 687 || mainMatch !== null || mapMatch !== null) && (
+        {width > 687 || mainMatch !== null || mapMatch !== null ? (
           <Navbar>
             <LoginBar>
               {isLogin === true ? (
@@ -66,6 +72,13 @@ const Nav = () => {
               </ButtonContainer>
             </MenuBar>
           </Navbar>
+        ) : (
+          <MobileNav>
+            <img src={left_mobile} onClick={() => navigate(-1)} />
+            {myMatch && <h1>마이페이지 </h1>}
+            {registerMatch && <h1>나의 텃밭 등록하기</h1>}
+            {sellerMatch && <h1>판매 텃밭 등록하기</h1>}
+          </MobileNav>
         )}
       </Container>
       <Main>
@@ -202,4 +215,25 @@ const ButtonSpan = styled.span`
 const Main = styled.main`
   width: 100%;
   height: 100%;
+`;
+
+const MobileNav = styled.div`
+  position: absolute;
+  top: 20px;
+  width: 100%;
+  display: flex;
+  h1 {
+    display: block;
+    margin: 0 auto;
+    left: 50%;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 27px;
+    color: #414c38;
+  }
+  img {
+    position: absolute;
+    left: 17px;
+    cursor: pointer;
+  }
 `;
