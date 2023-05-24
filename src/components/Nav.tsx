@@ -3,7 +3,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 
-import { BREAK_POINT, FONT_WEIGHT } from '../constants/style';
+import { BREAK_POINT, COLOR, FONT_WEIGHT } from '../constants/style';
 import logoImg from 'assets/logo-horizon.svg';
 import mapImg from 'assets/map-icon.svg';
 import homiImg from 'assets/homi-icon.svg';
@@ -68,23 +68,18 @@ const Nav = () => {
 export default Nav;
 
 const Container = styled.div`
+  z-index: 1000;
+  position: sticky;
+  top: 0;
   padding: 0 20px;
+  padding-bottom: 20px;
   display: flex;
   justify-content: center;
   width: 100%;
-
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
-    padding: 0 24px;
-  }
-
-  @media (min-width: ${BREAK_POINT.LABTOP}) {
-    padding: 0 26px;
-  }
+  background-color: ${COLOR.BACKGROUND};
 `;
 
 const Navbar = styled.nav<{ url: string }>`
-  z-index: 1000;
-  position: relative;
   flex-grow: 1;
   max-width: 1200px;
   display: flex;
