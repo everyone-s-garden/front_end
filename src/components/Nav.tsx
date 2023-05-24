@@ -21,6 +21,7 @@ const Nav = () => {
   const registerMatch = useMatch('/garden-register-user');
   const sellerMatch = useMatch('/garden-register-seller');
   const myMatch = useMatch('/my');
+  const loginMatch = useMatch('/login');
 
   const getIsLogin = async () => {
     const getLogin = await Boolean(getItem('isLogin'));

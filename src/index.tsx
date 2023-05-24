@@ -1,7 +1,7 @@
 import './reset.css';
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import { NavermapsProvider } from 'react-naver-maps';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { RecoilRoot } from 'recoil';
@@ -14,6 +14,10 @@ import Mypage from 'pages/My/My';
 import Token from 'pages/Login/Kakao/token/token';
 import RegisterUser from 'pages/register_user/RegisterUser';
 import RegisterSeller from 'pages/register_seller/RegisterSeller';
+import EmptyFiled from 'pages/My/AfterLogin/emptfiled/EmptyFiled';
+import Like from 'pages/My/Like/Like';
+import Recent from 'pages/My/Recent/Recent';
+import MyPost from 'pages/My/MyPost/MyPost';
 
 const router = createBrowserRouter([
   {
@@ -31,6 +35,24 @@ const router = createBrowserRouter([
       {
         path: '/my',
         element: <Mypage />,
+        children: [
+          {
+            index: true,
+            element: <EmptyFiled />,
+          },
+          {
+            path: 'like',
+            element: <Like />,
+          },
+          {
+            path: 'recent',
+            element: <Recent />,
+          },
+          {
+            path: 'mypost',
+            element: <MyPost />,
+          },
+        ],
       },
       {
         path: '/login',

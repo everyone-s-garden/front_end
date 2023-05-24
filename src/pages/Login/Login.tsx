@@ -45,6 +45,9 @@ const Container = styled.section`
   top: 0px;
   z-index: 9999;
   background-color: white;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    position: static;
+  }
 `;
 
 const Content = styled.div`

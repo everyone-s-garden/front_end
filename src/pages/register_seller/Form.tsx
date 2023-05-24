@@ -4,39 +4,30 @@ import { BREAK_POINT } from 'constants/style';
 import { useForm } from 'react-hook-form';
 import icon from '../../assets/search_icon.svg';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
-
-import handleComplete from 'components/PostCode';
-import { useNavermaps } from 'react-naver-maps';
+import handleComplete from 'utils/PostCode';
 import customAxios from 'utils/token';
-interface IImage {
-  id: string;
-  imageUrl: string;
-}
-interface IProps {
-  images: IImage[];
-}
+import { IProps, ILocation, IUploadData } from './type';
+import { UploadData } from './query';
 
-interface ILocation {
-  address: string;
-  lat: string;
-  lng: string;
-}
 const Form = ({ images }: IProps) => {
   const { register, watch, getValues, handleSubmit } = useForm();
-  const open = useDaumPostcodePopup('https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js');
+  const open = useDaumPostcodePopup(`${process.env.REACT_APP_DAUM_API_URL}`);
   const [location, setLocation] = useState<ILocation>();
+
   const uploadField = async () => {
-    const uploadData = {
-      name: getValues('name'),
-      price: getValues('name'),
-      size: getValues('size'),
-      address: location?.address,
-      latitude: location?.lat,
-      longitude: location?.lng,
-      images,
-    };
-    const res = await customAxios.post('/v1/garden', uploadData);
-    console.log(res);
+    if (location?.address && location.lat && location.lng) {
+      const uploadData: IUploadData = {
+        name: getValues('name'),
+        price: getValues('name'),
+        size: getValues('size'),
+        address: location?.address,
+        latitude: location?.lat,
+        longitude: location?.lng,
+        images,
+      };
+      const res = await UploadData(uploadData);
+      console.log(res);
+    }
   };
   const getPost = () => {
     open({

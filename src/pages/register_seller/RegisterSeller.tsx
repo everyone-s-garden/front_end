@@ -5,11 +5,9 @@ import Form from './Form';
 import delete_icon from 'assets/delete_icon.png';
 import { BREAK_POINT } from 'constants/style';
 import customAxios from 'utils/token';
+import { IFormData, IImage } from './type';
+import { getImages } from 'utils/getImages';
 
-interface IImage {
-  id: string;
-  imageUrl: string;
-}
 const RegisterSeller = () => {
   const [images, setImages] = useState<IImage[]>([]);
 
@@ -19,12 +17,11 @@ const RegisterSeller = () => {
       return;
     }
     if (event.currentTarget.files) {
-      const uploadImg = event.currentTarget.files[0];
-      const formData = new FormData();
+      const uploadImg = event.currentTarget.files[0] as File;
+      const formData: IFormData = new FormData();
       formData.append('file', uploadImg);
       try {
-        const res = await customAxios.post(`/v1/garden/images`, formData);
-        console.log(res.data);
+        const res = await getImages(formData);
         const newImage: IImage = { id: res.data.id, imageUrl: res.data.imageUrl };
         setImages(prevImages => [newImage, ...prevImages]);
       } catch (err) {

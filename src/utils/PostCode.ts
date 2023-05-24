@@ -14,7 +14,7 @@ const handleComplete = async (data: IAddressData) => {
     fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
   }
   const postCode: string = data.zonecode;
-  const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(postCode)}&key=${
+  const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(fullAddress)}&key=${
     process.env.REACT_APP_GOOGLE_API_KEY
   }` as const;
   const res: AxiosResponse<{ results: IResponse[] }> = await axios.get(apiUrl);
@@ -61,5 +61,4 @@ interface IAddressData {
   bname: string;
   buildingName: string;
   zonecode: string;
-  // ... 추가적인 필드들을 필요에 따라 정의할 수 있습니다.
 }

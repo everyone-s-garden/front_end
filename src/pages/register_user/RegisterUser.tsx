@@ -3,30 +3,24 @@ import styled from 'styled-components';
 import add from 'assets/add_img.png';
 import Form from './Form';
 import { BREAK_POINT } from 'constants/style';
-import customAxios from 'utils/token';
+import { IImage, IFormData } from './type';
+import { getImages } from 'utils/getImages';
 
-interface IImage {
-  id: string;
-  imageUrl: string;
-}
 const RegisterUser = () => {
   const [img, setImg] = useState<IImage>();
   const handleImg = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.currentTarget.files) {
-      const uploadImg = event.currentTarget.files[0];
-      const formData = new FormData();
+      const uploadImg = event.currentTarget.files[0] as File;
+      const formData: IFormData = new FormData();
       formData.append('file', uploadImg);
       try {
-        const res = await customAxios.post(`/v1/garden/images`, formData);
-        console.log(res.data);
-
+        const res = await getImages(formData);
         setImg(res.data);
       } catch (err) {
         console.log(err);
       }
     }
   };
-  console.log(img);
   return (
     <Container>
       <H1>나의 텃밭 등록하기</H1>
