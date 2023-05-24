@@ -1,22 +1,88 @@
 import './reset.css';
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import { RecoilRoot } from 'recoil';
+import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import { NavermapsProvider } from 'react-naver-maps';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import Router from 'Router';
-
+import Nav from './components/Nav';
+import Main from './pages/Main/Main';
+import Map from './pages/Map/Map';
+import Login from './pages/Login/Login';
+import Mypage from 'pages/My/My';
+import Token from 'pages/Login/Kakao/token/token';
+import RegisterUser from 'pages/register_user/RegisterUser';
+import RegisterSeller from 'pages/register_seller/RegisterSeller';
+import EmptyFiled from 'pages/My/AfterLogin/emptfiled/EmptyFiled';
+import Like from 'pages/My/Like/Like';
+import Recent from 'pages/My/Recent/Recent';
+import MyPost from 'pages/My/MyPost/MyPost';
 const queryClient = new QueryClient();
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Nav />,
+    children: [
+      {
+        index: true,
+        element: <Main />,
+      },
+      {
+        path: '/map',
+        element: <Map />,
+      },
+      {
+        path: '/my',
+        element: <Mypage />,
+        children: [
+          {
+            index: true,
+            element: <EmptyFiled />,
+          },
+          {
+            path: 'like',
+            element: <Like />,
+          },
+          {
+            path: 'recent',
+            element: <Recent />,
+          },
+          {
+            path: 'mypost',
+            element: <MyPost />,
+          },
+        ],
+      },
+      {
+        path: '/login',
+        element: <Login />,
+      },
+      {
+        path: '/my/oauth/kakao',
+        element: <Token />,
+      },
+      {
+        path: '/garden-register-user',
+        element: <RegisterUser />,
+      },
+      {
+        path: '/garden-register-seller',
+        element: <RegisterSeller />,
+      },
+    ],
+  },
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <RecoilRoot>
-    <NavermapsProvider ncpClientId={process.env.REACT_APP_NAVER_CLIENT_ID!}>
-      <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID!}>
+    <NavermapsProvider ncpClientId="jij6pc5oav">
+      <GoogleOAuthProvider clientId="999513273898-9fa6iu0cm3jbeancg8f82mjs53trr355.apps.googleusercontent.com">
         <QueryClientProvider client={queryClient}>
-          <Router />
+          <RouterProvider router={router} />
         </QueryClientProvider>
       </GoogleOAuthProvider>
     </NavermapsProvider>

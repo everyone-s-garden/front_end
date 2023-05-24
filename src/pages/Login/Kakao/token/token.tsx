@@ -29,7 +29,7 @@ const Token = () => {
       },
     );
     const data: IData = res_kakao.data;
-    const res_server: AxiosResponse = await axios.get<IData_Sever>('http://garden.jinkyumpark.com/auth/kakao', {
+    const res_server: AxiosResponse = await axios.get<IData_Sever>(`${process.env.REACT_APP_API_BASE_URL}auth/kakao`, {
       headers: {
         Authorization: `${data.access_token}`,
       },

@@ -1,22 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import calendar from '../../../assets/calendar.svg';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Item from './Item/Item';
-import { BREAK_POINT, COLOR } from 'constants/style';
+import { BREAK_POINT } from 'constants/style';
 
-const BeforeLogin = () => {
+interface IIsLogin {
+  isLogin: boolean;
+}
+
+const BeforeLogin = ({ isLogin }: IIsLogin) => {
   const nav = useNavigate();
-  //css로 변경
-  const [width, setWidth] = useState<number>(window.innerWidth);
-  const mobile_size: number = Number(BREAK_POINT.MOBILE.replaceAll(/[a-z]/gi, ''));
-  useEffect(() => {
-    window.onresize = () => {
-      setWidth(window.innerWidth);
-    };
-  }, [width]);
   return (
-    <Container>
+    <Container isLogin={isLogin}>
       <Content>
         <Icon src={calendar} />
         <ItemBox>
@@ -25,14 +21,10 @@ const BeforeLogin = () => {
         </ItemBox>
       </Content>
       <Content2>
-        {width < mobile_size ? (
-          <MobileSpanWrapper>
-            <Span>로그인 하고</Span>
-            <Span>찜한 목록도 확인해보세요!</Span>
-          </MobileSpanWrapper>
-        ) : (
-          <Span>로그인 하고 찜한 목록도 확인해보세요!</Span>
-        )}
+        <MobileSpanWrapper>
+          <Span>로그인 하고</Span>
+          <Span>찜한 목록도 확인해보세요!</Span>
+        </MobileSpanWrapper>
         <Ul>
           <Item />
         </Ul>
@@ -42,16 +34,18 @@ const BeforeLogin = () => {
 };
 
 export default BeforeLogin;
-const Container = styled.div`
+
+const Container = styled.div<IIsLogin>`
   width: fit-content;
-  margin: 0 auto;
+  height: fit-content;
+  margin-top: 130px;
+  background-color: skyblue;
 `;
 
 const Content = styled.section`
   width: fit-content;
   height: fit-content;
   display: flex;
-  margin-top: 130px;
   align-items: end;
   margin-left: 54px;
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
