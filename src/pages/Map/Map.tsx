@@ -52,7 +52,6 @@ const MapPage = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 `;
 
 const MapViewer = styled.div`

@@ -28,7 +28,7 @@ export default ListView;
 const ListDiv = styled.div<{ isExpand: boolean }>`
   flex-shrink: 0;
   width: 100%;
-  height: ${props => (props.isExpand ? '0%' : '280px')};
+  height: ${props => (props.isExpand ? '5%' : '95%')};
   display: flex;
   flex-direction: row;
   border-top: 1px solid #afafaf;

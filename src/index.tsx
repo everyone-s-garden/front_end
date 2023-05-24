@@ -5,6 +5,7 @@ import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import { NavermapsProvider } from 'react-naver-maps';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { RecoilRoot } from 'recoil';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import Nav from './components/Nav';
 import Main from './pages/Main/Main';
@@ -18,6 +19,7 @@ import EmptyFiled from 'pages/My/AfterLogin/emptfiled/EmptyFiled';
 import Like from 'pages/My/Like/Like';
 import Recent from 'pages/My/Recent/Recent';
 import MyPost from 'pages/My/MyPost/MyPost';
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -79,7 +81,9 @@ root.render(
   <RecoilRoot>
     <NavermapsProvider ncpClientId="jij6pc5oav">
       <GoogleOAuthProvider clientId="999513273898-9fa6iu0cm3jbeancg8f82mjs53trr355.apps.googleusercontent.com">
-        <RouterProvider router={router} />
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
       </GoogleOAuthProvider>
     </NavermapsProvider>
   </RecoilRoot>,

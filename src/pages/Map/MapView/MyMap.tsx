@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { NaverMap, useNavermaps } from 'react-naver-maps';
+import { Listener, NaverMap, useNavermaps } from 'react-naver-maps';
+import { useQuery } from '@tanstack/react-query';
 
 import MarkerCluster from './MarkerCluster';
 import MyLocationBtn from './MyLocationBtn';
@@ -7,6 +8,8 @@ import ExpandBtn from './ExpandBtn';
 import MyLocationMarker from './MyLocationMarker';
 import findMyGeoLocation from 'utils/findMyGeoLocation';
 import MiniLoader from 'components/MiniLoader';
+import { GardenAPI } from 'api/GardenAPI';
+import { GardenData } from 'api/type';
 
 interface MyMapProps {
   isLoading: boolean;
@@ -31,6 +34,16 @@ const MyMap = ({
     lng: number;
   } | null>(null);
   const [map, setMap] = useState<naver.maps.Map | null>(null);
+  const [gardens, setGardens] = useState<GardenData[]>([]);
+
+  const fetchGardenData = () => {
+    return GardenAPI.getGardenByCoordinate('public', map!);
+  };
+  const { data, refetch } = useQuery(['gardens'], fetchGardenData, { enabled: !!map });
+
+  useEffect(() => {
+    setGardens(data);
+  }, [data]);
 
   const getMyLocation = useCallback(async () => {
     if (!map) return;
@@ -69,11 +82,13 @@ const MyMap = ({
       >
         <MiniLoader isLoading={isLoading} />
 
-        <MarkerCluster setSelectedGarden={setSelectedGarden} />
+        <MarkerCluster gardens={gardens} setSelectedGarden={setSelectedGarden} />
         <MyLocationBtn onClick={moveMyLocation} />
         <ExpandBtn map={map} isExpand={isExpand} setIsExpand={setIsExpand} />
 
         {myLocation.current && <MyLocationMarker myLocation={myLocation} />}
+
+        <Listener type={'idle'} listener={refetch} />
       </NaverMap>
     </>
   );

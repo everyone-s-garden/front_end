@@ -17,4 +17,6 @@ function GardenList({ setSelectedGarden }: GardenListProps) {
 
 export default GardenList;
 
-const ListContainer = styled.ol``;
+const ListContainer = styled.ol`
+  width: 100%;
+`;

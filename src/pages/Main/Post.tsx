@@ -48,7 +48,7 @@ const Image = styled.img`
   flex-shrink: 0;
   height: 135px;
   aspect-ratio: 4 / 3;
-  border-radius: 5px;
+  border-radius: 8px;
   object-fit: cover;
   object-position: center;
 `;

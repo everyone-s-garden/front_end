@@ -1,23 +1,24 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
+import { Player } from '@lottiefiles/react-lottie-player';
 
 import ImageSlider from './ImageSlider';
 import { COLOR, FONT_WEIGHT } from 'constants/style';
 import arrowIcon from 'assets/back-icon.svg';
-import axios from 'axios';
+import * as animationData from 'assets/like-animation.json';
 
 interface GardenDetailProps {
   setSelectedGarden: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function GardenDetail({ setSelectedGarden }: GardenDetailProps) {
-  const HttpRequest = axios.create({
-    baseURL: 'http://garden.jinkyumpark.com/',
-  });
+  const animationRef = useRef<Player>(null);
+  const [like, isLike] = useState<boolean>(false);
 
-  const testDataFetch = async () => {
-    const testData = await HttpRequest.get('');
-    console.log(testData);
+  const play = () => {
+    isLike(!like);
+    if (!like) animationRef.current?.play();
+    else animationRef.current?.setSeeker(0);
   };
 
   return (
@@ -53,7 +54,17 @@ function GardenDetail({ setSelectedGarden }: GardenDetailProps) {
       </Body>
 
       <Buttons>
-        <ZzimButton onClick={testDataFetch}>찜하기</ZzimButton>
+        <ZzimButton onClick={play}>
+          <Player
+            ref={animationRef}
+            autoplay={false}
+            loop={false}
+            keepLastFrame={true}
+            src={animationData}
+            style={{ width: 50, height: 50 }}
+          />
+          찜하기
+        </ZzimButton>
         <ApplyButton>신청하기</ApplyButton>
       </Buttons>
     </DetailDiv>
@@ -68,6 +79,7 @@ const DetailDiv = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 `;
 
 const BackBtn = styled.button`
@@ -78,10 +90,11 @@ const BackBtn = styled.button`
 `;
 
 const Body = styled.div`
-  padding: 25px 36px;
+  margin: 25px 0;
+  padding: 0 36px;
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
+  overflow: scroll;
 `;
 
 const Title = styled.h1`
@@ -137,18 +150,20 @@ const Buttons = styled.div`
 const ZzimButton = styled.button`
   width: 120px;
   height: 44px;
+  display: flex;
+  align-items: center;
   font-size: 1.1rem;
   font-weight: ${FONT_WEIGHT.SEMIBOLD};
-  color: ${COLOR.GREEN};
-  border: 1px solid ${COLOR.GREEN};
+  color: ${COLOR.ORNAGE};
+  border: 1px solid ${COLOR.ORNAGE};
   border-radius: 15px;
   background-color: ${COLOR.BACKGROUND};
   transition: all 0.2s;
 
-  &:hover {
+  /* &:hover {
     color: ${COLOR.BACKGROUND};
     background-color: ${COLOR.GREEN};
-  }
+  } */
 `;
 
 const ApplyButton = styled.button`
@@ -156,14 +171,14 @@ const ApplyButton = styled.button`
   height: 44px;
   font-size: 1.1rem;
   font-weight: ${FONT_WEIGHT.SEMIBOLD};
-  border: 1px solid ${COLOR.GREEN};
+  border: 1px solid #86bf60;
   border-radius: 15px;
   color: ${COLOR.BACKGROUND};
-  background-color: ${COLOR.GREEN};
+  background-color: #86bf60;
   transition: all 0.2s;
 
-  &:hover {
+  /* &:hover {
     color: ${COLOR.GREEN};
     background-color: ${COLOR.BACKGROUND};
-  }
+  } */
 `;
