@@ -5,7 +5,6 @@ import { RecoilRoot } from 'recoil';
 import { NavermapsProvider } from 'react-naver-maps';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import Router from 'Router';
 
@@ -17,7 +16,6 @@ root.render(
     <NavermapsProvider ncpClientId={process.env.REACT_APP_NAVER_CLIENT_ID!}>
       <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID!}>
         <QueryClientProvider client={queryClient}>
-          <ReactQueryDevtools initialIsOpen={false} />
           <Router />
         </QueryClientProvider>
       </GoogleOAuthProvider>

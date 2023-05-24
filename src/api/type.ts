@@ -1,5 +1,5 @@
 export interface GardenData {
-  gardenId: number;
+  id: number;
   name: string;
   type: string;
   address: string;

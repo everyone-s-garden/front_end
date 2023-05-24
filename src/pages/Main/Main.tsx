@@ -1,13 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { BREAK_POINT } from 'constants/style';
 import FirstSection from './FirstSection';
 import SecondSection from './SecondSection';
+import Weather from './Weather';
 
 const Main = () => {
   return (
     <Container>
+      <Weather />
       <FirstSection />
       <SecondSection />
     </Container>

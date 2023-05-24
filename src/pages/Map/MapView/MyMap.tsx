@@ -9,6 +9,7 @@ import MyLocationMarker from './MyLocationMarker';
 import findMyGeoLocation from 'utils/findMyGeoLocation';
 import MiniLoader from 'components/MiniLoader';
 import { GardenAPI } from 'api/GardenAPI';
+import { GardenData } from 'api/type';
 
 interface MyMapProps {
   isLoading: boolean;
@@ -33,15 +34,15 @@ const MyMap = ({
     lng: number;
   } | null>(null);
   const [map, setMap] = useState<naver.maps.Map | null>(null);
+  const [gardens, setGardens] = useState<GardenData[]>([]);
 
   const fetchGardenData = () => {
     return GardenAPI.getGardenByCoordinate('public', map!);
   };
-
   const { data, refetch } = useQuery(['gardens'], fetchGardenData, { enabled: !!map });
 
   useEffect(() => {
-    if (data) console.log(data);
+    setGardens(data);
   }, [data]);
 
   const getMyLocation = useCallback(async () => {
@@ -81,7 +82,7 @@ const MyMap = ({
       >
         <MiniLoader isLoading={isLoading} />
 
-        <MarkerCluster setSelectedGarden={setSelectedGarden} />
+        <MarkerCluster gardens={gardens} setSelectedGarden={setSelectedGarden} />
         <MyLocationBtn onClick={moveMyLocation} />
         <ExpandBtn map={map} isExpand={isExpand} setIsExpand={setIsExpand} />
 

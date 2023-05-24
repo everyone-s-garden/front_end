@@ -17,8 +17,8 @@ function GardenDetail({ setSelectedGarden }: GardenDetailProps) {
 
   const play = () => {
     isLike(!like);
-    animationRef.current?.setPlayerDirection(like ? -1 : 1);
-    animationRef.current?.play();
+    if (!like) animationRef.current?.play();
+    else animationRef.current?.setSeeker(0);
   };
 
   return (
@@ -55,7 +55,14 @@ function GardenDetail({ setSelectedGarden }: GardenDetailProps) {
 
       <Buttons>
         <ZzimButton onClick={play}>
-          <Player ref={animationRef} autoplay={false} loop={false} keepLastFrame={true} src={animationData} />
+          <Player
+            ref={animationRef}
+            autoplay={false}
+            loop={false}
+            keepLastFrame={true}
+            src={animationData}
+            style={{ width: 50, height: 50 }}
+          />
           찜하기
         </ZzimButton>
         <ApplyButton>신청하기</ApplyButton>
@@ -83,7 +90,8 @@ const BackBtn = styled.button`
 `;
 
 const Body = styled.div`
-  padding: 25px 36px;
+  margin: 25px 0;
+  padding: 0 36px;
   display: flex;
   flex-direction: column;
   overflow: scroll;
@@ -142,18 +150,20 @@ const Buttons = styled.div`
 const ZzimButton = styled.button`
   width: 120px;
   height: 44px;
+  display: flex;
+  align-items: center;
   font-size: 1.1rem;
   font-weight: ${FONT_WEIGHT.SEMIBOLD};
-  color: ${COLOR.GREEN};
-  border: 1px solid ${COLOR.GREEN};
+  color: ${COLOR.ORNAGE};
+  border: 1px solid ${COLOR.ORNAGE};
   border-radius: 15px;
   background-color: ${COLOR.BACKGROUND};
   transition: all 0.2s;
 
-  &:hover {
+  /* &:hover {
     color: ${COLOR.BACKGROUND};
     background-color: ${COLOR.GREEN};
-  }
+  } */
 `;
 
 const ApplyButton = styled.button`
@@ -161,14 +171,14 @@ const ApplyButton = styled.button`
   height: 44px;
   font-size: 1.1rem;
   font-weight: ${FONT_WEIGHT.SEMIBOLD};
-  border: 1px solid ${COLOR.GREEN};
+  border: 1px solid #86bf60;
   border-radius: 15px;
   color: ${COLOR.BACKGROUND};
-  background-color: ${COLOR.GREEN};
+  background-color: #86bf60;
   transition: all 0.2s;
 
-  &:hover {
+  /* &:hover {
     color: ${COLOR.GREEN};
     background-color: ${COLOR.BACKGROUND};
-  }
+  } */
 `;

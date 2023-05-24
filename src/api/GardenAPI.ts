@@ -8,7 +8,7 @@ export const GardenAPI = {
   getGardenByCoordinate: async (type: string, map: naver.maps.Map) => {
     const bounds = map.getBounds();
     const { data } = await HttpRequest.get(
-      `v1/garden/${type}/by-coordinate?x=${bounds.minY()},${bounds.maxY()}&y=${bounds.minX()},${bounds.maxX()}`,
+      `v1/garden/${type}/by-coordinate?lat=${bounds.minY()},${bounds.maxY()}&long=${bounds.minX()},${bounds.maxX()}`,
     );
 
     return data;
