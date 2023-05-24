@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BeforeLogin from './BeforeLogin/BeforeLogin';
-import AfterLogin from './AfterLogin/AfterLogin';
 import { isLoginAtom } from 'utils/atom';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { BREAK_POINT } from 'constants/style';
+import AfterLogin from './AfterLogin/AfterLogin';
 const Mypage = () => {
   const nav = useNavigate();
   const isLogin: boolean = useRecoilValue(isLoginAtom);

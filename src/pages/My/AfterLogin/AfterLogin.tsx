@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { BREAK_POINT } from 'constants/style';
 import { Outlet, useNavigate } from 'react-router-dom';
-import customAxios from 'utils/token';
 
 const AfterLogin = () => {
   return (
