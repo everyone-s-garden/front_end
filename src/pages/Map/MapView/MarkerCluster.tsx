@@ -20,10 +20,8 @@ const MarkerCluster = ({ gardens, setSelectedGarden }: MarkerClusterProps) => {
     size: new navermaps.Size(40, 40),
     anchor: new navermaps.Point(20, 20),
   };
-
   const [cluster, setCluster] = useState(() => {
     const markers: naver.maps.Marker[] = [];
-
     const cluster = new MarkerClustering({
       minClusterSize: 2,
       maxZoom: 13,
@@ -38,15 +36,11 @@ const MarkerCluster = ({ gardens, setSelectedGarden }: MarkerClusterProps) => {
     });
     return cluster;
   });
-
   useEffect(() => {
     if (!gardens) return;
-
     cluster.DEFAULT_OPTIONS.markers = [];
-
     setCluster(() => {
       const markers: naver.maps.Marker[] = [];
-
       gardens.forEach(garden => {
         const latlng = new naver.maps.LatLng(garden.latitude, garden.longitude),
           marker = new naver.maps.Marker({
@@ -97,7 +91,6 @@ const MarkerCluster = ({ gardens, setSelectedGarden }: MarkerClusterProps) => {
           clusterMarker.getElement().querySelector('div:first-child').innerText = count;
         },
       });
-
       return cluster;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

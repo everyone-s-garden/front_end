@@ -40,7 +40,6 @@ const MyMap = ({
     return GardenAPI.getGardenByCoordinate('public', map!);
   };
   const { data, refetch } = useQuery(['gardens'], fetchGardenData, { enabled: !!map });
-
   useEffect(() => {
     setGardens(data);
   }, [data]);
