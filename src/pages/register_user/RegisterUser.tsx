@@ -1,38 +1,55 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import add from 'assets/add_img.png';
+
+import addIcon from 'assets/my/register/add-icon.svg';
 import Form from './Form';
 import { BREAK_POINT } from 'constants/style';
 import { IImage, IFormData } from './type';
 import { getImages } from 'utils/getImages';
 
 const RegisterUser = () => {
-  const [img, setImg] = useState<IImage>();
+  const labelRef = useRef<HTMLLabelElement>(null);
+  const [image, setImage] = useState<IImage | null>(null);
+
+  const onImgRegisterClicked = (e: React.MouseEvent<HTMLDivElement>) => {
+    labelRef.current?.click();
+  };
+
   const handleImg = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.currentTarget.files) {
       const uploadImg = event.currentTarget.files[0] as File;
       const formData: IFormData = new FormData();
       formData.append('file', uploadImg);
+
       try {
         const res = await getImages(formData);
-        setImg(res.data);
+        console.log(res.data);
+        setImage(res.data);
       } catch (err) {
         console.log(err);
       }
     }
   };
+
   return (
     <Container>
-      <H1>나의 텃밭 등록하기</H1>
-      <ImgRegister>
-        <input accept="image/*" type="file" id="fileInput" onChange={handleImg} style={{ display: 'none' }} />
-        <label htmlFor="fileInput">
-          <AddImg src={add} />
-        </label>
-        <span>사진등록</span>
+      <Title>나의 텃밭 등록하기</Title>
+
+      <ImgRegister onClick={onImgRegisterClicked}>
+        {image ? (
+          <AddImage src={image.imageUrl} />
+        ) : (
+          <>
+            <input accept="image/*" type="file" id="fileInput" onChange={handleImg} style={{ display: 'none' }} />
+            <label onClick={e => e.stopPropagation()} ref={labelRef} htmlFor="fileInput">
+              <AddIcon src={addIcon} />
+            </label>
+            <span>사진등록</span>
+          </>
+        )}
       </ImgRegister>
-      <Tip>텃밭을 검색해서 등록하면 기한, 위치가 자동으로 불러와져요</Tip>
-      <Form img={img} setImg={setImg} />
+
+      <Form image={image} />
     </Container>
   );
 };
@@ -40,31 +57,30 @@ const RegisterUser = () => {
 export default RegisterUser;
 
 const Container = styled.div`
-  margin: 0 auto;
-  margin-top: 54px;
-  width: fit-content;
-  height: fit-content;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    align-items: end;
-    margin-top: 75px;
+    padding-bottom: 40px;
+    height: calc(100vh - 100px);
   }
 `;
-const H1 = styled.h1`
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 27px;
+
+const Title = styled.h1`
+  margin-bottom: 32px;
+  font-weight: 500;
+  font-size: 18px;
   color: #414c38;
-  margin-bottom: 20px;
+
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     display: none;
   }
 `;
 
 const ImgRegister = styled.div`
-  width: 642px;
+  width: 100%;
   height: 166px;
   background: #f0fbe4;
   border-radius: 17px;
@@ -73,30 +89,32 @@ const ImgRegister = styled.div`
   align-items: center;
   justify-content: center;
   margin-bottom: 43px;
+  cursor: pointer;
+  transition: all 0.1s ease-in;
+
+  &:hover {
+    background: #e7fad1;
+  }
+
   span {
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 18px;
+    font-weight: 500;
+    font-size: 16px;
     color: #afd082;
   }
+
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    width: 346px;
     height: 182px;
   }
 `;
-const AddImg = styled.img`
-  width: 33px;
-  height: 33px;
-  margin-bottom: 5px;
-  cursor: pointer;
+
+const AddImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 `;
-const Tip = styled.span`
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 15px;
-  color: #414c38;
-  margin-bottom: 6px;
-  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    font-size: 10px;
-  }
+
+const AddIcon = styled.img`
+  margin-bottom: 10px;
+  cursor: pointer;
 `;

@@ -6,7 +6,7 @@ import GoogleLogo from '../../../assets/logo_google.svg';
 import { getToken } from './token/token';
 import { BREAK_POINT } from 'constants/style';
 import { useSetRecoilState } from 'recoil';
-import { isLoginAtom } from 'utils/atom';
+import { isLoginAtom } from 'recoil/atom';
 const Google = () => {
   const nav = useNavigate();
   const setIsLogin = useSetRecoilState<boolean>(isLoginAtom);
