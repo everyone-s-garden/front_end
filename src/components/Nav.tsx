@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Outlet, useLocation, useMatch, useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 
@@ -8,28 +8,23 @@ import logoImg from 'assets/logo-horizon.svg';
 import mapImg from 'assets/map-icon.svg';
 import homiImg from 'assets/homi-icon.svg';
 import { getItem } from 'utils/session';
-import { isLoginAtom } from 'utils/atom';
+import { isLoginAtom } from 'recoil/atom';
 import left_mobile from '../assets/left_vector_mobile.svg';
+
 const Nav = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
-  const [width, setWidth] = useState(window.innerWidth);
-  const mainMatch = useMatch('/');
-  const mapMatch = useMatch('/map');
-  const registerMatch = useMatch('/garden-register-user');
-  const sellerMatch = useMatch('/garden-register-seller');
-  const myMatch = useMatch('/my');
-  const loginMatch = useMatch('/login');
 
-  const getIsLogin = async () => {
-    const getLogin = await Boolean(getItem('isLogin'));
-    setIsLogin(getLogin);
-  };
+  const isMainPage = location.pathname === '/';
+  const isMapPage = location.pathname === '/map';
+  const isMyPage = location.pathname === '/my';
+  const isRegisterPage = location.pathname === '/my/garden-register-user';
+  const isSellerPage = location.pathname === '/my/garden-register-seller';
 
   useEffect(() => {
-    getIsLogin();
-  }, [isLogin]);
+    setIsLogin(Boolean(getItem('isLogin')));
+  }, [isLogin, setIsLogin]);
 
   const login = () => {
     navigate('/login');
@@ -43,40 +38,43 @@ const Nav = () => {
 
   return (
     <>
-      <Container>
-        {width > 687 || mainMatch !== null || mapMatch !== null ? (
-          <Navbar>
-            <LoginBar>
-              {isLogin === true ? (
-                <LoginBtn onClick={logout}>로그아웃</LoginBtn>
-              ) : (
-                <LoginBtn onClick={login}>로그인</LoginBtn>
-              )}
-            </LoginBar>
-            <MenuBar>
-              <LogoImageContainer onClick={() => navigate(`/`)}>
-                <LogoImage src={logoImg} alt="로고" />
-              </LogoImageContainer>
-              <ButtonContainer>
-                <Button active={location.pathname === '/map'} onClick={() => navigate(`/map`)}>
-                  <ButtonImage src={mapImg} alt="맵아이콘" />
-                  <ButtonSpan>내 주변 분양</ButtonSpan>
-                </Button>
-                <Button active={location.pathname === '/my'} onClick={() => navigate(`/my`)}>
-                  <ButtonImage src={homiImg} alt="맵아이콘" />
-                  <ButtonSpan>마이페이지</ButtonSpan>
-                </Button>
-              </ButtonContainer>
-            </MenuBar>
-          </Navbar>
-        ) : (
-          <MobileNav>
-            <img src={left_mobile} onClick={() => navigate(-1)} />
-            {myMatch && <h1>마이페이지 </h1>}
-            {registerMatch && <h1>나의 텃밭 등록하기</h1>}
-            {sellerMatch && <h1>판매 텃밭 등록하기</h1>}
-          </MobileNav>
-        )}
+      <Container isMainPage={isMainPage}>
+        <Navbar isMainPage={location.pathname === '/'}>
+          <LoginBar>
+            {isLogin === true ? (
+              <LoginBtn onClick={logout}>로그아웃</LoginBtn>
+            ) : (
+              <LoginBtn onClick={login}>로그인</LoginBtn>
+            )}
+          </LoginBar>
+          <MenuBar>
+            <LogoImageContainer onClick={() => navigate(`/`)}>
+              <LogoImage src={logoImg} alt="로고" />
+            </LogoImageContainer>
+            <ButtonContainer>
+              <Button active={isMapPage} onClick={() => navigate(`/map`)}>
+                <ButtonImage src={mapImg} alt="맵아이콘" />
+                <ButtonSpan>내 주변 분양</ButtonSpan>
+              </Button>
+              <Button active={isMyPage} onClick={() => navigate(`/my`)}>
+                <ButtonImage src={homiImg} alt="맵아이콘" />
+                <ButtonSpan>마이페이지</ButtonSpan>
+              </Button>
+            </ButtonContainer>
+          </MenuBar>
+        </Navbar>
+
+        <MobileNav isMainPage={isMainPage}>
+          <BackIcon src={left_mobile} onClick={() => navigate(-1)} />
+
+          <NavTitle>
+            <h1>
+              {isMyPage && '마이페이지'}
+              {isRegisterPage && '나의 텃밭 등록하기'}
+              {isSellerPage && '판매 텃밭 등록하기'}
+            </h1>
+          </NavTitle>
+        </MobileNav>
       </Container>
       <Main url={location.pathname}>
         <Outlet />
@@ -87,26 +85,32 @@ const Nav = () => {
 
 export default Nav;
 
-const Container = styled.div`
+const Container = styled.div<{ isMainPage: boolean }>`
   z-index: 1000;
   position: sticky;
   top: 0;
-  padding: 0 20px;
-  padding-bottom: 20px;
+  padding: ${props => (props.isMainPage ? '0 20px 20px 20px' : '40px 0 14px 0')};
+  width: 100%;
   display: flex;
   justify-content: center;
-  width: 100%;
   background-color: ${COLOR.BACKGROUND};
+  border-bottom: 1px solid #e1e1e1;
+
+  @media (min-width: ${BREAK_POINT.MOBILE}) {
+    padding: 0 20px 20px 20px;
+    border: none;
+  }
 `;
 
-const Navbar = styled.nav`
+const Navbar = styled.nav<{ isMainPage: boolean }>`
   flex-grow: 1;
+  flex-shrink: 1;
   max-width: 1200px;
-  display: flex;
-  flex-direction: column;
+  display: ${props => (props.isMainPage ? 'flex' : 'none')};
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     display: flex;
+    flex-direction: column;
   }
 `;
 
@@ -123,6 +127,7 @@ const LoginBar = styled.div`
 `;
 
 const LoginBtn = styled.button`
+  margin-right: 12px;
   padding-top: 14px;
   color: #a0aa95;
   font-size: 12px;
@@ -214,23 +219,31 @@ const Main = styled.main<{ url: string }>`
   overflow: ${props => (props.url === '/map' ? 'hidden' : 'visible')};
 `;
 
-const MobileNav = styled.div`
-  position: absolute;
-  top: 20px;
+const MobileNav = styled.div<{ isMainPage: boolean }>`
+  position: relative;
   width: 100%;
-  display: flex;
-  h1 {
-    display: block;
-    margin: 0 auto;
-    left: 50%;
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 27px;
-    color: #414c38;
+  display: ${props => (props.isMainPage ? 'none' : 'flex')};
+  justify-content: center;
+  align-items: center;
+
+  @media (min-width: ${BREAK_POINT.MOBILE}) {
+    display: none;
   }
-  img {
-    position: absolute;
-    left: 17px;
-    cursor: pointer;
+`;
+
+const BackIcon = styled.img`
+  position: absolute;
+  left: 17px;
+  cursor: pointer;
+`;
+
+const NavTitle = styled.div`
+  height: 24px;
+
+  h1 {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    color: #414c38;
   }
 `;

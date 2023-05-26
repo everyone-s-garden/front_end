@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
 
+import { searchTypeAtom } from 'recoil/atom';
 import { BREAK_POINT, COLOR, FONT_WEIGHT } from 'constants/style';
 import SelectList from 'components/SelectList';
 
 function OptionBar() {
-  const [provider, setProvider] = useState<string>('둘다 표시');
+  const [searchType, setSearchType] = useRecoilState(searchTypeAtom);
 
   return (
     <Container>
@@ -13,13 +15,13 @@ function OptionBar() {
         <OptionTitle>분양주체</OptionTitle>
 
         <OptionBox>
-          <OptionButton active={provider === '공공'} onClick={() => setProvider('공공')}>
+          <OptionButton active={searchType === 1} onClick={() => setSearchType(1)}>
             공공
           </OptionButton>
-          <OptionButton active={provider === '개인'} onClick={() => setProvider('개인')}>
+          <OptionButton active={searchType === 2} onClick={() => setSearchType(2)}>
             개인
           </OptionButton>
-          <OptionButton active={provider === '둘다 표시'} onClick={() => setProvider('둘다 표시')}>
+          <OptionButton active={searchType === 0} onClick={() => setSearchType(0)}>
             둘다 표시
           </OptionButton>
         </OptionBox>
