@@ -1,19 +1,24 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Player } from '@lottiefiles/react-lottie-player';
+import { useRecoilState } from 'recoil';
 
-import ImageSlider from './ImageSlider';
+import { selectedGardenIdAtom } from 'recoil/atom';
 import { COLOR, FONT_WEIGHT } from 'constants/style';
+import ImageSlider from './ImageSlider';
 import arrowIcon from 'assets/back-icon.svg';
 import * as animationData from 'assets/like-animation.json';
+import { GardenAPI } from 'api/GardenAPI';
 
-interface GardenDetailProps {
-  setSelectedGarden: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function GardenDetail({ setSelectedGarden }: GardenDetailProps) {
+function GardenDetail() {
   const animationRef = useRef<Player>(null);
   const [like, isLike] = useState<boolean>(false);
+  const [selectedGarden, setSelectedGarden] = useRecoilState(selectedGardenIdAtom);
+
+  const fetchGardenData = async () => {
+    if (!selectedGarden) return;
+    return await GardenAPI.getGardenDetail(selectedGarden);
+  };
 
   const play = () => {
     isLike(!like);
@@ -21,10 +26,14 @@ function GardenDetail({ setSelectedGarden }: GardenDetailProps) {
     else animationRef.current?.setSeeker(0);
   };
 
+  useEffect(() => {
+    console.log(fetchGardenData());
+  }, []);
+
   return (
     <DetailDiv>
       <ImageSlider />
-      <BackBtn onClick={() => setSelectedGarden(false)}>
+      <BackBtn onClick={() => setSelectedGarden(null)}>
         <img src={arrowIcon} alt="뒤로가기"></img>
       </BackBtn>
 

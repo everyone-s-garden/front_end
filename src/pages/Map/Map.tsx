@@ -12,8 +12,6 @@ import OptionBar from './MapView/OptionBar';
 const Map = () => {
   const [isInitializing, setIsInitializing] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isExpand, setIsExpand] = useState<boolean>(false);
-  const [selectedGarden, setSelectedGarden] = useState<boolean>(false);
 
   return (
     <MapPage>
@@ -29,16 +27,9 @@ const Map = () => {
             transition: 'all 0.2s ease-in',
           }}
         >
-          <MyMap
-            isLoading={isLoading}
-            setIsLoading={setIsLoading}
-            setIsInitializing={setIsInitializing}
-            isExpand={isExpand}
-            setIsExpand={setIsExpand}
-            setSelectedGarden={setSelectedGarden}
-          />
+          <MyMap isLoading={isLoading} setIsLoading={setIsLoading} setIsInitializing={setIsInitializing} />
         </MapDiv>
-        <ListView isExpand={isExpand} selectedGarden={selectedGarden} setSelectedGarden={setSelectedGarden} />
+        <ListView />
       </MapViewer>
     </MapPage>
   );

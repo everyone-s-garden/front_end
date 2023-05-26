@@ -1,26 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
 
-import { BREAK_POINT, COLOR } from 'constants/style';
+import { isExpandAtom, selectedGardenIdAtom } from 'recoil/atom';
+import { BREAK_POINT } from 'constants/style';
 import GardenList from './GardenList';
 import GardenDetail from './GardenDetail';
 
-interface ListViewProps {
-  isExpand: boolean;
-  selectedGarden: boolean;
-  setSelectedGarden: React.Dispatch<React.SetStateAction<boolean>>;
-}
+function ListView() {
+  const [isExpand] = useRecoilState(isExpandAtom);
+  const [selectedGarden] = useRecoilState(selectedGardenIdAtom);
 
-function ListView({ isExpand, selectedGarden, setSelectedGarden }: ListViewProps) {
-  return (
-    <ListDiv isExpand={isExpand}>
-      {selectedGarden ? (
-        <GardenDetail setSelectedGarden={setSelectedGarden} />
-      ) : (
-        <GardenList setSelectedGarden={setSelectedGarden} />
-      )}
-    </ListDiv>
-  );
+  return <ListDiv isExpand={isExpand}>{selectedGarden ? <GardenDetail /> : <GardenList />}</ListDiv>;
 }
 
 export default ListView;

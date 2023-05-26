@@ -3,14 +3,16 @@ import styled from 'styled-components';
 
 import arrowIcon from 'assets/arrow-icon.svg';
 import { BREAK_POINT, COLOR } from 'constants/style';
+import { useRecoilState } from 'recoil';
+import { isExpandAtom } from 'recoil/atom';
 
 interface ExpandBtnProps {
   map: naver.maps.Map | null;
-  isExpand: boolean;
-  setIsExpand: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ExpandBtn = ({ map, isExpand, setIsExpand }: ExpandBtnProps) => {
+const ExpandBtn = ({ map }: ExpandBtnProps) => {
+  const [isExpand, setIsExpand] = useRecoilState(isExpandAtom);
+
   const onClickHandler = () => {
     setIsExpand(!isExpand);
     setTimeout(() => {
