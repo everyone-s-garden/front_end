@@ -27,7 +27,7 @@ function GardenDetail() {
   };
 
   useEffect(() => {
-    console.log(fetchGardenData());
+    // console.log(fetchGardenData());
   }, []);
 
   return (

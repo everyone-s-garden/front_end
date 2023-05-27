@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavermaps, useMap, Overlay } from 'react-naver-maps';
 import { useRecoilState } from 'recoil';
 
-import { gardensAtom, selectedGardenIdAtom } from 'recoil/atom';
+import { gardensAtom, isExpandAtom, selectedGardenIdAtom } from 'recoil/atom';
 import { makeMarkerClustering } from 'utils/makeMarkerClustering';
 
 const MarkerCluster = () => {
@@ -10,6 +10,7 @@ const MarkerCluster = () => {
   const map = useMap();
   const [gardens] = useRecoilState(gardensAtom);
   const [_, setSelectedGarden] = useRecoilState(selectedGardenIdAtom);
+  const [isExpand, setIsExpand] = useRecoilState(isExpandAtom);
 
   const MarkerClustering = makeMarkerClustering(window.naver) as any;
   const clusterMarker1 = {
@@ -65,6 +66,12 @@ const MarkerCluster = () => {
 
         // 마커 이벤트 등록
         const onClickHandler = () => {
+          if (!isExpand) {
+            setIsExpand(true);
+            setTimeout(() => {
+              map?.autoResize();
+            }, 300);
+          }
           setSelectedGarden(garden.id);
         };
         // 마우스 호버시 마커를 앞으로 가져옴

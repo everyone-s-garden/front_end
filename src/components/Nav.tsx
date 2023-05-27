@@ -46,7 +46,7 @@ const Nav = () => {
 
   return (
     <>
-      <Container isMainPage={isMainPage}>
+      <Container isMainPage={isMainPage} isMapPage={isMapPage}>
         <Navbar isMainPage={location.pathname === '/'}>
           <LoginBar>
             {isLogin === true ? (
@@ -59,6 +59,9 @@ const Nav = () => {
             <LogoImageContainer onClick={() => navigate(`/`)}>
               <LogoImage src={logoImg} alt="로고" />
             </LogoImageContainer>
+
+            {isMapPage && <RegionSearchInput placeholder="지역명 검색" />}
+
             <ButtonContainer>
               <Button active={isMapPage} onClick={() => navigate(`/map`)}>
                 <ButtonImage src={mapImg} alt="맵아이콘" />
@@ -72,19 +75,23 @@ const Nav = () => {
           </MenuBar>
         </Navbar>
 
-        <MobileNav isMainPage={isMainPage}>
+        <MobileNav isMainPage={isMainPage} isMapPage={isMapPage}>
           <BackIcon src={left_mobile} onClick={() => navigate(getBackNavURL())} />
 
-          <NavTitle>
-            <h1>
-              {isMyPage && '마이페이지'}
-              {isLikePage && '찜한 텃밭'}
-              {isRecentPage && '최근 본 텃밭'}
-              {isMyPostPage && '내 분양글'}
-              {isRegisterPage && '나의 텃밭 등록하기'}
-              {isSellerPage && '판매 텃밭 등록하기'}
-            </h1>
-          </NavTitle>
+          {isMapPage ? (
+            <RegionSearchInput placeholder="지역명 검색" />
+          ) : (
+            <NavTitle>
+              <h1>
+                {isMyPage && '마이페이지'}
+                {isLikePage && '찜한 텃밭'}
+                {isRecentPage && '최근 본 텃밭'}
+                {isMyPostPage && '내 분양글'}
+                {isRegisterPage && '나의 텃밭 등록하기'}
+                {isSellerPage && '판매 텃밭 등록하기'}
+              </h1>
+            </NavTitle>
+          )}
         </MobileNav>
       </Container>
       <Main url={location.pathname}>
@@ -96,16 +103,17 @@ const Nav = () => {
 
 export default Nav;
 
-const Container = styled.div<{ isMainPage: boolean }>`
+const Container = styled.div<{ isMainPage: boolean; isMapPage: boolean }>`
   z-index: 1000;
   position: sticky;
   top: 0;
-  padding: ${props => (props.isMainPage ? '0 20px 20px 20px' : '40px 0 14px 0')};
+  padding: ${props => (props.isMainPage ? '0 20px 20px 20px' : props.isMapPage ? '0' : '40px 0 14px 0')};
   width: 100%;
   display: flex;
   justify-content: center;
   background-color: ${COLOR.BACKGROUND};
   border-bottom: 1px solid #e1e1e1;
+  border-bottom: ${props => (props.isMainPage || props.isMapPage ? 'none' : '1px solid #e1e1e1')};
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     padding: 0 20px 20px 20px;
@@ -178,6 +186,31 @@ const LogoImage = styled.img`
   height: 100%;
 `;
 
+const RegionSearchInput = styled.input`
+  flex-grow: 1;
+  margin: 0 20px 0 40px;
+  padding: 12px 20px;
+  max-width: 440px;
+  height: 100%;
+  color: #414c38;
+  font-size: 16px;
+  font-weight: 400;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 12px;
+
+  ::placeholder {
+    color: #c8c8c8;
+    font-weight: 400;
+  }
+
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    margin: 0 40px;
+    height: 36px;
+    font-size: 12px;
+  }
+`;
+
 const ButtonContainer = styled.div`
   height: 100%;
   display: flex;
@@ -230,11 +263,10 @@ const Main = styled.main<{ url: string }>`
   overflow: ${props => (props.url === '/map' ? 'hidden' : 'visible')};
 `;
 
-const MobileNav = styled.div<{ isMainPage: boolean }>`
-  position: relative;
+const MobileNav = styled.div<{ isMainPage: boolean; isMapPage: boolean }>`
+  padding: ${props => (props.isMapPage ? '15px 16px 0 16px' : '16px')};
   width: 100%;
   display: ${props => (props.isMainPage ? 'none' : 'flex')};
-  justify-content: center;
   align-items: center;
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
@@ -243,13 +275,14 @@ const MobileNav = styled.div<{ isMainPage: boolean }>`
 `;
 
 const BackIcon = styled.img`
-  position: absolute;
-  left: 17px;
   cursor: pointer;
 `;
 
 const NavTitle = styled.div`
+  width: 100%;
   height: 24px;
+  display: flex;
+  justify-content: center;
 
   h1 {
     font-weight: 500;

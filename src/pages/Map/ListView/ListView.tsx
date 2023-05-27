@@ -3,32 +3,57 @@ import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 
 import { isExpandAtom, selectedGardenIdAtom } from 'recoil/atom';
-import { BREAK_POINT } from 'constants/style';
+import { BREAK_POINT, COLOR } from 'constants/style';
 import GardenList from './GardenList';
 import GardenDetail from './GardenDetail';
+import ExpandBtn from './ExpandBtn';
 
-function ListView() {
+interface ListViewProps {
+  map: naver.maps.Map | null;
+}
+
+function ListView({ map }: ListViewProps) {
   const [isExpand] = useRecoilState(isExpandAtom);
   const [selectedGarden] = useRecoilState(selectedGardenIdAtom);
 
-  return <ListDiv isExpand={isExpand}>{selectedGarden ? <GardenDetail /> : <GardenList />}</ListDiv>;
+  return (
+    <ListContainer isExpand={isExpand}>
+      <ListDiv>{selectedGarden ? <GardenDetail /> : <GardenList />}</ListDiv>
+
+      <ExpandBtn map={map} />
+    </ListContainer>
+  );
 }
 
 export default ListView;
 
-const ListDiv = styled.div<{ isExpand: boolean }>`
+const ListContainer = styled.div<{ isExpand: boolean }>`
+  z-index: 10;
   flex-shrink: 0;
+  position: absolute;
+  bottom: 0;
   width: 100%;
-  height: ${props => (props.isExpand ? '5%' : '95%')};
-  display: flex;
-  flex-direction: row;
-  border-top: 1px solid #afafaf;
-  overflow-y: auto;
+  height: ${props => (props.isExpand ? 'calc(100vh - 150px)' : '4%')};
+  background-color: ${COLOR.BACKGROUND};
   transition: all 0.2s ease-in;
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
-    width: ${props => (props.isExpand ? '0%' : '379px')};
+    position: relative;
+    width: ${props => (props.isExpand ? '379px' : '0%')};
     height: 100%;
+  }
+`;
+
+const ListDiv = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  border-top: 1px solid #afafaf;
+  overflow-y: scroll;
+  transition: all 0.2s ease-in;
+
+  @media (min-width: ${BREAK_POINT.MOBILE}) {
     flex-direction: column;
     border-top: 0;
     border-left: 1px solid #afafaf;

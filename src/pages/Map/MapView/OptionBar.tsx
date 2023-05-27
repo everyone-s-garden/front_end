@@ -36,6 +36,7 @@ export default OptionBar;
 
 const Container = styled.div`
   padding: 0 1rem;
+  padding-bottom: 6px;
   display: flex;
   justify-content: center;
   width: 100%;

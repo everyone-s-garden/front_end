@@ -6,7 +6,6 @@ import { useRecoilState } from 'recoil';
 import { gardensAtom, searchTypeAtom } from 'recoil/atom';
 import MarkerCluster from './MarkerCluster';
 import MyLocationBtn from './MyLocationBtn';
-import ExpandBtn from './ExpandBtn';
 import MyLocationMarker from './MyLocationMarker';
 import findMyGeoLocation from 'utils/findMyGeoLocation';
 import MiniLoader from 'components/MiniLoader';
@@ -16,15 +15,16 @@ interface MyMapProps {
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setIsInitializing: React.Dispatch<React.SetStateAction<boolean>>;
+  map: naver.maps.Map | null;
+  setMap: React.Dispatch<React.SetStateAction<naver.maps.Map | null>>;
 }
 
-const MyMap = ({ isLoading, setIsLoading, setIsInitializing }: MyMapProps) => {
+const MyMap = ({ isLoading, setIsLoading, setIsInitializing, map, setMap }: MyMapProps) => {
   const navermaps = useNavermaps();
   const myLocation = useRef<{
     lat: number;
     lng: number;
   } | null>(null);
-  const [map, setMap] = useState<naver.maps.Map | null>(null);
   const [searchType] = useRecoilState(searchTypeAtom);
   const [_, setGardens] = useRecoilState(gardensAtom);
 
@@ -76,7 +76,6 @@ const MyMap = ({ isLoading, setIsLoading, setIsInitializing }: MyMapProps) => {
 
         <MarkerCluster />
         <MyLocationBtn onClick={moveMyLocation} />
-        <ExpandBtn map={map} />
 
         {myLocation.current && <MyLocationMarker myLocation={myLocation} />}
 

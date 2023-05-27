@@ -9,7 +9,7 @@ import closeIcon from 'assets/my/x-icon.svg';
 
 const LikePosts = () => {
   const nav = useNavigate();
-  const [likeList] = useState([1, 2, 3, 4, 5]);
+  const [likeList] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
   // const [likeList] = useState([]);
 
   const deleteLike = () => {};
