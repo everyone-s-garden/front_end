@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 
 import searchIcon from 'assets/search.svg';
 import { BREAK_POINT } from 'constants/style';
+import formatDateInput from 'utils/formatDateInput';
 
 interface IImage {
   id: string;
@@ -17,22 +18,6 @@ interface IProps {
 const Form = ({ image }: IProps) => {
   const { watch, getValues, register } = useForm();
 
-  const checkDateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let { value } = e.currentTarget;
-
-    // 숫자가 아닌 문제 제거함
-    value = value.replace(/\D/g, '');
-
-    // 위치에 따라 .(점) 찍어줌
-    if (value.length > 6) {
-      value = `${value.slice(0, 4)}.${value.slice(4, 6)}.${value.slice(6, 8)}`;
-    } else if (value.length > 4) {
-      value = `${value.slice(0, 4)}.${value.slice(4, 6)}`;
-    }
-
-    e.currentTarget.value = value;
-  };
-
   const getPost = () => {};
   const uploadMyGarden = async () => {};
 
@@ -40,18 +25,18 @@ const Form = ({ image }: IProps) => {
     <>
       <FormBox onSubmit={uploadMyGarden}>
         <FormItem>
-          <ItemTag>텃밭 정보</ItemTag>
+          <ItemTag required>텃밭 정보</ItemTag>
           <Input placeholder="텃밭 검색" />
           <SearchIcon src={searchIcon} />
         </FormItem>
 
         <FormItem>
-          <ItemTag>위치</ItemTag>
+          <ItemTag required>위치</ItemTag>
           <Input placeholder="검색시 자동으로 불러와져요" disabled />
         </FormItem>
 
         <FormItem>
-          <ItemTag>기간</ItemTag>
+          <ItemTag required>기간</ItemTag>
           <DateContainer>
             <DateInputBox>
               사용 시작일
@@ -59,7 +44,7 @@ const Form = ({ image }: IProps) => {
                 {...register('start')}
                 placeholder="yyyy.mm.dd"
                 type="text"
-                onChange={e => checkDateInput(e)}
+                onChange={e => formatDateInput(e)}
               />
             </DateInputBox>
             <DateInputBox>
@@ -95,7 +80,7 @@ const FormItem = styled.div`
   width: 100%;
 `;
 
-const ItemTag = styled.div`
+const ItemTag = styled.div<{ required?: boolean }>`
   flex-shrink: 0;
   width: 86px;
   display: flex;
@@ -103,6 +88,12 @@ const ItemTag = styled.div`
   color: #414c38;
   font-size: 16px;
   font-weight: 500;
+
+  &::after {
+    visibility: ${props => (props.required ? 'visible' : 'hidden')};
+    content: '*';
+    color: #ff6a00;
+  }
 `;
 
 const Input = styled.input`
@@ -115,6 +106,7 @@ const Input = styled.input`
   background-color: #f0f0f0;
   border: none;
   border-radius: 11px;
+
   ::placeholder {
     color: #afafaf;
   }
@@ -167,6 +159,7 @@ const DateInput = styled.input`
   border: none;
   background: inherit;
   margin: 0 auto;
+
   ::placeholder {
     color: #afafaf;
   }

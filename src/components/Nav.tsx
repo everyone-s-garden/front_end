@@ -19,6 +19,9 @@ const Nav = () => {
   const isMainPage = location.pathname === '/';
   const isMapPage = location.pathname === '/map';
   const isMyPage = location.pathname === '/my';
+  const isLikePage = location.pathname === '/my/like';
+  const isRecentPage = location.pathname === '/my/recent';
+  const isMyPostPage = location.pathname === '/my/mypost';
   const isRegisterPage = location.pathname === '/my/garden-register-user';
   const isSellerPage = location.pathname === '/my/garden-register-seller';
 
@@ -34,6 +37,11 @@ const Nav = () => {
     sessionStorage.clear();
     setIsLogin(false);
     navigate('/');
+  };
+
+  const getBackNavURL = () => {
+    if (isMapPage || isMyPage) return '/';
+    else return '/my';
   };
 
   return (
@@ -65,11 +73,14 @@ const Nav = () => {
         </Navbar>
 
         <MobileNav isMainPage={isMainPage}>
-          <BackIcon src={left_mobile} onClick={() => navigate(-1)} />
+          <BackIcon src={left_mobile} onClick={() => navigate(getBackNavURL())} />
 
           <NavTitle>
             <h1>
               {isMyPage && '마이페이지'}
+              {isLikePage && '찜한 텃밭'}
+              {isRecentPage && '최근 본 텃밭'}
+              {isMyPostPage && '내 분양글'}
               {isRegisterPage && '나의 텃밭 등록하기'}
               {isSellerPage && '판매 텃밭 등록하기'}
             </h1>

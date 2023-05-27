@@ -72,8 +72,7 @@ const MenuWrapper = styled.aside<{ url: string }>`
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     margin-right: 0;
     width: 100%;
-    display: ${props =>
-      props.url === '/my/garden-register-user' || props.url === '/my/garden-register-seller' ? 'none' : 'flex'};
+    display: ${props => (props.url === '/my' ? 'flex' : 'none')};
   }
 `;
 
