@@ -36,6 +36,7 @@ const RegisterSeller = () => {
   return (
     <Container>
       <H1>판매 텃밭 등록하기</H1>
+      <UploadBtn>등록</UploadBtn>
       <ImgContainer>
         <ImgAddBtnBox len={images.length}>
           <ImgAddBtn len={images.length}>
@@ -76,6 +77,8 @@ const Container = styled.div`
   width: fit-content;
   margin: 0 auto;
   height: fit-content;
+  position: relative;
+  text-align: center;
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     margin-top: 80px;
   }
@@ -83,17 +86,26 @@ const Container = styled.div`
 
 const H1 = styled.h1`
   margin: 0 auto;
-  font-family: 'Abril Fatface';
+  font-family: 'Pretendard';
   font-style: normal;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 27px;
-  margin-bottom: 20px;
-  margin-top: 80px;
-  text-align: center;
+  font-weight: 600;
+  font-size: 18px;
+  color: #414c38;
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     display: none;
   }
+`;
+const UploadBtn = styled.button`
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 21px;
+  text-align: center;
+  color: #f77800;
 `;
 
 const ImgContainer = styled.div`
@@ -101,7 +113,7 @@ const ImgContainer = styled.div`
   height: 200px;
   display: flex;
   margin: 0 auto;
-  margin-bottom: 72px;
+  margin-bottom: 12px;
 `;
 const ImgAddBtnBox = styled.div<ILen>`
   height: ${props => (props.len >= 3 ? '200px' : '220px')};
