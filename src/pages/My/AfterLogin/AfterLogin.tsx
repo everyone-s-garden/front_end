@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import { Outlet } from 'react-router-dom';
 import { BREAK_POINT } from 'constants/style';
-import { Outlet, useNavigate } from 'react-router-dom';
 
 const AfterLogin = () => {
   return (
@@ -13,10 +13,14 @@ const AfterLogin = () => {
 export default AfterLogin;
 
 const Container = styled.section`
-  width: fit-content;
-  height: fit-content;
-  margin-top: 112px;
+  flex-grow: 1;
+  margin-right: auto;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    height: 200vh;
+    margin: 0;
   }
 `;

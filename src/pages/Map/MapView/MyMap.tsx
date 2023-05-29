@@ -1,48 +1,37 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Listener, NaverMap, useNavermaps } from 'react-naver-maps';
 import { useQuery } from '@tanstack/react-query';
+import { useRecoilState } from 'recoil';
 
+import { gardensAtom, searchTypeAtom } from 'recoil/atom';
 import MarkerCluster from './MarkerCluster';
 import MyLocationBtn from './MyLocationBtn';
-import ExpandBtn from './ExpandBtn';
 import MyLocationMarker from './MyLocationMarker';
 import findMyGeoLocation from 'utils/findMyGeoLocation';
 import MiniLoader from 'components/MiniLoader';
 import { GardenAPI } from 'api/GardenAPI';
-import { GardenData } from 'api/type';
 
 interface MyMapProps {
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setIsInitializing: React.Dispatch<React.SetStateAction<boolean>>;
-  isExpand: boolean;
-  setIsExpand: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectedGarden: React.Dispatch<React.SetStateAction<boolean>>;
+  map: naver.maps.Map | null;
+  setMap: React.Dispatch<React.SetStateAction<naver.maps.Map | null>>;
 }
 
-const MyMap = ({
-  isLoading,
-  setIsLoading,
-  setIsInitializing,
-  isExpand,
-  setIsExpand,
-  setSelectedGarden,
-}: MyMapProps) => {
+const MyMap = ({ isLoading, setIsLoading, setIsInitializing, map, setMap }: MyMapProps) => {
   const navermaps = useNavermaps();
   const myLocation = useRef<{
     lat: number;
     lng: number;
   } | null>(null);
-  const [map, setMap] = useState<naver.maps.Map | null>(null);
-  const [gardens, setGardens] = useState<GardenData[]>([]);
+  const [searchType] = useRecoilState(searchTypeAtom);
+  const [_, setGardens] = useRecoilState(gardensAtom);
 
   const fetchGardenData = () => {
-    return GardenAPI.getGardenByCoordinate('public', map!);
+    return GardenAPI.getGardenByCoordinate(searchType, map!);
   };
-  const { data, refetch } = useQuery(['gardens'], fetchGardenData, { enabled: !!map });
-  useEffect(() => {
-    setGardens(data);
-  }, [data]);
+  const { data, refetch } = useQuery(['gardens', searchType], fetchGardenData, { enabled: map !== null });
 
   const getMyLocation = useCallback(async () => {
     if (!map) return;
@@ -67,6 +56,10 @@ const MyMap = ({
     getMyLocation();
   }, [map, getMyLocation]);
 
+  useEffect(() => {
+    setGardens(data);
+  }, [data]);
+
   return (
     <>
       <NaverMap
@@ -81,9 +74,8 @@ const MyMap = ({
       >
         <MiniLoader isLoading={isLoading} />
 
-        <MarkerCluster gardens={gardens} setSelectedGarden={setSelectedGarden} />
+        <MarkerCluster />
         <MyLocationBtn onClick={moveMyLocation} />
-        <ExpandBtn map={map} isExpand={isExpand} setIsExpand={setIsExpand} />
 
         {myLocation.current && <MyLocationMarker myLocation={myLocation} />}
 

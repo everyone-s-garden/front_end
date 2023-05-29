@@ -5,14 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import Item from './Item/Item';
 import { BREAK_POINT } from 'constants/style';
 
-interface IIsLogin {
-  isLogin: boolean;
-}
-
-const BeforeLogin = ({ isLogin }: IIsLogin) => {
+const BeforeLogin = () => {
   const nav = useNavigate();
   return (
-    <Container isLogin={isLogin}>
+    <Container>
       <Content>
         <Icon src={calendar} />
         <ItemBox>
@@ -21,10 +17,10 @@ const BeforeLogin = ({ isLogin }: IIsLogin) => {
         </ItemBox>
       </Content>
       <Content2>
-        <MobileSpanWrapper>
-          <Span>로그인 하고</Span>
+        <SpanWrapper>
+          <Span>로그인 하고&nbsp;</Span>
           <Span>찜한 목록도 확인해보세요!</Span>
-        </MobileSpanWrapper>
+        </SpanWrapper>
         <Ul>
           <Item />
         </Ul>
@@ -35,64 +31,65 @@ const BeforeLogin = ({ isLogin }: IIsLogin) => {
 
 export default BeforeLogin;
 
-const Container = styled.div<IIsLogin>`
-  width: fit-content;
-  height: fit-content;
-  margin-top: 130px;
-  background-color: skyblue;
+const Container = styled.section`
+  flex-grow: 1;
+  margin-right: auto;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    margin: 0;
+  }
 `;
 
 const Content = styled.section`
-  width: fit-content;
-  height: fit-content;
+  width: 500px;
   display: flex;
-  align-items: end;
-  margin-left: 54px;
-  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+  justify-content: space-between;
+  align-items: center;
+
+  @media screen and (max-width: ${BREAK_POINT.TABLET}) {
+    width: 100%;
     flex-direction: column;
     align-items: center;
-    margin: 173px auto;
   }
 `;
 
 const Icon = styled.img`
-  width: 197px;
-  height: 191px;
+  width: 190px;
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    width: 177px;
-    height: 171px;
+    width: 170px;
   }
 `;
+
 const ItemBox = styled.div`
-  width: fit-content;
-  height: fit-content;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
-  margin-left: 65px;
-  margin-bottom: 20px;
+
   span {
-    font-size: 26px !important;
-    line-height: 36px;
-    font-weight: 600;
-    font-size: 20px !important;
+    font-size: 20px;
+    font-weight: 400;
     color: #414c38;
+
     @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-      line-height: 24px;
-      margin-top: 32px;
+      font-size: 20px;
     }
   }
+
   button {
-    margin-top: 15.99px;
-    margin-bottom: 12px;
-    width: 300px;
+    margin-top: 16px;
+    width: 100%;
     height: 58.31px;
-    border: 1.3px solid #afd082;
+    border: 1.8px solid #afd082;
     border-radius: 15px;
     font-size: 16px;
-    line-height: 19px;
-    font-weight: 600;
+    font-weight: 400;
     color: #414c38;
     transition: 0.3s ease-in-out;
+
     @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
       width: 261px;
       height: 57px;
@@ -104,34 +101,44 @@ const ItemBox = styled.div`
       background-color: #afd082;
     }
   }
+
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     margin: 0 auto;
   }
 `;
+
 const Content2 = styled.section`
-  width: fit-content;
-  height: fit-content;
-  margin: 155px auto;
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 `;
+
+const Span = styled.span`
+  font-size: 20px;
+  font-weight: 400;
+  color: #414c38;
+
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    font-size: 20px;
+  }
+`;
+
+const SpanWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    flex-direction: column;
+  }
+`;
+
 const Ul = styled.div`
-  width: fit-content;
-  height: fit-content;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   margin-top: 35px;
-  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+
+  @media screen and (max-width: ${BREAK_POINT.TABLET}) {
     grid-template-columns: repeat(1, 1fr);
   }
-`;
-const Span = styled.span`
-  color: #414c38;
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 24px;
-  display: inline-block;
-`;
-
-const MobileSpanWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
 `;

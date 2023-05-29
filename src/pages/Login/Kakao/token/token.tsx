@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Loader from 'components/Loader';
 import { IData, IData_Sever } from './type';
 import { setItem } from 'utils/session';
-import { isLoginAtom } from 'utils/atom';
+import { isLoginAtom } from 'recoil/atom';
 import { useSetRecoilState } from 'recoil';
 const Token = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);

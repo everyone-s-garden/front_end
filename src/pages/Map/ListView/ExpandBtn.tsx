@@ -3,14 +3,16 @@ import styled from 'styled-components';
 
 import arrowIcon from 'assets/arrow-icon.svg';
 import { BREAK_POINT, COLOR } from 'constants/style';
+import { useRecoilState } from 'recoil';
+import { isExpandAtom } from 'recoil/atom';
 
 interface ExpandBtnProps {
   map: naver.maps.Map | null;
-  isExpand: boolean;
-  setIsExpand: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ExpandBtn = ({ map, isExpand, setIsExpand }: ExpandBtnProps) => {
+const ExpandBtn = ({ map }: ExpandBtnProps) => {
+  const [isExpand, setIsExpand] = useRecoilState(isExpandAtom);
+
   const onClickHandler = () => {
     setIsExpand(!isExpand);
     setTimeout(() => {
@@ -28,9 +30,8 @@ const ExpandBtn = ({ map, isExpand, setIsExpand }: ExpandBtnProps) => {
 export default ExpandBtn;
 
 const Button = styled.button`
-  z-index: 10;
   position: absolute;
-  bottom: 0px;
+  top: -21px;
   right: 50%;
   transform: translate(50%, 0);
   width: 55px;
@@ -42,7 +43,7 @@ const Button = styled.button`
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     top: 50%;
-    right: 0px;
+    left: -21px;
     transform: translate(0, -80%);
     width: 21px;
     height: 55px;
@@ -56,12 +57,12 @@ const ArrowIcon = styled.img<{ isExpand: boolean }>`
   margin-top: 4px;
   height: 15px;
   color: #afafaf;
-  transform: ${props => (props.isExpand ? 'rotate(90deg)' : 'rotate(270deg)')};
+  transform: ${props => (props.isExpand ? 'rotate(270deg)' : 'rotate(90deg)')};
   transition: all 0.3s ease-in;
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     margin-bottom: 2px;
     margin-left: 4px;
-    transform: ${props => (props.isExpand ? 'rotate(0deg)' : 'rotate(180deg)')};
+    transform: ${props => (props.isExpand ? 'rotate(180deg)' : 'rotate(0deg)')};
   }
 `;
