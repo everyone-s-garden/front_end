@@ -1,7 +1,7 @@
 import './reset.css';
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { NavermapsProvider } from 'react-naver-maps';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { RecoilRoot } from 'recoil';
@@ -15,11 +15,10 @@ import Mypage from 'pages/My/My';
 import Token from 'pages/Login/Kakao/token/token';
 import RegisterUser from 'pages/register_user/RegisterUser';
 import RegisterSeller from 'pages/register_seller/RegisterSeller';
-import EmptyFiled from 'pages/My/AfterLogin/emptfiled/EmptyFiled';
-import Like from 'pages/My/Like/Like';
-import Recent from 'pages/My/Recent/Recent';
-import MyPost from 'pages/My/MyPost/MyPost';
-const queryClient = new QueryClient();
+import MyHome from 'pages/My/AfterLogin/MyHome';
+import Like from 'pages/My/LikePosts/LikePosts';
+import Recent from 'pages/My/RecentPosts/RecentPosts';
+import MyPost from 'pages/My/MyPosts/MyPosts';
 
 const router = createBrowserRouter([
   {
@@ -40,7 +39,15 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <EmptyFiled />,
+            element: <MyHome />,
+          },
+          {
+            path: 'garden-register-user',
+            element: <RegisterUser />,
+          },
+          {
+            path: 'garden-register-seller',
+            element: <RegisterSeller />,
           },
           {
             path: 'like',
@@ -64,17 +71,11 @@ const router = createBrowserRouter([
         path: '/my/oauth/kakao',
         element: <Token />,
       },
-      {
-        path: '/garden-register-user',
-        element: <RegisterUser />,
-      },
-      {
-        path: '/garden-register-seller',
-        element: <RegisterSeller />,
-      },
     ],
   },
 ]);
+
+const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(

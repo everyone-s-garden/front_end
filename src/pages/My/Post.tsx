@@ -30,8 +30,6 @@ const PostContainer = styled.div`
   display: flex;
   min-width: 0;
   cursor: pointer;
-  margin-top: 13.7px;
-  margin-bottom: 33px;
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     &:nth-child(3) {
       display: none;

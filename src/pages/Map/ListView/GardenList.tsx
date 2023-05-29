@@ -1,18 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
 
+import { gardensAtom } from 'recoil/atom';
 import GardenPost from './GardenPost';
 
-interface GardenListProps {
-  setSelectedGarden: React.Dispatch<React.SetStateAction<boolean>>;
-}
+function GardenList() {
+  const [gardens] = useRecoilState(gardensAtom);
+  const renderGardenPosts =
+    gardens &&
+    gardens.map(garden => {
+      return <GardenPost key={garden.id} id={garden.id} name={garden.name} price={garden.price} image={''} />;
+    });
 
-function GardenList({ setSelectedGarden }: GardenListProps) {
-  return (
-    <ListContainer>
-      <GardenPost setSelectedGarden={setSelectedGarden} />
-    </ListContainer>
-  );
+  return <ListContainer>{renderGardenPosts}</ListContainer>;
 }
 
 export default GardenList;

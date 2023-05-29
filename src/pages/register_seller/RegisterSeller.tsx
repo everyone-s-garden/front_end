@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Icon from 'assets/add_img.png';
+
+import addIcon from 'assets/my/register/add-icon.svg';
 import Form from './Form';
 import delete_icon from 'assets/delete_icon.png';
 import { BREAK_POINT } from 'constants/style';
@@ -40,7 +41,7 @@ const RegisterSeller = () => {
           <ImgAddBtn len={images.length}>
             <input accept="image/*" type="file" id="fileInput" onChange={addImage} style={{ display: 'none' }} />
             <label htmlFor="fileInput">
-              <ImgAddIcon src={Icon} />
+              <ImgAddIcon src={addIcon} />
             </label>
             <span>사진 등록</span>
             <span>(최대 20장)</span>

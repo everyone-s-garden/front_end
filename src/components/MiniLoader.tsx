@@ -3,11 +3,12 @@ import styled, { keyframes } from 'styled-components';
 
 interface MiniLoaderProps {
   isLoading: boolean;
+  scale?: number;
 }
 
-function MiniLoader({ isLoading }: MiniLoaderProps) {
+function MiniLoader({ isLoading, scale = 1 }: MiniLoaderProps) {
   return (
-    <MiniLoaderDiv isLoading={isLoading}>
+    <MiniLoaderDiv isLoading={isLoading} scale={scale}>
       <Dot1></Dot1>
       <Dot2></Dot2>
       <Dot></Dot>
@@ -17,14 +18,15 @@ function MiniLoader({ isLoading }: MiniLoaderProps) {
 
 export default MiniLoader;
 
-const MiniLoaderDiv = styled.div<{ isLoading: boolean }>`
+const MiniLoaderDiv = styled.div<{ isLoading: boolean; scale: number }>`
   visibility: ${props => (props.isLoading ? 'visible' : 'hidden')};
   opacity: ${props => (props.isLoading ? '1' : '0')};
   z-index: 500;
   position: absolute;
   top: 10px;
   left: 50%;
-  transform: translate(-50% 0%);
+  transform: translate(-50%, 0%) scale(${props => props.scale});
+  transform-origin: center;
   padding: 10px 12px 6px;
   display: flex;
   justify-content: center;
@@ -32,6 +34,7 @@ const MiniLoaderDiv = styled.div<{ isLoading: boolean }>`
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+  transition: all 1s ease-in;
 `;
 
 const bounce_delay = keyframes`

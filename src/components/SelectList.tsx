@@ -42,7 +42,7 @@ const SelectDiv = styled.div`
 const SelectBtn = styled.button`
   padding: 8px 14px;
   width: 92px;
-  height: 32px;
+  height: 34px;
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -1,25 +1,45 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
 
-import testImg from 'assets/garden-image1.jpg';
+import { selectedGardenIdAtom } from 'recoil/atom';
 import { BREAK_POINT, FONT_WEIGHT } from 'constants/style';
+import noImgIcon from 'assets/noImg-icon.svg';
 
 interface GardenPostProps {
-  setSelectedGarden: React.Dispatch<React.SetStateAction<boolean>>;
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+  status?: number;
 }
-function GardenPost({ setSelectedGarden }: GardenPostProps) {
+function GardenPost({ id, name, price, image, status = 0 }: GardenPostProps) {
+  const [_, setSelectedGarden] = useRecoilState(selectedGardenIdAtom);
+
   return (
     <Post>
-      <Image src={testImg} alt="텃밭 이미지"></Image>
+      {image ? (
+        <Image src={image} alt="텃밭 이미지"></Image>
+      ) : (
+        <NoImage>
+          <NoImgIcon src={noImgIcon} alt="이미지 없음" />
+        </NoImage>
+      )}
 
       <InfoDiv>
         <Status>
-          <Dot />
-          <Text>모집 중</Text>
+          {status === 0 ? (
+            <Text>상시 모집</Text>
+          ) : (
+            <>
+              <Dot />
+              <Text>모집 중</Text>
+            </>
+          )}
         </Status>
-        <Title onClick={() => setSelectedGarden(true)}>양주 공공텃밭</Title>
+        <Title onClick={() => setSelectedGarden(id)}>{name}</Title>
         <Value>8평</Value>
-        <Value>평당 15,000원</Value>
+        <Value>{price === 0 ? `평당 ${price}원` : '무료'}</Value>
       </InfoDiv>
     </Post>
   );
@@ -49,6 +69,19 @@ const Image = styled.img`
   object-fit: cover;
   object-position: center;
 `;
+
+const NoImage = styled.div`
+  flex-shrink: 0;
+  height: 100%;
+  aspect-ratio: 4 / 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  background-color: #f0fbe4;
+`;
+
+const NoImgIcon = styled.img``;
 
 const InfoDiv = styled.div`
   padding-left: 16px;

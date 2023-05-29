@@ -1,26 +1,23 @@
-import { GardenData } from 'api/type';
 import React, { useEffect, useState } from 'react';
 import { useNavermaps, useMap, Overlay } from 'react-naver-maps';
+import { useRecoilState } from 'recoil';
 
+import { gardensAtom, isExpandAtom, selectedGardenIdAtom } from 'recoil/atom';
 import { makeMarkerClustering } from 'utils/makeMarkerClustering';
-import testData from 'utils/testData';
 
-interface MarkerClusterProps {
-  gardens: GardenData[];
-  setSelectedGarden: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const MarkerCluster = ({ gardens, setSelectedGarden }: MarkerClusterProps) => {
+const MarkerCluster = () => {
   const navermaps = useNavermaps();
   const map = useMap();
+  const [gardens] = useRecoilState(gardensAtom);
+  const [_, setSelectedGarden] = useRecoilState(selectedGardenIdAtom);
+  const [isExpand, setIsExpand] = useRecoilState(isExpandAtom);
 
-  const MarkerClustering = makeMarkerClustering(window.naver);
+  const MarkerClustering = makeMarkerClustering(window.naver) as any;
   const clusterMarker1 = {
     content: `<div class="cluster_marker1"></div>`,
     size: new navermaps.Size(40, 40),
     anchor: new navermaps.Point(20, 20),
   };
-
   const [cluster, setCluster] = useState(() => {
     const markers: naver.maps.Marker[] = [];
 
@@ -42,6 +39,7 @@ const MarkerCluster = ({ gardens, setSelectedGarden }: MarkerClusterProps) => {
   useEffect(() => {
     if (!gardens) return;
 
+    cluster.setMap(null);
     cluster.DEFAULT_OPTIONS.markers = [];
 
     setCluster(() => {
@@ -68,7 +66,13 @@ const MarkerCluster = ({ gardens, setSelectedGarden }: MarkerClusterProps) => {
 
         // 마커 이벤트 등록
         const onClickHandler = () => {
-          setSelectedGarden(true);
+          if (!isExpand) {
+            setIsExpand(true);
+            setTimeout(() => {
+              map?.autoResize();
+            }, 300);
+          }
+          setSelectedGarden(garden.id);
         };
         // 마우스 호버시 마커를 앞으로 가져옴
         const onMouseOverHandler = () => {
@@ -97,7 +101,6 @@ const MarkerCluster = ({ gardens, setSelectedGarden }: MarkerClusterProps) => {
           clusterMarker.getElement().querySelector('div:first-child').innerText = count;
         },
       });
-
       return cluster;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
