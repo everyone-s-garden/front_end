@@ -1,3 +1,6 @@
+import React from 'react';
+import { UseFormRegister, UseFormRegisterReturn } from 'react-hook-form';
+
 export interface IImage {
   id: string;
   imageUrl: string;
@@ -7,6 +10,8 @@ export interface IFormData extends FormData {
 }
 export interface IProps {
   images: IImage[];
+  location: ILocation;
+  setLocation: React.Dispatch<ILocation>;
 }
 
 export interface ILocation {
@@ -15,6 +20,16 @@ export interface ILocation {
   lng: string;
 }
 
+export interface IFaclity {
+  toilet: boolean;
+  channel: boolean;
+  equip: boolean;
+}
+export interface IStates {
+  recruiting: boolean;
+  end: boolean;
+  regular: boolean;
+}
 export interface IUploadData {
   name: string;
   price: string;
@@ -22,5 +37,13 @@ export interface IUploadData {
   address: string;
   latitude: string;
   longitude: string;
-  images: IImage[];
+  contact: number;
+  images: IImage['id'][];
+}
+export interface ILen {
+  len: number;
+}
+
+export interface IUrl {
+  srcUrl: string;
 }

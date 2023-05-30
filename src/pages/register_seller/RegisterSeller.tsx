@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-
 import addIcon from 'assets/my/register/add-icon.svg';
 import Form from './Form';
 import delete_icon from 'assets/delete_icon.png';
 import { BREAK_POINT } from 'constants/style';
-import customAxios from 'utils/token';
-import { IFormData, IImage } from './type';
+import { IFormData, IImage, ILen, IUrl } from './type';
 import { getImages } from 'utils/getImages';
+import { ILocation } from './type';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterSeller = () => {
   const [images, setImages] = useState<IImage[]>([]);
+  const [location, setLocation] = useState<ILocation>({
+    address: '',
+    lat: '',
+    lng: '',
+  });
 
   const addImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (images.length === 20) {
@@ -30,13 +35,13 @@ const RegisterSeller = () => {
       }
     }
   };
+
   const deleteImage = (index: number) => {
     setImages(prevImages => prevImages.filter((_, i) => i !== index));
   };
   return (
     <Container>
       <H1>판매 텃밭 등록하기</H1>
-      <UploadBtn>등록</UploadBtn>
       <ImgContainer>
         <ImgAddBtnBox len={images.length}>
           <ImgAddBtn len={images.length}>
@@ -59,20 +64,13 @@ const RegisterSeller = () => {
         </ScrollBox>
         <ShadowBox len={images.length} />
       </ImgContainer>
-      <Form images={images} />
+      <Form location={location} setLocation={setLocation} images={images} />
     </Container>
   );
 };
 
 export default RegisterSeller;
 
-interface ILen {
-  len: number;
-}
-
-interface IUrl {
-  srcUrl: string;
-}
 const Container = styled.div`
   width: fit-content;
   margin: 0 auto;
@@ -80,7 +78,7 @@ const Container = styled.div`
   position: relative;
   text-align: center;
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    margin-top: 80px;
+    width: 100%;
   }
 `;
 
@@ -95,25 +93,16 @@ const H1 = styled.h1`
     display: none;
   }
 `;
-const UploadBtn = styled.button`
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-family: 'Pretendard';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 21px;
-  text-align: center;
-  color: #f77800;
-`;
 
 const ImgContainer = styled.div`
   width: fit-content;
   height: 200px;
   display: flex;
   margin: 0 auto;
-  margin-bottom: 12px;
+  margin-bottom: 30px;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    margin: 0;
+  }
 `;
 const ImgAddBtnBox = styled.div<ILen>`
   height: ${props => (props.len >= 3 ? '200px' : '220px')};
@@ -187,6 +176,12 @@ const ScrollBox = styled.div<ILen>`
     background-color: #e0ebd4;
     border-radius: 7px;
   }
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: 200px;
+    &::-webkit-scrollbar {
+      display: none !important; /* Chrome, Safari, Opera*/
+    }
+  }
 `;
 
 const ImageList = styled.div`
@@ -195,10 +190,11 @@ const ImageList = styled.div`
 `;
 const ShadowBox = styled.div<ILen>`
   display: ${props => (props.len >= 3 ? 'block' : 'none')};
-  box-shadow: -6px 0px 25px 30px white;
+  box-shadow: 0px 0px 25px 30px white;
   width: 10px;
-  height: 180px;
+  height: 160px;
   z-index: 99;
+  margin: auto 0px;
 `;
 
 const ImgBox = styled.div<IUrl>`
