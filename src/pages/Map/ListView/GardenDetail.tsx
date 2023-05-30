@@ -3,17 +3,26 @@ import styled from 'styled-components';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useRecoilState } from 'recoil';
 
-import { selectedGardenIdAtom } from 'recoil/atom';
 import { COLOR, FONT_WEIGHT } from 'constants/style';
+import { isReportOpenAtom, selectedGardenIdAtom } from 'recoil/atom';
 import ImageSlider from './ImageSlider';
-import arrowIcon from 'assets/back-icon.svg';
 import * as animationData from 'assets/like-animation.json';
 import { GardenAPI } from 'api/GardenAPI';
+import arrowIcon from 'assets/back-icon.svg';
+import reportIcon from 'assets/map/report-icon.svg';
+import ReportModal from 'components/Modal/ReportModal';
 
 function GardenDetail() {
   const animationRef = useRef<Player>(null);
-  const [like, isLike] = useState<boolean>(false);
   const [selectedGarden, setSelectedGarden] = useRecoilState(selectedGardenIdAtom);
+  const [_, setIsModalOpen] = useRecoilState(isReportOpenAtom);
+  const [like, isLike] = useState<boolean>(false);
+  const [images, setImages] = useState([
+    'https://picsum.photos/id/237/800/600',
+    'https://picsum.photos/id/238/800/600',
+    'https://picsum.photos/id/239/800/600',
+  ]);
+  // const [images, setImages] = useState([]);
 
   const fetchGardenData = async () => {
     if (!selectedGarden) return;
@@ -32,7 +41,7 @@ function GardenDetail() {
 
   return (
     <DetailDiv>
-      <ImageSlider />
+      <ImageSlider images={images} />
       <BackBtn onClick={() => setSelectedGarden(null)}>
         <img src={arrowIcon} alt="뒤로가기"></img>
       </BackBtn>
@@ -63,18 +72,22 @@ function GardenDetail() {
       </Body>
 
       <Buttons>
-        <ZzimButton onClick={play}>
+        <ReportBtn onClick={() => setIsModalOpen(true)}>
+          <img src={reportIcon} />
+          신고하기
+        </ReportBtn>
+        <ZzimBtn onClick={play}>
           <Player
             ref={animationRef}
             autoplay={false}
             loop={false}
             keepLastFrame={true}
             src={animationData}
-            style={{ width: 50, height: 50 }}
+            style={{ width: 34, marginRight: 4, marginBottom: 6, marginLeft: 14 }}
           />
           찜하기
-        </ZzimButton>
-        <ApplyButton>신청하기</ApplyButton>
+        </ZzimBtn>
+        <ApplyBtn>신청하기</ApplyBtn>
       </Buttons>
     </DetailDiv>
   );
@@ -147,47 +160,50 @@ const Label = styled.button`
 
 const Buttons = styled.div`
   margin-top: auto;
-  padding: 20px;
+  padding: 20px 40px;
+  position: relative;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: flex-end;
-  column-gap: 20px;
   width: 100%;
   box-shadow: 0 -20px 20px 20px white;
 `;
 
-const ZzimButton = styled.button`
+const ReportBtn = styled.button`
+  position: absolute;
+  top: -10px;
+  right: 45px;
+  width: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 400;
+  color: #afafaf;
+`;
+
+const ZzimBtn = styled.button`
   width: 120px;
   height: 44px;
   display: flex;
   align-items: center;
-  font-size: 1.1rem;
-  font-weight: ${FONT_WEIGHT.SEMIBOLD};
+  font-size: 16px;
+  font-weight: 400;
   color: ${COLOR.ORNAGE};
   border: 1px solid ${COLOR.ORNAGE};
   border-radius: 15px;
   background-color: ${COLOR.BACKGROUND};
   transition: all 0.2s;
-
-  /* &:hover {
-    color: ${COLOR.BACKGROUND};
-    background-color: ${COLOR.GREEN};
-  } */
 `;
 
-const ApplyButton = styled.button`
+const ApplyBtn = styled.button`
   width: 160px;
   height: 44px;
-  font-size: 1.1rem;
-  font-weight: ${FONT_WEIGHT.SEMIBOLD};
+  font-size: 16px;
+  font-weight: 400;
   border: 1px solid #86bf60;
   border-radius: 15px;
   color: ${COLOR.BACKGROUND};
   background-color: #86bf60;
   transition: all 0.2s;
-
-  /* &:hover {
-    color: ${COLOR.GREEN};
-    background-color: ${COLOR.BACKGROUND};
-  } */
 `;

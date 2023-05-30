@@ -37,7 +37,7 @@ function GardenPost({ id, name, price, image, status = 0 }: GardenPostProps) {
             </>
           )}
         </Status>
-        <Title onClick={() => setSelectedGarden(id)}>{name}</Title>
+        <Title onClick={() => setSelectedGarden(id)}>{name.trim()}</Title>
         <Value>8평</Value>
         <Value>{price === 0 ? `평당 ${price}원` : '무료'}</Value>
       </InfoDiv>
@@ -116,6 +116,7 @@ const Dot = styled.div`
 `;
 
 const Title = styled.button`
+  text-align: start;
   font-size: 16px;
   font-weight: ${FONT_WEIGHT.BOLD};
 `;

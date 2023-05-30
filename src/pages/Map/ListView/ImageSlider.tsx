@@ -3,14 +3,14 @@ import styled from 'styled-components';
 
 import arrowIcon from 'assets/image-arrow-icon.svg';
 import { COLOR } from 'constants/style';
+import noImgIcon from 'assets/noImg-icon.svg';
 
-function ImageSlider() {
+interface ImageSliderProps {
+  images: string[];
+}
+
+function ImageSlider({ images }: ImageSliderProps) {
   const sliderRef = useRef<HTMLDivElement>(null);
-  const [images, setImages] = useState([
-    'https://picsum.photos/id/237/800/600',
-    'https://picsum.photos/id/238/800/600',
-    'https://picsum.photos/id/239/800/600',
-  ]);
   const [index, setIndex] = useState<number>(0);
 
   const onLeftBtnClicked = () => {
@@ -31,17 +31,23 @@ function ImageSlider() {
   return (
     <SliderDiv>
       <ImageContainer ref={sliderRef}>
-        {images.map((img, idx) => (
-          <Image key={idx} src={img} alt="텃밭 이미지" />
-        ))}
+        {images.length === 0 ? (
+          <EmptyImg src={noImgIcon} alt="이미지 없음" />
+        ) : (
+          images.map((img, idx) => <Image key={idx} src={img} alt="텃밭 이미지" />)
+        )}
       </ImageContainer>
 
-      <SliderButtonLeft onClick={onLeftBtnClicked}>
-        <img src={arrowIcon} alt="버튼 아이콘" style={{ transform: 'rotate(180deg)' }} />
-      </SliderButtonLeft>
-      <SliderButtonRight onClick={onRightBtnClicked}>
-        <img src={arrowIcon} alt="버튼 아이콘" />
-      </SliderButtonRight>
+      {images.length !== 0 && (
+        <>
+          <SliderButtonLeft onClick={onLeftBtnClicked}>
+            <img src={arrowIcon} alt="버튼 아이콘" style={{ transform: 'rotate(180deg)' }} />
+          </SliderButtonLeft>
+          <SliderButtonRight onClick={onRightBtnClicked}>
+            <img src={arrowIcon} alt="버튼 아이콘" />
+          </SliderButtonRight>
+        </>
+      )}
 
       <Dots>
         {images.map((_, idx) => (
@@ -63,9 +69,18 @@ const SliderDiv = styled.div`
 `;
 
 const ImageContainer = styled.div`
-  display: flex;
   height: 100%;
+  display: flex;
+  background-color: #f0fbe4;
   transition: transform 0.4s ease-in-out;
+`;
+
+const EmptyImg = styled.img`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
 `;
 
 const Image = styled.img`

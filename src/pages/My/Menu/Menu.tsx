@@ -1,20 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { BREAK_POINT } from 'constants/style';
-import { isLoginAtom } from 'recoil/atom';
+import { isFeedbackOpenAtom, isLoginAtom } from 'recoil/atom';
 import Weather from '../Weather/Weather';
 import heartIcon from 'assets/my/menu/heart-icon.svg';
 import clockIcon from 'assets/my/menu/clock-icon.svg';
 import docIcon from 'assets/my/menu/doc-icon.svg';
 import illust from 'assets/my/menu/call-illust.svg';
+import UserFeedbackModal from 'components/Modal/UserFeedbackModal';
 
 function Menu() {
   const location = useLocation();
   const navigate = useNavigate();
   const isLogin: boolean = useRecoilValue(isLoginAtom);
+  const [_, setIsModalOpen] = useRecoilState(isFeedbackOpenAtom);
 
   return (
     <MenuWrapper url={location.pathname}>
@@ -37,7 +39,7 @@ function Menu() {
             </NavBtn>
           </MenuNavList>
 
-          <YellowBtn>
+          <YellowBtn onClick={() => setIsModalOpen(true)}>
             <BtnTextBox>
               <span>제안사항이 있나요?</span>
               <span>유저의 소리함</span>

@@ -1,6 +1,16 @@
 import { atom } from 'recoil';
 import { GardenData } from 'api/type';
 
+// Modal Atoms
+export const isReportOpenAtom = atom<boolean>({
+  key: 'isReportOpenAtom',
+  default: false,
+});
+export const isFeedbackOpenAtom = atom<boolean>({
+  key: 'isFeedbackOpenAtom',
+  default: false,
+});
+
 // Login Page Atoms
 export const isLoginAtom = atom<boolean>({
   key: 'isLogin',
