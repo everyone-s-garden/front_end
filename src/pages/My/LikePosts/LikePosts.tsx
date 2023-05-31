@@ -23,7 +23,7 @@ const LikePosts = () => {
   }, [likeList]);
   const renderPosts = likeList.map(i => (
     <PostContainer key={i}>
-      <Post />
+      <Post data={i} />
       <CloseIcon src={closeIcon} alt="close" onClick={deleteLike} />
     </PostContainer>
   ));
