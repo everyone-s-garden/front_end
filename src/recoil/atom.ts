@@ -6,6 +6,10 @@ export const isReportOpenAtom = atom<boolean>({
   key: 'isReportOpenAtom',
   default: false,
 });
+export const reportPostIdAtom = atom<number | null>({
+  key: 'reportPostIdAtom',
+  default: null,
+});
 export const isFeedbackOpenAtom = atom<boolean>({
   key: 'isFeedbackOpenAtom',
   default: false,

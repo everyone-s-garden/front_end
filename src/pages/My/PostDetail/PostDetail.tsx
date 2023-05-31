@@ -6,7 +6,7 @@ import { Player } from '@lottiefiles/react-lottie-player';
 import { useRecoilState } from 'recoil';
 
 import { BREAK_POINT, COLOR } from 'constants/style';
-import { isReportOpenAtom } from 'recoil/atom';
+import { isReportOpenAtom, reportPostIdAtom } from 'recoil/atom';
 import ImageSlider from 'components/ImageSlider';
 import { ReactComponent as BackIcon } from 'assets/back-icon.svg';
 import { ReactComponent as MenuIcon } from 'assets/three-dot-icon.svg';
@@ -23,15 +23,16 @@ function PostDetail() {
   const nav = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [_, setIsModalOpen] = useRecoilState(isReportOpenAtom);
+  const [__, setReportPostId] = useRecoilState(reportPostIdAtom);
   const animationRef = useRef<Player>(null);
   const [map, setMap] = useState<naver.maps.Map | null>(null);
   const [like, isLike] = useState<boolean>(false);
-  // const [images, setImages] = useState([
-  //   'https://picsum.photos/id/237/800/600',
-  //   'https://picsum.photos/id/238/800/600',
-  //   'https://picsum.photos/id/239/800/600',
-  // ]);
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState([
+    'https://picsum.photos/id/237/800/600',
+    'https://picsum.photos/id/238/800/600',
+    'https://picsum.photos/id/239/800/600',
+  ]);
+  // const [images, setImages] = useState([]);
 
   let price = 20000;
   const location = { lat: 37.3595704, long: 127.105399 };
@@ -60,7 +61,9 @@ function PostDetail() {
       </BackDiv>
 
       <MainContent>
-        <ImageSlider images={images} />
+        <SliderContainer>
+          <ImageSlider images={images} />
+        </SliderContainer>
 
         <ContentSection>
           <Title>
@@ -69,7 +72,14 @@ function PostDetail() {
               <MenuIcon width="3" height="18" fill="#505462" />
             </button>
             <MenuDropdown isOpen={isMenuOpen}>
-              <DropDownBtn>신고하기</DropDownBtn>
+              <DropDownBtn
+                onClick={() => {
+                  setIsModalOpen(true);
+                  setReportPostId(Number(postId));
+                }}
+              >
+                신고하기
+              </DropDownBtn>
             </MenuDropdown>
           </Title>
           <Price>{price === 0 ? '무료' : `${price.toLocaleString('ko-KR')}원`}</Price>
@@ -149,6 +159,7 @@ function PostDetail() {
 export default PostDetail;
 
 const Container = styled.div`
+  position: relative;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -159,6 +170,10 @@ const Container = styled.div`
 const BackDiv = styled.div`
   margin-bottom: 20px;
   width: 100%;
+
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    display: none;
+  }
 `;
 
 const MainContent = styled.div`
@@ -171,6 +186,16 @@ const MainContent = styled.div`
   }
 `;
 
+const SliderContainer = styled.div`
+  flex-grow: 1;
+  max-height: 300px;
+
+  @media screen and (max-width: ${BREAK_POINT.TABLET}) {
+    width: 100%;
+    max-width: 400px;
+  }
+`;
+
 const ContentSection = styled.section`
   flex-shrink: 0;
   margin-bottom: 40px;
@@ -180,7 +205,6 @@ const ContentSection = styled.section`
   flex-direction: column;
 
   @media screen and (max-width: ${BREAK_POINT.TABLET}) {
-    flex-shrink: 1;
     margin: 0;
     margin-bottom: 40px;
     margin-top: 20px;
@@ -206,6 +230,7 @@ const MenuDropdown = styled.div<{ isOpen: boolean }>`
   right: 0;
   width: 135px;
   border: 1px solid #d9d9d9;
+  background-color: ${COLOR.BACKGROUND};
   transition: all 0.1s ease-in;
   overflow: hidden;
 `;

@@ -276,7 +276,7 @@ const Main = styled.main<{ url: string }>`
 `;
 
 const MobileNav = styled.div<{ isMainPage: boolean; isMapPage: boolean }>`
-  padding: ${props => (props.isMapPage ? '15px 16px 0 16px' : '16px')};
+  padding: ${props => (props.isMapPage ? '15px 16px 0 16px' : '0 16px')};
   width: 100%;
   display: ${props => (props.isMainPage ? 'none' : 'flex')};
   align-items: center;

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useRecoilValue } from 'recoil';
 
 import { COLOR } from 'constants/style';
+import { reportPostIdAtom } from 'recoil/atom';
 import Modal from 'components/Modal/Modal';
 
 interface ReportModalProps {
@@ -10,6 +12,7 @@ interface ReportModalProps {
 }
 
 function ReportModal({ isOpen, setIsOpen }: ReportModalProps) {
+  const postId = useRecoilValue(reportPostIdAtom);
   const [comment, setComment] = useState<string>('');
   const [isChecked0, setIsChecked0] = useState<boolean>(false);
   const [isChecked1, setIsChecked1] = useState<boolean>(false);
@@ -61,7 +64,7 @@ function ReportModal({ isOpen, setIsOpen }: ReportModalProps) {
           <WordLimit>({comment.length}/800)</WordLimit>
         </CommentWrapper>
 
-        <SubmitBtn>제출하기</SubmitBtn>
+        <SubmitBtn onClick={() => console.log(postId)}>제출하기</SubmitBtn>
       </ModalContent>
     </Modal>
   );

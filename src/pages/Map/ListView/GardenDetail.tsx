@@ -4,7 +4,7 @@ import { Player } from '@lottiefiles/react-lottie-player';
 import { useRecoilState } from 'recoil';
 
 import { COLOR, FONT_WEIGHT } from 'constants/style';
-import { isReportOpenAtom, selectedGardenIdAtom } from 'recoil/atom';
+import { isReportOpenAtom, reportPostIdAtom, selectedGardenIdAtom } from 'recoil/atom';
 import ImageSlider from 'components/ImageSlider';
 import { ReactComponent as BackIcon } from 'assets/back-icon.svg';
 import * as animationData from 'assets/like-animation.json';
@@ -15,6 +15,7 @@ function GardenDetail() {
   const animationRef = useRef<Player>(null);
   const [selectedGarden, setSelectedGarden] = useRecoilState(selectedGardenIdAtom);
   const [_, setIsModalOpen] = useRecoilState(isReportOpenAtom);
+  const [__, setReportPostId] = useRecoilState(reportPostIdAtom);
   const [like, isLike] = useState<boolean>(false);
   const [images, setImages] = useState([
     'https://picsum.photos/id/237/800/600',
@@ -23,6 +24,7 @@ function GardenDetail() {
   ]);
   // const [images, setImages] = useState([]);
 
+  const postId = 10;
   let price = 16000;
 
   const fetchGardenData = async () => {
@@ -73,7 +75,12 @@ function GardenDetail() {
       </Body>
 
       <Buttons>
-        <ReportBtn onClick={() => setIsModalOpen(true)}>
+        <ReportBtn
+          onClick={() => {
+            setIsModalOpen(true);
+            setReportPostId(Number(postId));
+          }}
+        >
           <img src={reportIcon} />
           신고하기
         </ReportBtn>

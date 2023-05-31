@@ -61,11 +61,8 @@ function ImageSlider({ images }: ImageSliderProps) {
 export default ImageSlider;
 
 const SliderDiv = styled.div`
-  flex-grow: 1;
-  flex-shrink: 1;
-  max-width: 400px;
-  max-height: 300px;
   position: relative;
+  width: 100%;
   aspect-ratio: 4 / 3;
   overflow: hidden;
 `;
