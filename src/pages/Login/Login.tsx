@@ -1,27 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import logo from '../../assets/logo-horizon.svg';
+import logo from 'assets/logo-horizon.svg';
 import Kakao from './Kakao/Kakao';
 import Google from './Google/Google';
-import Bubble from '../.././assets/Bubble.png';
-import left from '../.././assets/left_vector.svg';
+import Bubble from 'assets/Bubble.png';
+import { ReactComponent as BackIcon } from 'assets/back-icon.svg';
 import { useNavigate } from 'react-router-dom';
 import { BREAK_POINT } from 'constants/style';
 
 const Login = () => {
   const nav = useNavigate();
-  const [width, setWidth] = useState<number>(window.innerWidth);
-  const mobile_size = Number(BREAK_POINT.MOBILE.replaceAll(/[a-z]/gi, ''));
-  useEffect(() => {
-    window.onresize = () => {
-      setWidth(window.innerWidth);
-    };
-  }, [width]);
 
   return (
     <Container>
-      <BackBtn>
-        <img src={left} onClick={() => nav('/')} />
+      <BackBtn onClick={() => nav('/')}>
+        <BackIcon width="16" height="30" stroke="#414C38" strokeWidth="2" />
       </BackBtn>
       <Content>
         <BubbleBox>

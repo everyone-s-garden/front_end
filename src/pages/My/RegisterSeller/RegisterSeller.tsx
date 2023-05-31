@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import addIcon from 'assets/my/register/add-icon.svg';
-import Form from './Form';
-import delete_icon from 'assets/delete_icon.png';
 import { BREAK_POINT } from 'constants/style';
-import customAxios from 'utils/token';
-import { IFormData, IImage } from './type';
+import Form from './Form';
+import addIcon from 'assets/my/register/add-icon.svg';
+import delete_icon from 'assets/delete_icon.png';
 import { getImages } from 'utils/getImages';
+import { IFormData, IImage } from './type';
 
 const RegisterSeller = () => {
   const [images, setImages] = useState<IImage[]>([]);

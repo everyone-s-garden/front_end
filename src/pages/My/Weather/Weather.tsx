@@ -32,13 +32,15 @@ function Weather() {
     setIsLoading(false);
   };
 
-  // const getWeatherData = async () => {
-  //   console.log(await WeatherAPI.getAllWeather());
-  // };
+  const getWeatherData = async () => {
+    const data = await WeatherAPI.getAllWeather();
+    // const data = await WeatherAPI.getWeeklyWeather(37.545593, 127.100706);
+    console.log(data);
+  };
 
-  // useEffect(() => {
-  //   getWeatherData();
-  // }, []);
+  useEffect(() => {
+    // getWeatherData();
+  }, []);
 
   return (
     <Container>

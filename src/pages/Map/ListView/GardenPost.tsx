@@ -39,7 +39,7 @@ function GardenPost({ id, name, price, image, status = 0 }: GardenPostProps) {
         </Status>
         <Title onClick={() => setSelectedGarden(id)}>{name.trim()}</Title>
         <Value>8평</Value>
-        <Value>{price === 0 ? `평당 ${price}원` : '무료'}</Value>
+        <Value>{price !== 0 ? `평당 ${price.toLocaleString('ko-KR')}원` : '무료'}</Value>
       </InfoDiv>
     </Post>
   );

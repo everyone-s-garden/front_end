@@ -6,11 +6,11 @@ import { BREAK_POINT, COLOR } from 'constants/style';
 import testImg from 'assets/garden-image1.jpg';
 import btnIcon1 from 'assets/my/my-garden-btn-icon1.svg';
 import btnIcon2 from 'assets/my/my-garden-btn-icon2.svg';
-import menuIcon from 'assets/my/three-dot-icon.svg';
+import { ReactComponent as MenuIcon } from 'assets/three-dot-icon.svg';
 
 const MyHome = () => {
   const nav = useNavigate();
-  const [hasMyGarden] = useState(false);
+  const [hasMyGarden] = useState(true);
   const [isGardenMenuOpen, setIsGardenMenuOpen] = useState<boolean>(false);
 
   return (
@@ -22,9 +22,9 @@ const MyHome = () => {
             <GardenImage src={testImg} alt="텃밭 이미지" />
             <GardenTitle>유미애님의 텃밭</GardenTitle>
 
-            <MenuIcon onClick={() => setIsGardenMenuOpen(!isGardenMenuOpen)}>
-              <img src={menuIcon} alt="메뉴" />
-            </MenuIcon>
+            <MenuWrapper onClick={() => setIsGardenMenuOpen(!isGardenMenuOpen)}>
+              <MenuIcon width="3" height="18" fill="#FFFFFF" />
+            </MenuWrapper>
             <MenuDropdown isOpen={isGardenMenuOpen}>
               <DropDownBtn>수정하기</DropDownBtn>
               <DropDownBtn>삭제하기</DropDownBtn>
@@ -110,7 +110,7 @@ const GardenTitle = styled.h2`
   font-weight: 500;
 `;
 
-const MenuIcon = styled.button`
+const MenuWrapper = styled.button`
   position: absolute;
   top: 20px;
   right: 24px;

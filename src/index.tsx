@@ -13,12 +13,13 @@ import Map from './pages/Map/Map';
 import Login from './pages/Login/Login';
 import Mypage from 'pages/My/My';
 import Token from 'pages/Login/Kakao/token/token';
-import RegisterUser from 'pages/register_user/RegisterUser';
-import RegisterSeller from 'pages/register_seller/RegisterSeller';
+import RegisterUser from 'pages/My/RegisterUser/RegisterUser';
+import RegisterSeller from 'pages/My/RegisterSeller/RegisterSeller';
 import MyHome from 'pages/My/AfterLogin/MyHome';
 import Like from 'pages/My/LikePosts/LikePosts';
 import Recent from 'pages/My/RecentPosts/RecentPosts';
 import MyPost from 'pages/My/MyPosts/MyPosts';
+import PostDetail from 'pages/My/PostDetail/PostDetail';
 
 const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
           {
             path: 'mypost',
             element: <MyPost />,
+          },
+          {
+            path: ':postId',
+            element: <PostDetail />,
           },
         ],
       },

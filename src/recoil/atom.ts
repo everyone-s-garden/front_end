@@ -28,7 +28,7 @@ export const searchRegionAtom = atom<string>({
 });
 export const isExpandAtom = atom<boolean>({
   key: 'isExpand',
-  default: true,
+  default: false,
 });
 export const gardensAtom = atom<GardenData[]>({
   key: 'gardens',

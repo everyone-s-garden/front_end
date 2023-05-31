@@ -5,12 +5,11 @@ import { useRecoilState } from 'recoil';
 
 import { COLOR, FONT_WEIGHT } from 'constants/style';
 import { isReportOpenAtom, selectedGardenIdAtom } from 'recoil/atom';
-import ImageSlider from './ImageSlider';
+import ImageSlider from 'components/ImageSlider';
+import { ReactComponent as BackIcon } from 'assets/back-icon.svg';
 import * as animationData from 'assets/like-animation.json';
-import { GardenAPI } from 'api/GardenAPI';
-import arrowIcon from 'assets/back-icon.svg';
 import reportIcon from 'assets/map/report-icon.svg';
-import ReportModal from 'components/Modal/ReportModal';
+import { GardenAPI } from 'api/GardenAPI';
 
 function GardenDetail() {
   const animationRef = useRef<Player>(null);
@@ -23,6 +22,8 @@ function GardenDetail() {
     'https://picsum.photos/id/239/800/600',
   ]);
   // const [images, setImages] = useState([]);
+
+  let price = 16000;
 
   const fetchGardenData = async () => {
     if (!selectedGarden) return;
@@ -43,7 +44,7 @@ function GardenDetail() {
     <DetailDiv>
       <ImageSlider images={images} />
       <BackBtn onClick={() => setSelectedGarden(null)}>
-        <img src={arrowIcon} alt="뒤로가기"></img>
+        <BackIcon width="8" height="15" stroke="#FFFFFF" strokeWidth="2" />
       </BackBtn>
 
       <Body>
@@ -52,7 +53,7 @@ function GardenDetail() {
           <Key>신청기간</Key> 2023. 04. 20 ~ 04. 30
         </Row>
         <Row>
-          <Key>가격</Key> 1구획 당 16,000원
+          <Key>가격</Key> {price !== 0 ? `평당 ${price.toLocaleString('ko-KR')}원` : '무료'}
         </Row>
         <Row>
           <Key>면적</Key> 16.5㎡(9평)
@@ -191,7 +192,7 @@ const ZzimBtn = styled.button`
   font-weight: 400;
   color: ${COLOR.ORNAGE};
   border: 1px solid ${COLOR.ORNAGE};
-  border-radius: 15px;
+  border-radius: 6px;
   background-color: ${COLOR.BACKGROUND};
   transition: all 0.2s;
 `;
@@ -202,7 +203,7 @@ const ApplyBtn = styled.button`
   font-size: 16px;
   font-weight: 400;
   border: 1px solid #86bf60;
-  border-radius: 15px;
+  border-radius: 6px;
   color: ${COLOR.BACKGROUND};
   background-color: #86bf60;
   transition: all 0.2s;

@@ -7,15 +7,17 @@ import { BREAK_POINT, COLOR, FONT_WEIGHT } from '../constants/style';
 import { isFeedbackOpenAtom, isLoginAtom, isReportOpenAtom } from 'recoil/atom';
 import { getItem } from 'utils/session';
 import ReportModal from './Modal/ReportModal';
+import UserFeedbackModal from './Modal/UserFeedbackModal';
 import logoImg from 'assets/logo-horizon.svg';
 import mapImg from 'assets/map-icon.svg';
 import homiImg from 'assets/homi-icon.svg';
-import left_mobile from '../assets/left_vector_mobile.svg';
-import UserFeedbackModal from './Modal/UserFeedbackModal';
+import { ReactComponent as BackIcon } from 'assets/back-icon.svg';
+import { useNavermaps } from 'react-naver-maps';
 
 const Nav = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const navermaps = useNavermaps();
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
   const [isReportOpen, setIsReportOpen] = useRecoilState(isReportOpenAtom);
   const [isFeedbackOpen, setIsFeedbackOpen] = useRecoilState(isFeedbackOpenAtom);
@@ -80,7 +82,9 @@ const Nav = () => {
         </Navbar>
 
         <MobileNav isMainPage={isMainPage} isMapPage={isMapPage}>
-          <BackIcon src={left_mobile} onClick={() => navigate(getBackNavURL())} />
+          <button onClick={() => navigate(getBackNavURL())}>
+            <BackIcon width="11" height="20" stroke="#BEC8B3" strokeWidth="2" />
+          </button>
 
           {isMapPage ? (
             <RegionSearchInput placeholder="지역명 검색" />
@@ -103,7 +107,7 @@ const Nav = () => {
       <UserFeedbackModal isOpen={isFeedbackOpen} setIsOpen={setIsFeedbackOpen} />
 
       <Main url={location.pathname}>
-        <Outlet />
+        <Outlet context={{ navermaps }} />
       </Main>
     </>
   );
@@ -280,10 +284,6 @@ const MobileNav = styled.div<{ isMainPage: boolean; isMapPage: boolean }>`
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     display: none;
   }
-`;
-
-const BackIcon = styled.img`
-  cursor: pointer;
 `;
 
 const NavTitle = styled.div`
