@@ -35,6 +35,7 @@ const Form = ({ image }: IProps) => {
           <Input placeholder="검색시 자동으로 불러와져요" disabled />
         </FormItem>
 
+        <Notification>직접 입력해주세요</Notification>
         <FormItem>
           <ItemTag required>기간</ItemTag>
           <DateContainer>
@@ -49,7 +50,7 @@ const Form = ({ image }: IProps) => {
             </DateInputBox>
             <DateInputBox>
               사용 종료일
-              <DateInput {...register('end')} placeholder="yyyy.mm.dd" type="text" />
+              <DateInput {...register('end')} placeholder="yyyy.mm.dd" type="text" onChange={e => formatDateInput(e)} />
             </DateInputBox>
           </DateContainer>
         </FormItem>
@@ -94,6 +95,10 @@ const ItemTag = styled.div<{ required?: boolean }>`
     content: '*';
     color: #ff6a00;
   }
+
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: 80px;
+  }
 `;
 
 const Input = styled.input`
@@ -110,6 +115,10 @@ const Input = styled.input`
   ::placeholder {
     color: #afafaf;
   }
+
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    font-size: 14px;
+  }
 `;
 
 const SearchIcon = styled.img`
@@ -124,18 +133,30 @@ const SearchIcon = styled.img`
   }
 `;
 
+const Notification = styled.div`
+  margin-bottom: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  color: #afafaf;
+  font-size: 14px;
+  font-weight: 400;
+`;
+
 const DateContainer = styled.div`
   width: 100%;
   display: flex;
-  column-gap: 15px;
+  column-gap: 40px;
+
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    column-gap: 15px;
+  }
 `;
 
 const DateInputBox = styled.div`
   padding: 10px 14px;
   padding-bottom: 14px;
   flex-grow: 1;
-  min-width: 90px;
-  max-width: 140px;
   height: 64px;
   background-color: #f0f0f0;
   border-radius: 12px;
@@ -145,10 +166,6 @@ const DateInputBox = styled.div`
   color: #afafaf;
   font-size: 14px;
   font-weight: 400;
-
-  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    width: 123px;
-  }
 `;
 
 const DateInput = styled.input`

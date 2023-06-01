@@ -6,11 +6,13 @@ import { BREAK_POINT, COLOR } from 'constants/style';
 import testImg from 'assets/garden-image1.jpg';
 import btnIcon1 from 'assets/my/my-garden-btn-icon1.svg';
 import btnIcon2 from 'assets/my/my-garden-btn-icon2.svg';
+import btnIcon3 from 'assets/my/my-garden-btn-icon3.svg';
+import btnIcon4 from 'assets/my/my-garden-btn-icon4.svg';
 import { ReactComponent as MenuIcon } from 'assets/three-dot-icon.svg';
 
 const MyHome = () => {
   const nav = useNavigate();
-  const [hasMyGarden] = useState(true);
+  const [hasMyGarden] = useState(false);
   const [isGardenMenuOpen, setIsGardenMenuOpen] = useState<boolean>(false);
 
   return (
@@ -34,14 +36,29 @@ const MyHome = () => {
       )}
 
       <ContentWrapper hasMyGarden={hasMyGarden}>
-        <Content onClick={() => nav('/my/garden-register-user')}>
-          <ImgBox src={btnIcon1} alt="버튼 아이콘" />
-          <span>나의 텃밭 등록하기</span>
-        </Content>
-        <Content onClick={() => nav('/my/garden-register-seller')}>
-          <ImgBox src={btnIcon2} alt="버튼 아이콘" />
-          <span>판매하는 밭 등록하기</span>
-        </Content>
+        {!hasMyGarden ? (
+          <>
+            <Content onClick={() => nav('/my/garden-register-user')}>
+              <ImgBox src={btnIcon1} alt="버튼 아이콘" />
+              <span>나의 텃밭 등록하기</span>
+            </Content>
+            <Content onClick={() => nav('/my/garden-register-seller')}>
+              <ImgBox src={btnIcon2} alt="버튼 아이콘" />
+              <span>판매하는 밭 등록하기</span>
+            </Content>
+          </>
+        ) : (
+          <>
+            <Content>
+              <ImgBox src={btnIcon3} alt="버튼 아이콘" />
+              <span>양주 공공 텃밭 이용중</span>
+            </Content>
+            <Content>
+              <ImgBox src={btnIcon4} alt="버튼 아이콘" />
+              <span>3개월 2일 남음</span>
+            </Content>
+          </>
+        )}
       </ContentWrapper>
     </Container>
   );
@@ -188,6 +205,10 @@ const Content = styled.button`
   span {
     font-size: 16px;
     font-weight: 500;
+
+    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+      font-size: 14px;
+    }
   }
 `;
 
