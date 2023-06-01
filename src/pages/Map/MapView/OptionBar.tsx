@@ -52,7 +52,7 @@ const Container = styled.div`
 `;
 
 const Option = styled.div`
-  z-index: 100;
+  z-index: 1;
   padding-top: 10px;
   position: relative;
   flex-grow: 1;

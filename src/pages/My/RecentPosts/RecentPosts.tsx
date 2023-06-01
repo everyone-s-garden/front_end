@@ -8,8 +8,8 @@ import NoPost from '../NoPost';
 
 const RecentPosts = () => {
   const nav = useNavigate();
-  const [RecentList] = useState([1, 2, 3, 4, 5]);
-  // const [RecentList] = useState([]);
+  // const [RecentList] = useState([1, 2, 3, 4, 5]);
+  const [RecentList] = useState([]);
 
   const renderPosts = RecentList.map(i => (
     <PostContainer key={i}>

@@ -57,6 +57,7 @@ const RegisterUser = () => {
 export default RegisterUser;
 
 const Container = styled.div`
+  padding: 20px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -64,6 +65,7 @@ const Container = styled.div`
 
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     padding-bottom: 40px;
+    width: 100vw;
     height: calc(100vh - 100px);
   }
 `;

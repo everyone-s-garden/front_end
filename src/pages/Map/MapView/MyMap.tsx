@@ -58,6 +58,7 @@ const MyMap = ({ isLoading, setIsLoading, setIsInitializing, map, setMap }: MyMa
 
   useEffect(() => {
     setGardens(data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   return (
@@ -65,6 +66,8 @@ const MyMap = ({ isLoading, setIsLoading, setIsInitializing, map, setMap }: MyMa
       <NaverMap
         ref={setMap}
         defaultCenter={new navermaps.LatLng(37.3595704, 127.105399)}
+        mapDataControl={false}
+        scaleControl={false}
         defaultZoom={12}
         zoomControl
         zoomControlOptions={{

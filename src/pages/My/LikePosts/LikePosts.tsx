@@ -5,12 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import { BREAK_POINT } from 'constants/style';
 import Post from '../Post';
 import NoPost from '../NoPost';
-import closeIcon from 'assets/my/x-icon.svg';
+import closeIcon from 'assets/x-icon.svg';
 
 const LikePosts = () => {
   const nav = useNavigate();
-  const [likeList] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-  // const [likeList] = useState([]);
+  // const [likeList] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  const [likeList] = useState([]);
 
   const deleteLike = () => {};
 
