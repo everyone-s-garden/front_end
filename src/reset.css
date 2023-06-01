@@ -1,40 +1,30 @@
 @charset "utf-8";
-/* 여백 초기화 */
-body,
-div,
-ul,
-li,
-dl,
-dd,
-dt,
-ol,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-input,
-fieldset,
-legend,
-p,
-select,
-table,
-th,
-td,
-tr,
-textarea,
-button,
-form,
-figure,
-figcaption {
+/* Pretendard 폰트 가져오기 */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/variable/pretendardvariable.css');
+
+/* 초기 세팅 */
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  color: #414c38;
+  font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue',
+    'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', sans-serif;
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
 }
 
 /* a 링크 초기화 */
 a {
-  color: #555;
+  color: #222a1a;
   text-decoration: none;
 }
 
@@ -45,8 +35,7 @@ textarea,
 select,
 button,
 table {
-  color: #555;
-  font-size: 14px;
+  color: #222a1a;
 }
 
 /* 폰트 스타일 초기화 */
@@ -76,6 +65,11 @@ h6 {
 /* 버튼 초기화 */
 button {
   border: 0;
+  cursor: pointer;
+  background-color: transparent;
+}
+button:focus {
+  outline: none;
 }
 
 /* input */

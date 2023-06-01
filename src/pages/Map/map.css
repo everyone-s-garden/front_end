@@ -1,0 +1,68 @@
+.marker {
+  width: 40px;
+  height: 67px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+}
+
+.marker:hover {
+  transform: translateY(-4px);
+  transition: all 0.5s;
+}
+
+.marker_icon {
+  cursor: pointer;
+}
+
+.cluster_marker1 {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: white;
+  background-color: rgba(255, 215, 100, 0.8);
+  border-radius: 50%;
+}
+
+.cluster_marker1:hover {
+  background-color: rgba(255, 215, 100, 1);
+  transform: scale(1.1);
+  transition: all 0.2s ease-in;
+}
+
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  background-color: #f97700;
+  width: 20px;
+  height: 20px;
+  opacity: 0;
+  animation: scaleIn 2s infinite ease-in;
+}
+
+.innerCircle {
+  position: absolute;
+  border-radius: 50%;
+  background-color: #f97700;
+  box-shadow: 0 0 0 2px #fff inset;
+  width: 20px;
+  height: 20px;
+  animation: none;
+  cursor: grab;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(1, 1);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(2, 2);
+    opacity: 0;
+  }
+}
