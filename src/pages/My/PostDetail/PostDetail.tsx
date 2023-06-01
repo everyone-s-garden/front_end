@@ -50,6 +50,7 @@ function PostDetail() {
 
   useEffect(() => {
     console.log(fetchGardenData());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

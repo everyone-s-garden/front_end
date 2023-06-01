@@ -37,7 +37,7 @@ const NotiContainer = styled.div<{ isOpen: boolean }>`
   z-index: 1000;
   margin: auto;
   padding: 16px 30px;
-  bottom: 30px;
+  bottom: 100px;
   left: 50%;
   transform: translate(-50%, 0%);
   display: flex;

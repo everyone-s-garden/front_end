@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-
-import testImg from 'assets/garden-image1.jpg';
-import { BREAK_POINT, FONT_WEIGHT } from 'constants/style';
 import { useNavigate } from 'react-router-dom';
 
+import { BREAK_POINT, FONT_WEIGHT } from 'constants/style';
+import noImgIcon from 'assets/noImg-icon.svg';
+
 interface Idata {
-  data: { content: any; garden: IGarden; gardenId: number; gardenPostId: number; images: []; title: string };
+  data: { content: any; garden: IGarden; gardenId: number; gardenPostId: number; images: string[]; title: string };
 }
 
 interface IGarden {
@@ -24,7 +24,13 @@ function Post({ data }: Idata) {
   let price = 15000;
   return (
     <PostContainer onClick={() => nav(`/my/${data.gardenId}`)}>
-      <Image src={testImg} alt="텃밭 이미지"></Image>
+      <ImageContainer>
+        {data.images.length === 0 ? (
+          <EmptyImg src={noImgIcon} alt="이미지 없음" />
+        ) : (
+          <Image src={data.images[0]} alt="텃밭 이미지" />
+        )}
+      </ImageContainer>
 
       <InfoDiv>
         <Status>
@@ -58,6 +64,21 @@ const PostContainer = styled.div`
       display: flex;
     }
   }
+`;
+
+const ImageContainer = styled.div`
+  height: 100%;
+  display: flex;
+  background-color: #f0fbe4;
+  transition: transform 0.4s ease-in-out;
+`;
+
+const EmptyImg = styled.img`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
 `;
 
 const Image = styled.img`
