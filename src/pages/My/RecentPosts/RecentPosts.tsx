@@ -37,7 +37,7 @@ const RecentPosts = () => {
 
   useEffect(() => {
     init();
-  }, [recentList]);
+  }, []);
   const renderPosts = recentList.map(i => (
     <PostContainer key={i.gardenId}>
       <Post data={i} />

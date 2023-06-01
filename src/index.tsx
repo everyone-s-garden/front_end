@@ -13,13 +13,13 @@ import Map from './pages/Map/Map';
 import Login from './pages/Login/Login';
 import Mypage from 'pages/My/My';
 import Token from 'pages/Login/Kakao/token/token';
-import RegisterUser from 'pages/register_user/RegisterUser';
-import RegisterSeller from 'pages/register_seller/RegisterSeller';
+import RegisterUser from 'pages/My/RegisterUser/RegisterUser';
+import RegisterSeller from 'pages/My/RegisterSeller/RegisterSeller';
 import MyHome from 'pages/My/AfterLogin/MyHome';
 import Like from 'pages/My/LikePosts/LikePosts';
 import Recent from 'pages/My/RecentPosts/RecentPosts';
 import MyPost from 'pages/My/MyPosts/MyPosts';
-import Detail from 'pages/My/Detail/Detail';
+import PostDetail from 'pages/My/PostDetail/PostDetail';
 
 const router = createBrowserRouter([
   {
@@ -51,6 +51,14 @@ const router = createBrowserRouter([
             element: <RegisterSeller />,
           },
           {
+            path: 'garden-register-user',
+            element: <RegisterUser />,
+          },
+          {
+            path: 'garden-register-seller',
+            element: <RegisterSeller />,
+          },
+          {
             path: 'like',
             element: <Like />,
           },
@@ -63,8 +71,8 @@ const router = createBrowserRouter([
             element: <MyPost />,
           },
           {
-            path: 'mypost/:id',
-            element: <Detail />,
+            path: ':postId',
+            element: <PostDetail />,
           },
         ],
       },

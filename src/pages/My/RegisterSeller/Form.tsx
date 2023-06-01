@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { BREAK_POINT } from 'constants/style';
 import { useForm } from 'react-hook-form';
-import icon from '../../assets/search_icon.svg';
+import icon from 'assets/search_icon.svg';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import handleComplete from 'utils/PostCode';
 import customAxios from 'utils/token';

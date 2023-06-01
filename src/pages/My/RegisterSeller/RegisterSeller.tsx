@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import addIcon from 'assets/my/register/add-icon.svg';
-import Form from './Form';
-import delete_icon from 'assets/delete_icon.png';
+
 import { BREAK_POINT } from 'constants/style';
-import { IFormData, IImage, ILen, IUrl } from './type';
+import Form from './Form';
+import addIcon from 'assets/my/register/add-icon.svg';
+import delete_icon from 'assets/delete_icon.png';
 import { getImages } from 'utils/getImages';
-import { ILocation } from './type';
-import { useNavigate } from 'react-router-dom';
+import { IFormData, IImage, ILocation, IUrl, ILen } from './type';
 
 const RegisterSeller = () => {
   const [images, setImages] = useState<IImage[]>([]);

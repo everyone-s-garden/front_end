@@ -1,20 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { BREAK_POINT } from 'constants/style';
-import { isLoginAtom } from 'recoil/atom';
+import { isFeedbackOpenAtom, isLoginAtom } from 'recoil/atom';
 import Weather from '../Weather/Weather';
 import heartIcon from 'assets/my/menu/heart-icon.svg';
 import clockIcon from 'assets/my/menu/clock-icon.svg';
 import docIcon from 'assets/my/menu/doc-icon.svg';
-import illust from 'assets/my/menu/call-illust.svg';
+import illust1 from 'assets/my/menu/call-illust.svg';
+import illust2 from 'assets/my/menu/book-illust.svg';
 
 function Menu() {
   const location = useLocation();
   const navigate = useNavigate();
   const isLogin: boolean = useRecoilValue(isLoginAtom);
+  const [_, setIsModalOpen] = useRecoilState(isFeedbackOpenAtom);
 
   return (
     <MenuWrapper url={location.pathname}>
@@ -37,20 +39,21 @@ function Menu() {
             </NavBtn>
           </MenuNavList>
 
-          <YellowBtn>
+          <YellowBtn onClick={() => setIsModalOpen(true)}>
             <BtnTextBox>
               <span>제안사항이 있나요?</span>
               <span>유저의 소리함</span>
             </BtnTextBox>
-            <img src={illust} alt="일러스트" />
+            <img src={illust1} alt="일러스트" />
           </YellowBtn>
         </>
       )}
       <YellowBtn>
         <BtnTextBox>
-          <span>지금 시기에 맞는 작물 심기</span>
+          <span>지금 키우기 좋은</span>
           <span>월별 추천 작물</span>
         </BtnTextBox>
+        <img src={illust2} alt="일러스트" />
       </YellowBtn>
 
       <Weather />
@@ -139,7 +142,8 @@ const NavIcon = styled.img<{ active: boolean }>`
 
 const YellowBtn = styled.button`
   margin-bottom: 15px;
-  padding: 14px 20px;
+  padding: 14px 18px;
+  padding-right: 12px;
   width: 100%;
   height: 65px;
   display: flex;

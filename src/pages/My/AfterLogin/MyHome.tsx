@@ -6,13 +6,15 @@ import { BREAK_POINT, COLOR } from 'constants/style';
 import testImg from 'assets/garden-image1.jpg';
 import btnIcon1 from 'assets/my/my-garden-btn-icon1.svg';
 import btnIcon2 from 'assets/my/my-garden-btn-icon2.svg';
-import menuIcon from 'assets/my/three-dot-icon.svg';
-import customAxios from 'utils/token';
+import btnIcon3 from 'assets/my/my-garden-btn-icon3.svg';
+import btnIcon4 from 'assets/my/my-garden-btn-icon4.svg';
+import { ReactComponent as MenuIcon } from 'assets/three-dot-icon.svg';
 import { AxiosResponse } from 'axios';
+import customAxios from 'utils/token';
 
 const MyHome = () => {
   const nav = useNavigate();
-  const [hasMyGarden, setHasMyGarden] = useState([1]);
+  const [hasMyGarden, setHasMyGarden] = useState([]);
   const [isGardenMenuOpen, setIsGardenMenuOpen] = useState<boolean>(false);
   const init = async () => {
     const res: AxiosResponse = await customAxios.get('/v1/garden/using');
@@ -37,9 +39,9 @@ const MyHome = () => {
             <GardenImage src={testImg} alt="텃밭 이미지" />
             <GardenTitle>유미애님의 텃밭</GardenTitle>
 
-            <MenuIcon onClick={() => setIsGardenMenuOpen(!isGardenMenuOpen)}>
-              <img src={menuIcon} alt="메뉴" />
-            </MenuIcon>
+            <MenuWrapper onClick={() => setIsGardenMenuOpen(!isGardenMenuOpen)}>
+              <MenuIcon width="3" height="18" fill="#FFFFFF" />
+            </MenuWrapper>
             <MenuDropdown isOpen={isGardenMenuOpen}>
               <DropDownBtn>수정하기</DropDownBtn>
               <DropDownBtn onClick={myGardenDelete}>삭제하기</DropDownBtn>
@@ -49,14 +51,29 @@ const MyHome = () => {
       )}
 
       <ContentWrapper hasMyGarden={hasMyGarden.length !== 0}>
-        <Content onClick={() => nav('/my/garden-register-user')}>
-          <ImgBox src={btnIcon1} alt="버튼 아이콘" />
-          <span>나의 텃밭 등록하기</span>
-        </Content>
-        <Content onClick={() => nav('/my/garden-register-seller')}>
-          <ImgBox src={btnIcon2} alt="버튼 아이콘" />
-          <span>판매하는 밭 등록하기</span>
-        </Content>
+        {hasMyGarden.length === 0 ? (
+          <>
+            <Content onClick={() => nav('/my/garden-register-user')}>
+              <ImgBox src={btnIcon1} alt="버튼 아이콘" />
+              <span>나의 텃밭 등록하기</span>
+            </Content>
+            <Content onClick={() => nav('/my/garden-register-seller')}>
+              <ImgBox src={btnIcon2} alt="버튼 아이콘" />
+              <span>판매하는 밭 등록하기</span>
+            </Content>
+          </>
+        ) : (
+          <>
+            <Content>
+              <ImgBox onClick={() => nav('/my/garden-register-user')} src={btnIcon3} alt="버튼 아이콘" />
+              <span>양주 공공 텃밭 이용중</span>
+            </Content>
+            <Content>
+              <ImgBox onClick={() => nav('/my/garden-register-seller')} src={btnIcon4} alt="버튼 아이콘" />
+              <span>3개월 2일 남음</span>
+            </Content>
+          </>
+        )}
       </ContentWrapper>
     </Container>
   );
@@ -125,7 +142,7 @@ const GardenTitle = styled.h2`
   font-weight: 500;
 `;
 
-const MenuIcon = styled.button`
+const MenuWrapper = styled.button`
   position: absolute;
   top: 20px;
   right: 24px;
@@ -203,6 +220,10 @@ const Content = styled.button`
   span {
     font-size: 16px;
     font-weight: 500;
+
+    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+      font-size: 14px;
+    }
   }
 `;
 

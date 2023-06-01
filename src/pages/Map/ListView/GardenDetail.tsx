@@ -3,17 +3,29 @@ import styled from 'styled-components';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useRecoilState } from 'recoil';
 
-import { selectedGardenIdAtom } from 'recoil/atom';
 import { COLOR, FONT_WEIGHT } from 'constants/style';
-import ImageSlider from './ImageSlider';
-import arrowIcon from 'assets/back-icon.svg';
+import { isReportOpenAtom, reportPostIdAtom, selectedGardenIdAtom } from 'recoil/atom';
+import ImageSlider from 'components/ImageSlider';
+import { ReactComponent as BackIcon } from 'assets/back-icon.svg';
 import * as animationData from 'assets/like-animation.json';
+import reportIcon from 'assets/map/report-icon.svg';
 import { GardenAPI } from 'api/GardenAPI';
 
 function GardenDetail() {
   const animationRef = useRef<Player>(null);
-  const [like, isLike] = useState<boolean>(false);
   const [selectedGarden, setSelectedGarden] = useRecoilState(selectedGardenIdAtom);
+  const [_, setIsModalOpen] = useRecoilState(isReportOpenAtom);
+  const [__, setReportPostId] = useRecoilState(reportPostIdAtom);
+  const [like, isLike] = useState<boolean>(false);
+  const [images, setImages] = useState([
+    'https://picsum.photos/id/237/800/600',
+    'https://picsum.photos/id/238/800/600',
+    'https://picsum.photos/id/239/800/600',
+  ]);
+  // const [images, setImages] = useState([]);
+
+  const postId = 10;
+  let price = 16000;
 
   const fetchGardenData = async () => {
     if (!selectedGarden) return;
@@ -32,9 +44,9 @@ function GardenDetail() {
 
   return (
     <DetailDiv>
-      <ImageSlider />
+      <ImageSlider images={images} />
       <BackBtn onClick={() => setSelectedGarden(null)}>
-        <img src={arrowIcon} alt="뒤로가기"></img>
+        <BackIcon width="8" height="15" stroke="#FFFFFF" strokeWidth="2" />
       </BackBtn>
 
       <Body>
@@ -43,7 +55,7 @@ function GardenDetail() {
           <Key>신청기간</Key> 2023. 04. 20 ~ 04. 30
         </Row>
         <Row>
-          <Key>가격</Key> 1구획 당 16,000원
+          <Key>가격</Key> {price !== 0 ? `평당 ${price.toLocaleString('ko-KR')}원` : '무료'}
         </Row>
         <Row>
           <Key>면적</Key> 16.5㎡(9평)
@@ -63,18 +75,27 @@ function GardenDetail() {
       </Body>
 
       <Buttons>
-        <ZzimButton onClick={play}>
+        <ReportBtn
+          onClick={() => {
+            setIsModalOpen(true);
+            setReportPostId(Number(postId));
+          }}
+        >
+          <img src={reportIcon} />
+          신고하기
+        </ReportBtn>
+        <ZzimBtn onClick={play}>
           <Player
             ref={animationRef}
             autoplay={false}
             loop={false}
             keepLastFrame={true}
             src={animationData}
-            style={{ width: 50, height: 50 }}
+            style={{ width: 34, marginRight: 4, marginBottom: 6, marginLeft: 14 }}
           />
           찜하기
-        </ZzimButton>
-        <ApplyButton>신청하기</ApplyButton>
+        </ZzimBtn>
+        <ApplyBtn>신청하기</ApplyBtn>
       </Buttons>
     </DetailDiv>
   );
@@ -147,47 +168,50 @@ const Label = styled.button`
 
 const Buttons = styled.div`
   margin-top: auto;
-  padding: 20px;
+  padding: 20px 40px;
+  position: relative;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: flex-end;
-  column-gap: 20px;
   width: 100%;
   box-shadow: 0 -20px 20px 20px white;
 `;
 
-const ZzimButton = styled.button`
+const ReportBtn = styled.button`
+  position: absolute;
+  top: -10px;
+  right: 45px;
+  width: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 400;
+  color: #afafaf;
+`;
+
+const ZzimBtn = styled.button`
   width: 120px;
   height: 44px;
   display: flex;
   align-items: center;
-  font-size: 1.1rem;
-  font-weight: ${FONT_WEIGHT.SEMIBOLD};
+  font-size: 16px;
+  font-weight: 400;
   color: ${COLOR.ORNAGE};
   border: 1px solid ${COLOR.ORNAGE};
-  border-radius: 15px;
+  border-radius: 6px;
   background-color: ${COLOR.BACKGROUND};
   transition: all 0.2s;
-
-  /* &:hover {
-    color: ${COLOR.BACKGROUND};
-    background-color: ${COLOR.GREEN};
-  } */
 `;
 
-const ApplyButton = styled.button`
+const ApplyBtn = styled.button`
   width: 160px;
   height: 44px;
-  font-size: 1.1rem;
-  font-weight: ${FONT_WEIGHT.SEMIBOLD};
+  font-size: 16px;
+  font-weight: 400;
   border: 1px solid #86bf60;
-  border-radius: 15px;
+  border-radius: 6px;
   color: ${COLOR.BACKGROUND};
   background-color: #86bf60;
   transition: all 0.2s;
-
-  /* &:hover {
-    color: ${COLOR.GREEN};
-    background-color: ${COLOR.BACKGROUND};
-  } */
 `;
