@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
 
+import { NotiContentAtom } from 'recoil/atom';
 import Modal from 'components/Modal/Modal';
 import smileIllust from 'assets/modal/smile.svg';
 
@@ -10,7 +12,13 @@ interface UserFeedbackModalProps {
 }
 
 function UserFeedbackModal({ isOpen, setIsOpen }: UserFeedbackModalProps) {
+  const [_, setContent] = useRecoilState(NotiContentAtom);
   const [comment, setComment] = useState<string>('');
+
+  const onSubmit = () => {
+    setIsOpen(false);
+    setContent('제출되었습니다. 소중한 의견 감사합니다 ♥︎');
+  };
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -26,7 +34,7 @@ function UserFeedbackModal({ isOpen, setIsOpen }: UserFeedbackModalProps) {
           <WordLimit>({comment.length}/1500)</WordLimit>
         </CommentWrapper>
 
-        <SubmitBtn>제출하기</SubmitBtn>
+        <SubmitBtn onClick={onSubmit}>제출하기</SubmitBtn>
       </ModalContent>
     </Modal>
   );

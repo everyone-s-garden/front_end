@@ -13,6 +13,7 @@ import mapImg from 'assets/map-icon.svg';
 import homiImg from 'assets/homi-icon.svg';
 import { ReactComponent as BackIcon } from 'assets/back-icon.svg';
 import { useNavermaps } from 'react-naver-maps';
+import Notification from './Notification';
 
 const Nav = () => {
   const navigate = useNavigate();
@@ -105,6 +106,7 @@ const Nav = () => {
 
       <ReportModal isOpen={isReportOpen} setIsOpen={setIsReportOpen} />
       <UserFeedbackModal isOpen={isFeedbackOpen} setIsOpen={setIsFeedbackOpen} />
+      <Notification />
 
       <Main url={location.pathname}>
         <Outlet context={{ navermaps }} />

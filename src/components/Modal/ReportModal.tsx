@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { COLOR } from 'constants/style';
-import { reportPostIdAtom } from 'recoil/atom';
+import { NotiContentAtom, reportPostIdAtom } from 'recoil/atom';
 import Modal from 'components/Modal/Modal';
 
 interface ReportModalProps {
@@ -13,6 +13,7 @@ interface ReportModalProps {
 
 function ReportModal({ isOpen, setIsOpen }: ReportModalProps) {
   const postId = useRecoilValue(reportPostIdAtom);
+  const [_, setContent] = useRecoilState(NotiContentAtom);
   const [comment, setComment] = useState<string>('');
   const [isChecked0, setIsChecked0] = useState<boolean>(false);
   const [isChecked1, setIsChecked1] = useState<boolean>(false);
@@ -20,6 +21,11 @@ function ReportModal({ isOpen, setIsOpen }: ReportModalProps) {
   const [isChecked3, setIsChecked3] = useState<boolean>(false);
   const [isChecked4, setIsChecked4] = useState<boolean>(false);
   const [isChecked5, setIsChecked5] = useState<boolean>(false);
+
+  const onSubmit = () => {
+    setIsOpen(false);
+    setContent('신고가 접수되었습니다. 신속하게 처리하겠습니다.');
+  };
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -64,7 +70,7 @@ function ReportModal({ isOpen, setIsOpen }: ReportModalProps) {
           <WordLimit>({comment.length}/800)</WordLimit>
         </CommentWrapper>
 
-        <SubmitBtn onClick={() => console.log(postId)}>제출하기</SubmitBtn>
+        <SubmitBtn onClick={onSubmit}>제출하기</SubmitBtn>
       </ModalContent>
     </Modal>
   );

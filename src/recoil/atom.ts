@@ -3,16 +3,22 @@ import { GardenData } from 'api/type';
 
 // Modal Atoms
 export const isReportOpenAtom = atom<boolean>({
-  key: 'isReportOpenAtom',
+  key: 'isReportOpen',
   default: false,
 });
 export const reportPostIdAtom = atom<number | null>({
-  key: 'reportPostIdAtom',
+  key: 'reportPostId',
   default: null,
 });
 export const isFeedbackOpenAtom = atom<boolean>({
-  key: 'isFeedbackOpenAtom',
+  key: 'isFeedbackOpen',
   default: false,
+});
+
+// Notification Atom
+export const NotiContentAtom = atom<string>({
+  key: 'NotiContent',
+  default: '',
 });
 
 // Login Page Atoms
