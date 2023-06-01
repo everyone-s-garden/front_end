@@ -22,6 +22,9 @@ const onRequest = (config: InternalAxiosRequestConfig): InternalAxiosRequestConf
   } else if (method === 'post') {
     config.timeout = 15000;
     config.headers.Authorization = `Bearer ${replaced_str}`;
+  } else if (method === 'delete') {
+    config.timeout = 15000;
+    config.headers.Authorization = `Bearer ${replaced_str}`;
   }
   return config;
 };

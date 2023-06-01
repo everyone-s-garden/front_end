@@ -13,9 +13,9 @@ import { useNavigate } from 'react-router-dom';
 const Form = ({ images, location, setLocation }: IProps) => {
   const open = useDaumPostcodePopup(`${process.env.REACT_APP_DAUM_API_URL}`);
   const nav = useNavigate();
-  const [price, setPrice] = useState('');
-  const [size, setSize] = useState('');
-  const [contact, setContack] = useState('');
+  const [price, setPrice] = useState<string>('');
+  const [size, setSize] = useState<string>('');
+  const [contact, setContack] = useState<string>('');
   const { handleSubmit, getValues, register, watch } = useForm();
   const [facility, setFacility] = useState({
     toilet: false,
@@ -40,7 +40,6 @@ const Form = ({ images, location, setLocation }: IProps) => {
 
   const uploadField = async () => {
     if (location?.address && location.lat && location.lng) {
-      const uploadImage = images.map(image => image.id);
       const uploadPrice = await uncommaPrice(price);
       const uploadData: IUploadData = {
         name: getValues('name'),
@@ -50,7 +49,7 @@ const Form = ({ images, location, setLocation }: IProps) => {
         address: location?.address,
         latitude: location?.lat,
         longitude: location?.lng,
-        images: uploadImage,
+        images,
       };
       console.log(uploadData);
       const res = await UploadData(uploadData);
@@ -111,11 +110,11 @@ const Form = ({ images, location, setLocation }: IProps) => {
           />
         </InputWrapper>
         <InputWrapper>
-          <Input
+          <SizeInput
             value={size}
             onChange={(e: React.FormEvent<HTMLInputElement>) => setSize(inputPriceFormat(e.currentTarget.value))}
             placeholder="면적(평)"
-            style={{ width: '60px', minWidth: 'initial' }}
+            size={size.length}
           />
           {size !== '' && <span>평</span>}
         </InputWrapper>
@@ -166,6 +165,9 @@ const Form = ({ images, location, setLocation }: IProps) => {
 };
 export default Form;
 
+interface Ilen {
+  size: number;
+}
 const Wrapper = styled.div`
   border: none;
   border-top: 0.5px solid #e1e1e1;
@@ -199,6 +201,26 @@ const Input = styled.input`
     width: 100%;
   }
 `;
+const SizeInput = styled.input<{ size: number }>`
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 20px;
+  border: none;
+  width: ${props => (props.size !== 0 ? `${props.size * 9.3}px` : 'fit-content')};
+  ::placeholder {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 20px;
+    color: #d1d3d7;
+  }
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: 100%;
+  }
+`;
+
 const InputWrapper = styled.div`
   width: 664px;
   padding: 21px 12px;

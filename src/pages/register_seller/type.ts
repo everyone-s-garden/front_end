@@ -38,7 +38,7 @@ export interface IUploadData {
   latitude: string;
   longitude: string;
   contact: string;
-  images: IImage['id'][];
+  images: IImage[];
 }
 export interface ILen {
   len: number;

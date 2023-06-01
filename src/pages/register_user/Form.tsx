@@ -59,7 +59,7 @@ const Form = ({ image }: IProps) => {
             </DateInputBox>
             <DateInputBox>
               사용 종료일
-              <DateInput {...register('end')} placeholder="yyyy.mm.dd" type="text" />
+              <DateInput {...register('end')} onChange={e => formatDateInput(e)} placeholder="yyyy.mm.dd" type="text" />
             </DateInputBox>
           </DateContainer>
         </FormItem>

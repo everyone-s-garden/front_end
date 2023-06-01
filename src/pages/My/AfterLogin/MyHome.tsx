@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,15 +7,30 @@ import testImg from 'assets/garden-image1.jpg';
 import btnIcon1 from 'assets/my/my-garden-btn-icon1.svg';
 import btnIcon2 from 'assets/my/my-garden-btn-icon2.svg';
 import menuIcon from 'assets/my/three-dot-icon.svg';
+import customAxios from 'utils/token';
+import { AxiosResponse } from 'axios';
 
 const MyHome = () => {
   const nav = useNavigate();
-  const [hasMyGarden] = useState(false);
+  const [hasMyGarden, setHasMyGarden] = useState([1]);
   const [isGardenMenuOpen, setIsGardenMenuOpen] = useState<boolean>(false);
+  const init = async () => {
+    const res: AxiosResponse = await customAxios.get('/v1/garden/using');
+    setHasMyGarden(res.data);
+  };
 
+  useEffect(() => {
+    init();
+  }, []);
+
+  const myGardenDelete = async () => {
+    const res: AxiosResponse = await customAxios.delete(`/v1/garden/using/{gardenId}`);
+    console.log(res);
+    if (res.status === 204) nav('/my');
+  };
   return (
     <Container>
-      {hasMyGarden && (
+      {hasMyGarden.length !== 0 && (
         <MyGardenSection>
           <SectionTitle>나의 텃밭</SectionTitle>
           <GardenImgContainer>
@@ -27,13 +42,13 @@ const MyHome = () => {
             </MenuIcon>
             <MenuDropdown isOpen={isGardenMenuOpen}>
               <DropDownBtn>수정하기</DropDownBtn>
-              <DropDownBtn>삭제하기</DropDownBtn>
+              <DropDownBtn onClick={myGardenDelete}>삭제하기</DropDownBtn>
             </MenuDropdown>
           </GardenImgContainer>
         </MyGardenSection>
       )}
 
-      <ContentWrapper hasMyGarden={hasMyGarden}>
+      <ContentWrapper hasMyGarden={hasMyGarden.length !== 0}>
         <Content onClick={() => nav('/my/garden-register-user')}>
           <ImgBox src={btnIcon1} alt="버튼 아이콘" />
           <span>나의 텃밭 등록하기</span>

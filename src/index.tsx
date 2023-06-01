@@ -19,6 +19,7 @@ import MyHome from 'pages/My/AfterLogin/MyHome';
 import Like from 'pages/My/LikePosts/LikePosts';
 import Recent from 'pages/My/RecentPosts/RecentPosts';
 import MyPost from 'pages/My/MyPosts/MyPosts';
+import Detail from 'pages/My/Detail/Detail';
 
 const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
           {
             path: 'mypost',
             element: <MyPost />,
+          },
+          {
+            path: 'mypost/:id',
+            element: <Detail />,
           },
         ],
       },

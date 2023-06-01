@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import testImg from 'assets/garden-image1.jpg';
 import { BREAK_POINT, FONT_WEIGHT } from 'constants/style';
+import { useNavigate } from 'react-router-dom';
 
 interface Idata {
   data: { content: any; garden: IGarden; gardenId: number; gardenPostId: number; images: []; title: string };
@@ -19,8 +20,9 @@ interface IGarden {
   type: string;
 }
 function Post({ data }: Idata) {
+  const nav = useNavigate();
   return (
-    <PostContainer>
+    <PostContainer onClick={() => nav(`/my/mypost/${data.gardenId}`)}>
       <Image src={testImg} alt="텃밭 이미지"></Image>
 
       <InfoDiv>
