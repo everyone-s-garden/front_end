@@ -22,6 +22,9 @@ const onRequest = (config: InternalAxiosRequestConfig): InternalAxiosRequestConf
   } else if (method === 'post') {
     // config.timeout = 15000;
     config.headers.Authorization = `Bearer ${replaced_str}`;
+  } else if (method === 'delete') {
+    config.timeout = 15000;
+    config.headers.Authorization = `Bearer ${replaced_str}`;
   }
   return config;
 };
@@ -37,14 +40,13 @@ const onErrorResponse = (error: AxiosError | Error): Promise<AxiosError> => {
     const { message } = error;
     const { method, url } = error.config as AxiosRequestConfig;
     const { statusText, status } = (error.response as AxiosResponse) ?? {};
-
     switch (status) {
       case 401: {
-        // "Login required"
         break;
       }
       case 403: {
-        // "Permission denied"
+        sessionStorage.clear();
+        window.location.href = '/login';
         break;
       }
       case 404: {
@@ -59,11 +61,6 @@ const onErrorResponse = (error: AxiosError | Error): Promise<AxiosError> => {
         // "Unknown error occurred"
         break;
       }
-    }
-
-    if (status === 401) {
-      // Delete Token & Go To Login Page if you required.
-      removeItem('access_token');
     }
   } else {
     console.log(error);

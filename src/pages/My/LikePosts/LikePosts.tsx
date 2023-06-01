@@ -1,22 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 import { BREAK_POINT } from 'constants/style';
 import Post from '../Post';
 import NoPost from '../NoPost';
-import closeIcon from 'assets/x-icon.svg';
+import closeIcon from 'assets/my/x-icon.svg';
+import customAxios from 'utils/token';
+import { AxiosResponse } from 'axios';
 
 const LikePosts = () => {
   const nav = useNavigate();
-  // const [likeList] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-  const [likeList] = useState([]);
-
+  const [likeList, setLikeList] = useState([]);
+  // const [likeList] = useState([]);
+  const init = async () => {
+    const res: AxiosResponse = await customAxios.get('/v1/garden/like/all');
+    setLikeList(res.data);
+  };
   const deleteLike = () => {};
-
+  useEffect(() => {
+    init();
+  }, [likeList]);
   const renderPosts = likeList.map(i => (
     <PostContainer key={i}>
-      <Post />
+      <Post data={i} />
       <CloseIcon src={closeIcon} alt="close" onClick={deleteLike} />
     </PostContainer>
   ));

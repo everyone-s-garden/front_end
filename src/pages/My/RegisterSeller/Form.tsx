@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { BREAK_POINT } from 'constants/style';
 import { useForm } from 'react-hook-form';
@@ -6,319 +6,390 @@ import icon from 'assets/search_icon.svg';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import handleComplete from 'utils/PostCode';
 import customAxios from 'utils/token';
-import { IProps, ILocation, IUploadData } from './type';
-import { UploadData } from './query';
+import { IProps, ILocation, IUploadData, IFaclity, IStates } from './type';
+import { UploadData, inputContactFormat, inputPriceFormat, inputSizeFormat, uncommaPrice } from './query';
+import { useNavigate } from 'react-router-dom';
 
-const Form = ({ images }: IProps) => {
-  const { register, watch, getValues, handleSubmit } = useForm();
+const Form = ({ images, location, setLocation }: IProps) => {
   const open = useDaumPostcodePopup(`${process.env.REACT_APP_DAUM_API_URL}`);
-  const [location, setLocation] = useState<ILocation>();
+  const nav = useNavigate();
+  const [price, setPrice] = useState<string>('');
+  const [size, setSize] = useState<string>('');
+  const [contact, setContack] = useState<string>('');
+  const { handleSubmit, getValues, register, watch } = useForm();
+  const [facility, setFacility] = useState({
+    toilet: false,
+    channel: false,
+    equip: false,
+  });
+  const [states, setStates] = useState({
+    recruiting: false,
+    end: false,
+    regular: false,
+  });
+  const getPost = () => {
+    open({
+      onComplete: async location => {
+        const data: ILocation | undefined = await handleComplete(location);
+        if (data) {
+          setLocation(data);
+        }
+      },
+    });
+  };
 
   const uploadField = async () => {
     if (location?.address && location.lat && location.lng) {
+      const uploadPrice = await uncommaPrice(price);
       const uploadData: IUploadData = {
         name: getValues('name'),
-        price: getValues('name'),
-        size: getValues('size'),
+        price: uploadPrice,
+        size,
+        contact,
         address: location?.address,
         latitude: location?.lat,
         longitude: location?.lng,
         images,
       };
+      console.log(uploadData);
       const res = await UploadData(uploadData);
-      console.log(res);
+      if (res.status === 200) nav('/');
     }
   };
-  const getPost = () => {
-    open({
-      onComplete: async location => {
-        const data: ILocation | undefined = await handleComplete(location);
-        setLocation(data);
-      },
-    });
+  const handleToilet = () => {
+    setFacility((prev: IFaclity) => ({
+      ...prev,
+      toilet: !prev.toilet,
+    }));
+  };
+  const handleChannel = () => {
+    setFacility((prev: IFaclity) => ({
+      ...prev,
+      channel: !prev.channel,
+    }));
+  };
+  const handleEquip = () => {
+    setFacility((prev: IFaclity) => ({
+      ...prev,
+      equip: !prev.equip,
+    }));
+  };
+  const handleRecruiting = () => {
+    setStates((prev: IStates) => ({
+      recruiting: true,
+      end: false,
+      regular: false,
+    }));
+  };
+  const handleRegular = () => {
+    setStates((prev: IStates) => ({
+      recruiting: false,
+      end: false,
+      regular: true,
+    }));
+  };
+  const handleEnd = () => {
+    setStates((prev: IStates) => ({
+      recruiting: false,
+      end: true,
+      regular: false,
+    }));
   };
   return (
-    <InfoBox onSubmit={handleSubmit(uploadField)}>
-      <Content1>
-        <span>텃밭 이름*</span>
-        <FormInput>
-          <input {...register('name')} />
-        </FormInput>
-      </Content1>
-      <Content2>
-        <span>가격</span>
-        <FormInput>
-          <input {...register('price')} />
-          <Unit>원</Unit>
-        </FormInput>
-      </Content2>
-      <Content3>
-        <span>면적</span>
-        <FormInput>
-          <input {...register('size')} />
-          <Unit>평</Unit>
-        </FormInput>
-      </Content3>
-      <Content4>
-        <span>상태</span>
-        <FormInput>
-          <div>
-            <Circle />
+    <Wrapper>
+      <InfoBox onSubmit={handleSubmit(uploadField)}>
+        <InputWrapper>
+          <Input {...register('name')} placeholder="텃밭 이름" />
+        </InputWrapper>
+        <InputWrapper>
+          {price.toString() !== '' && <Won>₩</Won>}
+          <Input
+            value={price}
+            onChange={(e: React.FormEvent<HTMLInputElement>) => setPrice(inputPriceFormat(e.currentTarget.value))}
+            placeholder="가격"
+          />
+        </InputWrapper>
+        <InputWrapper>
+          <SizeInput
+            value={size}
+            onChange={(e: React.FormEvent<HTMLInputElement>) => setSize(inputPriceFormat(e.currentTarget.value))}
+            placeholder="면적(평)"
+            size={size.length}
+          />
+          {size !== '' && <span>평</span>}
+        </InputWrapper>
+        <InputWrapper>
+          <Input
+            value={contact}
+            onChange={(e: React.FormEvent<HTMLInputElement>) => setContack(inputContactFormat(e.currentTarget.value))}
+            placeholder="연락처"
+          />
+        </InputWrapper>
+        <StateBox>
+          <span>상태</span>
+          <RecruitingBtn state={states.recruiting} onClick={handleRecruiting}>
+            <Circle state={states.recruiting} />
             모집 중
+          </RecruitingBtn>
+          <ReqularBtn state={states.regular} onClick={handleRegular}>
+            상시모집
+          </ReqularBtn>
+          <EndBtn state={states.end} onClick={handleEnd}>
+            마감
+          </EndBtn>
+        </StateBox>
+        <Location>
+          <div>
+            <span>위치</span>
+            {location.address !== '' && <span>{location.address}</span>}
           </div>
-          <div>상시모집</div>
-          <div>마감</div>
-        </FormInput>
-      </Content4>
-      <Content5>
-        <span style={{ marginTop: '8px' }}>위치</span>
-        <div>
-          <span>{location?.address ? location.address : '위치검색'}</span>
-          <PostBtn onClick={getPost} src={icon}></PostBtn>
-        </div>
-      </Content5>
-      <Content4>
-        <span>시설</span>
-        <FormInput>
-          <div>화장실</div>
-          <div>수도시설</div>
-          <div>농기구</div>
-        </FormInput>
-      </Content4>
-      <Content6>
-        <span>상세내용</span>
-        <textarea placeholder="화장실, 수로 등 상세 내용을 입력해주세요." />
-      </Content6>
-      <BtnBox>
-        <Btn>완료</Btn>
-      </BtnBox>
-    </InfoBox>
+          <img onClick={getPost} src={icon} />
+        </Location>
+        <Facility>
+          <span>시설</span>
+          <ToiletBtn toilet={facility.toilet} onClick={handleToilet}>
+            화장실
+          </ToiletBtn>
+          <ChannelBtn channel={facility.channel} onClick={handleChannel}>
+            수로
+          </ChannelBtn>
+          <EquipBtn equip={facility.equip} onClick={handleEquip}>
+            농기구
+          </EquipBtn>
+        </Facility>
+        <TextArea placeholder="기간, 주의사항 등 상세 내용을 입력해주세요." />
+        <UploadBtn>완료</UploadBtn>
+      </InfoBox>
+    </Wrapper>
   );
 };
-
 export default Form;
+
+interface Ilen {
+  size: number;
+}
+const Wrapper = styled.div`
+  border: none;
+  border-top: 0.5px solid #e1e1e1;
+`;
 const InfoBox = styled.form`
-  width: 497px;
+  width: 100%;
+  height: fit-content;
   display: flex;
   flex-direction: column;
-  div {
-    height: fit-content;
+
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: 100%;
   }
-  span {
-    font-weight: 400;
-    font-size: 16px;
-    color: #000000;
-    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-      white-space: nowrap;
-    }
+`;
+const Input = styled.input`
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 20px;
+  border: none;
+  min-width: 120px;
+  ::placeholder {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 20px;
+    color: #d1d3d7;
   }
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    width: 334px;
+    width: 100%;
+  }
+`;
+const SizeInput = styled.input<{ size: number }>`
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 20px;
+  border: none;
+  width: ${props => (props.size !== 0 ? `${props.size * 9.3}px` : 'fit-content')};
+  ::placeholder {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 20px;
+    color: #d1d3d7;
+  }
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: 100%;
   }
 `;
 
-const Content1 = styled.div`
+const InputWrapper = styled.div`
+  width: 664px;
+  padding: 21px 12px;
+  border: 0;
+  border-bottom: 0.5px solid #e1e1e1;
   display: flex;
-  width: 100%;
-  justify-content: space-between;
-  margin-bottom: 44px;
-  div {
-    input {
-      width: 334px;
-      border: none;
-      border-bottom: 1.3px solid #afd082;
-      @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-        width: 234px;
-      }
-    }
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: 100%;
   }
+`;
+
+const Won = styled.span`
+  margin-right: 10px;
+`;
+const StateBox = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 15px 12px;
+  border: 0;
+  border-bottom: 0.5px solid #e1e1e1;
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 20px;
   span {
-    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    margin-right: 45px;
+  }
+  div {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    padding: 6px 10px;
+    border: 1px solid #afafaf;
+    margin-right: 16px;
+    display: flex;
+    color: #afafaf;
+    align-items: center;
+    font-size: 12px;
+    cursor: pointer;
+  }
+`;
+
+const RecruitingBtn = styled.div<{ state: boolean }>`
+  border: ${props => (props.state ? '1px solid  #AFAFAF' : '1px solid #d9d9d9')} !important;
+  color: ${props => (props.state ? 'black' : '#d9d9d9')} !important;
+  transition: 0.3s ease-in-out;
+`;
+const ReqularBtn = styled.div<{ state: boolean }>`
+  border: ${props => (props.state ? '1px solid  #AFAFAF' : '1px solid #d9d9d9')} !important;
+  color: ${props => (props.state ? 'black' : '#d9d9d9')} !important;
+  transition: 0.3s ease-in-out;
+`;
+const EndBtn = styled.div<{ state: boolean }>`
+  border: ${props => (props.state ? '1px solid  #AFAFAF' : '1px solid #d9d9d9')} !important;
+  color: ${props => (props.state ? 'black' : '#d9d9d9')} !important;
+  transition: 0.3s ease-in-out;
+`;
+const ToiletBtn = styled.div<{ toilet: boolean }>`
+  border: ${props => (props.toilet ? '1px solid  #AFAFAF' : '1px solid #d9d9d9')} !important;
+  color: ${props => (props.toilet ? 'black' : '#d9d9d9')} !important;
+  transition: 0.3s ease-in-out;
+`;
+const ChannelBtn = styled.div<{ channel: boolean }>`
+  border: ${props => (props.channel ? '1px solid  #AFAFAF' : '1px solid #d9d9d9')} !important;
+  color: ${props => (props.channel ? 'black' : '#d9d9d9')} !important;
+  transition: 0.3s ease-in-out;
+`;
+const EquipBtn = styled.div<{ equip: boolean }>`
+  border: ${props => (props.equip ? '1px solid  #AFAFAF' : '1px solid #d9d9d9')} !important;
+  color: ${props => (props.equip ? 'black' : '#d9d9d9')} !important;
+  transition: 0.3s ease-in-out;
+`;
+
+const Location = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 21px 12px;
+  border: 0;
+  border-bottom: 0.5px solid #e1e1e1;
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 20px;
+  img {
+    cursor: pointer;
+  }
+  div {
+    display: flex;
+    align-items: center;
+    span {
       margin-right: 45px;
     }
   }
 `;
-const Content2 = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  margin-bottom: 49px;
-  div {
-    input {
-      width: 87px;
-      border: none;
-      border-bottom: 1.3px solid #afd082;
-      @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-        width: 61px;
-      }
-    }
-  }
-  span {
-    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-      margin-right: 80px;
-    }
-  }
-`;
-const Content3 = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  margin-bottom: 43px;
-  div {
-    input {
-      width: 49px;
-      border: none;
-      border-bottom: 1.3px solid #afd082;
-      @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-        width: 35px;
-      }
-    }
-  }
-  span {
-    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-      margin-right: 80px;
-    }
-  }
-`;
-const Content4 = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  margin-bottom: 66px;
-  span {
-    margin-top: 10px;
-    margin-right: 70px;
-  }
-  div {
-    display: flex;
-    justify-content: space-between;
-    div {
-      font-size: 16px;
-      color: #d9d9d9;
-      background-color: rgba(255, 255, 255, 0.8);
-      border: 1.3px solid #d9d9d9;
-      border-radius: 9px;
-      padding: 6px 16px;
-      width: fit-content;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-        font-size: 12px;
-        padding: 6px 9px;
-      }
-    }
-    div:nth-child(2) {
-      padding: 6px 18px;
-      @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-        padding: 6px 9px;
-      }
-    }
-    :nth-child(3) {
-      padding: 6px 16px;
-      @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-        padding: 6px 12px;
-      }
-    }
-  }
-`;
-const Content5 = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  margin-bottom: 66px;
-
-  div {
-    position: relative;
-    width: 334px;
-    height: 37px;
-    background: #f0f0f0;
-    border-radius: 11px;
-    display: flex;
-    align-items: center;
-    cursor: default;
-    span {
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      color: #c8c8c8;
-      width: 80%;
-      padding-left: 5%;
-      font-size: 13px;
-    }
-    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-      width: 234px;
-    }
-  }
-`;
-const Content6 = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  textarea {
-    width: 338px;
-    height: 164px;
-    border: 1px solid #bec8b3;
-    border-radius: 16px;
-    resize: none;
-    padding: 21px 22px;
-    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-      width: 237px;
-    }
-  }
-`;
-
-const FormInput = styled.div`
-  width: 341px;
-  display: flex;
-  height: fit-content;
-  input {
-    padding: 8px 12px;
-    text-align: center;
-    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-      margin-top: 0;
-      padding: 0;
-    }
-  }
-  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    align-items: center;
-  }
-`;
-
-const BtnBox = styled.div`
-  display: flex;
-  justify-content: end;
-`;
-const Btn = styled.button`
-  width: 348px;
-  height: 59px;
-  background: #414c38;
-  border-radius: 15px;
-  margin-top: 36px;
-  margin-bottom: 52px;
-`;
-
-const Circle = styled.div`
+const Circle = styled.div<{ state: boolean }>`
   width: 9px !important;
   height: 9px !important;
-  background: #d9d9d9 !important;
-  border-radius: 4.5px !important;
-  padding: 0 !important;
-  margin-right: 10px;
+  border-radius: 5px;
+  padding: 0px !important;
+  background: ${props => (props.state ? 'black' : '#d9d9d9')} !important;
+  margin-right: 5px !important;
+  transition: 0.3s ease-in-out;
 `;
 
-const Unit = styled.span`
-  display: block;
-  margin-top: 6px;
-  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    margin-top: 0;
+const Facility = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 15px 12px;
+  border: 0;
+  border-bottom: 0.5px solid #e1e1e1;
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 20px;
+  span {
+    margin-right: 45px;
+  }
+  div {
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid #d9d9d9;
+    border-radius: 16.7033px;
+    padding: 6px 10px;
+    margin-right: 16px;
+    color: #d9d9d9;
+    font-size: 12px;
+    cursor: pointer;
   }
 `;
-const PostBtn = styled.img`
-  width: 20px;
-  height: 19px;
-  position: absolute;
-  top: 8px;
-  right: 20px;
+
+const StateBtn = styled.div`
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid #d9d9d9;
+  border-radius: 16.7033px;
+  padding: 6px 10px;
+  margin-right: 16px;
+  color: #d9d9d9;
+  font-size: 12px;
+`;
+const TextArea = styled.textarea`
+  height: 300px;
+  margin-top: 5px;
+  padding: 19px 12px;
+  border: 0;
+  resize: none;
+
+  outline-color: white;
+  :focus {
+    border-color: white;
+  }
+  ::placeholder {
+    color: #c8c8c8;
+  }
+`;
+
+const UploadBtn = styled.button`
+  width: 348px;
+  height: 59px;
+  background-color: #d9d9d9;
+  margin: 20px auto;
+  border-radius: 15px;
+  color: white;
+  font-weight: 600;
+  font-size: 19px;
   cursor: pointer;
+  transition: 0.3s ease-in-out;
+  :hover {
+    background: #414c38;
+    color: white;
+  }
 `;

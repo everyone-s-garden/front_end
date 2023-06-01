@@ -1,25 +1,52 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 import { BREAK_POINT } from 'constants/style';
 import Post from '../Post';
 import NoPost from '../NoPost';
+import customAxios from 'utils/token';
 
+interface Idata {
+  content: any;
+  garden: IGarden;
+  gardenId: number;
+  gardenPostId: number;
+  images: [];
+  title: string;
+}
+
+interface IGarden {
+  address: string;
+  id: number;
+  latitude: number;
+  link: any;
+  longitude: number;
+  name: string;
+  price: string;
+  type: string;
+}
 const RecentPosts = () => {
   const nav = useNavigate();
-  // const [RecentList] = useState([1, 2, 3, 4, 5]);
-  const [RecentList] = useState([]);
+  const [recentList, setRecentList] = useState<Idata[]>([]);
+  // const [RecentList] = useState([]);
+  const init = async () => {
+    const res = await customAxios.get('/v1/garden/recent');
+    setRecentList(res.data);
+  };
 
-  const renderPosts = RecentList.map(i => (
-    <PostContainer key={i}>
-      <Post />
+  useEffect(() => {
+    init();
+  }, []);
+  const renderPosts = recentList.map(i => (
+    <PostContainer key={i.gardenId}>
+      <Post data={i} />
     </PostContainer>
   ));
 
   return (
     <Container>
-      {RecentList.length === 0 ? (
+      {recentList.length === 0 ? (
         <NoPost title="최근 본 텃밭이 없어요!" subTitle="분양 텃밭들을 보고 싶나요?" url="/map" />
       ) : (
         <RecentPostsSection>

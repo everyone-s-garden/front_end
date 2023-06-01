@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 
 import searchIcon from 'assets/search.svg';
 import { BREAK_POINT } from 'constants/style';
 import formatDateInput from 'utils/formatDateInput';
+import customAxios from 'utils/token';
 
 interface IImage {
   id: string;
@@ -20,6 +21,15 @@ const Form = ({ image }: IProps) => {
 
   const getPost = () => {};
   const uploadMyGarden = async () => {};
+
+  const init = async () => {
+    const res = await customAxios.get('/v1/garden');
+    console.log(res);
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
 
   return (
     <>
