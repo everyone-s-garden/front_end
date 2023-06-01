@@ -6,10 +6,15 @@ import Form from './Form';
 import addIcon from 'assets/my/register/add-icon.svg';
 import delete_icon from 'assets/delete_icon.png';
 import { getImages } from 'utils/getImages';
-import { IFormData, IImage } from './type';
+import { IFormData, IImage, ILocation, IUrl, ILen } from './type';
 
 const RegisterSeller = () => {
   const [images, setImages] = useState<IImage[]>([]);
+  const [location, setLocation] = useState<ILocation>({
+    address: '',
+    lat: '',
+    lng: '',
+  });
 
   const addImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (images.length === 20) {
@@ -29,6 +34,7 @@ const RegisterSeller = () => {
       }
     }
   };
+
   const deleteImage = (index: number) => {
     setImages(prevImages => prevImages.filter((_, i) => i !== index));
   };
@@ -57,39 +63,31 @@ const RegisterSeller = () => {
         </ScrollBox>
         <ShadowBox len={images.length} />
       </ImgContainer>
-      <Form images={images} />
+      <Form location={location} setLocation={setLocation} images={images} />
     </Container>
   );
 };
 
 export default RegisterSeller;
 
-interface ILen {
-  len: number;
-}
-
-interface IUrl {
-  srcUrl: string;
-}
 const Container = styled.div`
   width: fit-content;
   margin: 0 auto;
   height: fit-content;
+  position: relative;
+  text-align: center;
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    margin-top: 80px;
+    width: 100%;
   }
 `;
 
 const H1 = styled.h1`
   margin: 0 auto;
-  font-family: 'Abril Fatface';
+  font-family: 'Pretendard';
   font-style: normal;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 27px;
-  margin-bottom: 20px;
-  margin-top: 80px;
-  text-align: center;
+  font-weight: 600;
+  font-size: 18px;
+  color: #414c38;
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     display: none;
   }
@@ -100,7 +98,10 @@ const ImgContainer = styled.div`
   height: 200px;
   display: flex;
   margin: 0 auto;
-  margin-bottom: 72px;
+  margin-bottom: 30px;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    margin: 0;
+  }
 `;
 const ImgAddBtnBox = styled.div<ILen>`
   height: ${props => (props.len >= 3 ? '200px' : '220px')};
@@ -174,6 +175,14 @@ const ScrollBox = styled.div<ILen>`
     background-color: #e0ebd4;
     border-radius: 7px;
   }
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    align-items: center;
+    height: 200px;
+    width: 200px;
+    &::-webkit-scrollbar {
+      display: none !important; /* Chrome, Safari, Opera*/
+    }
+  }
 `;
 
 const ImageList = styled.div`
@@ -182,10 +191,11 @@ const ImageList = styled.div`
 `;
 const ShadowBox = styled.div<ILen>`
   display: ${props => (props.len >= 3 ? 'block' : 'none')};
-  box-shadow: -6px 0px 25px 30px white;
+  box-shadow: 0px 0px 25px 30px white;
   width: 10px;
-  height: 180px;
+  height: 160px;
   z-index: 99;
+  margin: auto 0px;
 `;
 
 const ImgBox = styled.div<IUrl>`

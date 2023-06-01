@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,15 +9,30 @@ import btnIcon2 from 'assets/my/my-garden-btn-icon2.svg';
 import btnIcon3 from 'assets/my/my-garden-btn-icon3.svg';
 import btnIcon4 from 'assets/my/my-garden-btn-icon4.svg';
 import { ReactComponent as MenuIcon } from 'assets/three-dot-icon.svg';
+import { AxiosResponse } from 'axios';
+import customAxios from 'utils/token';
 
 const MyHome = () => {
   const nav = useNavigate();
-  const [hasMyGarden] = useState(false);
+  const [hasMyGarden, setHasMyGarden] = useState([]);
   const [isGardenMenuOpen, setIsGardenMenuOpen] = useState<boolean>(false);
+  const init = async () => {
+    const res: AxiosResponse = await customAxios.get('/v1/garden/using');
+    setHasMyGarden(res.data);
+  };
 
+  useEffect(() => {
+    init();
+  }, []);
+
+  const myGardenDelete = async () => {
+    const res: AxiosResponse = await customAxios.delete(`/v1/garden/using/{gardenId}`);
+    console.log(res);
+    if (res.status === 204) nav('/my');
+  };
   return (
     <Container>
-      {hasMyGarden && (
+      {hasMyGarden.length !== 0 && (
         <MyGardenSection>
           <SectionTitle>나의 텃밭</SectionTitle>
           <GardenImgContainer>
@@ -29,14 +44,14 @@ const MyHome = () => {
             </MenuWrapper>
             <MenuDropdown isOpen={isGardenMenuOpen}>
               <DropDownBtn>수정하기</DropDownBtn>
-              <DropDownBtn>삭제하기</DropDownBtn>
+              <DropDownBtn onClick={myGardenDelete}>삭제하기</DropDownBtn>
             </MenuDropdown>
           </GardenImgContainer>
         </MyGardenSection>
       )}
 
-      <ContentWrapper hasMyGarden={hasMyGarden}>
-        {!hasMyGarden ? (
+      <ContentWrapper hasMyGarden={hasMyGarden.length !== 0}>
+        {hasMyGarden.length === 0 ? (
           <>
             <Content onClick={() => nav('/my/garden-register-user')}>
               <ImgBox src={btnIcon1} alt="버튼 아이콘" />
@@ -50,11 +65,11 @@ const MyHome = () => {
         ) : (
           <>
             <Content>
-              <ImgBox src={btnIcon3} alt="버튼 아이콘" />
+              <ImgBox onClick={() => nav('/my/garden-register-user')} src={btnIcon3} alt="버튼 아이콘" />
               <span>양주 공공 텃밭 이용중</span>
             </Content>
             <Content>
-              <ImgBox src={btnIcon4} alt="버튼 아이콘" />
+              <ImgBox onClick={() => nav('/my/garden-register-seller')} src={btnIcon4} alt="버튼 아이콘" />
               <span>3개월 2일 남음</span>
             </Content>
           </>

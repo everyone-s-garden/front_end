@@ -6,6 +6,5 @@ export interface IFormData extends FormData {
 
 export const getImages = async (formData: IFormData) => {
   const res = await customAxios.post(`/v1/garden/images`, formData);
-  console.log(res);
   return res;
 };

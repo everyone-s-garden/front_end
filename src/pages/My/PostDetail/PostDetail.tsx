@@ -49,7 +49,7 @@ function PostDetail() {
   };
 
   useEffect(() => {
-    // console.log(fetchGardenData());
+    console.log(fetchGardenData());
   }, []);
 
   return (

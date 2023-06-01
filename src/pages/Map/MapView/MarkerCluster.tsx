@@ -20,7 +20,6 @@ const MarkerCluster = () => {
   };
   const [cluster, setCluster] = useState(() => {
     const markers: naver.maps.Marker[] = [];
-
     const cluster = new MarkerClustering({
       minClusterSize: 2,
       maxZoom: 13,
@@ -35,16 +34,13 @@ const MarkerCluster = () => {
     });
     return cluster;
   });
-
   useEffect(() => {
     if (!gardens) return;
 
     cluster.setMap(null);
     cluster.DEFAULT_OPTIONS.markers = [];
-
     setCluster(() => {
       const markers: naver.maps.Marker[] = [];
-
       gardens.forEach(garden => {
         const latlng = new naver.maps.LatLng(garden.latitude, garden.longitude),
           marker = new naver.maps.Marker({
