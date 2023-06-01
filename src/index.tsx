@@ -51,6 +51,14 @@ const router = createBrowserRouter([
             element: <RegisterSeller />,
           },
           {
+            path: 'garden-register-user',
+            element: <RegisterUser />,
+          },
+          {
+            path: 'garden-register-seller',
+            element: <RegisterSeller />,
+          },
+          {
             path: 'like',
             element: <Like />,
           },
