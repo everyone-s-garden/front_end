@@ -21,11 +21,9 @@ interface IGarden {
 }
 function Post({ data }: Idata) {
   const nav = useNavigate();
-  const tempPostId = 11;
   let price = 15000;
-
   return (
-    <PostContainer onClick={() => nav(`/my/${tempPostId}`)}>
+    <PostContainer onClick={() => nav(`/my/${data.gardenId}`)}>
       <Image src={testImg} alt="텃밭 이미지"></Image>
 
       <InfoDiv>

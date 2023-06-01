@@ -176,6 +176,8 @@ const ScrollBox = styled.div<ILen>`
     border-radius: 7px;
   }
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    align-items: center;
+    height: 200px;
     width: 200px;
     &::-webkit-scrollbar {
       display: none !important; /* Chrome, Safari, Opera*/
