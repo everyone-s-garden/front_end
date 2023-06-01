@@ -17,10 +17,10 @@ const onRequest = (config: InternalAxiosRequestConfig): InternalAxiosRequestConf
   const token = getItem('access_token') as string;
   let replaced_str = token.replaceAll('"', '');
   if (method === 'get') {
-    // config.timeout = 15000;
+    config.timeout = 15000;
     config.headers.Authorization = `Bearer ${replaced_str}`;
   } else if (method === 'post') {
-    // config.timeout = 15000;
+    config.timeout = 15000;
     config.headers.Authorization = `Bearer ${replaced_str}`;
   } else if (method === 'delete') {
     config.timeout = 15000;

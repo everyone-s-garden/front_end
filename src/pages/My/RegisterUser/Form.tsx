@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 
@@ -16,28 +16,67 @@ interface IProps {
   image: IImage | null;
 }
 
+interface IData {
+  address: string;
+  id: number;
+  latitude: number;
+  link: string;
+  longitude: number;
+  name: string;
+  price: string;
+  type: string;
+}
+
 const Form = ({ image }: IProps) => {
   const { watch, getValues, register } = useForm();
-
+  const [searchResults, setSearchResults] = useState<IData[]>([]);
   const getPost = () => {};
+  const [text, setText] = useState<string>('');
   const uploadMyGarden = async () => {};
 
   const init = async () => {
     const res = await customAxios.get('/v1/garden');
     console.log(res);
   };
-
+  const getSearchResult = async (e: React.FormEvent<HTMLInputElement>) => {
+    let query = e.currentTarget.value;
+    setText(query);
+    if (query.length > 0) {
+      const res = await customAxios('v1/garden', {
+        params: {
+          query,
+        },
+      });
+      setSearchResults(res.data);
+    }
+  };
   useEffect(() => {
     init();
   }, []);
-
+  console.log(searchResults);
   return (
     <>
       <FormBox onSubmit={uploadMyGarden}>
         <FormItem>
           <ItemTag required>텃밭 정보</ItemTag>
-          <Input placeholder="텃밭 검색" />
+          <Input onChange={getSearchResult} value={text} placeholder="텃밭 검색" />
           <SearchIcon src={searchIcon} />
+          <SearchResult len={text.length > 0 ? true : false}>
+            <ResultUl>
+              {searchResults.length === 0 ? (
+                <NoResult>
+                  <span>결과가 없습니다.</span>
+                  <span>2글자 이상 지역명을 입력해주세요.</span>
+                </NoResult>
+              ) : (
+                searchResults.map(result => (
+                  <ResultLi key={result.id}>
+                    <span>{result.name}</span>
+                  </ResultLi>
+                ))
+              )}
+            </ResultUl>
+          </SearchResult>
         </FormItem>
 
         <FormItem>
@@ -82,6 +121,20 @@ const FormBox = styled.form`
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     flex-grow: 1;
   }
+`;
+
+const SearchResult = styled.div<{ len: boolean }>`
+  visibility: ${props => (props.len ? 'visibility' : 'hidden')};
+  position: absolute;
+  width: calc(100% - 86px);
+  height: 202px;
+  right: 0;
+  top: 105%;
+  background: #ffffff;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.06);
+  border-radius: 11px;
+  z-index: 999;
 `;
 
 const FormItem = styled.div`
@@ -206,4 +259,76 @@ const CompleteBtn = styled.button`
   &:hover {
     background-color: #646f5a;
   }
+`;
+
+const ResultUl = styled.ul`
+  height: 100%;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #e0ebd4;
+  transition: 0.3s ease-in-out;
+
+  &::-webkit-scrollbar {
+    display: block !important; /* Chrome, Safari, Opera*/
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 7px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: white;
+    border-radius: 7px;
+    border: 1px solid #f0f0f0;
+  }
+  &::-moz-scrollbar {
+    width: 6px;
+  }
+
+  &::-moz-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 7px;
+  }
+
+  &::-moz-scrollbar-track {
+    background-color: white;
+    border-radius: 7px;
+    border: 1px solid #f0f0f0;
+  }
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    align-items: center;
+    height: 200px;
+    width: 200px;
+    &::-webkit-scrollbar {
+      display: none !important; /* Chrome, Safari, Opera*/
+    }
+  }
+`;
+
+const ResultLi = styled.li`
+  height: 20%;
+  display: flex;
+  align-items: center;
+  border-bottom: 1.15625px solid #f0f0f0;
+  font-size: 13px;
+  line-height: 16px;
+  letter-spacing: -0.08em;
+  color: #414c38;
+  cursor: pointer;
+  span {
+    margin-left: 15px;
+  }
+`;
+
+const NoResult = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  flex-direction: column;
 `;
