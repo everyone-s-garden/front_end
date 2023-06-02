@@ -30,7 +30,6 @@ interface IData {
 const Form = ({ image }: IProps) => {
   const { watch, getValues, register } = useForm();
   const [searchResults, setSearchResults] = useState<IData[]>([]);
-  const getPost = () => {};
   const [text, setText] = useState<string>('');
   const uploadMyGarden = async () => {};
 
@@ -53,7 +52,6 @@ const Form = ({ image }: IProps) => {
   useEffect(() => {
     init();
   }, []);
-  console.log(searchResults);
   return (
     <>
       <FormBox onSubmit={uploadMyGarden}>
@@ -61,17 +59,17 @@ const Form = ({ image }: IProps) => {
           <ItemTag required>텃밭 정보</ItemTag>
           <Input onChange={getSearchResult} value={text} placeholder="텃밭 검색" />
           <SearchIcon src={searchIcon} />
-          <SearchResult len={text.length > 0 ? true : false}>
+          <SearchResult check={searchResults.length === 0} len={text.length > 0 ? true : false}>
             <ResultUl>
               {searchResults.length === 0 ? (
                 <NoResult>
-                  <span>결과가 없습니다.</span>
-                  <span>2글자 이상 지역명을 입력해주세요.</span>
+                  <span>검색 결과가 없습니다.</span>
+                  <span>정확한 검색어를 입력해주세요.</span>
                 </NoResult>
               ) : (
                 searchResults.map(result => (
                   <ResultLi key={result.id}>
-                    <span>{result.name}</span>
+                    <span>{result.name !== '' ? result.name : result.address}</span>
                   </ResultLi>
                 ))
               )}
@@ -123,11 +121,11 @@ const FormBox = styled.form`
   }
 `;
 
-const SearchResult = styled.div<{ len: boolean }>`
+const SearchResult = styled.div<{ check: boolean; len: boolean }>`
   visibility: ${props => (props.len ? 'visibility' : 'hidden')};
   position: absolute;
   width: calc(100% - 86px);
-  height: 202px;
+  height: ${props => (props.check ? '110px' : '217px')};
   right: 0;
   top: 105%;
   background: #ffffff;
@@ -135,6 +133,10 @@ const SearchResult = styled.div<{ len: boolean }>`
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.06);
   border-radius: 11px;
   z-index: 999;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: calc(100% - 80px);
+    height: ${props => (props.check ? '90px' : '229px')};
+  }
 `;
 
 const FormItem = styled.div`
@@ -263,7 +265,7 @@ const CompleteBtn = styled.button`
 
 const ResultUl = styled.ul`
   height: 100%;
-  overflow: auto;
+  overflow-y: scroll;
   scrollbar-width: thin;
   scrollbar-color: #888 #e0ebd4;
   transition: 0.3s ease-in-out;
@@ -302,8 +304,9 @@ const ResultUl = styled.ul`
   }
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     align-items: center;
-    height: 200px;
-    width: 200px;
+    width: 100%;
+    height: 100%;
+
     &::-webkit-scrollbar {
       display: none !important; /* Chrome, Safari, Opera*/
     }
@@ -330,5 +333,18 @@ const NoResult = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
-  flex-direction: column;
+  flex-direction: row;
+  span {
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    color: #c8c8c8;
+    margin-right: 5px;
+  }
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    flex-direction: column;
+  }
 `;

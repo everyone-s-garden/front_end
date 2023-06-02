@@ -101,6 +101,7 @@ const ImgContainer = styled.div`
   margin-bottom: 30px;
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     margin: 0;
+    align-items: center;
   }
 `;
 const ImgAddBtnBox = styled.div<ILen>`
@@ -125,6 +126,9 @@ const ImgAddBtn = styled.div<ILen>`
     font-size: 14px;
     line-height: 18px;
     color: #afd082;
+  }
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    margin-right: 13px;
   }
 `;
 
@@ -178,7 +182,8 @@ const ScrollBox = styled.div<ILen>`
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     align-items: center;
     height: 200px;
-    width: 200px;
+    width: 175px;
+
     &::-webkit-scrollbar {
       display: none !important; /* Chrome, Safari, Opera*/
     }
@@ -196,6 +201,9 @@ const ShadowBox = styled.div<ILen>`
   height: 160px;
   z-index: 99;
   margin: auto 0px;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    visibility: hidden;
+  }
 `;
 
 const ImgBox = styled.div<IUrl>`
@@ -208,6 +216,9 @@ const ImgBox = styled.div<IUrl>`
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    margin-right: 10px;
+  }
 `;
 
 const Delete = styled.img`

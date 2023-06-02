@@ -265,32 +265,32 @@ const StateBox = styled.div`
 
 const RecruitingBtn = styled.div<{ state: boolean }>`
   border: ${props => (props.state ? '1px solid  #AFAFAF' : '1px solid #d9d9d9')} !important;
-  color: ${props => (props.state ? 'black' : '#d9d9d9')} !important;
+  color: ${props => (props.state ? '#414C38' : '#d9d9d9')} !important;
   transition: 0.3s ease-in-out;
 `;
 const ReqularBtn = styled.div<{ state: boolean }>`
   border: ${props => (props.state ? '1px solid  #AFAFAF' : '1px solid #d9d9d9')} !important;
-  color: ${props => (props.state ? 'black' : '#d9d9d9')} !important;
+  color: ${props => (props.state ? '#414C38' : '#d9d9d9')} !important;
   transition: 0.3s ease-in-out;
 `;
 const EndBtn = styled.div<{ state: boolean }>`
   border: ${props => (props.state ? '1px solid  #AFAFAF' : '1px solid #d9d9d9')} !important;
-  color: ${props => (props.state ? 'black' : '#d9d9d9')} !important;
+  color: ${props => (props.state ? '#414C38' : '#d9d9d9')} !important;
   transition: 0.3s ease-in-out;
 `;
 const ToiletBtn = styled.div<{ toilet: boolean }>`
   border: ${props => (props.toilet ? '1px solid  #AFAFAF' : '1px solid #d9d9d9')} !important;
-  color: ${props => (props.toilet ? 'black' : '#d9d9d9')} !important;
+  color: ${props => (props.toilet ? '#414C38' : '#d9d9d9')} !important;
   transition: 0.3s ease-in-out;
 `;
 const ChannelBtn = styled.div<{ channel: boolean }>`
   border: ${props => (props.channel ? '1px solid  #AFAFAF' : '1px solid #d9d9d9')} !important;
-  color: ${props => (props.channel ? 'black' : '#d9d9d9')} !important;
+  color: ${props => (props.channel ? '#414C38' : '#d9d9d9')} !important;
   transition: 0.3s ease-in-out;
 `;
 const EquipBtn = styled.div<{ equip: boolean }>`
   border: ${props => (props.equip ? '1px solid  #AFAFAF' : '1px solid #d9d9d9')} !important;
-  color: ${props => (props.equip ? 'black' : '#d9d9d9')} !important;
+  color: ${props => (props.equip ? '#414C38' : '#d9d9d9')} !important;
   transition: 0.3s ease-in-out;
 `;
 
@@ -321,9 +321,11 @@ const Circle = styled.div<{ state: boolean }>`
   height: 9px !important;
   border-radius: 5px;
   padding: 0px !important;
-  background: ${props => (props.state ? 'black' : '#d9d9d9')} !important;
+  background: ${props => (props.state ? ' #ff6a00' : '#d9d9d9')} !important;
   margin-right: 5px !important;
   transition: 0.3s ease-in-out;
+  box-shadow: ${props => (props.state ? '0px 0px 2.15599px 1.07799px #ffc869' : 'none')};
+  border: ${props => (props.state ? '1px solid #ff6a00' : '#d9d9d9')} !important;
 `;
 
 const Facility = styled.div`
