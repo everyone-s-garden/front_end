@@ -29,7 +29,8 @@ function GardenDetail() {
 
   const fetchGardenData = async () => {
     if (!selectedGarden) return;
-    return await GardenAPI.getGardenDetail(selectedGarden);
+    const { data } = await GardenAPI.getGardenDetail(selectedGarden);
+    return data;
   };
 
   const play = () => {
@@ -39,7 +40,7 @@ function GardenDetail() {
   };
 
   useEffect(() => {
-    // console.log(fetchGardenData());
+    console.log(fetchGardenData());
   }, []);
 
   return (
@@ -55,7 +56,8 @@ function GardenDetail() {
           <Key>신청기간</Key> 2023. 04. 20 ~ 04. 30
         </Row>
         <Row>
-          <Key>가격</Key> {price !== 0 ? `평당 ${price.toLocaleString('ko-KR')}원` : '무료'}
+          {/* <Key>가격</Key> {price !== 0 ? `평당 ${price.toLocaleString('ko-KR')}원` : '무료'} */}
+          <Key>가격</Key> {price !== 0 ? `평당 ${price}원` : '무료'}
         </Row>
         <Row>
           <Key>면적</Key> 16.5㎡(9평)

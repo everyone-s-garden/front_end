@@ -50,5 +50,5 @@ export const gardensAtom = atom<GardenData[]>({
 });
 export const selectedGardenIdAtom = atom<number | null>({
   key: 'selectedGarden',
-  default: 1,
+  default: null,
 });
