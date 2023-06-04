@@ -75,6 +75,11 @@ const MyHome = () => {
           </>
         )}
       </ContentWrapper>
+
+      <Span>
+        판매하고 싶은 밭이 있나요?
+        <span onClick={() => nav('/my/garden-register-seller')}> 분양 글 등록하기</span>
+      </Span>
     </Container>
   );
 };
@@ -231,4 +236,18 @@ const ImgBox = styled.img`
   width: 44px;
   height: 42px;
   border-radius: 4px;
+`;
+
+const Span = styled.span`
+  align-self: flex-end;
+  margin-top: 15px;
+  color: #afafaf;
+  font-weight: 400;
+  font-size: 13px;
+
+  & > span {
+    color: #afafaf;
+    text-decoration: underline;
+    cursor: pointer;
+  }
 `;

@@ -7,6 +7,7 @@ import GardenPost from './GardenPost';
 
 function GardenList() {
   const [gardens] = useRecoilState(gardensAtom);
+  console.log(gardens);
   const renderGardenPosts =
     gardens &&
     gardens.map(garden => {

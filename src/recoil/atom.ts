@@ -14,6 +14,10 @@ export const isFeedbackOpenAtom = atom<boolean>({
   key: 'isFeedbackOpen',
   default: false,
 });
+export const isCropOpenAtom = atom<boolean>({
+  key: 'isCropOpen',
+  default: false,
+});
 
 // Notification Atom
 export const NotiContentAtom = atom<string>({
@@ -46,5 +50,5 @@ export const gardensAtom = atom<GardenData[]>({
 });
 export const selectedGardenIdAtom = atom<number | null>({
   key: 'selectedGarden',
-  default: 1,
+  default: null,
 });
