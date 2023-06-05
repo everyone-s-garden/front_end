@@ -28,38 +28,64 @@ interface IData {
 }
 
 const Form = ({ image }: IProps) => {
-  const { watch, getValues, register } = useForm();
+  const { getValues, register, handleSubmit } = useForm();
   const [searchResults, setSearchResults] = useState<IData[]>([]);
-  const [text, setText] = useState<string>('');
-  const uploadMyGarden = async () => {};
+  const [searchText, setSearchText] = useState<string>('');
+  const [selectedResult, setSelectedResult] = useState<IData | null>(null);
+  const [show, setShow] = useState(false);
 
   const init = async () => {
     const res = await customAxios.get('/v1/garden');
-    console.log(res);
   };
   const getSearchResult = async (e: React.FormEvent<HTMLInputElement>) => {
     let query = e.currentTarget.value;
-    setText(query);
-    if (query.length > 0) {
+    setSearchText(query);
+    if (query === '') {
+      setSelectedResult(null);
+      setSearchResults([]);
+      setShow(false);
+    } else {
       const res = await customAxios('v1/garden', {
         params: {
           query,
         },
       });
       setSearchResults(res.data);
+      setShow(true);
     }
+  };
+  const selectGarden = (result: IData) => {
+    setSearchText(result.name);
+    setSelectedResult(result);
+    setSearchResults([]);
+    setShow(false);
+  };
+  const uploadMyGarden = async () => {
+    const res = await customAxios.post('v1/garden/using', {
+      id: selectedResult?.id,
+      name: selectedResult?.name,
+      image: image?.imageUrl,
+      address: selectedResult?.address,
+      latitude: selectedResult?.latitude,
+      longitude: selectedResult?.longitude,
+      useStartDate: getValues('start'),
+      useEndDate: getValues('end'),
+    });
+    console.log(res);
+    console.log(getValues('end'));
+    console.log(getValues('start'));
   };
   useEffect(() => {
     init();
   }, []);
   return (
     <>
-      <FormBox onSubmit={uploadMyGarden}>
+      <FormBox onClick={() => setShow(false)} onSubmit={handleSubmit(uploadMyGarden)}>
         <FormItem>
           <ItemTag required>텃밭 정보</ItemTag>
-          <Input onChange={getSearchResult} value={text} placeholder="텃밭 검색" />
+          <Input onChange={getSearchResult} value={searchText} placeholder="텃밭 검색" />
           <SearchIcon src={searchIcon} />
-          <SearchResult check={searchResults.length === 0} len={text.length > 0 ? true : false}>
+          <SearchResult check={searchResults.length === 0} len={show}>
             <ResultUl>
               {searchResults.length === 0 ? (
                 <NoResult>
@@ -68,7 +94,7 @@ const Form = ({ image }: IProps) => {
                 </NoResult>
               ) : (
                 searchResults.map(result => (
-                  <ResultLi key={result.id}>
+                  <ResultLi onClick={() => selectGarden(result)} key={result.id}>
                     <span>{result.name !== '' ? result.name : result.address}</span>
                   </ResultLi>
                 ))
@@ -79,7 +105,11 @@ const Form = ({ image }: IProps) => {
 
         <FormItem>
           <ItemTag required>위치</ItemTag>
-          <Input placeholder="검색시 자동으로 불러와져요" disabled />
+          <Input
+            placeholder="검색시 자동으로 불러와져요"
+            value={selectedResult ? selectedResult.address : ''}
+            disabled
+          />
         </FormItem>
 
         <Notification>직접 입력해주세요</Notification>
@@ -101,9 +131,8 @@ const Form = ({ image }: IProps) => {
             </DateInputBox>
           </DateContainer>
         </FormItem>
+        <CompleteBtn>완료</CompleteBtn>
       </FormBox>
-
-      <CompleteBtn>완료</CompleteBtn>
     </>
   );
 };
@@ -115,7 +144,7 @@ const FormBox = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
-
+  align-items: center;
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     flex-grow: 1;
   }
@@ -241,23 +270,21 @@ const DateInput = styled.input`
   border: none;
   background: inherit;
   margin: 0 auto;
-
   ::placeholder {
     color: #afafaf;
   }
 `;
 
 const CompleteBtn = styled.button`
-  width: 100%;
-  max-width: 340px;
-  height: 50px;
+  width: 348px;
+  height: 59px;
   color: #ffffff;
   font-size: 16px;
   font-weight: 400px;
   background-color: #414c38;
   border-radius: 15px;
   transition: all 0.1s ease-in;
-
+  margin-top: 5px;
   &:hover {
     background-color: #646f5a;
   }

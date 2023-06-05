@@ -20,7 +20,7 @@ const LikePosts = () => {
   const deleteLike = () => {};
   useEffect(() => {
     init();
-  }, [likeList]);
+  }, []);
   const renderPosts = likeList.map(i => (
     <PostContainer key={i}>
       <Post data={i} />

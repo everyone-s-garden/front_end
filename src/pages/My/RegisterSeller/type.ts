@@ -30,15 +30,21 @@ export interface IStates {
   end: boolean;
   regular: boolean;
 }
+
+export interface IUploadImage {
+  imageUrl: string;
+}
 export interface IUploadData {
   name: string;
   price: string;
   size: string;
   address: string;
-  latitude: string;
-  longitude: string;
+  latitude: number;
+  longitude: number;
   contact: string;
-  images: IImage[];
+  images: string[];
+  content: string;
+  status: string;
 }
 export interface ILen {
   len: number;

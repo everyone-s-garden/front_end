@@ -23,7 +23,6 @@ const RegisterUser = () => {
 
       try {
         const res = await getImages(formData);
-        console.log(res.data);
         setImage(res.data);
       } catch (err) {
         console.log(err);

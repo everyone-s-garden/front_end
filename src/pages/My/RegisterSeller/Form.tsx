@@ -6,7 +6,7 @@ import icon from 'assets/search_icon.svg';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import handleComplete from 'utils/PostCode';
 import customAxios from 'utils/token';
-import { IProps, ILocation, IUploadData, IFaclity, IStates } from './type';
+import { IProps, ILocation, IUploadData, IFaclity, IStates, IUploadImage } from './type';
 import { UploadData, inputContactFormat, inputPriceFormat, inputSizeFormat, uncommaPrice } from './query';
 import { useNavigate } from 'react-router-dom';
 
@@ -38,18 +38,46 @@ const Form = ({ images, location, setLocation }: IProps) => {
     });
   };
 
+  //   Body:
+  // {
+  // 		name: string;
+  // 		price: string?;
+  // 		size: string?;
+  // 		contact: string?; // 전화번호 등
+  // 		link: string?;
+
+  // 		address: string;
+  // 		latitude: number;
+  // 		longitude: number;
+
+  // 		images: string[];
+
+  // 		content: string?;
+  // 		status: string?; // ACTIVE | INACTIVE | ALWAYS_ACTIVE (대소문자 무시)
+  // }
+  const getStatus = (states: { recruiting: boolean; end: boolean; regular: boolean }) => {
+    if (states.recruiting) return 'ACTIVE';
+    if (states.end) return 'INACTIVE';
+    if (states.regular) return 'ALWAYS_ACTIVE';
+    return ''; // 기본값 또는 필요에 따라 다른 값 설정
+  };
+
   const uploadField = async () => {
     if (location?.address && location.lat && location.lng) {
       const uploadPrice = await uncommaPrice(price);
+      const status = getStatus(states);
+      const uploadImg: string[] = images.map(img => img.imageUrl);
       const uploadData: IUploadData = {
         name: getValues('name'),
         price: uploadPrice,
         size,
         contact,
         address: location?.address,
-        latitude: location?.lat,
-        longitude: location?.lng,
-        images,
+        latitude: Number(location?.lat),
+        longitude: Number(location?.lng),
+        images: uploadImg,
+        content: getValues('content'),
+        status,
       };
       console.log(uploadData);
       const res = await UploadData(uploadData);
@@ -157,7 +185,7 @@ const Form = ({ images, location, setLocation }: IProps) => {
             농기구
           </EquipBtn>
         </Facility>
-        <TextArea placeholder="기간, 주의사항 등 상세 내용을 입력해주세요." />
+        <TextArea {...register('content')} placeholder="기간, 주의사항 등 상세 내용을 입력해주세요." />
         <UploadBtn>완료</UploadBtn>
       </InfoBox>
     </Wrapper>
