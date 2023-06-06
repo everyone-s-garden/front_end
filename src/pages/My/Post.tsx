@@ -6,34 +6,46 @@ import { BREAK_POINT, FONT_WEIGHT } from 'constants/style';
 import { useNavigate } from 'react-router-dom';
 
 interface Idata {
-  data: { content: any; garden: IGarden; gardenId: number; gardenPostId: number; images: []; title: string };
+  data: {
+    address: string;
+    contact: any;
+    facility: {
+      toilet: boolean;
+      waterway: boolean;
+      equipment: boolean;
+    };
+    gardenId: number;
+    images: string[];
+    latitude: number;
+    link: any;
+    longitude: number;
+    name: string;
+    content: string;
+    price: number;
+    size: string;
+    status: string;
+    type: string;
+  };
 }
 
-interface IGarden {
-  address: string;
-  id: number;
-  latitude: number;
-  link: any;
-  longitude: number;
-  name: string;
-  price: string;
-  type: string;
-}
 function Post({ data }: Idata) {
   const nav = useNavigate();
   let price = 15000;
+  console.log(data);
   return (
     <PostContainer onClick={() => nav(`/my/${data.gardenId}`)}>
-      <Image src={testImg} alt="텃밭 이미지"></Image>
+      <Image src={data.images[0] || testImg} alt="텃밭 이미지"></Image>
 
       <InfoDiv>
         <Status>
-          <Dot />
-          <Text>모집 중</Text>
+          {data.status === 'ACTIVE' && <Dot />}
+          {data.status === 'ACTIVE' && <Text>모집 중</Text>}
+          {data.status === 'INACTIVE' && <Text>마감</Text>}
+          {data.status === 'ALWAYS_ACTIVE' && <Text>상시</Text>}
         </Status>
-        <Title>{data.title}</Title>
-        <Value>{data.garden.type}</Value>
-        <Value>평당 {data.garden.price}원</Value>
+        <Title>{data.name}</Title>
+        <Value style={{ color: '#afafaf' }}>{data.size} 평</Value>
+        <Value>평당 {data.price.toLocaleString()} 원</Value>
       </InfoDiv>
     </PostContainer>
   );

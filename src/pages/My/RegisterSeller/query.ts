@@ -34,7 +34,6 @@ export const inputContactFormat = (str: string) => {
   const formattedStr = str.replace(/[^\d]+/g, '');
   const maxLength = 11;
   const truncatedStr = formattedStr.slice(0, maxLength);
-
   if (truncatedStr.length > 7) {
     const prefix = truncatedStr.slice(0, 3);
     const middle = truncatedStr.slice(3, 7);

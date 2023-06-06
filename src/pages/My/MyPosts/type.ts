@@ -1,0 +1,20 @@
+export interface Idata {
+  address: string;
+  contact: any;
+  facility: {
+    toilet: boolean;
+    waterway: boolean;
+    equipment: boolean;
+  };
+  gardenId: number;
+  images: string[];
+  latitude: number;
+  link: any;
+  longitude: number;
+  name: string;
+  content: string;
+  price: number;
+  size: string;
+  status: string;
+  type: string;
+}

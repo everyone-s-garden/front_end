@@ -15,12 +15,12 @@ const Form = ({ images, location, setLocation }: IProps) => {
   const nav = useNavigate();
   const [price, setPrice] = useState<string>('');
   const [size, setSize] = useState<string>('');
-  const [contact, setContack] = useState<string>('');
+  const [contact, setContact] = useState<string>('');
   const { handleSubmit, getValues, register, watch } = useForm();
   const [facility, setFacility] = useState({
     toilet: false,
-    channel: false,
-    equip: false,
+    waterway: false,
+    equipment: false,
   });
   const [states, setStates] = useState({
     recruiting: false,
@@ -38,30 +38,12 @@ const Form = ({ images, location, setLocation }: IProps) => {
     });
   };
 
-  //   Body:
-  // {
-  // 		name: string;
-  // 		price: string?;
-  // 		size: string?;
-  // 		contact: string?; // 전화번호 등
-  // 		link: string?;
-
-  // 		address: string;
-  // 		latitude: number;
-  // 		longitude: number;
-
-  // 		images: string[];
-
-  // 		content: string?;
-  // 		status: string?; // ACTIVE | INACTIVE | ALWAYS_ACTIVE (대소문자 무시)
-  // }
   const getStatus = (states: { recruiting: boolean; end: boolean; regular: boolean }) => {
     if (states.recruiting) return 'ACTIVE';
     if (states.end) return 'INACTIVE';
     if (states.regular) return 'ALWAYS_ACTIVE';
     return ''; // 기본값 또는 필요에 따라 다른 값 설정
   };
-
   const uploadField = async () => {
     if (location?.address && location.lat && location.lng) {
       const uploadPrice = await uncommaPrice(price);
@@ -78,12 +60,15 @@ const Form = ({ images, location, setLocation }: IProps) => {
         images: uploadImg,
         content: getValues('content'),
         status,
+        facility,
       };
       console.log(uploadData);
       const res = await UploadData(uploadData);
-      if (res.status === 200) nav('/');
+      console.log(res);
+      if (res.status === 201) nav('/');
     }
   };
+  console.log(contact);
   const handleToilet = () => {
     setFacility((prev: IFaclity) => ({
       ...prev,
@@ -93,13 +78,13 @@ const Form = ({ images, location, setLocation }: IProps) => {
   const handleChannel = () => {
     setFacility((prev: IFaclity) => ({
       ...prev,
-      channel: !prev.channel,
+      waterway: !prev.waterway,
     }));
   };
   const handleEquip = () => {
     setFacility((prev: IFaclity) => ({
       ...prev,
-      equip: !prev.equip,
+      equipment: !prev.equipment,
     }));
   };
   const handleRecruiting = () => {
@@ -149,7 +134,7 @@ const Form = ({ images, location, setLocation }: IProps) => {
         <InputWrapper>
           <Input
             value={contact}
-            onChange={(e: React.FormEvent<HTMLInputElement>) => setContack(inputContactFormat(e.currentTarget.value))}
+            onChange={(e: React.FormEvent<HTMLInputElement>) => setContact(inputContactFormat(e.currentTarget.value))}
             placeholder="연락처"
           />
         </InputWrapper>
@@ -178,10 +163,10 @@ const Form = ({ images, location, setLocation }: IProps) => {
           <ToiletBtn toilet={facility.toilet} onClick={handleToilet}>
             화장실
           </ToiletBtn>
-          <ChannelBtn channel={facility.channel} onClick={handleChannel}>
+          <ChannelBtn channel={facility.waterway} onClick={handleChannel}>
             수로
           </ChannelBtn>
-          <EquipBtn equip={facility.equip} onClick={handleEquip}>
+          <EquipBtn equip={facility.equipment} onClick={handleEquip}>
             농기구
           </EquipBtn>
         </Facility>

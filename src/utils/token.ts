@@ -25,6 +25,12 @@ const onRequest = (config: InternalAxiosRequestConfig): InternalAxiosRequestConf
   } else if (method === 'delete') {
     config.timeout = 15000;
     config.headers.Authorization = `Bearer ${replaced_str}`;
+  } else if (method === 'patch') {
+    config.timeout = 15000;
+    config.headers.Authorization = `Bearer ${replaced_str}`;
+  } else if (method === 'put') {
+    config.timeout = 15000;
+    config.headers.Authorization = `Bearer ${replaced_str}`;
   }
   return config;
 };

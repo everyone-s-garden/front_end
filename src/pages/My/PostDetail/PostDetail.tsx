@@ -12,11 +12,33 @@ import { ReactComponent as BackIcon } from 'assets/back-icon.svg';
 import { ReactComponent as MenuIcon } from 'assets/three-dot-icon.svg';
 import * as animationData from 'assets/like-animation.json';
 import { GardenAPI } from 'api/GardenAPI';
+import customAxios from 'utils/token';
 
 type PostDetailProps = {
   navermaps: typeof naver.maps;
 };
 
+interface IPost {
+  address: string;
+  contact: any;
+  facility: {
+    toilet: boolean;
+    waterway: boolean;
+    equipment: boolean;
+  };
+  gardenId: number;
+  images: string[];
+  latitude: number;
+  longitude: number;
+  link: any;
+  name: string;
+  content: string;
+  postTitle: string;
+  price: number;
+  size: string;
+  status: string;
+  type: string;
+}
 function PostDetail() {
   const { postId } = useParams();
   const { navermaps } = useOutletContext<PostDetailProps>();
@@ -27,7 +49,8 @@ function PostDetail() {
   const animationRef = useRef<Player>(null);
   const [map, setMap] = useState<naver.maps.Map | null>(null);
   const [like, isLike] = useState<boolean>(false);
-  const [images, setImages] = useState([
+  const [post, setPost] = useState<IPost | null>(null);
+  const [images, setImages] = useState<string[]>([
     'https://picsum.photos/id/237/800/600',
     'https://picsum.photos/id/238/800/600',
     'https://picsum.photos/id/239/800/600',
@@ -39,7 +62,9 @@ function PostDetail() {
 
   const fetchGardenData = async () => {
     if (!postId) return;
-    return await GardenAPI.getGardenDetail(Number(postId));
+    const res = await customAxios.get(`v1/garden/${postId}`);
+    setPost(res.data);
+    setImages(res.data.images);
   };
 
   const play = () => {
@@ -49,9 +74,17 @@ function PostDetail() {
   };
 
   useEffect(() => {
-    console.log(fetchGardenData());
-  }, []);
+    fetchGardenData();
+  }, [postId]); // postId가 변경될 때마다 데이터를 가져오도록 설정
 
+  useEffect(() => {
+    if (post && map) {
+      // post와 map이 모두 존재할 때만 실행
+      const { latitude, longitude } = post;
+      const center = new navermaps.LatLng(latitude, longitude);
+      map.setCenter(center);
+    }
+  }, [post, map]);
   return (
     <Container>
       <BackDiv>
@@ -67,7 +100,7 @@ function PostDetail() {
 
         <ContentSection>
           <Title>
-            도시농업 공공텃밭
+            {post?.name}
             <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
               <MenuIcon width="3" height="18" fill="#505462" />
             </button>
@@ -82,19 +115,21 @@ function PostDetail() {
               </DropDownBtn>
             </MenuDropdown>
           </Title>
-          <Price>{price === 0 ? '무료' : `${price.toLocaleString('ko-KR')}원`}</Price>
-          <Size>8평</Size>
+          <Price>{price === 0 ? '무료' : `${post?.price.toLocaleString('ko-KR')}원`}</Price>
+          <Size>{post?.size} 평</Size>
 
           <Facility>
             <h4>부대시설</h4>
-            <span>화장실</span>
+            {post?.facility.toilet && <span>화장실</span>}
+            {post?.facility.waterway && <span>수로</span>}
+            {post?.facility.equipment && <span>농기구</span>}
           </Facility>
           <Contact>
             <h4>연락처</h4>
-            010-2001-3000
+            {post?.contact}
           </Contact>
 
-          <Content>물 좋고 흙 좋은 곳입니다. 1년 단위 계약입니다. 화장실도 있고 좋습니다.</Content>
+          <Content>{post?.content}</Content>
 
           <Location>
             <h4>위치</h4>
@@ -109,13 +144,13 @@ function PostDetail() {
             >
               <NaverMap
                 ref={setMap}
-                defaultCenter={new navermaps.LatLng(location.lat, location.long)}
+                defaultCenter={new navermaps.LatLng(post?.latitude || location.lat, post?.longitude || location.long)}
                 defaultZoom={14}
                 mapDataControl={false}
                 scaleControl={false}
               >
                 <Marker
-                  position={new navermaps.LatLng(location.lat, location.long)}
+                  position={new navermaps.LatLng(post?.latitude || location.lat, post?.longitude || location.long)}
                   icon={{
                     content: `<div class="marker">
                         <svg width="33" height="55" viewBox="0 0 33 55" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -133,7 +168,7 @@ function PostDetail() {
               </NaverMap>
             </MapDiv>
 
-            <span>경기도 양주시 면당동 101-1</span>
+            <span>{post?.address}</span>
           </Location>
 
           <Buttons>

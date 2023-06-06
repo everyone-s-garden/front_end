@@ -1,20 +1,23 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import addIcon from 'assets/my/register/add-icon.svg';
 import Form from './Form';
 import { BREAK_POINT } from 'constants/style';
-import { IImage, IFormData } from './type';
+import { IImage, IFormData, IMyGarden } from './type';
 import { getImages } from 'utils/getImages';
+import { useMatch } from 'react-router-dom';
+import customAxios from 'utils/token';
+import { AxiosResponse } from 'axios';
 
 const RegisterUser = () => {
   const labelRef = useRef<HTMLLabelElement>(null);
   const [image, setImage] = useState<IImage | null>(null);
-
+  const editMatch = useMatch('/my/edit');
+  const [myGarden, setMyGarden] = useState<IMyGarden | undefined>(undefined);
   const onImgRegisterClicked = (e: React.MouseEvent<HTMLDivElement>) => {
     labelRef.current?.click();
   };
-
   const handleImg = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.currentTarget.files) {
       const uploadImg = event.currentTarget.files[0] as File;
@@ -22,21 +25,30 @@ const RegisterUser = () => {
       formData.append('file', uploadImg);
 
       try {
-        const res = await getImages(formData);
-        setImage(res.data);
+        const res: AxiosResponse = await getImages(formData);
+        setImage(res.data.imageUrl);
       } catch (err) {
         console.log(err);
       }
     }
   };
-
+  const getMyGarden = async () => {
+    const res = await customAxios('/v1/garden/using');
+    setMyGarden(res.data[0]);
+    setImage(res.data[0].image);
+  };
+  useEffect(() => {
+    if (editMatch) {
+      getMyGarden();
+    }
+  }, []);
   return (
     <Container>
-      <Title>나의 텃밭 등록하기</Title>
+      <Title>{editMatch ? '나의 텃밭 수정하기' : '나의 텃밭 등록하기'}</Title>
 
       <ImgRegister onClick={onImgRegisterClicked}>
         {image ? (
-          <AddImage src={image.imageUrl} />
+          <AddImage src={`${image}`} />
         ) : (
           <>
             <input accept="image/*" type="file" id="fileInput" onChange={handleImg} style={{ display: 'none' }} />
@@ -48,7 +60,7 @@ const RegisterUser = () => {
         )}
       </ImgRegister>
 
-      <Form image={image} />
+      <Form editMatch={editMatch} myGarden={myGarden} image={image} />
     </Container>
   );
 };

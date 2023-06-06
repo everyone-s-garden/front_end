@@ -22,8 +22,8 @@ export interface ILocation {
 
 export interface IFaclity {
   toilet: boolean;
-  channel: boolean;
-  equip: boolean;
+  waterway: boolean;
+  equipment: boolean;
 }
 export interface IStates {
   recruiting: boolean;
@@ -45,6 +45,11 @@ export interface IUploadData {
   images: string[];
   content: string;
   status: string;
+  facility: {
+    toilet: boolean;
+    waterway: boolean;
+    equipment: boolean;
+  };
 }
 export interface ILen {
   len: number;

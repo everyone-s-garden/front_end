@@ -8,22 +8,23 @@ import NoPost from '../NoPost';
 import customAxios from 'utils/token';
 
 interface Idata {
-  content: any;
-  garden: IGarden;
-  gardenId: number;
-  gardenPostId: number;
-  images: [];
-  title: string;
-}
-
-interface IGarden {
   address: string;
-  id: number;
+  contact: any;
+  facility: {
+    toilet: boolean;
+    waterway: boolean;
+    equipment: boolean;
+  };
+  gardenId: number;
+  images: string[];
   latitude: number;
   link: any;
   longitude: number;
   name: string;
-  price: string;
+  content: string;
+  price: number;
+  size: string;
+  status: string;
   type: string;
 }
 const RecentPosts = () => {

@@ -6,36 +6,34 @@ import searchIcon from 'assets/search.svg';
 import { BREAK_POINT } from 'constants/style';
 import formatDateInput from 'utils/formatDateInput';
 import customAxios from 'utils/token';
+import { useMatch, useNavigate } from 'react-router-dom';
+import { IProps, IData } from './type';
 
-interface IImage {
-  id: string;
-  imageUrl: string;
-}
-
-interface IProps {
-  image: IImage | null;
-}
-
-interface IData {
-  address: string;
-  id: number;
-  latitude: number;
-  link: string;
-  longitude: number;
-  name: string;
-  price: string;
-  type: string;
-}
-
-const Form = ({ image }: IProps) => {
-  const { getValues, register, handleSubmit } = useForm();
+const Form = ({ editMatch, image, myGarden }: IProps) => {
+  const { getValues, register, handleSubmit, setValue } = useForm();
   const [searchResults, setSearchResults] = useState<IData[]>([]);
   const [searchText, setSearchText] = useState<string>('');
   const [selectedResult, setSelectedResult] = useState<IData | null>(null);
   const [show, setShow] = useState(false);
-
+  const nav = useNavigate();
   const init = async () => {
-    const res = await customAxios.get('/v1/garden');
+    if (myGarden && myGarden.name) {
+      setSearchText(myGarden.name);
+      setSelectedResult((prev: IData | null) => {
+        return {
+          ...prev,
+          id: myGarden.id,
+          name: myGarden.name,
+          address: myGarden.address,
+          latitude: myGarden.latitude,
+          longitude: myGarden.longitude,
+        };
+      });
+      const startDate = myGarden.useStartDate.split('-').join('.');
+      const endDate = myGarden.useEndDate.split('-').join('.');
+      setValue('start', startDate);
+      setValue('end', endDate);
+    }
   };
   const getSearchResult = async (e: React.FormEvent<HTMLInputElement>) => {
     let query = e.currentTarget.value;
@@ -64,6 +62,22 @@ const Form = ({ image }: IProps) => {
     const res = await customAxios.post('v1/garden/using', {
       id: selectedResult?.id,
       name: selectedResult?.name,
+      image,
+      address: selectedResult?.address,
+      latitude: selectedResult?.latitude,
+      longitude: selectedResult?.longitude,
+      useStartDate: getValues('start'),
+      useEndDate: getValues('end'),
+    });
+    if (res.status === 201) nav(-1);
+  };
+  useEffect(() => {
+    init();
+  }, [myGarden]);
+  const editMyGarden = async () => {
+    const res = await customAxios.put(`v1/garden/using/${myGarden?.id}`, {
+      id: selectedResult?.id,
+      name: selectedResult?.name,
       image: image?.imageUrl,
       address: selectedResult?.address,
       latitude: selectedResult?.latitude,
@@ -71,16 +85,12 @@ const Form = ({ image }: IProps) => {
       useStartDate: getValues('start'),
       useEndDate: getValues('end'),
     });
-    console.log(res);
-    console.log(getValues('end'));
-    console.log(getValues('start'));
+    if (res.status === 200) nav(-1);
   };
-  useEffect(() => {
-    init();
-  }, []);
+
   return (
     <>
-      <FormBox onClick={() => setShow(false)} onSubmit={handleSubmit(uploadMyGarden)}>
+      <FormBox onClick={() => setShow(false)} onSubmit={handleSubmit(editMatch ? editMyGarden : uploadMyGarden)}>
         <FormItem>
           <ItemTag required>텃밭 정보</ItemTag>
           <Input onChange={getSearchResult} value={searchText} placeholder="텃밭 검색" />

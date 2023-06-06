@@ -8,47 +8,25 @@ import NoPost from '../NoPost';
 import customAxios from 'utils/token';
 import { AxiosResponse } from 'axios';
 import { IData } from 'pages/Login/Google/token/type';
+import { Idata } from './type';
 
-interface Idata {
-  content: any;
-  garden: IGarden;
-  gardenId: number;
-  gardenPostId: number;
-  images: [];
-  title: string;
-}
-
-interface IGarden {
-  address: string;
-  id: number;
-  latitude: number;
-  link: any;
-  longitude: number;
-  name: string;
-  price: string;
-  type: string;
-}
 const MyPosts = () => {
   const nav = useNavigate();
   const [myPostsList, setMyPostsList] = useState<Idata[]>([]);
-  // const [MyPostList] = useState([]);
 
   const renderPosts = myPostsList.map(i => (
     <PostContainer key={Math.random()}>
       <Post data={i} />
     </PostContainer>
   ));
-
   const init = async () => {
     const res: AxiosResponse = await customAxios.get('/v1/garden/mine');
-    console.log(res);
     setMyPostsList(res.data);
   };
 
   useEffect(() => {
     init();
   }, []);
-  console.log(myPostsList);
   return (
     <Container>
       {myPostsList.length === 0 ? (
