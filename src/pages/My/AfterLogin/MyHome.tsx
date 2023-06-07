@@ -62,7 +62,7 @@ const MyHome = () => {
               <MenuIcon width="3" height="18" fill="#FFFFFF" />
             </MenuWrapper>
             <MenuDropdown isOpen={isGardenMenuOpen}>
-              <DropDownBtn onClick={() => nav('/my/edit')}>수정하기</DropDownBtn>
+              <DropDownBtn onClick={() => nav('/my/garden/edit')}>수정하기</DropDownBtn>
               <DropDownBtn onClick={myGardenDelete}>삭제하기</DropDownBtn>
             </MenuDropdown>
           </GardenImgContainer>
@@ -89,7 +89,10 @@ const MyHome = () => {
             </Content>
             <Content>
               <ImgBox onClick={() => nav('/my/garden-register-seller')} src={btnIcon4} alt="버튼 아이콘" />
-              <span>{calculateRemainingDays(hasMyGarden?.useEndDate!)}일 남음</span>
+              {calculateRemainingDays(hasMyGarden?.useEndDate!) >= 0 && (
+                <span>{calculateRemainingDays(hasMyGarden?.useEndDate!)}일 남음</span>
+              )}
+              {calculateRemainingDays(hasMyGarden?.useEndDate!) < 0 && <span>만료</span>}
             </Content>
           </>
         )}
@@ -232,6 +235,7 @@ const Span = styled.span`
 const AddPost = styled.span`
   color: #afafaf;
   text-decoration: underline;
+  cursor: pointer;
 `;
 
 const Content = styled.button`

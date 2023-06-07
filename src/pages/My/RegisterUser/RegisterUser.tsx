@@ -13,7 +13,7 @@ import { AxiosResponse } from 'axios';
 const RegisterUser = () => {
   const labelRef = useRef<HTMLLabelElement>(null);
   const [image, setImage] = useState<IImage | null>(null);
-  const editMatch = useMatch('/my/edit');
+  const editMatch = useMatch('/my/garden/edit');
   const [myGarden, setMyGarden] = useState<IMyGarden | undefined>(undefined);
   const onImgRegisterClicked = (e: React.MouseEvent<HTMLDivElement>) => {
     labelRef.current?.click();

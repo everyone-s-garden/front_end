@@ -7,7 +7,6 @@ import Post from '../Post';
 import NoPost from '../NoPost';
 import customAxios from 'utils/token';
 import { AxiosResponse } from 'axios';
-import { IData } from 'pages/Login/Google/token/type';
 import { Idata } from './type';
 
 const MyPosts = () => {
@@ -30,7 +29,7 @@ const MyPosts = () => {
   return (
     <Container>
       {myPostsList.length === 0 ? (
-        <NoPost title="올린 글이 없어요!" subTitle="판매하고 싶은 밭이 있나요?" url="/my/garden-register-seller" />
+        <NoPost title="올린 글이 없어요!" subTitle="판매하고 싶은 밭이 있나요?" url="/map" />
       ) : (
         <MyPostsSection>
           <SectionTitle>내 분양글</SectionTitle>

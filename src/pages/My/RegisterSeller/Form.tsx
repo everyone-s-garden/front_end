@@ -6,17 +6,18 @@ import icon from 'assets/search_icon.svg';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import handleComplete from 'utils/PostCode';
 import customAxios from 'utils/token';
-import { IProps, ILocation, IUploadData, IFaclity, IStates, IUploadImage } from './type';
-import { UploadData, inputContactFormat, inputPriceFormat, inputSizeFormat, uncommaPrice } from './query';
+import { IProps, ILocation, IUploadData, IFaclity, IStates, Idata } from './type';
+import { UploadData, inputContactFormat, inputPriceFormat, uncommaPrice } from './query';
 import { useNavigate } from 'react-router-dom';
+import { AxiosResponse } from 'axios';
 
-const Form = ({ images, location, setLocation }: IProps) => {
+const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
   const open = useDaumPostcodePopup(`${process.env.REACT_APP_DAUM_API_URL}`);
   const nav = useNavigate();
   const [price, setPrice] = useState<string>('');
   const [size, setSize] = useState<string>('');
   const [contact, setContact] = useState<string>('');
-  const { handleSubmit, getValues, register, watch } = useForm();
+  const { handleSubmit, getValues, register, setValue } = useForm();
   const [facility, setFacility] = useState({
     toilet: false,
     waterway: false,
@@ -48,7 +49,6 @@ const Form = ({ images, location, setLocation }: IProps) => {
     if (location?.address && location.lat && location.lng) {
       const uploadPrice = await uncommaPrice(price);
       const status = getStatus(states);
-      const uploadImg: string[] = images.map(img => img.imageUrl);
       const uploadData: IUploadData = {
         name: getValues('name'),
         price: uploadPrice,
@@ -57,7 +57,7 @@ const Form = ({ images, location, setLocation }: IProps) => {
         address: location?.address,
         latitude: Number(location?.lat),
         longitude: Number(location?.lng),
-        images: uploadImg,
+        images,
         content: getValues('content'),
         status,
         facility,
@@ -68,7 +68,6 @@ const Form = ({ images, location, setLocation }: IProps) => {
       if (res.status === 201) nav('/');
     }
   };
-  console.log(contact);
   const handleToilet = () => {
     setFacility((prev: IFaclity) => ({
       ...prev,
@@ -108,9 +107,57 @@ const Form = ({ images, location, setLocation }: IProps) => {
       regular: false,
     }));
   };
+  const getEditData = async () => {
+    const res: AxiosResponse = await customAxios.get(`v1/garden/${match?.params.id}`);
+    const { data }: Idata = res;
+    setImages(res.data.images);
+    setValue('name', data.name);
+    setPrice(inputPriceFormat(data.price));
+    setSize(data.size);
+    setContact(data.contact);
+    setValue('content', data.content);
+    setFacility(data.facility);
+    setLocation({
+      address: data.address,
+      lat: String(data.latitude),
+      lng: String(data.longitude),
+    });
+    setStates({
+      recruiting: data.status === 'ACTIVE',
+      regular: data.status === 'ALWAYS_ACTIVE',
+      end: data.status === 'INACTIVE',
+    });
+  };
+  useEffect(() => {
+    if (match) {
+      getEditData();
+    }
+  }, []);
+
+  const editField = async () => {
+    const uploadPrice = await uncommaPrice(price);
+    const status = getStatus(states);
+    const uploadData: IUploadData = {
+      name: getValues('name'),
+      price: uploadPrice,
+      size,
+      contact,
+      address: location?.address,
+      latitude: Number(location?.lat),
+      longitude: Number(location?.lng),
+      images,
+      content: getValues('content'),
+      status,
+      facility,
+    };
+    console.log(uploadData);
+    const res = await customAxios.patch(`v1/garden/${match?.params.id}`, uploadData);
+    if (res.status === 200) nav(-1);
+  };
+
   return (
     <Wrapper>
-      <InfoBox onSubmit={handleSubmit(uploadField)}>
+      <InfoBox onSubmit={handleSubmit(match ? editField : uploadField)}>
         <InputWrapper>
           <Input {...register('name')} placeholder="텃밭 이름" />
         </InputWrapper>
@@ -221,7 +268,7 @@ const SizeInput = styled.input<{ size: number }>`
   font-size: 17px;
   line-height: 20px;
   border: none;
-  width: ${props => (props.size !== 0 ? `${props.size * 9.3}px` : 'fit-content')};
+  width: ${props => (props.size !== 0 ? `${props.size * 12}px` : 'fit-content')};
   ::placeholder {
     font-style: normal;
     font-weight: 500;

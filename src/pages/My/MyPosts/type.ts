@@ -13,7 +13,7 @@ export interface Idata {
   longitude: number;
   name: string;
   content: string;
-  price: number;
+  price: string;
   size: string;
   status: string;
   type: string;

@@ -6,16 +6,19 @@ import Form from './Form';
 import addIcon from 'assets/my/register/add-icon.svg';
 import delete_icon from 'assets/delete_icon.png';
 import { getImages } from 'utils/getImages';
-import { IFormData, IImage, ILocation, IUrl, ILen } from './type';
+import { IFormData, ILocation, IUrl, ILen } from './type';
+import { useMatch } from 'react-router-dom';
+import customAxios from 'utils/token';
+import { AxiosResponse } from 'axios';
 
 const RegisterSeller = () => {
-  const [images, setImages] = useState<IImage[]>([]);
+  const [images, setImages] = useState<string[]>([]);
   const [location, setLocation] = useState<ILocation>({
     address: '',
     lat: '',
     lng: '',
   });
-
+  const match = useMatch('/my/post/edit/:id');
   const addImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (images.length === 20) {
       alert('최대 20장까지 등록할 수 있습니다.');
@@ -27,17 +30,18 @@ const RegisterSeller = () => {
       formData.append('file', uploadImg);
       try {
         const res = await getImages(formData);
-        const newImage: IImage = { id: res.data.id, imageUrl: res.data.imageUrl };
-        setImages(prevImages => [newImage, ...prevImages]);
+
+        const newImage: string[] = [res.data.imageUrl];
+        setImages(prevImages => [...newImage, ...prevImages]);
       } catch (err) {
         console.log(err);
       }
     }
   };
-
   const deleteImage = (index: number) => {
     setImages(prevImages => prevImages.filter((_, i) => i !== index));
   };
+
   return (
     <Container>
       <H1>판매 텃밭 등록하기</H1>
@@ -55,7 +59,7 @@ const RegisterSeller = () => {
         <ScrollBox len={images.length}>
           <ImageList>
             {images.map((image, index) => (
-              <ImgBox srcUrl={image.imageUrl} key={index}>
+              <ImgBox srcUrl={image} key={index}>
                 <Delete onClick={() => deleteImage(index)} src={delete_icon} />
               </ImgBox>
             ))}
@@ -63,7 +67,7 @@ const RegisterSeller = () => {
         </ScrollBox>
         <ShadowBox len={images.length} />
       </ImgContainer>
-      <Form location={location} setLocation={setLocation} images={images} />
+      <Form setImages={setImages} match={match} location={location} setLocation={setLocation} images={images} />
     </Container>
   );
 };

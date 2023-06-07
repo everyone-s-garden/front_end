@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { IFormData, IImage, ILen, IUrl } from 'pages/My/RegisterSeller/type';
+import { IFormData, ILen, IUrl } from 'pages/My/RegisterSeller/type';
 
 import { NotiContentAtom } from 'recoil/atom';
 import Modal from 'components/Modal/Modal';
@@ -17,7 +17,7 @@ interface UserFeedbackModalProps {
 function UserFeedbackModal({ isOpen, setIsOpen }: UserFeedbackModalProps) {
   const [_, setContent] = useRecoilState(NotiContentAtom);
   const [comment, setComment] = useState<string>('');
-  const [images, setImages] = useState<IImage[]>([]);
+  const [images, setImages] = useState<string[]>([]);
 
   const onSubmit = () => {
     setIsOpen(false);
@@ -35,8 +35,8 @@ function UserFeedbackModal({ isOpen, setIsOpen }: UserFeedbackModalProps) {
       formData.append('file', uploadImg);
       try {
         const res = await getImages(formData);
-        const newImage: IImage = { id: res.data.id, imageUrl: res.data.imageUrl };
-        setImages(prevImages => [newImage, ...prevImages]);
+        const newImage: string[] = [res.data.imageUrl];
+        setImages(prevImages => [...newImage, ...prevImages]);
       } catch (err) {
         console.log(err);
       }
@@ -75,7 +75,7 @@ function UserFeedbackModal({ isOpen, setIsOpen }: UserFeedbackModalProps) {
           <ScrollBox len={images.length}>
             <ImageList>
               {images.map((image, index) => (
-                <ImgBox srcUrl={image.imageUrl} key={index}>
+                <ImgBox srcUrl={image} key={index}>
                   <Delete onClick={() => deleteImage(index)} src={delete_icon} />
                 </ImgBox>
               ))}

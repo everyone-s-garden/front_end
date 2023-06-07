@@ -21,7 +21,7 @@ interface Idata {
     longitude: number;
     name: string;
     content: string;
-    price: number;
+    price: string;
     size: string;
     status: string;
     type: string;
@@ -45,7 +45,7 @@ function Post({ data }: Idata) {
         </Status>
         <Title>{data.name}</Title>
         <Value style={{ color: '#afafaf' }}>{data.size} 평</Value>
-        <Value>평당 {data.price.toLocaleString()} 원</Value>
+        <Value>평당 {Number(data.price.split(',').join('')).toLocaleString()} 원</Value>
       </InfoDiv>
     </PostContainer>
   );

@@ -11,13 +11,12 @@ import ImageSlider from 'components/ImageSlider';
 import { ReactComponent as BackIcon } from 'assets/back-icon.svg';
 import { ReactComponent as MenuIcon } from 'assets/three-dot-icon.svg';
 import * as animationData from 'assets/like-animation.json';
-import { GardenAPI } from 'api/GardenAPI';
 import customAxios from 'utils/token';
+import { AxiosResponse } from 'axios';
 
 type PostDetailProps = {
   navermaps: typeof naver.maps;
 };
-
 interface IPost {
   address: string;
   contact: any;
@@ -29,12 +28,11 @@ interface IPost {
   gardenId: number;
   images: string[];
   latitude: number;
-  longitude: number;
   link: any;
+  longitude: number;
   name: string;
   content: string;
-  postTitle: string;
-  price: number;
+  price: string;
   size: string;
   status: string;
   type: string;
@@ -55,9 +53,7 @@ function PostDetail() {
     'https://picsum.photos/id/238/800/600',
     'https://picsum.photos/id/239/800/600',
   ]);
-  // const [images, setImages] = useState([]);
 
-  let price = 20000;
   const location = { lat: 37.3595704, long: 127.105399 };
 
   const fetchGardenData = async () => {
@@ -67,10 +63,17 @@ function PostDetail() {
     setImages(res.data.images);
   };
 
-  const play = () => {
+  const play = async () => {
     isLike(!like);
-    if (!like) animationRef.current?.play();
-    else animationRef.current?.setSeeker(0);
+    if (!like) {
+      animationRef.current?.play();
+      const res = await customAxios.post(`v1/garden/like/${post?.gardenId}`);
+      console.log(res);
+    } else {
+      animationRef.current?.setSeeker(0);
+      const res = await customAxios.delete(`v1/garden/like/${post?.gardenId}`);
+      console.log(res);
+    }
   };
 
   useEffect(() => {
@@ -85,6 +88,10 @@ function PostDetail() {
       map.setCenter(center);
     }
   }, [post, map]);
+  const deletePost = async () => {
+    const res: AxiosResponse = await customAxios.delete(`v1/garden/${post?.gardenId}`);
+    if (res.status === 204) nav(-1);
+  };
   return (
     <Container>
       <BackDiv>
@@ -113,9 +120,13 @@ function PostDetail() {
               >
                 신고하기
               </DropDownBtn>
+              <DropDownBtn onClick={deletePost}>삭제하기</DropDownBtn>
+              <DropDownBtn onClick={() => nav(`/my/post/edit/${postId}`)}>수정하기</DropDownBtn>
             </MenuDropdown>
           </Title>
-          <Price>{price === 0 ? '무료' : `${post?.price.toLocaleString('ko-KR')}원`}</Price>
+          <Price>
+            {post?.price === '0' ? '무료' : `${Number(post?.price.split(',').join('')).toLocaleString('ko-KR')}원`}
+          </Price>
           <Size>{post?.size} 평</Size>
 
           <Facility>
