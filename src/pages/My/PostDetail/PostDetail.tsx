@@ -36,6 +36,7 @@ interface IPost {
   size: string;
   status: string;
   type: string;
+  id: number;
 }
 function PostDetail() {
   const { postId } = useParams();
@@ -89,7 +90,7 @@ function PostDetail() {
     }
   }, [post, map]);
   const deletePost = async () => {
-    const res: AxiosResponse = await customAxios.delete(`v1/garden/${post?.gardenId}`);
+    const res: AxiosResponse = await customAxios.delete(`v1/garden/${post?.id}`);
     if (res.status === 204) nav(-1);
   };
   return (

@@ -46,7 +46,6 @@ const MyHome = () => {
     const end = new Date(endDate);
     const timeDiff = end.getTime() - today.getTime();
     const remainingDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-
     return remainingDays;
   };
   return (

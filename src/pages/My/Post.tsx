@@ -25,6 +25,7 @@ interface Idata {
     size: string;
     status: string;
     type: string;
+    id: number;
   };
 }
 
@@ -33,7 +34,7 @@ function Post({ data }: Idata) {
   let price = 15000;
   console.log(data);
   return (
-    <PostContainer onClick={() => nav(`/my/${data.gardenId}`)}>
+    <PostContainer onClick={() => nav(`/my/${data.id}`)}>
       <Image src={data.images[0] || testImg} alt="텃밭 이미지"></Image>
 
       <InfoDiv>

@@ -78,13 +78,14 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
     const res = await customAxios.put(`v1/garden/using/${myGarden?.id}`, {
       id: selectedResult?.id,
       name: selectedResult?.name,
-      image: image?.imageUrl,
+      image,
       address: selectedResult?.address,
       latitude: selectedResult?.latitude,
       longitude: selectedResult?.longitude,
       useStartDate: getValues('start'),
       useEndDate: getValues('end'),
     });
+    console.log(res);
     if (res.status === 200) nav(-1);
   };
 

@@ -26,6 +26,7 @@ interface Idata {
   size: string;
   status: string;
   type: string;
+  id: number;
 }
 const RecentPosts = () => {
   const nav = useNavigate();

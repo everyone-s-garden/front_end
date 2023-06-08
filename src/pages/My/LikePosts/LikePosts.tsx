@@ -15,6 +15,7 @@ const LikePosts = () => {
   // const [likeList] = useState([]);
   const init = async () => {
     const res: AxiosResponse = await customAxios.get('/v1/garden/like/all');
+    console.log(res);
     setLikeList(res.data);
   };
   const deleteLike = () => {};

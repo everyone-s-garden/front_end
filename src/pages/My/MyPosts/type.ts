@@ -17,4 +17,5 @@ export interface Idata {
   size: string;
   status: string;
   type: string;
+  id: number;
 }
