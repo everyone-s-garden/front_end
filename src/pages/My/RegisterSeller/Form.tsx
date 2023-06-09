@@ -210,7 +210,7 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
         <Location>
           <div>
             <span>위치</span>
-            {location.address !== '' && <span>{location.address}</span>}
+            {location.address !== '' && <LocationInputSpan>{location.address}</LocationInputSpan>}
           </div>
           <img onClick={getPost} src={icon} />
         </Location>
@@ -268,7 +268,6 @@ const Input = styled.input`
   }
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     width: 100%;
-    font-size: 12px;
   }
 `;
 const SizeInput = styled.input<{ size: number }>`
@@ -288,7 +287,6 @@ const SizeInput = styled.input<{ size: number }>`
   }
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     width: 100%;
-    font-size: 12px;
   }
 `;
 
@@ -382,12 +380,24 @@ const Location = styled.div`
   div {
     display: flex;
     align-items: center;
+    overflow: hidden;
+    width: 100%;
     span {
       margin-right: 45px;
+      white-space: nowrap;
       @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-        font-size: 12px;
       }
     }
+  }
+`;
+
+const LocationInputSpan = styled.span`
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    display: block;
+    width: 340px;
   }
 `;
 const Circle = styled.div<{ state: boolean }>`

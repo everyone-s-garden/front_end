@@ -92,9 +92,10 @@ const Container = styled.div`
   align-items: center;
 
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    padding-bottom: 40px;
-    width: 100vw;
+    width: 96vw;
     height: calc(100vh - 100px);
+    padding: 0;
+    margin: 0 auto;
   }
 `;
 

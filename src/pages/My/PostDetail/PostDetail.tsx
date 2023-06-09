@@ -203,6 +203,10 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: 98%;
+    margin: 0 auto;
+  }
 `;
 
 const BackDiv = styled.div`
