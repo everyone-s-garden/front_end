@@ -8,24 +8,35 @@ import NoPost from '../NoPost';
 import closeIcon from 'assets/my/x-icon.svg';
 import customAxios from 'utils/token';
 import { AxiosResponse } from 'axios';
+import { IGardenDetail } from 'types/GardenDetail';
 
 const LikePosts = () => {
   const nav = useNavigate();
   const [likeList, setLikeList] = useState([]);
   // const [likeList] = useState([]);
   const init = async () => {
-    const res: AxiosResponse = await customAxios.get('/v1/garden/like/all');
-    console.log(res);
-    setLikeList(res.data);
+    try {
+      const res: AxiosResponse = await customAxios.get('/v1/garden/like/all');
+      setLikeList(res.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
-  const deleteLike = () => {};
+  const deleteLike = async (i: IGardenDetail) => {
+    const res: AxiosResponse = await customAxios.delete(`v1/garden/like/${i.id}`);
+    if (res.status === 204) {
+      const updatedLikeList = likeList.filter((item: IGardenDetail) => item.id !== i.id);
+      setLikeList([...updatedLikeList]);
+    }
+  };
+
   useEffect(() => {
     init();
   }, []);
-  const renderPosts = likeList.map(i => (
-    <PostContainer key={i}>
+  const renderPosts = likeList.map((i: IGardenDetail) => (
+    <PostContainer key={i.id}>
       <Post data={i} />
-      <CloseIcon src={closeIcon} alt="close" onClick={deleteLike} />
+      <CloseIcon src={closeIcon} alt="close" onClick={() => deleteLike(i)} />
     </PostContainer>
   ));
 

@@ -62,10 +62,12 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
         status,
         facility,
       };
-      console.log(uploadData);
-      const res = await UploadData(uploadData);
-      console.log(res);
-      if (res.status === 201) nav('/');
+      try {
+        const res = await UploadData(uploadData);
+        if (res.status === 201) nav('/');
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
   const handleToilet = () => {
@@ -108,25 +110,29 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
     }));
   };
   const getEditData = async () => {
-    const res: AxiosResponse = await customAxios.get(`v1/garden/${match?.params.id}`);
-    const { data }: Idata = res;
-    setImages(res.data.images);
-    setValue('name', data.name);
-    setPrice(inputPriceFormat(data.price));
-    setSize(data.size);
-    setContact(data.contact);
-    setValue('content', data.content);
-    setFacility(data.facility);
-    setLocation({
-      address: data.address,
-      lat: String(data.latitude),
-      lng: String(data.longitude),
-    });
-    setStates({
-      recruiting: data.status === 'ACTIVE',
-      regular: data.status === 'ALWAYS_ACTIVE',
-      end: data.status === 'INACTIVE',
-    });
+    try {
+      const res: AxiosResponse = await customAxios.get(`v1/garden/${match?.params.id}`);
+      const { data }: Idata = res;
+      setImages(res.data.images);
+      setValue('name', data.name);
+      setPrice(inputPriceFormat(data.price));
+      setSize(data.size);
+      setContact(data.contact);
+      setValue('content', data.content);
+      setFacility(data.facility);
+      setLocation({
+        address: data.address,
+        lat: String(data.latitude),
+        lng: String(data.longitude),
+      });
+      setStates({
+        recruiting: data.status === 'ACTIVE',
+        regular: data.status === 'ALWAYS_ACTIVE',
+        end: data.status === 'INACTIVE',
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
   useEffect(() => {
     if (match) {
@@ -150,9 +156,12 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
       status,
       facility,
     };
-    console.log(uploadData);
-    const res = await customAxios.patch(`v1/garden/${match?.params.id}`, uploadData);
-    if (res.status === 200) nav(-1);
+    try {
+      const res = await customAxios.put(`v1/garden/${match?.params.id}`, uploadData);
+      if (res.status === 200) nav(-1);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -259,6 +268,7 @@ const Input = styled.input`
   }
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     width: 100%;
+    font-size: 12px;
   }
 `;
 const SizeInput = styled.input<{ size: number }>`
@@ -278,6 +288,7 @@ const SizeInput = styled.input<{ size: number }>`
   }
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     width: 100%;
+    font-size: 12px;
   }
 `;
 
@@ -373,6 +384,9 @@ const Location = styled.div`
     align-items: center;
     span {
       margin-right: 45px;
+      @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+        font-size: 12px;
+      }
     }
   }
 `;

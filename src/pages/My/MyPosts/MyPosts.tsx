@@ -7,11 +7,11 @@ import Post from '../Post';
 import NoPost from '../NoPost';
 import customAxios from 'utils/token';
 import { AxiosResponse } from 'axios';
-import { Idata } from './type';
+import { IGardenDetail } from 'types/GardenDetail';
 
 const MyPosts = () => {
   const nav = useNavigate();
-  const [myPostsList, setMyPostsList] = useState<Idata[]>([]);
+  const [myPostsList, setMyPostsList] = useState<IGardenDetail[]>([]);
 
   const renderPosts = myPostsList.map(i => (
     <PostContainer key={Math.random()}>
@@ -19,8 +19,12 @@ const MyPosts = () => {
     </PostContainer>
   ));
   const init = async () => {
-    const res: AxiosResponse = await customAxios.get('/v1/garden/mine');
-    setMyPostsList(res.data);
+    try {
+      const res: AxiosResponse = await customAxios.get('/v1/garden/mine');
+      setMyPostsList(res.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {

@@ -27,9 +27,12 @@ const MyHome = () => {
   const [hasMyGarden, setHasMyGarden] = useState<IHashMyGarden | null>(null);
   const [isGardenMenuOpen, setIsGardenMenuOpen] = useState<boolean>(false);
   const init = async () => {
-    const res: AxiosResponse = await customAxios.get('/v1/garden/using');
-    console.log(res.data);
-    setHasMyGarden(res.data[0]);
+    try {
+      const res: AxiosResponse = await customAxios.get('/v1/garden/using');
+      setHasMyGarden(res.data[0]);
+    } catch (err) {
+      console.log(err);
+    }
   };
   useEffect(() => {
     init();
@@ -37,8 +40,12 @@ const MyHome = () => {
 
   const myGardenDelete = async () => {
     if (hasMyGarden) {
-      const res: AxiosResponse = await customAxios.delete(`/v1/garden/using/${hasMyGarden.id}`);
-      if (res.status === 204) nav('/');
+      try {
+        const res: AxiosResponse = await customAxios.delete(`/v1/garden/using/${hasMyGarden.id}`);
+        if (res.status === 204) nav('/');
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
   const calculateRemainingDays = (endDate: string) => {

@@ -9,6 +9,7 @@ import smileIllust from 'assets/modal/smile.svg';
 import icon from '../../assets/image_small.svg';
 import delete_icon from '../../assets/delete_icon.png';
 import { getImages } from 'pages/My/RegisterUser/query';
+import { AxiosResponse } from 'axios';
 interface UserFeedbackModalProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -34,7 +35,7 @@ function UserFeedbackModal({ isOpen, setIsOpen }: UserFeedbackModalProps) {
       const formData: IFormData = new FormData();
       formData.append('file', uploadImg);
       try {
-        const res = await getImages(formData);
+        const res = (await getImages(formData)) as AxiosResponse;
         const newImage: string[] = [res.data.imageUrl];
         setImages(prevImages => [...newImage, ...prevImages]);
       } catch (err) {

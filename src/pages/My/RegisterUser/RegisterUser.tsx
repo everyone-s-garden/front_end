@@ -155,8 +155,8 @@ const EditBtn = styled.button`
   position: absolute;
   z-index: 99;
   height: 20%;
-  top: 10%;
-  right: 5%;
+  top: 23px;
+  right: 26px;
   display: flex;
   justify-content: end;
   img {

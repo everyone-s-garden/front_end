@@ -32,7 +32,6 @@ interface Idata {
 function Post({ data }: Idata) {
   const nav = useNavigate();
   let price = 15000;
-  console.log(data);
   return (
     <PostContainer onClick={() => nav(`/my/${data.id}`)}>
       <Image src={data.images[0] || testImg} alt="텃밭 이미지"></Image>

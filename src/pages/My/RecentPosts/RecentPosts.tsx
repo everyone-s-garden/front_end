@@ -6,35 +6,20 @@ import { BREAK_POINT } from 'constants/style';
 import Post from '../Post';
 import NoPost from '../NoPost';
 import customAxios from 'utils/token';
+import { AxiosResponse } from 'axios';
+import { IGardenDetail } from 'types/GardenDetail';
 
-interface Idata {
-  address: string;
-  contact: any;
-  facility: {
-    toilet: boolean;
-    waterway: boolean;
-    equipment: boolean;
-  };
-  gardenId: number;
-  images: string[];
-  latitude: number;
-  link: any;
-  longitude: number;
-  name: string;
-  content: string;
-  price: string;
-  size: string;
-  status: string;
-  type: string;
-  id: number;
-}
 const RecentPosts = () => {
   const nav = useNavigate();
-  const [recentList, setRecentList] = useState<Idata[]>([]);
+  const [recentList, setRecentList] = useState<IGardenDetail[]>([]);
   // const [RecentList] = useState([]);
   const init = async () => {
-    const res = await customAxios.get('/v1/garden/recent');
-    setRecentList(res.data);
+    try {
+      const res = (await customAxios.get('/v1/garden/recent')) as AxiosResponse;
+      setRecentList(res.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {

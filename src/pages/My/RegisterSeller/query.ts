@@ -17,7 +17,7 @@ export const inputPriceFormat = (str: string) => {
   return comma(uncomma(str));
 };
 
-export const uncommaPrice = (str: any) => {
+export const uncommaPrice = (str: string) => {
   return str.replace(',', '');
 };
 

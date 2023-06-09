@@ -1,4 +1,4 @@
-export interface Idata {
+export interface IGardenDetail {
   address: string;
   contact: any;
   facility: {

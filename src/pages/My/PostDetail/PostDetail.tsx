@@ -13,31 +13,12 @@ import { ReactComponent as MenuIcon } from 'assets/three-dot-icon.svg';
 import * as animationData from 'assets/like-animation.json';
 import customAxios from 'utils/token';
 import { AxiosResponse } from 'axios';
+import { IGardenDetail } from 'types/GardenDetail';
 
 type PostDetailProps = {
   navermaps: typeof naver.maps;
 };
-interface IPost {
-  address: string;
-  contact: any;
-  facility: {
-    toilet: boolean;
-    waterway: boolean;
-    equipment: boolean;
-  };
-  gardenId: number;
-  images: string[];
-  latitude: number;
-  link: any;
-  longitude: number;
-  name: string;
-  content: string;
-  price: string;
-  size: string;
-  status: string;
-  type: string;
-  id: number;
-}
+
 function PostDetail() {
   const { postId } = useParams();
   const { navermaps } = useOutletContext<PostDetailProps>();
@@ -48,7 +29,7 @@ function PostDetail() {
   const animationRef = useRef<Player>(null);
   const [map, setMap] = useState<naver.maps.Map | null>(null);
   const [like, isLike] = useState<boolean>(false);
-  const [post, setPost] = useState<IPost | null>(null);
+  const [post, setPost] = useState<IGardenDetail | null>(null);
   const [images, setImages] = useState<string[]>([
     'https://picsum.photos/id/237/800/600',
     'https://picsum.photos/id/238/800/600',
@@ -67,13 +48,19 @@ function PostDetail() {
   const play = async () => {
     isLike(!like);
     if (!like) {
-      animationRef.current?.play();
-      const res = await customAxios.post(`v1/garden/like/${post?.gardenId}`);
-      console.log(res);
+      try {
+        const res = await customAxios.post(`v1/garden/like/${post?.id}`);
+        animationRef.current?.play();
+      } catch (err) {
+        console.log(err);
+      }
     } else {
-      animationRef.current?.setSeeker(0);
-      const res = await customAxios.delete(`v1/garden/like/${post?.gardenId}`);
-      console.log(res);
+      try {
+        const res = await customAxios.delete(`v1/garden/like/${post?.gardenId}`);
+        animationRef.current?.setSeeker(0);
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
@@ -90,8 +77,12 @@ function PostDetail() {
     }
   }, [post, map]);
   const deletePost = async () => {
-    const res: AxiosResponse = await customAxios.delete(`v1/garden/${post?.id}`);
-    if (res.status === 204) nav(-1);
+    try {
+      const res: AxiosResponse = await customAxios.delete(`v1/garden/${post?.id}`);
+      if (res.status === 204) nav(-1);
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <Container>

@@ -6,16 +6,19 @@ import searchIcon from 'assets/search.svg';
 import { BREAK_POINT } from 'constants/style';
 import formatDateInput from 'utils/formatDateInput';
 import customAxios from 'utils/token';
-import { useMatch, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { IProps, IData } from './type';
+import { AxiosResponse } from 'axios';
+import { getQueryData } from './query';
 
 const Form = ({ editMatch, image, myGarden }: IProps) => {
   const { getValues, register, handleSubmit, setValue } = useForm();
   const [searchResults, setSearchResults] = useState<IData[]>([]);
   const [searchText, setSearchText] = useState<string>('');
   const [selectedResult, setSelectedResult] = useState<IData | null>(null);
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState<boolean>(false);
   const nav = useNavigate();
+
   const init = async () => {
     if (myGarden && myGarden.name) {
       setSearchText(myGarden.name);
@@ -29,8 +32,8 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
           longitude: myGarden.longitude,
         };
       });
-      const startDate = myGarden.useStartDate.split('-').join('.');
-      const endDate = myGarden.useEndDate.split('-').join('.');
+      const startDate: string = myGarden.useStartDate.split('-').join('.');
+      const endDate: string = myGarden.useEndDate.split('-').join('.');
       setValue('start', startDate);
       setValue('end', endDate);
     }
@@ -43,11 +46,7 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
       setSearchResults([]);
       setShow(false);
     } else {
-      const res = await customAxios('v1/garden', {
-        params: {
-          query,
-        },
-      });
+      const res = (await getQueryData(query)) as AxiosResponse;
       setSearchResults(res.data);
       setShow(true);
     }
@@ -59,34 +58,41 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
     setShow(false);
   };
   const uploadMyGarden = async () => {
-    const res = await customAxios.post('v1/garden/using', {
-      id: selectedResult?.id,
-      name: selectedResult?.name,
-      image,
-      address: selectedResult?.address,
-      latitude: selectedResult?.latitude,
-      longitude: selectedResult?.longitude,
-      useStartDate: getValues('start'),
-      useEndDate: getValues('end'),
-    });
-    if (res.status === 201) nav(-1);
+    try {
+      const res: AxiosResponse = await customAxios.post('v1/garden/using', {
+        id: selectedResult?.id,
+        name: selectedResult?.name,
+        image,
+        address: selectedResult?.address,
+        latitude: selectedResult?.latitude,
+        longitude: selectedResult?.longitude,
+        useStartDate: getValues('start'),
+        useEndDate: getValues('end'),
+      });
+      if (res.status === 201) nav(-1);
+    } catch (err) {
+      console.log(err);
+    }
   };
   useEffect(() => {
     init();
   }, [myGarden]);
   const editMyGarden = async () => {
-    const res = await customAxios.put(`v1/garden/using/${myGarden?.id}`, {
-      id: selectedResult?.id,
-      name: selectedResult?.name,
-      image,
-      address: selectedResult?.address,
-      latitude: selectedResult?.latitude,
-      longitude: selectedResult?.longitude,
-      useStartDate: getValues('start'),
-      useEndDate: getValues('end'),
-    });
-    console.log(res);
-    if (res.status === 200) nav(-1);
+    try {
+      const res: AxiosResponse = await customAxios.put(`v1/garden/using/${myGarden?.id}`, {
+        id: selectedResult?.id,
+        name: selectedResult?.name,
+        image,
+        address: selectedResult?.address,
+        latitude: selectedResult?.latitude,
+        longitude: selectedResult?.longitude,
+        useStartDate: getValues('start'),
+        useEndDate: getValues('end'),
+      });
+      if (res.status === 200) nav(-1);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

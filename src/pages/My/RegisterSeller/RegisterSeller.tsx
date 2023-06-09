@@ -7,7 +7,7 @@ import addIcon from 'assets/my/register/add-icon.svg';
 import delete_icon from 'assets/delete_icon.png';
 import { getImages } from 'utils/getImages';
 import { IFormData, ILocation, IUrl, ILen } from './type';
-import { useMatch } from 'react-router-dom';
+import { Path, useMatch } from 'react-router-dom';
 import customAxios from 'utils/token';
 import { AxiosResponse } from 'axios';
 
@@ -44,7 +44,7 @@ const RegisterSeller = () => {
 
   return (
     <Container>
-      <H1>판매 텃밭 등록하기</H1>
+      <H1>{match ? '판매 텃밭 수정하기' : ' 판매 텃밭 등록하기'}</H1>
       <ImgContainer>
         <ImgAddBtnBox len={images.length}>
           <ImgAddBtn len={images.length}>

@@ -44,5 +44,6 @@ const MyContent = styled.div`
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     margin-top: 0;
     flex-direction: column-reverse;
+    width: 100%;
   }
 `;
