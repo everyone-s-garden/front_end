@@ -48,23 +48,22 @@ function PostDetail() {
     if (!post?.liked) {
       try {
         const res: IGardenDetail = await customAxios.post(`v1/garden/like/${post?.id}`);
-        setPost(res);
-        setImages(res.images);
         animationRef.current?.play();
+        setTimeout(() => {
+          fetchGardenData();
+        }, 3000);
       } catch (err) {
         console.log(err);
       }
     } else {
       try {
         const res: IGardenDetail = await customAxios.delete(`v1/garden/like/${post?.id}`);
-        setPost(res);
-        setImages(res.images);
+        fetchGardenData();
       } catch (err) {
         console.log(err);
       }
     }
   };
-
   useEffect(() => {
     fetchGardenData();
   }, [postId]); // postId가 변경될 때마다 데이터를 가져오도록 설정
@@ -189,7 +188,7 @@ function PostDetail() {
                   loop={false}
                   keepLastFrame={true}
                   src={animationData}
-                  style={{ width: 34, marginRight: 6, marginBottom: 6 }}
+                  style={{ width: 34, marginRight: 6, marginBottom: 7 }}
                 />
               )}
               찜하기
@@ -413,9 +412,9 @@ const ZzimBtn = styled.button`
 `;
 
 const HeartImg = styled.img`
-  width: 24px;
-  height: 19px;
-  margin-right: 12px;
+  width: 34px;
+  height: 18.2px;
+  margin-right: 6px;
 `;
 const ApplyBtn = styled.button`
   flex-grow: 2;
