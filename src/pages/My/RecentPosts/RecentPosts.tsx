@@ -26,8 +26,8 @@ const RecentPosts = () => {
     init();
   }, []);
   const renderPosts = recentList.map(i => (
-    <PostContainer key={i.gardenId}>
-      <Post data={i} />
+    <PostContainer key={i.id}>
+      <Post data={i} key={i.id} />
     </PostContainer>
   ));
 
