@@ -10,6 +10,7 @@ import icon from '../../assets/image_small.svg';
 import delete_icon from '../../assets/delete_icon.png';
 import { getImages } from 'pages/My/RegisterUser/query';
 import { AxiosResponse } from 'axios';
+import customAxios from 'utils/token';
 interface UserFeedbackModalProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -20,9 +21,21 @@ function UserFeedbackModal({ isOpen, setIsOpen }: UserFeedbackModalProps) {
   const [comment, setComment] = useState<string>('');
   const [images, setImages] = useState<string[]>([]);
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     setIsOpen(false);
-    setContent('제출되었습니다. 소중한 의견 감사합니다 ♥︎');
+    if (comment.length > 2) {
+      const feedBackData: { content: string; images: string[] } = {
+        content: comment,
+        images,
+      };
+      try {
+        const res = await customAxios.post(`v1/feedback`, feedBackData);
+        console.log(res);
+        setContent('제출되었습니다. 소중한 의견 감사합니다 ♥︎');
+      } catch (err) {
+        console.log(err);
+      }
+    }
   };
 
   const addImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
