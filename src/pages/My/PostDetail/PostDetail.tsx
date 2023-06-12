@@ -84,7 +84,6 @@ function PostDetail() {
       console.log(err);
     }
   };
-  console.log(post);
   return (
     <Container>
       <BackDiv>

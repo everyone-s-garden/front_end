@@ -96,7 +96,7 @@ const MyHome = () => {
             <Content>
               <ImgBox onClick={() => nav('/my/garden-register-seller')} src={btnIcon4} alt="버튼 아이콘" />
               {calculateRemainingDays(hasMyGarden?.useEndDate!) >= 0 && (
-                <span>{calculateRemainingDays(hasMyGarden?.useEndDate!)}일 남음</span>
+                <span>{calculateRemainingDays(hasMyGarden?.useEndDate!)}일 남았습니다.</span>
               )}
               {calculateRemainingDays(hasMyGarden?.useEndDate!) < 0 && <span>만료</span>}
             </Content>
