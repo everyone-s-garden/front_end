@@ -10,27 +10,22 @@ import { ReactComponent as BackIcon } from 'assets/back-icon.svg';
 import * as animationData from 'assets/like-animation.json';
 import reportIcon from 'assets/map/report-icon.svg';
 import { GardenAPI } from 'api/GardenAPI';
+import { GardenDetailType } from 'api/type';
+import ContactGardenModal from 'components/Modal/ContactGardenModal';
 
 function GardenDetail() {
   const animationRef = useRef<Player>(null);
   const [selectedGarden, setSelectedGarden] = useRecoilState(selectedGardenIdAtom);
   const [_, setIsModalOpen] = useRecoilState(isReportOpenAtom);
   const [__, setReportPostId] = useRecoilState(reportPostIdAtom);
+  const [isContactModalOpen, setIsContactModalOpen] = useState<boolean>(false);
   const [like, isLike] = useState<boolean>(false);
-  const [images, setImages] = useState([
-    'https://picsum.photos/id/237/800/600',
-    'https://picsum.photos/id/238/800/600',
-    'https://picsum.photos/id/239/800/600',
-  ]);
-  // const [images, setImages] = useState([]);
-
-  const postId = 10;
-  let price = 16000;
+  const [postData, setPostData] = useState<GardenDetailType | null>(null);
 
   const fetchGardenData = async () => {
     if (!selectedGarden) return;
     const { data } = await GardenAPI.getGardenDetail(selectedGarden);
-    return data;
+    setPostData(data);
   };
 
   const play = () => {
@@ -40,39 +35,44 @@ function GardenDetail() {
   };
 
   useEffect(() => {
-    console.log(fetchGardenData());
-  }, []);
+    fetchGardenData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedGarden]);
 
   return (
     <DetailDiv>
-      <ImageSlider images={images} />
+      <ImageSlider images={postData?.images} />
       <BackBtn onClick={() => setSelectedGarden(null)}>
         <BackIcon width="8" height="15" stroke="#FFFFFF" strokeWidth="2" />
       </BackBtn>
 
       <Body>
-        <Title>양주 공동텃밭</Title>
+        <Title>{postData?.name}</Title>
         <Row>
-          <Key>신청기간</Key> 2023. 04. 20 ~ 04. 30
+          <Key>신청기간</Key>
+          {!postData?.recruitStartDate || !postData?.recruitEndDate
+            ? '무제한'
+            : `${postData?.recruitStartDate}  ~ ${postData?.recruitEndDate}`}
         </Row>
         <Row>
-          {/* <Key>가격</Key> {price !== 0 ? `평당 ${price.toLocaleString('ko-KR')}원` : '무료'} */}
-          <Key>가격</Key> {price !== 0 ? `평당 ${price}원` : '무료'}
+          <Key>가격</Key>{' '}
+          {postData?.price === null ? '연락요망' : postData?.price === '0' ? '무료' : `${postData?.price} (원)`}
         </Row>
         <Row>
-          <Key>면적</Key> 16.5㎡(9평)
+          <Key>면적</Key> {postData?.size !== '' ? `${postData?.size} (평)` : '정보 없음'}
         </Row>
         <Row>
           <Key>부대시설</Key>
-          <Label>화장실</Label>
-          <Label>수로</Label>
-          <Label>농기구</Label>
+          {postData?.facility.toilet && <Label>화장실</Label>}
+          {postData?.facility.waterway && <Label>수로</Label>}
+          {postData?.facility.equipment && <Label>농기구</Label>}
+          {!postData?.facility.toilet && !postData?.facility.waterway && !postData?.facility.equipment && '없음'}
         </Row>
         <Row>
-          <Key>세부사항</Key> 양주시 주민들을 대상으로 하는 텃밭 보급 사업입니다.
+          <Key>세부사항</Key> {postData?.content ? postData?.content : '없음'}
         </Row>
         <Row>
-          <Key>위치</Key> 경기도 양주시 장흥면 일영로502번길 108-33
+          <Key>위치</Key> {postData?.address}
         </Row>
       </Body>
 
@@ -80,7 +80,7 @@ function GardenDetail() {
         <ReportBtn
           onClick={() => {
             setIsModalOpen(true);
-            setReportPostId(Number(postId));
+            setReportPostId(Number(postData?.id));
           }}
         >
           <img src={reportIcon} />
@@ -97,8 +97,10 @@ function GardenDetail() {
           />
           찜하기
         </ZzimBtn>
-        <ApplyBtn>신청하기</ApplyBtn>
+        <ApplyBtn onClick={() => setIsContactModalOpen(true)}>신청하기</ApplyBtn>
       </Buttons>
+
+      <ContactGardenModal isOpen={isContactModalOpen} setIsOpen={setIsContactModalOpen} contact={postData?.contact} />
     </DetailDiv>
   );
 }

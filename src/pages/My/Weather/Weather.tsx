@@ -2,15 +2,17 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { COLOR, FONT_WEIGHT } from 'constants/style';
+import { WeatherAPI } from 'api/WeatherAPI';
+import { WeatherType } from 'api/type';
 import LineGraph from './LineGraph';
 import WeekWeather from './WeekWeather';
 import findMyGeoLocation from 'utils/findMyGeoLocation';
+import MiniLoader from 'components/MiniLoader';
+
 import cloudy from 'assets/weather/cloudy.svg';
 import sunny from 'assets/weather/sunny.svg';
 import snowy from 'assets/weather/snowy.svg';
 import rainy from 'assets/weather/rainy.svg';
-import { WeatherAPI } from 'api/WeatherAPI';
-import MiniLoader from 'components/MiniLoader';
 
 function Weather() {
   const today = new Date();
@@ -18,11 +20,63 @@ function Weather() {
   const month = today.getMonth() + 1;
   const date = today.getDate();
   const day = today.getDay();
+  const regions = [
+    '서울특별시',
+    '강원도',
+    '경기도',
+    '경상남도',
+    '경상북도',
+    '광주광역시',
+    '대구광역시',
+    '대전광역시',
+    '부산광역시',
+    '세종특별자치시',
+    '울산광역시',
+    '인천광역시',
+    '전라남도',
+    '전라북도',
+    '제주특별자치도',
+    '충청남도',
+    '충청북도',
+  ];
+
+  const data = {
+    울산광역시: [
+      {
+        baseDate: '20230608',
+        category: 'PTY',
+        obsrValue: '0',
+        regionName: '울산광역시',
+      },
+      {
+        baseDate: '20230608',
+        category: 'T1H',
+        obsrValue: '18.3',
+        regionName: '울산광역시',
+      },
+    ],
+    대전광역시: [
+      {
+        baseDate: '20230608',
+        category: 'PTY',
+        obsrValue: '1',
+        regionName: '대전광역시',
+      },
+      {
+        baseDate: '20230608',
+        category: 'T1H',
+        obsrValue: '20.6',
+        regionName: '대전광역시',
+      },
+    ],
+  };
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [myLocation, setMyLocation] = useState<{
     lat: number;
     lng: number;
   } | null>(null);
+  const [allWeathers, setAllWeathers] = useState<WeatherType[]>([]);
 
   const moveMyLocation = async () => {
     setIsLoading(true);
@@ -33,10 +87,24 @@ function Weather() {
   };
 
   const getWeatherData = async () => {
-    // const data = await WeatherAPI.getAllWeather();
-    // const data = await WeatherAPI.getPerTimeWeather(37.545593, 127.100706);
-    const data = await WeatherAPI.getWeeklyWeather(37.545593, 127.100706);
+    // let data = await WeatherAPI.getAllWeather();
+    // data = data.data;
+
     console.log(data);
+
+    // data.filter((d: { category: string; regionName: string }) => {
+    //   if (d.regionName === regions[index]) {
+    //     console.log(d);
+    //   }
+    // });
+
+    // "baseDate": "20230531",
+    //         "category": "T1H",
+    //         "obsrValue": "22.9",
+    //         "regionName": "경상북도"
+
+    // const data = await WeatherAPI.getPerTimeWeather(37.545593, 127.100706);
+    // const data = await WeatherAPI.getWeeklyWeather(37.545593, 127.100706);
   };
 
   useEffect(() => {

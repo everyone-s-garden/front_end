@@ -6,7 +6,7 @@ import { COLOR } from 'constants/style';
 import noImgIcon from 'assets/noImg-icon.svg';
 
 interface ImageSliderProps {
-  images: string[];
+  images: string[] | undefined;
 }
 
 function ImageSlider({ images }: ImageSliderProps) {
@@ -19,6 +19,7 @@ function ImageSlider({ images }: ImageSliderProps) {
   };
 
   const onRightBtnClicked = () => {
+    if (!images) return;
     if (index >= images.length - 1) return;
     setIndex(index + 1);
   };
@@ -31,14 +32,14 @@ function ImageSlider({ images }: ImageSliderProps) {
   return (
     <SliderDiv>
       <ImageContainer ref={sliderRef}>
-        {images.length === 0 ? (
+        {!images || images.length === 0 ? (
           <EmptyImg src={noImgIcon} alt="이미지 없음" />
         ) : (
           images.map((img, idx) => <Image key={idx} src={img} alt="텃밭 이미지" />)
         )}
       </ImageContainer>
 
-      {images.length !== 0 && (
+      {images && images.length !== 0 && (
         <>
           <SliderButtonLeft onClick={onLeftBtnClicked}>
             <img src={arrowIcon} alt="버튼 아이콘" style={{ transform: 'rotate(180deg)' }} />
@@ -49,11 +50,7 @@ function ImageSlider({ images }: ImageSliderProps) {
         </>
       )}
 
-      <Dots>
-        {images.map((_, idx) => (
-          <Dot key={idx} active={idx === index} />
-        ))}
-      </Dots>
+      <Dots>{images && images.map((_, idx) => <Dot key={idx} active={idx === index} />)}</Dots>
     </SliderDiv>
   );
 }

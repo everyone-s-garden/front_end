@@ -19,7 +19,7 @@ export const GardenAPI = {
     return data;
   },
   getGardenDetail: async (gardenID: number) => {
-    const { data } = await HttpRequest.get(`/v1/garden/${gardenID}`);
+    const data = await HttpRequest.get(`/v1/garden/${gardenID}`);
     return data;
   },
 };
