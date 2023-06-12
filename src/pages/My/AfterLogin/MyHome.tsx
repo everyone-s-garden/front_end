@@ -12,46 +12,71 @@ import { ReactComponent as MenuIcon } from 'assets/three-dot-icon.svg';
 import { AxiosResponse } from 'axios';
 import customAxios from 'utils/token';
 
+interface IHashMyGarden {
+  address: string;
+  id: number;
+  image: string;
+  latitude: number;
+  longitude: number;
+  name: string;
+  useEndDate: string;
+  useStartDate: string;
+}
 const MyHome = () => {
   const nav = useNavigate();
-  const [hasMyGarden, setHasMyGarden] = useState([]);
+  const [hasMyGarden, setHasMyGarden] = useState<IHashMyGarden | null>(null);
   const [isGardenMenuOpen, setIsGardenMenuOpen] = useState<boolean>(false);
   const init = async () => {
-    const res: AxiosResponse = await customAxios.get('/v1/garden/using');
-    setHasMyGarden(res.data);
+    try {
+      const res: AxiosResponse = await customAxios.get('/v1/garden/using');
+      setHasMyGarden(res.data[0]);
+    } catch (err) {
+      console.log(err);
+    }
   };
-
   useEffect(() => {
     init();
   }, []);
 
   const myGardenDelete = async () => {
-    const res: AxiosResponse = await customAxios.delete(`/v1/garden/using/{gardenId}`);
-    console.log(res);
-    if (res.status === 204) nav('/my');
+    if (hasMyGarden) {
+      try {
+        const res: AxiosResponse = await customAxios.delete(`/v1/garden/using/${hasMyGarden.id}`);
+        if (res.status === 204) nav('/');
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+  const calculateRemainingDays = (endDate: string) => {
+    const today = new Date();
+    const end = new Date(endDate);
+    const timeDiff = end.getTime() - today.getTime();
+    const remainingDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    return remainingDays;
   };
   return (
     <Container>
-      {hasMyGarden.length !== 0 && (
+      {hasMyGarden !== null && hasMyGarden !== undefined && (
         <MyGardenSection>
           <SectionTitle>나의 텃밭</SectionTitle>
           <GardenImgContainer>
-            <GardenImage src={testImg} alt="텃밭 이미지" />
+            <GardenImage src={hasMyGarden?.image || testImg} alt="텃밭 이미지" />
             <GardenTitle>유미애님의 텃밭</GardenTitle>
 
             <MenuWrapper onClick={() => setIsGardenMenuOpen(!isGardenMenuOpen)}>
               <MenuIcon width="3" height="18" fill="#FFFFFF" />
             </MenuWrapper>
             <MenuDropdown isOpen={isGardenMenuOpen}>
-              <DropDownBtn>수정하기</DropDownBtn>
+              <DropDownBtn onClick={() => nav('/my/garden/edit')}>수정하기</DropDownBtn>
               <DropDownBtn onClick={myGardenDelete}>삭제하기</DropDownBtn>
             </MenuDropdown>
           </GardenImgContainer>
         </MyGardenSection>
       )}
 
-      <ContentWrapper hasMyGarden={hasMyGarden.length !== 0}>
-        {hasMyGarden.length === 0 ? (
+      <ContentWrapper hasMyGarden={hasMyGarden !== null}>
+        {hasMyGarden === null || hasMyGarden === undefined ? (
           <>
             <Content onClick={() => nav('/my/garden-register-user')}>
               <ImgBox src={btnIcon1} alt="버튼 아이콘" />
@@ -66,20 +91,24 @@ const MyHome = () => {
           <>
             <Content>
               <ImgBox onClick={() => nav('/my/garden-register-user')} src={btnIcon3} alt="버튼 아이콘" />
-              <span>양주 공공 텃밭 이용중</span>
+              <span>{hasMyGarden?.name}</span>
             </Content>
             <Content>
               <ImgBox onClick={() => nav('/my/garden-register-seller')} src={btnIcon4} alt="버튼 아이콘" />
-              <span>3개월 2일 남음</span>
+              {calculateRemainingDays(hasMyGarden?.useEndDate!) >= 0 && (
+                <span>{calculateRemainingDays(hasMyGarden?.useEndDate!)}일 남았습니다.</span>
+              )}
+              {calculateRemainingDays(hasMyGarden?.useEndDate!) < 0 && <span>만료</span>}
             </Content>
           </>
         )}
       </ContentWrapper>
-
-      <Span>
-        판매하고 싶은 밭이 있나요?
-        <span onClick={() => nav('/my/garden-register-seller')}> 분양 글 등록하기</span>
-      </Span>
+      {hasMyGarden !== null && hasMyGarden !== undefined && (
+        <AddPostWrapper>
+          <Span>판매하고 싶은 밭이 있나요? </Span>
+          <AddPost onClick={() => nav('/my/garden-register-seller')}> 분양 글 등록하기</AddPost>
+        </AddPostWrapper>
+      )}
     </Container>
   );
 };
@@ -198,17 +227,28 @@ const ContentWrapper = styled.div<{ hasMyGarden: boolean }>`
   height: 120px;
   display: flex;
   column-gap: 50px;
-
+  margin-bottom: 15px;
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     margin-top: 20px;
     column-gap: 20px;
   }
 `;
 
+const Span = styled.span`
+  color: #afafaf;
+  margin-right: 5px;
+`;
+const AddPost = styled.span`
+  color: #afafaf;
+  text-decoration: underline;
+  cursor: pointer;
+`;
+
 const Content = styled.button`
   flex-grow: 1;
   padding: 15px;
   height: 100%;
+  width: 310px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -238,16 +278,8 @@ const ImgBox = styled.img`
   border-radius: 4px;
 `;
 
-const Span = styled.span`
-  align-self: flex-end;
-  margin-top: 15px;
-  color: #afafaf;
-  font-weight: 400;
-  font-size: 13px;
-
-  & > span {
-    color: #afafaf;
-    text-decoration: underline;
-    cursor: pointer;
-  }
+const AddPostWrapper = styled.div`
+  display: flex;
+  justify-content: end;
+  width: 100%;
 `;

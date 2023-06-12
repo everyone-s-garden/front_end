@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 
@@ -6,43 +6,127 @@ import searchIcon from 'assets/search.svg';
 import { BREAK_POINT } from 'constants/style';
 import formatDateInput from 'utils/formatDateInput';
 import customAxios from 'utils/token';
+import { useNavigate } from 'react-router-dom';
+import { IProps, IData } from './type';
+import { AxiosResponse } from 'axios';
+import { getQueryData } from './query';
 
-interface IImage {
-  id: string;
-  imageUrl: string;
-}
-
-interface IProps {
-  image: IImage | null;
-}
-
-const Form = ({ image }: IProps) => {
-  const { watch, getValues, register } = useForm();
-
-  const getPost = () => {};
-  const uploadMyGarden = async () => {};
+const Form = ({ editMatch, image, myGarden }: IProps) => {
+  const { getValues, register, handleSubmit, setValue } = useForm();
+  const [searchResults, setSearchResults] = useState<IData[]>([]);
+  const [searchText, setSearchText] = useState<string>('');
+  const [selectedResult, setSelectedResult] = useState<IData | null>(null);
+  const [show, setShow] = useState<boolean>(false);
+  const nav = useNavigate();
 
   const init = async () => {
-    const res = await customAxios.get('/v1/garden');
-    console.log(res);
+    if (myGarden && myGarden.name) {
+      setSearchText(myGarden.name);
+      setSelectedResult((prev: IData | null) => {
+        return {
+          ...prev,
+          id: myGarden.id,
+          name: myGarden.name,
+          address: myGarden.address,
+          latitude: myGarden.latitude,
+          longitude: myGarden.longitude,
+        };
+      });
+      const startDate: string = myGarden.useStartDate.split('-').join('.');
+      const endDate: string = myGarden.useEndDate.split('-').join('.');
+      setValue('start', startDate);
+      setValue('end', endDate);
+    }
   };
-
+  const getSearchResult = async (e: React.FormEvent<HTMLInputElement>) => {
+    let query = e.currentTarget.value;
+    setSearchText(query);
+    if (query === '') {
+      setSelectedResult(null);
+      setSearchResults([]);
+      setShow(false);
+    } else {
+      const res = (await getQueryData(query)) as AxiosResponse;
+      setSearchResults(res.data);
+      setShow(true);
+    }
+  };
+  const selectGarden = (result: IData) => {
+    setSearchText(result.name);
+    setSelectedResult(result);
+    setSearchResults([]);
+    setShow(false);
+  };
+  const uploadMyGarden = async () => {
+    try {
+      const res: AxiosResponse = await customAxios.post('v1/garden/using', {
+        id: selectedResult?.id,
+        name: selectedResult?.name,
+        image,
+        address: selectedResult?.address,
+        latitude: selectedResult?.latitude,
+        longitude: selectedResult?.longitude,
+        useStartDate: getValues('start'),
+        useEndDate: getValues('end'),
+      });
+      if (res.status === 201) nav(-1);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   useEffect(() => {
     init();
-  }, []);
+  }, [myGarden]);
+  const editMyGarden = async () => {
+    try {
+      const res: AxiosResponse = await customAxios.put(`v1/garden/using/${myGarden?.id}`, {
+        id: selectedResult?.id,
+        name: selectedResult?.name,
+        image,
+        address: selectedResult?.address,
+        latitude: selectedResult?.latitude,
+        longitude: selectedResult?.longitude,
+        useStartDate: getValues('start'),
+        useEndDate: getValues('end'),
+      });
+      if (res.status === 200) nav(-1);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <>
-      <FormBox onSubmit={uploadMyGarden}>
+      <FormBox onClick={() => setShow(false)} onSubmit={handleSubmit(editMatch ? editMyGarden : uploadMyGarden)}>
         <FormItem>
           <ItemTag required>텃밭 정보</ItemTag>
-          <Input placeholder="텃밭 검색" />
+          <Input onChange={getSearchResult} value={searchText} placeholder="텃밭 검색" />
           <SearchIcon src={searchIcon} />
+          <SearchResult check={searchResults.length === 0} len={show}>
+            <ResultUl>
+              {searchResults.length === 0 ? (
+                <NoResult>
+                  <span>검색 결과가 없습니다.</span>
+                  <span>정확한 검색어를 입력해주세요.</span>
+                </NoResult>
+              ) : (
+                searchResults.map(result => (
+                  <ResultLi onClick={() => selectGarden(result)} key={result.id}>
+                    <span>{result.name !== '' ? result.name : result.address}</span>
+                  </ResultLi>
+                ))
+              )}
+            </ResultUl>
+          </SearchResult>
         </FormItem>
 
         <FormItem>
           <ItemTag required>위치</ItemTag>
-          <Input placeholder="검색시 자동으로 불러와져요" disabled />
+          <Input
+            placeholder="검색시 자동으로 불러와져요"
+            value={selectedResult ? selectedResult.address : ''}
+            disabled
+          />
         </FormItem>
 
         <Notification>직접 입력해주세요</Notification>
@@ -64,9 +148,8 @@ const Form = ({ image }: IProps) => {
             </DateInputBox>
           </DateContainer>
         </FormItem>
+        <CompleteBtn>완료</CompleteBtn>
       </FormBox>
-
-      <CompleteBtn>완료</CompleteBtn>
     </>
   );
 };
@@ -78,9 +161,27 @@ const FormBox = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
-
+  align-items: center;
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     flex-grow: 1;
+  }
+`;
+
+const SearchResult = styled.div<{ check: boolean; len: boolean }>`
+  visibility: ${props => (props.len ? 'visibility' : 'hidden')};
+  position: absolute;
+  width: calc(100% - 86px);
+  height: ${props => (props.check ? '110px' : '217px')};
+  right: 0;
+  top: 105%;
+  background: #ffffff;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.06);
+  border-radius: 11px;
+  z-index: 999;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: calc(100% - 80px);
+    height: ${props => (props.check ? '90px' : '229px')};
   }
 `;
 
@@ -186,24 +287,108 @@ const DateInput = styled.input`
   border: none;
   background: inherit;
   margin: 0 auto;
-
   ::placeholder {
     color: #afafaf;
   }
 `;
 
 const CompleteBtn = styled.button`
-  width: 100%;
-  max-width: 340px;
-  height: 50px;
+  width: 348px;
+  height: 59px;
   color: #ffffff;
   font-size: 16px;
   font-weight: 400px;
   background-color: #414c38;
   border-radius: 15px;
   transition: all 0.1s ease-in;
-
+  margin-top: 5px;
   &:hover {
     background-color: #646f5a;
+  }
+`;
+
+const ResultUl = styled.ul`
+  height: 100%;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #e0ebd4;
+  transition: 0.3s ease-in-out;
+
+  &::-webkit-scrollbar {
+    display: block !important; /* Chrome, Safari, Opera*/
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 7px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: white;
+    border-radius: 7px;
+    border: 1px solid #f0f0f0;
+  }
+  &::-moz-scrollbar {
+    width: 6px;
+  }
+
+  &::-moz-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 7px;
+  }
+
+  &::-moz-scrollbar-track {
+    background-color: white;
+    border-radius: 7px;
+    border: 1px solid #f0f0f0;
+  }
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    align-items: center;
+    width: 100%;
+    height: 100%;
+
+    &::-webkit-scrollbar {
+      display: none !important; /* Chrome, Safari, Opera*/
+    }
+  }
+`;
+
+const ResultLi = styled.li`
+  height: 20%;
+  display: flex;
+  align-items: center;
+  border-bottom: 1.15625px solid #f0f0f0;
+  font-size: 13px;
+  line-height: 16px;
+  letter-spacing: -0.08em;
+  color: #414c38;
+  cursor: pointer;
+  span {
+    margin-left: 15px;
+  }
+`;
+
+const NoResult = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  flex-direction: row;
+  span {
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    color: #c8c8c8;
+    margin-right: 5px;
+  }
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    flex-direction: column;
   }
 `;
