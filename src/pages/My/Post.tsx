@@ -4,34 +4,16 @@ import styled from 'styled-components';
 import testImg from 'assets/garden-image1.jpg';
 import { BREAK_POINT, FONT_WEIGHT } from 'constants/style';
 import { useNavigate } from 'react-router-dom';
+import { IGardenDetail } from 'types/GardenDetail';
 
 interface Idata {
-  data: {
-    address: string;
-    contact: any;
-    facility: {
-      toilet: boolean;
-      waterway: boolean;
-      equipment: boolean;
-    };
-    gardenId: number;
-    images: string[];
-    latitude: number;
-    link: any;
-    longitude: number;
-    name: string;
-    content: string;
-    price: string;
-    size: string;
-    status: string;
-    type: string;
-    id: number;
-  };
+  data: IGardenDetail;
 }
 
 function Post({ data }: Idata) {
   const nav = useNavigate();
   let price = 15000;
+  console.log(data);
   return (
     <PostContainer onClick={() => nav(`/my/${data.id}`)}>
       <Image src={data.images[0] || testImg} alt="텃밭 이미지"></Image>

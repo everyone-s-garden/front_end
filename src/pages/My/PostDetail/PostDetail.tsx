@@ -14,6 +14,7 @@ import * as animationData from 'assets/like-animation.json';
 import customAxios from 'utils/token';
 import { AxiosResponse } from 'axios';
 import { IGardenDetail } from 'types/GardenDetail';
+import Heart from 'assets/like_heart.svg';
 
 type PostDetailProps = {
   navermaps: typeof naver.maps;
@@ -28,7 +29,6 @@ function PostDetail() {
   const [__, setReportPostId] = useRecoilState(reportPostIdAtom);
   const animationRef = useRef<Player>(null);
   const [map, setMap] = useState<naver.maps.Map | null>(null);
-  const [like, isLike] = useState<boolean>(false);
   const [post, setPost] = useState<IGardenDetail | null>(null);
   const [images, setImages] = useState<string[]>([
     'https://picsum.photos/id/237/800/600',
@@ -37,7 +37,6 @@ function PostDetail() {
   ]);
 
   const location = { lat: 37.3595704, long: 127.105399 };
-
   const fetchGardenData = async () => {
     if (!postId) return;
     const res = await customAxios.get(`v1/garden/${postId}`);
@@ -46,18 +45,20 @@ function PostDetail() {
   };
 
   const play = async () => {
-    isLike(!like);
-    if (!like) {
+    if (!post?.liked) {
       try {
-        const res = await customAxios.post(`v1/garden/like/${post?.id}`);
+        const res: IGardenDetail = await customAxios.post(`v1/garden/like/${post?.id}`);
+        setPost(res);
+        setImages(res.images);
         animationRef.current?.play();
       } catch (err) {
         console.log(err);
       }
     } else {
       try {
-        const res = await customAxios.delete(`v1/garden/like/${post?.gardenId}`);
-        animationRef.current?.setSeeker(0);
+        const res: IGardenDetail = await customAxios.delete(`v1/garden/like/${post?.id}`);
+        setPost(res);
+        setImages(res.images);
       } catch (err) {
         console.log(err);
       }
@@ -84,6 +85,7 @@ function PostDetail() {
       console.log(err);
     }
   };
+  console.log(post);
   return (
     <Container>
       <BackDiv>
@@ -117,15 +119,17 @@ function PostDetail() {
             </MenuDropdown>
           </Title>
           <Price>
-            {post?.price === '0' ? '무료' : `${Number(post?.price.split(',').join('')).toLocaleString('ko-KR')}원`}
+            {post?.price === '0'
+              ? '무료'
+              : `${Number(post?.price?.split(',')?.join('') ?? 0).toLocaleString('ko-KR')}원`}
           </Price>
           <Size>{post?.size} 평</Size>
 
           <Facility>
             <h4>부대시설</h4>
-            {post?.facility.toilet && <span>화장실</span>}
-            {post?.facility.waterway && <span>수로</span>}
-            {post?.facility.equipment && <span>농기구</span>}
+            {post?.facility?.toilet && <span>화장실</span>}
+            {post?.facility?.waterway && <span>수로</span>}
+            {post?.facility?.equipment && <span>농기구</span>}
           </Facility>
           <Contact>
             <h4>연락처</h4>
@@ -176,14 +180,18 @@ function PostDetail() {
 
           <Buttons>
             <ZzimBtn onClick={play}>
-              <Player
-                ref={animationRef}
-                autoplay={false}
-                loop={false}
-                keepLastFrame={true}
-                src={animationData}
-                style={{ width: 34, marginRight: 6, marginBottom: 6 }}
-              />
+              {post?.liked ? (
+                <HeartImg src={Heart} />
+              ) : (
+                <Player
+                  ref={animationRef}
+                  autoplay={false}
+                  loop={false}
+                  keepLastFrame={true}
+                  src={animationData}
+                  style={{ width: 34, marginRight: 6, marginBottom: 6 }}
+                />
+              )}
               찜하기
             </ZzimBtn>
             <ApplyBtn>신청하기</ApplyBtn>
@@ -404,6 +412,11 @@ const ZzimBtn = styled.button`
   transition: all 0.2s;
 `;
 
+const HeartImg = styled.img`
+  width: 24px;
+  height: 19px;
+  margin-right: 12px;
+`;
 const ApplyBtn = styled.button`
   flex-grow: 2;
   height: 100%;
