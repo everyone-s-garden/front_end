@@ -74,6 +74,14 @@ const router = createBrowserRouter([
             path: ':postId',
             element: <PostDetail />,
           },
+          {
+            path: 'garden/edit',
+            element: <RegisterUser />,
+          },
+          {
+            path: 'post/edit/:id',
+            element: <RegisterSeller />,
+          },
         ],
       },
       {

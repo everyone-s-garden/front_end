@@ -6,7 +6,6 @@ import SecondSection from './SecondSection';
 import { setItem } from 'utils/session';
 
 const Main = () => {
-  setItem('isLogin', 'true');
   return (
     <Container>
       <FirstSection />
