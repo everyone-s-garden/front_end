@@ -9,17 +9,18 @@ import noImgIcon from 'assets/noImg-icon.svg';
 interface GardenPostProps {
   id: number;
   name: string;
-  price: number;
-  image: string;
+  size?: string;
+  price?: string;
+  images: string[];
   status?: number;
 }
-function GardenPost({ id, name, price, image, status = 0 }: GardenPostProps) {
+function GardenPost({ id, name, size, price, images, status = 0 }: GardenPostProps) {
   const [_, setSelectedGarden] = useRecoilState(selectedGardenIdAtom);
 
   return (
     <Post>
-      {image ? (
-        <Image src={image} alt="텃밭 이미지"></Image>
+      {images.length > 0 ? (
+        <Image src={images[0]} alt="텃밭 이미지"></Image>
       ) : (
         <NoImage>
           <NoImgIcon src={noImgIcon} alt="이미지 없음" />
@@ -38,8 +39,9 @@ function GardenPost({ id, name, price, image, status = 0 }: GardenPostProps) {
           )}
         </Status>
         <Title onClick={() => setSelectedGarden(id)}>{name.trim()}</Title>
-        <Value>8평</Value>
-        <Value>{price !== 0 ? `평당 ${price.toLocaleString('ko-KR')}원` : '무료'}</Value>
+        <Value>{size} (평)</Value>
+        {/* <Value>{price !== 0 ? `평당 ${price.toLocaleString('ko-KR')}원` : '무료'}</Value> */}
+        <Value>{price === null ? '연락요망' : price === '0' ? '무료' : `${price} (원)`}</Value>
       </InfoDiv>
     </Post>
   );

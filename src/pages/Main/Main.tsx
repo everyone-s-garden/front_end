@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import FirstSection from './FirstSection';
 import SecondSection from './SecondSection';
-import { setItem } from 'utils/session';
 
 const Main = () => {
   return (
