@@ -12,7 +12,7 @@ import reportIcon from 'assets/map/report-icon.svg';
 import { GardenAPI } from 'api/GardenAPI';
 import { GardenDetailType } from 'api/type';
 import ContactGardenModal from 'components/Modal/ContactGardenModal';
-import Heart from "assets/like_heart.svg"
+import Heart from 'assets/like_heart.svg';
 import customAxios from 'utils/token';
 function GardenDetail() {
   const animationRef = useRef<Player>(null);
@@ -33,7 +33,9 @@ function GardenDetail() {
       try {
         const res: GardenDetailType = await customAxios.post(`v1/garden/like/${postData?.id}`);
         animationRef.current?.play();
-        fetchGardenData()
+        setTimeout(() => {
+          fetchGardenData();
+        }, 2000);
       } catch (err) {
         console.log(err);
       }
@@ -97,20 +99,20 @@ function GardenDetail() {
           신고하기
         </ReportBtn>
         <ZzimBtn onClick={play}>
-              {postData?.liked ? (
-                <HeartImg src={Heart} />
-              ) : (
-                <Player
-                  ref={animationRef}
-                  autoplay={false}
-                  loop={false}
-                  keepLastFrame={true}
-                  src={animationData}
-                  style={{  width: 34, marginRight: 4, marginBottom: 6, marginLeft: 14}}
-                />
-              )}
-              찜하기
-            </ZzimBtn>
+          {postData?.liked ? (
+            <HeartImg src={Heart} />
+          ) : (
+            <Player
+              ref={animationRef}
+              autoplay={false}
+              loop={false}
+              keepLastFrame={true}
+              src={animationData}
+              style={{ width: 34, marginRight: 4, marginBottom: 6, marginLeft: 14 }}
+            />
+          )}
+          찜하기
+        </ZzimBtn>
         <ApplyBtn onClick={() => setIsContactModalOpen(true)}>신청하기</ApplyBtn>
       </Buttons>
 
