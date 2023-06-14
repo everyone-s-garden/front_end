@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { BREAK_POINT } from 'constants/style';
-import { isFeedbackOpenAtom, isLoginAtom } from 'recoil/atom';
+import { isCropOpenAtom, isFeedbackOpenAtom, isLoginAtom } from 'recoil/atom';
 import Weather from '../Weather/Weather';
 import heartIcon from 'assets/my/menu/heart-icon.svg';
 import clockIcon from 'assets/my/menu/clock-icon.svg';
@@ -16,7 +16,8 @@ function Menu() {
   const location = useLocation();
   const navigate = useNavigate();
   const isLogin: boolean = useRecoilValue(isLoginAtom);
-  const [_, setIsModalOpen] = useRecoilState(isFeedbackOpenAtom);
+  const [isFeedbackOpen, setIsFeedbackOpen] = useRecoilState(isFeedbackOpenAtom);
+  const [isCropOpen, setIsCropOpen] = useRecoilState(isCropOpenAtom);
 
   return (
     <MenuWrapper url={location.pathname}>
@@ -39,7 +40,7 @@ function Menu() {
             </NavBtn>
           </MenuNavList>
 
-          <YellowBtn onClick={() => setIsModalOpen(true)}>
+          <YellowBtn onClick={() => setIsFeedbackOpen(true)}>
             <BtnTextBox>
               <span>제안사항이 있나요?</span>
               <span>유저의 소리함</span>
@@ -48,7 +49,7 @@ function Menu() {
           </YellowBtn>
         </>
       )}
-      <YellowBtn>
+      <YellowBtn onClick={() => setIsCropOpen(true)}>
         <BtnTextBox>
           <span>지금 키우기 좋은</span>
           <span>월별 추천 작물</span>

@@ -2,6 +2,7 @@
   "name": "app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://everyones-garden.com/",
   "dependencies": {
     "@lottiefiles/react-lottie-player": "^3.5.3",
     "@react-oauth/google": "^0.11.0",

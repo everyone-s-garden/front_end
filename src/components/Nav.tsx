@@ -4,16 +4,17 @@ import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 
 import { BREAK_POINT, COLOR, FONT_WEIGHT } from '../constants/style';
-import { isFeedbackOpenAtom, isLoginAtom, isReportOpenAtom } from 'recoil/atom';
+import { isCropOpenAtom, isFeedbackOpenAtom, isLoginAtom, isReportOpenAtom } from 'recoil/atom';
 import { getItem } from 'utils/session';
 import ReportModal from './Modal/ReportModal';
 import UserFeedbackModal from './Modal/UserFeedbackModal';
+import MonthCrop from './Modal/MonthCrop';
+import Notification from './Notification';
 import logoImg from 'assets/logo-horizon.svg';
 import mapImg from 'assets/map-icon.svg';
 import homiImg from 'assets/homi-icon.svg';
 import { ReactComponent as BackIcon } from 'assets/back-icon.svg';
 import { useNavermaps } from 'react-naver-maps';
-import Notification from './Notification';
 
 const Nav = () => {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ const Nav = () => {
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
   const [isReportOpen, setIsReportOpen] = useRecoilState(isReportOpenAtom);
   const [isFeedbackOpen, setIsFeedbackOpen] = useRecoilState(isFeedbackOpenAtom);
+  const [isCropOpen, setIsCropOpen] = useRecoilState(isCropOpenAtom);
 
   const isMainPage = location.pathname === '/';
   const isMapPage = location.pathname === '/map';
@@ -106,6 +108,7 @@ const Nav = () => {
 
       <ReportModal isOpen={isReportOpen} setIsOpen={setIsReportOpen} />
       <UserFeedbackModal isOpen={isFeedbackOpen} setIsOpen={setIsFeedbackOpen} />
+      <MonthCrop isOpen={isCropOpen} setIsOpen={setIsCropOpen} />
       <Notification />
 
       <Main url={location.pathname}>
