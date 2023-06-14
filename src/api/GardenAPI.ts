@@ -1,3 +1,4 @@
+import customAxios from 'utils/token';
 import HttpRequest from './HttpRequest';
 
 export const GardenAPI = {
@@ -19,7 +20,7 @@ export const GardenAPI = {
     return data;
   },
   getGardenDetail: async (gardenID: number) => {
-    const data = await HttpRequest.get(`/v1/garden/${gardenID}`);
+    const data = await customAxios.get(`/v1/garden/${gardenID}`);
     return data;
   },
 };

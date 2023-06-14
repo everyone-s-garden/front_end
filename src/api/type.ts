@@ -57,6 +57,7 @@ export interface GardenDetailType {
     waterway?: boolean;
     equipment?: boolean;
   };
+  liked:boolean
 }
 
 export interface GardenUsing {

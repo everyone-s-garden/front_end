@@ -12,7 +12,8 @@ import reportIcon from 'assets/map/report-icon.svg';
 import { GardenAPI } from 'api/GardenAPI';
 import { GardenDetailType } from 'api/type';
 import ContactGardenModal from 'components/Modal/ContactGardenModal';
-
+import Heart from "assets/like_heart.svg"
+import customAxios from 'utils/token';
 function GardenDetail() {
   const animationRef = useRef<Player>(null);
   const [selectedGarden, setSelectedGarden] = useRecoilState(selectedGardenIdAtom);
@@ -27,18 +28,27 @@ function GardenDetail() {
     const { data } = await GardenAPI.getGardenDetail(selectedGarden);
     setPostData(data);
   };
-
-  const play = () => {
-    isLike(!like);
-    if (!like) animationRef.current?.play();
-    else animationRef.current?.setSeeker(0);
+  const play = async () => {
+    if (!postData?.liked) {
+      try {
+        const res: GardenDetailType = await customAxios.post(`v1/garden/like/${postData?.id}`);
+        animationRef.current?.play();
+        fetchGardenData()
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      try {
+        const res: GardenDetailType = await customAxios.delete(`v1/garden/like/${postData?.id}`);
+        fetchGardenData(); // 찜하기 취소 후 바로 데이터 업데이트
+      } catch (err) {
+        console.log(err);
+      }
+    }
   };
-
   useEffect(() => {
     fetchGardenData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedGarden]);
-
   return (
     <DetailDiv>
       <ImageSlider images={postData?.images} />
@@ -55,7 +65,7 @@ function GardenDetail() {
             : `${postData?.recruitStartDate}  ~ ${postData?.recruitEndDate}`}
         </Row>
         <Row>
-          <Key>가격</Key>{' '}
+          <Key>가격</Key>
           {postData?.price === null ? '연락요망' : postData?.price === '0' ? '무료' : `${postData?.price} (원)`}
         </Row>
         <Row>
@@ -87,16 +97,20 @@ function GardenDetail() {
           신고하기
         </ReportBtn>
         <ZzimBtn onClick={play}>
-          <Player
-            ref={animationRef}
-            autoplay={false}
-            loop={false}
-            keepLastFrame={true}
-            src={animationData}
-            style={{ width: 34, marginRight: 4, marginBottom: 6, marginLeft: 14 }}
-          />
-          찜하기
-        </ZzimBtn>
+              {postData?.liked ? (
+                <HeartImg src={Heart} />
+              ) : (
+                <Player
+                  ref={animationRef}
+                  autoplay={false}
+                  loop={false}
+                  keepLastFrame={true}
+                  src={animationData}
+                  style={{  width: 34, marginRight: 4, marginBottom: 6, marginLeft: 14}}
+                />
+              )}
+              찜하기
+            </ZzimBtn>
         <ApplyBtn onClick={() => setIsContactModalOpen(true)}>신청하기</ApplyBtn>
       </Buttons>
 
@@ -218,4 +232,10 @@ const ApplyBtn = styled.button`
   color: ${COLOR.BACKGROUND};
   background-color: #86bf60;
   transition: all 0.2s;
+`;
+const HeartImg = styled.img`
+  width: 34px;
+  height: 18.2px;
+  margin-right: 3px;
+  margin-left: 15px;
 `;
