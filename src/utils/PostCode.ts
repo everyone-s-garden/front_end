@@ -19,6 +19,7 @@ const handleComplete = async (data: IAddressData) => {
   }` as const;
   const res: AxiosResponse<{ results: IResponse[] }> = await axios.get(apiUrl);
   const potential_address = res.data.results.find((i: IResponse) => i.formatted_address.startsWith('대한민국'));
+  console.log(potential_address);
   if (potential_address) {
     const { lat, lng } = potential_address.geometry.location;
     const address_data = {
