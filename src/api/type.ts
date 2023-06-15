@@ -37,6 +37,7 @@ export interface GardenDetailType {
   price?: string;
   size?: string;
   contact?: string;
+  liked: boolean;
 
   address: string;
   latitude: number;
