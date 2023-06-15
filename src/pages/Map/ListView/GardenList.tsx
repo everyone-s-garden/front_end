@@ -11,7 +11,16 @@ function GardenList() {
   const renderGardenPosts =
     gardens &&
     gardens.map(garden => {
-      return <GardenPost key={garden.id} id={garden.id} name={garden.name} price={garden.price} image={''} />;
+      return (
+        <GardenPost
+          key={garden.id}
+          id={garden.id}
+          size={garden.size}
+          name={garden.name}
+          price={garden.price}
+          images={garden.images}
+        />
+      );
     });
 
   return <ListContainer>{renderGardenPosts}</ListContainer>;

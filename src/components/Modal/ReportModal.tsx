@@ -5,6 +5,8 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { COLOR } from 'constants/style';
 import { NotiContentAtom, reportPostIdAtom } from 'recoil/atom';
 import Modal from 'components/Modal/Modal';
+import { AxiosResponse } from 'axios';
+import customAxios from 'utils/token';
 
 interface ReportModalProps {
   isOpen: boolean;
@@ -22,7 +24,9 @@ function ReportModal({ isOpen, setIsOpen }: ReportModalProps) {
   const [isChecked4, setIsChecked4] = useState<boolean>(false);
   const [isChecked5, setIsChecked5] = useState<boolean>(false);
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
+    const res: AxiosResponse = await customAxios.post(`/v1/report?postId=1`, { item: '허위매물', content: '' });
+    console.log(res);
     setIsOpen(false);
     setContent('신고가 접수되었습니다. 신속하게 처리하겠습니다.');
   };

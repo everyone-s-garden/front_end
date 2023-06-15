@@ -1,17 +1,16 @@
 import React from 'react';
 import { UseFormRegister, UseFormRegisterReturn } from 'react-hook-form';
+import { useMatch } from 'react-router-dom';
 
-export interface IImage {
-  id: string;
-  imageUrl: string;
-}
 export interface IFormData extends FormData {
   append(name: string, value: string | Blob, fileName?: string): void;
 }
 export interface IProps {
-  images: IImage[];
+  images: string[];
   location: ILocation;
-  setLocation: React.Dispatch<ILocation>;
+  setLocation: (prev: ILocation) => void;
+  setImages: React.Dispatch<string[]>;
+  match: ReturnType<typeof useMatch>;
 }
 
 export interface ILocation {
@@ -22,23 +21,34 @@ export interface ILocation {
 
 export interface IFaclity {
   toilet: boolean;
-  channel: boolean;
-  equip: boolean;
+  waterway: boolean;
+  equipment: boolean;
 }
 export interface IStates {
   recruiting: boolean;
   end: boolean;
   regular: boolean;
 }
+
+export interface IUploadImage {
+  imageUrl: string;
+}
 export interface IUploadData {
   name: string;
   price: string;
   size: string;
   address: string;
-  latitude: string;
-  longitude: string;
+  latitude: number;
+  longitude: number;
   contact: string;
-  images: IImage[];
+  images: string[];
+  content: string;
+  status: string;
+  facility: {
+    toilet: boolean;
+    waterway: boolean;
+    equipment: boolean;
+  };
 }
 export interface ILen {
   len: number;
@@ -46,4 +56,26 @@ export interface ILen {
 
 export interface IUrl {
   srcUrl: string;
+}
+export interface Idata {
+  data: {
+    address: string;
+    contact: any;
+    facility: {
+      toilet: boolean;
+      waterway: boolean;
+      equipment: boolean;
+    };
+    gardenId: number;
+    images: string[];
+    latitude: number;
+    link: any;
+    longitude: number;
+    name: string;
+    content: string;
+    price: string;
+    size: string;
+    status: string;
+    type: string;
+  };
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { IFormData, IImage, ILen, IUrl } from 'pages/My/RegisterSeller/type';
+import { IFormData, ILen, IUrl } from 'pages/My/RegisterSeller/type';
 
 import { NotiContentAtom } from 'recoil/atom';
 import Modal from 'components/Modal/Modal';
@@ -9,6 +9,8 @@ import smileIllust from 'assets/modal/smile.svg';
 import icon from '../../assets/image_small.svg';
 import delete_icon from '../../assets/delete_icon.png';
 import { getImages } from 'pages/My/RegisterUser/query';
+import { AxiosResponse } from 'axios';
+import customAxios from 'utils/token';
 interface UserFeedbackModalProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,11 +19,23 @@ interface UserFeedbackModalProps {
 function UserFeedbackModal({ isOpen, setIsOpen }: UserFeedbackModalProps) {
   const [_, setContent] = useRecoilState(NotiContentAtom);
   const [comment, setComment] = useState<string>('');
-  const [images, setImages] = useState<IImage[]>([]);
+  const [images, setImages] = useState<string[]>([]);
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     setIsOpen(false);
-    setContent('제출되었습니다. 소중한 의견 감사합니다 ♥︎');
+    if (comment.length > 2) {
+      const feedBackData: { content: string; images: string[] } = {
+        content: comment,
+        images,
+      };
+      try {
+        const res = await customAxios.post(`v1/feedback`, feedBackData);
+        console.log(res);
+        setContent('제출되었습니다. 소중한 의견 감사합니다 ♥︎');
+      } catch (err) {
+        console.log(err);
+      }
+    }
   };
 
   const addImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,9 +48,9 @@ function UserFeedbackModal({ isOpen, setIsOpen }: UserFeedbackModalProps) {
       const formData: IFormData = new FormData();
       formData.append('file', uploadImg);
       try {
-        const res = await getImages(formData);
-        const newImage: IImage = { id: res.data.id, imageUrl: res.data.imageUrl };
-        setImages(prevImages => [newImage, ...prevImages]);
+        const res = (await getImages(formData)) as AxiosResponse;
+        const newImage: string[] = [res.data.imageUrl];
+        setImages(prevImages => [...newImage, ...prevImages]);
       } catch (err) {
         console.log(err);
       }
@@ -75,7 +89,7 @@ function UserFeedbackModal({ isOpen, setIsOpen }: UserFeedbackModalProps) {
           <ScrollBox len={images.length}>
             <ImageList>
               {images.map((image, index) => (
-                <ImgBox srcUrl={image.imageUrl} key={index}>
+                <ImgBox srcUrl={image} key={index}>
                   <Delete onClick={() => deleteImage(index)} src={delete_icon} />
                 </ImgBox>
               ))}

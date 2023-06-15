@@ -1,32 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { IGardenDetail } from 'types/GardenDetail';
 
 import { BREAK_POINT, FONT_WEIGHT } from 'constants/style';
 import noImgIcon from 'assets/noImg-icon.svg';
 
 interface Idata {
-  data: { content: any; garden: IGarden; gardenId: number; gardenPostId: number; images: string[]; title: string };
+  data: IGardenDetail;
 }
 
-interface IGarden {
-  address: string;
-  id: number;
-  latitude: number;
-  link: any;
-  longitude: number;
-  name: string;
-  price: string;
-  type: string;
-}
 function Post({ data }: Idata) {
   const nav = useNavigate();
-  let price = 15000;
+  console.log(data);
   return (
-    <PostContainer onClick={() => nav(`/my/${data.gardenId}`)}>
+    <PostContainer onClick={() => nav(`/my/${data.id}`)}>
       <ImageContainer>
         {data.images.length === 0 ? (
-          <EmptyImg src={noImgIcon} alt="이미지 없음" />
+          <EmptyImg>
+            <Image src={noImgIcon} alt="이미지 없음" />
+          </EmptyImg>
         ) : (
           <Image src={data.images[0]} alt="텃밭 이미지" />
         )}
@@ -34,12 +27,16 @@ function Post({ data }: Idata) {
 
       <InfoDiv>
         <Status>
-          <Dot />
-          <Text>모집 중</Text>
+          {data.status === 'ACTIVE' && <Dot />}
+          {data.status === 'ACTIVE' && <Text>모집 중</Text>}
+          {data.status === 'INACTIVE' && <Text>마감</Text>}
+          {data.status === 'ALWAYS_ACTIVE' && <Text>상시 모집</Text>}
+          {data.status === null && <Text>상시 모집</Text>}
         </Status>
-        <Title>{data.title}</Title>
-        <Value>{data.garden.type}</Value>
-        <Value>평당 {data.garden.price}원</Value>
+        <Title>{data.name}</Title>
+        <Value style={{ color: '#afafaf' }}>{data.size} 평</Value>
+        {data.price === null && <Value>무료</Value>}
+        {data.price !== null && <Value>평당 {Number(data.price.split(',').join('')).toLocaleString()} 원</Value>}
       </InfoDiv>
     </PostContainer>
   );
@@ -73,12 +70,18 @@ const ImageContainer = styled.div`
   transition: transform 0.4s ease-in-out;
 `;
 
-const EmptyImg = styled.img`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50px;
+const EmptyImg = styled.div`
+  background: #f0fbe4;
+  border-radius: 8px;
+  width: 174px;
+  height: 135px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    height: 45px;
+    width: 45px;
+  }
 `;
 
 const Image = styled.img`
