@@ -29,6 +29,7 @@ const Container = styled.div`
 
 const SkyImg = styled.img`
   width: 20px;
+  height: 20px;
 `;
 
 const Day = styled.div<{ isToday: boolean }>`

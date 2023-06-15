@@ -1,15 +1,16 @@
 import React from 'react';
 import { LineChart, Line, XAxis, ResponsiveContainer } from 'recharts';
 
-function LineGraph() {
-  const data = [
-    { time: '0시', temp: 20 },
-    { time: '6시', temp: 22 },
-    { time: '9시', temp: 15 },
-    { time: '12시', temp: 22 },
-    { time: '15시', temp: 17 },
-  ];
+export interface LineGraphData {
+  time: number;
+  temp: string;
+}
 
+interface LineGraphProps {
+  data: LineGraphData[];
+}
+
+function LineGraph({ data }: LineGraphProps) {
   const CustomizedLineLabel = (props: any) => {
     const { x, y, stroke, value } = props;
 
@@ -25,7 +26,7 @@ function LineGraph() {
 
     return (
       <text x={x} y={y} fill={stroke} stroke="#AFAFAF" fontSize={10} fontWeight={200} textAnchor="middle">
-        {payload.value}
+        {payload.value} 시
       </text>
     );
   };

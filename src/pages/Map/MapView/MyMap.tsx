@@ -58,7 +58,7 @@ const MyMap = ({ isLoading, setIsLoading, setIsInitializing, map, setMap }: MyMa
 
   useEffect(() => {
     setGardens(data);
-    if (data) console.log(data);
+    // if (data) console.log(data);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
