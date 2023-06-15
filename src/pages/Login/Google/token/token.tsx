@@ -14,7 +14,7 @@ export const getToken = async (token: string) => {
   });
   console.log(process.env.REACT_APP_GOOGLE_REDIRECT_URL);
   const data: IData = res_google.data;
-  const res_server: AxiosResponse = await axios.get<IData_Sever>('http://garden.jinkyumpark.com/auth/google', {
+  const res_server: AxiosResponse = await axios.get<IData_Sever>('https://garden.jinkyumpark.com/auth/google', {
     headers: {
       Authorization: `${data.access_token}`,
     },
