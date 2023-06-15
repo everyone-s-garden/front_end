@@ -6,9 +6,10 @@ import { ReactComponent as ArrowIcon } from 'assets/back-icon.svg';
 interface CropProps {
   name: string;
   content: string;
+  link: string;
 }
 
-function Crop({ name, content }: CropProps) {
+function Crop({ name, content, link }: CropProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
@@ -27,7 +28,12 @@ function Crop({ name, content }: CropProps) {
         />
       </Header>
       <ContentContainer isOpen={isOpen}>
-        <Content>{content}</Content>
+        <Content>
+          {content}
+          <br />
+          <br />
+          <CroptLink href={link}>더 알아보기</CroptLink>
+        </Content>
       </ContentContainer>
     </CropContainer>
   );
@@ -109,4 +115,9 @@ const Content = styled.p`
     background-color: #e0ebd4;
     border-radius: 7px;
   }
+`;
+
+const CroptLink = styled.a`
+  font-weight: 500;
+  text-decoration: underline;
 `;

@@ -3,8 +3,7 @@ import styled from 'styled-components';
 
 import { COLOR, FONT_WEIGHT } from 'constants/style';
 import { WeatherAPI } from 'api/WeatherAPI';
-import { WeatherType } from 'api/type';
-import LineGraph from './LineGraph';
+import LineGraph, { LineGraphData } from './LineGraph';
 import WeekWeather from './WeekWeather';
 import findMyGeoLocation from 'utils/findMyGeoLocation';
 import MiniLoader from 'components/MiniLoader';
@@ -21,54 +20,47 @@ function Weather() {
   const date = today.getDate();
   const day = today.getDay();
   const regions = [
-    '서울특별시',
-    '강원도',
-    '경기도',
-    '경상남도',
-    '경상북도',
-    '광주광역시',
-    '대구광역시',
-    '대전광역시',
-    '부산광역시',
-    '세종특별자치시',
-    '울산광역시',
-    '인천광역시',
-    '전라남도',
-    '전라북도',
-    '제주특별자치도',
-    '충청남도',
-    '충청북도',
+    '서울',
+    '강원',
+    '경기',
+    '경북',
+    '경남',
+    '광주',
+    '대구',
+    '대전',
+    '부산',
+    '세종',
+    '울산',
+    '인천',
+    '전남',
+    '전북',
+    '제주',
+    '충남',
+    '충북',
   ];
+  interface PTYType {
+    [id: number]: string;
+  }
+  const PTY: PTYType = { 0: '맑음', 1: '비', 2: '비', 3: '눈', 5: '흐림', 6: '흐림', 7: '흐림' };
 
-  const data = {
-    울산광역시: [
-      {
-        baseDate: '20230608',
-        category: 'PTY',
-        obsrValue: '0',
-        regionName: '울산광역시',
-      },
-      {
-        baseDate: '20230608',
-        category: 'T1H',
-        obsrValue: '18.3',
-        regionName: '울산광역시',
-      },
-    ],
-    대전광역시: [
-      {
-        baseDate: '20230608',
-        category: 'PTY',
-        obsrValue: '1',
-        regionName: '대전광역시',
-      },
-      {
-        baseDate: '20230608',
-        category: 'T1H',
-        obsrValue: '20.6',
-        regionName: '대전광역시',
-      },
-    ],
+  interface SKYType {
+    [id: string]: string;
+  }
+  const SKY: SKYType = {
+    '"1"': '맑음',
+    '"3"': '구름많음',
+    '"4"': '흐림',
+    흐림: '흐림',
+    '흐리고 비': '비',
+    '흐리고 눈': '눈',
+    '흐리고 비/눈': '비',
+    '흐리고 소나기': '비',
+    구름많음: '흐림',
+    '구름많고 비': '비',
+    '구름많고 눈': '눈',
+    '구름많고 비/눈': '눈',
+    '구름많고 소나기': '비',
+    맑음: '맑음',
   };
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -76,40 +68,82 @@ function Weather() {
     lat: number;
     lng: number;
   } | null>(null);
-  const [allWeathers, setAllWeathers] = useState<WeatherType[]>([]);
+  const [region, setRegion] = useState<string>('');
+  const [sky, setSky] = useState<number>(0);
+  const [temperature, setTemperature] = useState<string>('');
+  const [pTimeData, setPTimeData] = useState<LineGraphData[] | null>(null);
+  const [weeklyData, setWeeklyData] = useState<string[] | null>(null);
 
-  const moveMyLocation = async () => {
+  const getMyLocation = async () => {
     setIsLoading(true);
     const { location } = await findMyGeoLocation();
     setMyLocation(location);
-
-    setIsLoading(false);
-  };
-
-  const getWeatherData = async () => {
-    // let data = await WeatherAPI.getAllWeather();
-    // data = data.data;
-
-    console.log(data);
-
-    // data.filter((d: { category: string; regionName: string }) => {
-    //   if (d.regionName === regions[index]) {
-    //     console.log(d);
-    //   }
-    // });
-
-    // "baseDate": "20230531",
-    //         "category": "T1H",
-    //         "obsrValue": "22.9",
-    //         "regionName": "경상북도"
-
-    // const data = await WeatherAPI.getPerTimeWeather(37.545593, 127.100706);
-    // const data = await WeatherAPI.getWeeklyWeather(37.545593, 127.100706);
   };
 
   useEffect(() => {
+    setIsLoading(true);
+    let timer: any;
+
+    const getWeatherData = async () => {
+      let data = await WeatherAPI.getAllWeather();
+      data = data.data;
+
+      let index = 0;
+      const loopWeather = () => {
+        setTimeout(function () {
+          const cur = data[regions[index]];
+
+          setRegion(regions[index]);
+          setSky(Number(cur.filter((c: any) => c.category === 'PTY')[0].obsrValue));
+          setTemperature(cur.filter((c: any) => c.category === 'T1H')[0].obsrValue);
+          setIsLoading(false);
+
+          index++;
+          if (index < 10) {
+            loopWeather();
+          }
+        }, 8000);
+      };
+
+      loopWeather();
+    };
     getWeatherData();
+    return () => {
+      clearTimeout(timer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (myLocation) {
+      const getWeatherData = async () => {
+        const perTData = await WeatherAPI.getPerTimeWeather(myLocation.lat, myLocation.lng);
+        const weeklyData = await WeatherAPI.getWeeklyWeather(myLocation.lat, myLocation.lng);
+
+        let tempPTData: LineGraphData[] = [];
+        perTData.data['서울']
+          .filter((d: any) => d.category === 'TMP')
+          .map((d: any, i: any) => {
+            if (i % 3 === 0 && i < 13) {
+              tempPTData.push({ time: Number(d.fcstTime) / 100, temp: d.fcstValue });
+            }
+          });
+        setPTimeData(tempPTData);
+
+        let tempWeeklyData: string[] = [];
+        Object.values(weeklyData.data['서울'][0]).forEach((d: any) => {
+          const cur = SKY[String(d)];
+          if (cur) tempWeeklyData.push(cur);
+        });
+        setWeeklyData(tempWeeklyData);
+      };
+
+      setIsLoading(false);
+
+      getWeatherData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [myLocation]);
 
   return (
     <Container>
@@ -121,32 +155,115 @@ function Weather() {
         {month}.{date} {weekday[day]}
       </TodayDate>
 
-      <CurrentWeather>
-        <CurrentSkyImg src={cloudy} alt="날씨 이모티콘" />
-        20˚
-        <Info>
-          <Location>서울</Location>
-          <Sky>흐림</Sky>
-        </Info>
-      </CurrentWeather>
+      {region !== '' && (
+        <CurrentWeather>
+          <CurrentSkyImg
+            src={PTY[sky] === '맑음' ? sunny : PTY[sky] === '흐림' ? cloudy : PTY[sky] === '눈' ? rainy : snowy}
+            alt="날씨 이모티콘"
+          />
+          {temperature}˚
+          <Info>
+            <Location>{region}</Location>
+            <Sky>{PTY[sky]}</Sky>
+          </Info>
+        </CurrentWeather>
+      )}
 
-      {myLocation ? (
+      {pTimeData && weeklyData ? (
         <>
           <WeatherPerTime>
             <SubjectTitle>시간대별 기온</SubjectTitle>
-            <LineGraph />
+            <LineGraph data={pTimeData} />
           </WeatherPerTime>
 
           <WeeklyWeather>
             <SubjectTitle>주간 날씨</SubjectTitle>
             <WeeklyWeatherBox>
-              <WeekWeather imgFile={sunny} weekday={weekday[day]} isToday={true} />
-              <WeekWeather imgFile={sunny} weekday={weekday[(day + 1) % 7]} />
-              <WeekWeather imgFile={sunny} weekday={weekday[(day + 2) % 7]} />
-              <WeekWeather imgFile={sunny} weekday={weekday[(day + 3) % 7]} />
-              <WeekWeather imgFile={sunny} weekday={weekday[(day + 4) % 7]} />
-              <WeekWeather imgFile={sunny} weekday={weekday[(day + 5) % 7]} />
-              <WeekWeather imgFile={sunny} weekday={weekday[(day + 6) % 7]} />
+              <WeekWeather
+                imgFile={
+                  weeklyData[0] === '맑음'
+                    ? sunny
+                    : weeklyData[0] === '흐림'
+                    ? cloudy
+                    : weeklyData[0] === '눈'
+                    ? snowy
+                    : rainy
+                }
+                weekday={weekday[day]}
+                isToday={true}
+              />
+              <WeekWeather
+                imgFile={
+                  weeklyData[1] === '맑음'
+                    ? sunny
+                    : weeklyData[1] === '흐림'
+                    ? cloudy
+                    : weeklyData[1] === '눈'
+                    ? snowy
+                    : rainy
+                }
+                weekday={weekday[(day + 1) % 7]}
+              />
+              <WeekWeather
+                imgFile={
+                  weeklyData[2] === '맑음'
+                    ? sunny
+                    : weeklyData[2] === '흐림'
+                    ? cloudy
+                    : weeklyData[2] === '눈'
+                    ? snowy
+                    : rainy
+                }
+                weekday={weekday[(day + 2) % 7]}
+              />
+              <WeekWeather
+                imgFile={
+                  weeklyData[3] === '맑음'
+                    ? sunny
+                    : weeklyData[3] === '흐림'
+                    ? cloudy
+                    : weeklyData[3] === '눈'
+                    ? snowy
+                    : rainy
+                }
+                weekday={weekday[(day + 3) % 7]}
+              />
+              <WeekWeather
+                imgFile={
+                  weeklyData[4] === '맑음'
+                    ? sunny
+                    : weeklyData[4] === '흐림'
+                    ? cloudy
+                    : weeklyData[4] === '눈'
+                    ? snowy
+                    : rainy
+                }
+                weekday={weekday[(day + 4) % 7]}
+              />
+              <WeekWeather
+                imgFile={
+                  weeklyData[5] === '맑음'
+                    ? sunny
+                    : weeklyData[5] === '흐림'
+                    ? cloudy
+                    : weeklyData[5] === '눈'
+                    ? snowy
+                    : rainy
+                }
+                weekday={weekday[(day + 5) % 7]}
+              />
+              <WeekWeather
+                imgFile={
+                  weeklyData[6] === '맑음'
+                    ? sunny
+                    : weeklyData[6] === '흐림'
+                    ? cloudy
+                    : weeklyData[6] === '눈'
+                    ? snowy
+                    : rainy
+                }
+                weekday={weekday[(day + 6) % 7]}
+              />
             </WeeklyWeatherBox>
           </WeeklyWeather>
 
@@ -157,7 +274,7 @@ function Weather() {
         </>
       ) : (
         <>
-          <FindMyLocBtn onClick={moveMyLocation}>내 위치찾기</FindMyLocBtn>
+          <FindMyLocBtn onClick={getMyLocation}>내 위치찾기</FindMyLocBtn>
           <Instruction>
             위치 찾기로 현 위치의 <br />
             시간대별, 주간 날씨를 확인해요
@@ -194,21 +311,25 @@ const TodayDate = styled.span`
 `;
 
 const CurrentWeather = styled.div`
+  flex-shrink: 0;
   margin-top: 5px;
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
   color: #414c38;
-  font-size: 32px;
+  font-size: 30px;
   font-weight: ${FONT_WEIGHT.SEMIBOLD};
 `;
 
 const CurrentSkyImg = styled.img`
   margin-right: 14px;
   width: 50px;
+  height: 50px;
 `;
 
 const Info = styled.div`
+  flex-shrink: 0;
   margin-left: 10px;
   display: flex;
   flex-direction: column;
