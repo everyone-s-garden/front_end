@@ -12,7 +12,6 @@ import { IGardenDetail } from 'types/GardenDetail';
 const RecentPosts = () => {
   const nav = useNavigate();
   const [recentList, setRecentList] = useState<IGardenDetail[]>([]);
-  // const [RecentList] = useState([]);
   const init = async () => {
     try {
       const res = (await customAxios.get('/v1/garden/recent')) as AxiosResponse;
@@ -26,8 +25,8 @@ const RecentPosts = () => {
     init();
   }, []);
   const renderPosts = recentList.map(i => (
-    <PostContainer key={i.gardenId}>
-      <Post data={i} />
+    <PostContainer key={i.id}>
+      <Post data={i} key={i.id} />
     </PostContainer>
   ));
 

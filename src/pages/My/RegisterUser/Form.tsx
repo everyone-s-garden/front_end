@@ -312,7 +312,6 @@ const ResultUl = styled.ul`
   overflow-y: scroll;
   scrollbar-width: thin;
   scrollbar-color: #888 #e0ebd4;
-  transition: 0.3s ease-in-out;
 
   &::-webkit-scrollbar {
     display: block !important; /* Chrome, Safari, Opera*/
