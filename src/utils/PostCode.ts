@@ -21,7 +21,6 @@ const handleComplete = async (data: IAddressData) => {
 
   const potential_address = res.data.results.find((i: IResponse) => i.formatted_address.startsWith('대한민국'));
   const potential_address2 = res.data.results.find((I: IResponse) => I.formatted_address.includes('Korea'));
-  console.log(potential_address);
   if (potential_address) {
     const { lat, lng } = potential_address.geometry.location;
     const address_data = {
