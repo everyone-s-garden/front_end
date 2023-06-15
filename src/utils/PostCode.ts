@@ -17,8 +17,13 @@ const handleComplete = async (data: IAddressData) => {
   const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(fullAddress)}&key=${
     process.env.REACT_APP_GOOGLE_API_KEY
   }` as const;
+  console.log('api');
+  console.log(apiUrl);
   const res: AxiosResponse<{ results: IResponse[] }> = await axios.get(apiUrl);
+  console.log(`res`);
+  console.log(res);
   const potential_address = res.data.results.find((i: IResponse) => i.formatted_address.startsWith('대한민국'));
+  console.log('potential');
   console.log(potential_address);
   if (potential_address) {
     const { lat, lng } = potential_address.geometry.location;
