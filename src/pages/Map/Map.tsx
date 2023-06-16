@@ -47,12 +47,12 @@ export default Map;
 const MapPage = styled.div`
   position: relative;
   width: 100vw;
-  height: calc(100vh - 51px);
+  height: calc(var(--vh, 1vh) * 100 - 51px);
   display: flex;
   flex-direction: column;
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
-    height: calc(100vh - 106px);
+    height: calc(var(--vh, 1vh) * 100 - 106px);
   }
 `;
 
