@@ -27,8 +27,6 @@ const RegisterSeller = () => {
     }
     if (event.currentTarget.files) {
       const uploadImg = event.currentTarget.files[0] as File;
-      const formData: IFormData = new FormData();
-      // formData.append('file', uploadImg);
       const options = {
         maxSizeMB: 0.2,
         maxWidthOrHeight: 1920,
@@ -36,14 +34,12 @@ const RegisterSeller = () => {
       };
       try {
         const compressedFile = await imageCompression(uploadImg, options);
-        const promiseImg = await imageCompression.getDataUrlFromFile(compressedFile);
         const reader = new FileReader();
         reader.readAsDataURL(compressedFile);
         reader.onload = async () => {
           const base64data = reader.result;
           const formData = await formDataHandler(base64data);
-          console.log(formData);
-          const res = await getImages(formData);
+          const res = (await getImages(formData)) as AxiosResponse;
           const newImage: string[] = [res.data.imageUrl];
           setImages(prevImages => [...newImage, ...prevImages]);
         };
@@ -52,6 +48,7 @@ const RegisterSeller = () => {
       }
     }
   };
+
   const deleteImage = (index: number) => {
     setImages(prevImages => prevImages.filter((_, i) => i !== index));
   };

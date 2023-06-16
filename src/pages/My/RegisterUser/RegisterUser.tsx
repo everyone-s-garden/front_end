@@ -10,6 +10,8 @@ import { useMatch } from 'react-router-dom';
 import customAxios from 'utils/token';
 import { AxiosResponse } from 'axios';
 import { ReactComponent as MenuIcon } from 'assets/three-dot-icon.svg';
+import imageCompression from 'browser-image-compression';
+import { formDataHandler } from '../RegisterSeller/query';
 
 const RegisterUser = () => {
   const labelRef = useRef<HTMLLabelElement>(null);
@@ -23,17 +25,27 @@ const RegisterUser = () => {
   const handleImg = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.currentTarget.files) {
       const uploadImg = event.currentTarget.files[0] as File;
-      const formData: IFormData = new FormData();
-      formData.append('file', uploadImg);
-
+      const options = {
+        maxSizeMB: 0.2,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      };
       try {
-        const res: AxiosResponse = await getImages(formData);
-        setImage(res.data.imageUrl);
+        const compressedFile = await imageCompression(uploadImg, options);
+        const reader = new FileReader();
+        reader.readAsDataURL(compressedFile);
+        reader.onload = async () => {
+          const base64data = reader.result;
+          const formData = await formDataHandler(base64data);
+          const res = (await getImages(formData)) as AxiosResponse;
+          setImage(res.data.imageUrl);
+        };
       } catch (err) {
         console.log(err);
       }
     }
   };
+
   const getMyGarden = async () => {
     const res = await customAxios('/v1/garden/using');
     setMyGarden(res.data[0]);
