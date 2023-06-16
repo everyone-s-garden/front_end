@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useInView } from 'react-intersection-observer';
 
 import { BREAK_POINT } from 'constants/style';
 import Post from '../Post';
@@ -8,25 +9,78 @@ import NoPost from '../NoPost';
 import customAxios from 'utils/token';
 import { AxiosResponse } from 'axios';
 import { IGardenDetail } from 'types/GardenDetail';
-
+import { useRecoilState, useResetRecoilState } from 'recoil';
+import { recentListAtom } from 'recoil/atom';
 const RecentPosts = () => {
   const nav = useNavigate();
-  const [recentList, setRecentList] = useState<IGardenDetail[]>([]);
-  const init = async () => {
+  const [recentList, setRecentList] = useRecoilState(recentListAtom);
+  const resetRecentList = useResetRecoilState(recentListAtom);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [ref, inView] = useInView();
+  const fetchData = async () => {
     try {
-      const res = (await customAxios.get('/v1/garden/recent')) as AxiosResponse;
-      setRecentList(res.data);
+      const res = await customAxios.get(`/v1/garden/recent?page=${page}`);
+      const newData = res.data;
+
+      if (newData.length === 0) {
+        setHasMore(false);
+      } else {
+        setRecentList(prevList => [...prevList, ...newData]);
+        setPage(prevPage => prevPage + 1);
+      }
     } catch (err) {
       console.log(err);
     }
   };
+  const handleClickPost = (postId: any, scrollPosition: any) => {
+    localStorage.setItem('selectedPostId', postId);
+    localStorage.setItem('scrollPosition', scrollPosition.toString());
+  };
 
   useEffect(() => {
-    init();
+    resetRecentList();
   }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const selectedPostId = localStorage.getItem('selectedPostId');
+    const scrollPosition = localStorage.getItem('scrollPosition');
+
+    if (selectedPostId && scrollPosition) {
+      window.scrollTo(0, parseInt(scrollPosition, 10));
+    }
+
+    const handlePopState = () => {
+      const restoredPostId = localStorage.getItem('selectedPostId');
+      const restoredScrollPosition = localStorage.getItem('scrollPosition');
+
+      if (restoredPostId && restoredScrollPosition) {
+        window.scrollTo(0, parseInt(restoredScrollPosition, 10));
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (inView && hasMore) {
+      fetchData();
+    }
+  }, [inView, hasMore]);
+
   const renderPosts = recentList.map(i => (
     <PostContainer key={i.id}>
-      <Post data={i} key={i.id} />
+      <div onClick={() => handleClickPost(i.id, window.scrollY)}>
+        <Post data={i} key={i.id} />
+      </div>
     </PostContainer>
   ));
 
@@ -37,7 +91,10 @@ const RecentPosts = () => {
       ) : (
         <RecentPostsSection>
           <SectionTitle>최근 본 텃밭</SectionTitle>
-          <PostList>{renderPosts}</PostList>
+          <PostList>
+            {renderPosts}
+            <div ref={ref} />
+          </PostList>
           <Span>
             분양 텃밭들을 더 보고싶나요?
             <span onClick={() => nav('/map')}> 분양 텃밭 보러가기</span>

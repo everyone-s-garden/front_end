@@ -49,6 +49,7 @@ const RegisterUser = () => {
   const getMyGarden = async () => {
     const res = await customAxios('/v1/garden/using');
     setMyGarden(res.data[0]);
+
     setImage(res.data[0].image);
   };
   useEffect(() => {
