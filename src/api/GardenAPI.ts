@@ -1,6 +1,7 @@
 import customAxios from 'utils/token';
 import HttpRequest from './HttpRequest';
 import { getItem } from 'utils/session';
+import customAxios from 'utils/token';
 
 export const GardenAPI = {
   getGardenByRegion: async (type: number, region: string) => {
