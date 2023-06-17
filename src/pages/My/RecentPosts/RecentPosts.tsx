@@ -11,13 +11,14 @@ import { AxiosResponse } from 'axios';
 import { IGardenDetail } from 'types/GardenDetail';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import { recentListAtom } from 'recoil/atom';
+
 const RecentPosts = () => {
   const nav = useNavigate();
-  const [recentList, setRecentList] = useRecoilState(recentListAtom);
-  const resetRecentList = useResetRecoilState(recentListAtom);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [ref, inView] = useInView();
+  const [recentList, setRecentList] = useRecoilState(recentListAtom);
+  const resetRecentList = useResetRecoilState(recentListAtom);
   const fetchData = async () => {
     try {
       const res = await customAxios.get(`/v1/garden/recent?page=${page}`);
@@ -33,54 +34,14 @@ const RecentPosts = () => {
       console.log(err);
     }
   };
-  const handleClickPost = (postId: any, scrollPosition: any) => {
-    localStorage.setItem('selectedPostId', postId);
-    localStorage.setItem('scrollPosition', scrollPosition.toString());
-  };
-
-  useEffect(() => {
-    resetRecentList();
-  }, []);
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const selectedPostId = localStorage.getItem('selectedPostId');
-    const scrollPosition = localStorage.getItem('scrollPosition');
-
-    if (selectedPostId && scrollPosition) {
-      window.scrollTo(0, parseInt(scrollPosition, 10));
-    }
-
-    const handlePopState = () => {
-      const restoredPostId = localStorage.getItem('selectedPostId');
-      const restoredScrollPosition = localStorage.getItem('scrollPosition');
-
-      if (restoredPostId && restoredScrollPosition) {
-        window.scrollTo(0, parseInt(restoredScrollPosition, 10));
-      }
-    };
-
-    window.addEventListener('popstate', handlePopState);
-
-    return () => {
-      window.removeEventListener('popstate', handlePopState);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (inView && hasMore) {
-      fetchData();
-    }
-  }, [inView, hasMore]);
-
   const renderPosts = recentList.map(i => (
     <PostContainer key={i.id}>
-      <div onClick={() => handleClickPost(i.id, window.scrollY)}>
-        <Post data={i} key={i.id} />
-      </div>
+      <Post data={i} key={i.id} />
     </PostContainer>
   ));
 
