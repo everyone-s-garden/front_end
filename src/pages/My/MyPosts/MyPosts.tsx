@@ -8,11 +8,11 @@ import NoPost from '../NoPost';
 import customAxios from 'utils/token';
 import { AxiosResponse } from 'axios';
 import { IGardenDetail } from 'types/GardenDetail';
+import { useRecoilState } from 'recoil';
 
 const MyPosts = () => {
   const nav = useNavigate();
   const [myPostsList, setMyPostsList] = useState<IGardenDetail[]>([]);
-
   const renderPosts = myPostsList.map(i => (
     <PostContainer key={Math.random()}>
       <Post data={i} />
@@ -26,7 +26,6 @@ const MyPosts = () => {
       console.log(err);
     }
   };
-
   useEffect(() => {
     init();
   }, []);

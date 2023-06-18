@@ -54,7 +54,33 @@ export const selectedGardenIdAtom = atom<number | null>({
   default: null,
 });
 
-export const recentListAtom = atom<IGardenDetail[]>({
-  key: 'recentList',
+export const recentListsAtom = atom<IGardenDetail[]>({
+  key: 'recentLists',
   default: [],
+});
+export const myPostListsAtom = atom<IGardenDetail[]>({
+  key: 'myPostLists',
+  default: [],
+});
+export const likeListsAtom = atom<IGardenDetail[]>({
+  key: 'likeLists',
+  default: [],
+});
+
+export const recentPageAtom = atom<number>({
+  key: 'recentPage',
+  default: 1,
+});
+export const myPageAtom = atom<number>({
+  key: 'myPage',
+  default: 1,
+});
+export const likePageAtom = atom<number>({
+  key: 'likePage',
+  default: 1,
+});
+
+export const isOkAtom = atom<boolean>({
+  key: 'isOk',
+  default: false,
 });

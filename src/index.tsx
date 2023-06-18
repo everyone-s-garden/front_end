@@ -20,6 +20,7 @@ import Like from 'pages/My/LikePosts/LikePosts';
 import Recent from 'pages/My/RecentPosts/RecentPosts';
 import MyPost from 'pages/My/MyPosts/MyPosts';
 import PostDetail from 'pages/My/PostDetail/PostDetail';
+import Infinite from 'components/infinite/Infinite';
 
 const router = createBrowserRouter([
   {
@@ -60,15 +61,15 @@ const router = createBrowserRouter([
           },
           {
             path: 'like',
-            element: <Like />,
+            element: <Infinite />,
           },
           {
             path: 'recent',
-            element: <Recent />,
+            element: <Infinite />,
           },
           {
             path: 'mypost',
-            element: <MyPost />,
+            element: <Infinite />,
           },
           {
             path: ':postId',

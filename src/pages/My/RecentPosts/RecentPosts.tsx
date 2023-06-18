@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useMatch, useNavigate } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 
 import { BREAK_POINT } from 'constants/style';
@@ -10,15 +10,16 @@ import customAxios from 'utils/token';
 import { AxiosResponse } from 'axios';
 import { IGardenDetail } from 'types/GardenDetail';
 import { useRecoilState, useResetRecoilState } from 'recoil';
-import { recentListAtom } from 'recoil/atom';
+import { recentListsAtom, recentPageAtom } from 'recoil/atom';
 
 const RecentPosts = () => {
   const nav = useNavigate();
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useRecoilState(recentPageAtom);
+  const [hasMore, setHasMore] = useState<boolean>(true);
   const [ref, inView] = useInView();
-  const [recentList, setRecentList] = useRecoilState(recentListAtom);
-  const resetRecentList = useResetRecoilState(recentListAtom);
+  const [recentList, setRecentList] = useRecoilState(recentListsAtom);
+  const resetPage = useResetRecoilState(recentPageAtom);
+  const resetList = useResetRecoilState(recentListsAtom);
   const fetchData = async () => {
     try {
       const res = await customAxios.get(`/v1/garden/recent?page=${page}`);
@@ -34,11 +35,16 @@ const RecentPosts = () => {
       console.log(err);
     }
   };
-
   useEffect(() => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (inView && hasMore) {
+      fetchData();
+    }
+  }, [inView]);
+  console.log(page, recentList);
   const renderPosts = recentList.map(i => (
     <PostContainer key={i.id}>
       <Post data={i} key={i.id} />
