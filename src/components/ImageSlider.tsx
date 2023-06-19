@@ -60,7 +60,7 @@ export default ImageSlider;
 const SliderDiv = styled.div`
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  height: 289.39px;
   overflow: hidden;
 `;
 

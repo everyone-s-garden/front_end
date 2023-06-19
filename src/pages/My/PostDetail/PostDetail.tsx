@@ -60,6 +60,7 @@ function PostDetail() {
     }
   };
   useEffect(() => {
+    window.scrollTo(0, 0);
     fetchGardenData();
   }, [postId]); // postId가 변경될 때마다 데이터를 가져오도록 설정
 
@@ -205,7 +206,7 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    width: 98%;
+    width: 100%;
     margin: 0 auto;
   }
 `;
@@ -235,7 +236,6 @@ const SliderContainer = styled.div`
 
   @media screen and (max-width: ${BREAK_POINT.TABLET}) {
     width: 100%;
-    max-width: 400px;
   }
 `;
 
