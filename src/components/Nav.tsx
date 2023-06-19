@@ -230,7 +230,6 @@ const RegionSearchInput = styled.input`
 const ButtonContainer = styled.div`
   height: 100%;
   display: flex;
-  flex-shrink: 0;
   align-items: center;
 `;
 
