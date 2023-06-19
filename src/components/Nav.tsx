@@ -66,7 +66,7 @@ const Nav = () => {
           </LoginBar>
           <MenuBar>
             <LogoImageContainer onClick={() => navigate(`/`)}>
-              <LogoImage src={logoImg} alt="로고" />
+              {/* <LogoImage src={logoImg} alt="로고" /> */}
             </LogoImageContainer>
 
             {isMapPage && <RegionSearchInput placeholder="지역명 검색" />}
