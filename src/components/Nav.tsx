@@ -125,7 +125,7 @@ const Container = styled.div<{ isMainPage: boolean; isMapPage: boolean }>`
   position: sticky;
   top: 0;
   padding: ${props => (props.isMainPage ? '0 20px 20px 20px' : props.isMapPage ? '0' : '40px 0 14px 0')};
-  width: 100%;
+  width: 100vw;
   display: flex;
   justify-content: center;
   background-color: ${COLOR.BACKGROUND};
