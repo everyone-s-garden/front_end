@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { IFormData, ILen, IUrl } from 'pages/My/RegisterSeller/type';
+import { IFormData, ILen, IUrl } from '../../pages/My/RegisterSeller/type';
 
-import { NotiContentAtom } from 'recoil/atom';
-import Modal from 'components/Modal/Modal';
+import { NotiContentAtom } from '../../recoil/atom';
+import Modal from '../../components/Modal/Modal';
 import smileIllust from 'assets/modal/smile.svg';
 import icon from '../../assets/image_small.svg';
 import delete_icon from '../../assets/delete_icon.png';
-import { getImages } from 'pages/My/RegisterUser/query';
+import { getImages } from '../../pages/My/RegisterUser/query';
+import imageCompression from 'browser-image-compression';
+import { formDataHandler } from '../../pages/My/RegisterSeller/query';
 import { AxiosResponse } from 'axios';
+import customAxios from '../../utils/token';
+
 interface UserFeedbackModalProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -20,9 +24,21 @@ function UserFeedbackModal({ isOpen, setIsOpen }: UserFeedbackModalProps) {
   const [comment, setComment] = useState<string>('');
   const [images, setImages] = useState<string[]>([]);
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     setIsOpen(false);
-    setContent('제출되었습니다. 소중한 의견 감사합니다 ♥︎');
+    if (comment.length > 2) {
+      const feedBackData: { content: string; images: string[] } = {
+        content: comment,
+        images,
+      };
+      try {
+        const res = await customAxios.post(`v1/feedback`, feedBackData);
+        console.log(res);
+        setContent('제출되었습니다. 소중한 의견 감사합니다 ♥︎');
+      } catch (err) {
+        console.log(err);
+      }
+    }
   };
 
   const addImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,12 +48,22 @@ function UserFeedbackModal({ isOpen, setIsOpen }: UserFeedbackModalProps) {
     }
     if (event.currentTarget.files) {
       const uploadImg = event.currentTarget.files[0] as File;
-      const formData: IFormData = new FormData();
-      formData.append('file', uploadImg);
+      const options = {
+        maxSizeMB: 0.2,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      };
       try {
-        const res = (await getImages(formData)) as AxiosResponse;
-        const newImage: string[] = [res.data.imageUrl];
-        setImages(prevImages => [...newImage, ...prevImages]);
+        const compressedFile = await imageCompression(uploadImg, options);
+        const reader = new FileReader();
+        reader.readAsDataURL(compressedFile);
+        reader.onload = async () => {
+          const base64data = reader.result;
+          const formData = await formDataHandler(base64data);
+          const res = (await getImages(formData)) as AxiosResponse;
+          const newImage: string[] = [res.data.imageUrl];
+          setImages(prevImages => [...newImage, ...prevImages]);
+        };
       } catch (err) {
         console.log(err);
       }

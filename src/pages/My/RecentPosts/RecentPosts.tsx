@@ -1,44 +1,71 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useMatch, useNavigate } from 'react-router-dom';
+import { useInView } from 'react-intersection-observer';
 
-import { BREAK_POINT } from 'constants/style';
+import { BREAK_POINT } from '../../../constants/style';
 import Post from '../Post';
 import NoPost from '../NoPost';
-import customAxios from 'utils/token';
+import customAxios from '../../../utils/token';
 import { AxiosResponse } from 'axios';
-import { IGardenDetail } from 'types/GardenDetail';
+import { IGardenDetail } from '../../../types/GardenDetail';
+import { useRecoilState } from 'recoil';
+import { recentListsAtom, recentPageAtom } from '../../../recoil/atom';
 
 const RecentPosts = () => {
+  const [recentLists, setRecentLists] = useRecoilState(recentListsAtom);
+  const [page, setPage] = useRecoilState(recentPageAtom);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [ref, inView] = useInView();
   const nav = useNavigate();
-  const [recentList, setRecentList] = useState<IGardenDetail[]>([]);
-  // const [RecentList] = useState([]);
-  const init = async () => {
+  const fetchData = async () => {
     try {
-      const res = (await customAxios.get('/v1/garden/recent')) as AxiosResponse;
-      setRecentList(res.data);
+      const res = await customAxios.get(`/v1/garden/recent?page=${page}`);
+      const newData: IGardenDetail[] = res.data;
+
+      if (newData.length === 0) {
+        setHasMore(false);
+      } else {
+        // 중복된 게시물 필터링
+        const filteredData = newData.filter(item => {
+          return !recentLists.some(existingItem => existingItem.id === item.id);
+        });
+
+        setRecentLists(prev => [...prev, ...filteredData]);
+        setPage(prevPage => prevPage + 1);
+      }
     } catch (err) {
       console.log(err);
     }
   };
-
   useEffect(() => {
-    init();
+    if (inView && hasMore) {
+      fetchData(); // 인터섹션 옵서버가 화면에 들어올 때 데이터 불러오기
+    }
+  }, [inView, hasMore]);
+  useEffect(() => {
+    if (recentLists.length === 0) {
+      fetchData();
+    }
   }, []);
-  const renderPosts = recentList.map(i => (
-    <PostContainer key={i.gardenId}>
-      <Post data={i} />
+  const renderPosts = recentLists.map((i: IGardenDetail) => (
+    <PostContainer key={i.id}>
+      <Post data={i} key={i.id} />
     </PostContainer>
   ));
 
   return (
     <Container>
-      {recentList.length === 0 ? (
+      {recentLists.length === 0 ? (
         <NoPost title="최근 본 텃밭이 없어요!" subTitle="분양 텃밭들을 보고 싶나요?" url="/map" />
       ) : (
         <RecentPostsSection>
           <SectionTitle>최근 본 텃밭</SectionTitle>
-          <PostList>{renderPosts}</PostList>
+          <PostList>
+            {renderPosts}
+            <div ref={ref} />
+          </PostList>
+
           <Span>
             분양 텃밭들을 더 보고싶나요?
             <span onClick={() => nav('/map')}> 분양 텃밭 보러가기</span>

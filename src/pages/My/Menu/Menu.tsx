@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
-import { BREAK_POINT } from 'constants/style';
-import { isCropOpenAtom, isFeedbackOpenAtom, isLoginAtom } from 'recoil/atom';
+import { BREAK_POINT } from '../../../constants/style';
+import { isCropOpenAtom, isFeedbackOpenAtom, isLoginAtom } from '../../../recoil/atom';
 import Weather from '../Weather/Weather';
-import heartIcon from 'assets/my/menu/heart-icon.svg';
-import clockIcon from 'assets/my/menu/clock-icon.svg';
-import docIcon from 'assets/my/menu/doc-icon.svg';
-import illust1 from 'assets/my/menu/call-illust.svg';
-import illust2 from 'assets/my/menu/book-illust.svg';
+import heartIcon from '../../../assets/my/menu/heart-icon.svg';
+import clockIcon from '../../../assets/my/menu/clock-icon.svg';
+import docIcon from '../../../assets/my/menu/doc-icon.svg';
+import illust1 from '../../../assets/my/menu/call-illust.svg';
+import illust2 from '../../../assets/my/menu/book-illust.svg';
 
 function Menu() {
   const location = useLocation();
@@ -18,6 +18,12 @@ function Menu() {
   const isLogin: boolean = useRecoilValue(isLoginAtom);
   const [isFeedbackOpen, setIsFeedbackOpen] = useRecoilState(isFeedbackOpenAtom);
   const [isCropOpen, setIsCropOpen] = useRecoilState(isCropOpenAtom);
+  const setIsLogin = useSetRecoilState(isLoginAtom);
+  const logout = () => {
+    sessionStorage.clear();
+    setIsLogin(false);
+    navigate('/');
+  };
 
   return (
     <MenuWrapper url={location.pathname}>
@@ -58,6 +64,7 @@ function Menu() {
       </YellowBtn>
 
       <Weather />
+      {isLogin === true && <LogoutBtn onClick={logout}>로그아웃</LogoutBtn>}
     </MenuWrapper>
   );
 }
@@ -77,6 +84,26 @@ const MenuWrapper = styled.aside<{ url: string }>`
     margin-right: 0;
     width: 100%;
     display: ${props => (props.url === '/my' ? 'flex' : 'none')};
+  }
+`;
+const LogoutBtn = styled.button`
+  visibility: hidden;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    visibility: visible;
+    width: 71px;
+    height: 33px;
+    background: #ffffff;
+    border: 1px solid #d9d9d9;
+    border-radius: 7px;
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    color: #afafaf;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 11px;
   }
 `;
 
@@ -108,6 +135,7 @@ const MenuNavList = styled.li`
     border: 0;
     border-top: 1px solid #d9d9d9;
     border-bottom: 1px solid #d9d9d9;
+    border-radius: 0px;
   }
 `;
 
@@ -123,7 +151,6 @@ const NavBtn = styled.button<{ active: boolean }>`
   color: ${props => (props.active ? '#414C38' : '#a9b6a9')};
   border-bottom: 1px solid #d9d9d9;
   transition: all 0.2s ease-in;
-
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     padding: 0;
     color: #414c38;
@@ -152,6 +179,7 @@ const YellowBtn = styled.button`
   align-items: center;
   background-color: #f7cc8a;
   border-radius: 11px;
+
   cursor: pointer;
 
   span:nth-child(1) {

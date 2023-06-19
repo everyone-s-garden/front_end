@@ -1,20 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import { useMatch, useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { Container as MapDiv, Marker, NaverMap } from 'react-naver-maps';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useRecoilState } from 'recoil';
 
-import { BREAK_POINT, COLOR } from 'constants/style';
-import { isReportOpenAtom, reportPostIdAtom } from 'recoil/atom';
-import ImageSlider from 'components/ImageSlider';
+import { BREAK_POINT, COLOR } from '../../../constants/style';
+import { isReportOpenAtom, reportPostIdAtom } from '../../../recoil/atom';
+import ImageSlider from '../../../components/ImageSlider';
 import { ReactComponent as BackIcon } from 'assets/back-icon.svg';
 import { ReactComponent as MenuIcon } from 'assets/three-dot-icon.svg';
 import * as animationData from 'assets/like-animation.json';
-import customAxios from 'utils/token';
+import customAxios from '../../../utils/token';
 import { AxiosResponse } from 'axios';
-import { IGardenDetail } from 'types/GardenDetail';
+import { IGardenDetail } from '../../../types/GardenDetail';
 import Heart from 'assets/like_heart.svg';
+import filterGardenData from '../../../utils/filterGardenData';
+import ContactGardenModal from '../../../components/Modal/ContactGardenModal';
 
 type PostDetailProps = {
   navermaps: typeof naver.maps;
@@ -25,16 +27,13 @@ function PostDetail() {
   const { navermaps } = useOutletContext<PostDetailProps>();
   const nav = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState<boolean>(false);
   const [_, setIsModalOpen] = useRecoilState(isReportOpenAtom);
   const [__, setReportPostId] = useRecoilState(reportPostIdAtom);
   const animationRef = useRef<Player>(null);
   const [map, setMap] = useState<naver.maps.Map | null>(null);
   const [post, setPost] = useState<IGardenDetail | null>(null);
-  const [images, setImages] = useState<string[]>([
-    'https://picsum.photos/id/237/800/600',
-    'https://picsum.photos/id/238/800/600',
-    'https://picsum.photos/id/239/800/600',
-  ]);
+  const [images, setImages] = useState<string[]>([]);
 
   const location = { lat: 37.3595704, long: 127.105399 };
   const fetchGardenData = async () => {
@@ -43,7 +42,6 @@ function PostDetail() {
     setPost(res.data);
     setImages(res.data.images);
   };
-
   const play = async () => {
     if (!post?.liked) {
       try {
@@ -65,6 +63,7 @@ function PostDetail() {
     }
   };
   useEffect(() => {
+    window.scrollTo(0, 0);
     fetchGardenData();
   }, [postId]); // postId가 변경될 때마다 데이터를 가져오도록 설정
 
@@ -116,12 +115,8 @@ function PostDetail() {
               <DropDownBtn onClick={() => nav(`/my/post/edit/${postId}`)}>수정하기</DropDownBtn>
             </MenuDropdown>
           </Title>
-          <Price>
-            {post?.price === '0'
-              ? '무료'
-              : `${Number(post?.price?.split(',')?.join('') ?? 0).toLocaleString('ko-KR')}원`}
-          </Price>
-          <Size>{post?.size} 평</Size>
+          <Price>{filterGardenData.filterPrice(post?.price!)}</Price>
+          <Size>{filterGardenData.filterSize(post?.size!)}</Size>
 
           <Facility>
             <h4>부대시설</h4>
@@ -192,10 +187,12 @@ function PostDetail() {
               )}
               찜하기
             </ZzimBtn>
-            <ApplyBtn>신청하기</ApplyBtn>
+            <ApplyBtn onClick={() => setIsContactModalOpen(true)}>신청하기</ApplyBtn>
           </Buttons>
         </ContentSection>
       </MainContent>
+
+      <ContactGardenModal isOpen={isContactModalOpen} setIsOpen={setIsContactModalOpen} contact={post?.contact} />
     </Container>
   );
 }
@@ -210,7 +207,7 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    width: 98%;
+    width: 100%;
     margin: 0 auto;
   }
 `;
@@ -240,7 +237,6 @@ const SliderContainer = styled.div`
 
   @media screen and (max-width: ${BREAK_POINT.TABLET}) {
     width: 100%;
-    max-width: 400px;
   }
 `;
 

@@ -10,11 +10,11 @@ interface GardenPostProps {
   id: number;
   name: string;
   size?: string;
-  price?: string;
+  price: string | null;
   images: string[];
-  status?: number;
+  status?: string;
 }
-function GardenPost({ id, name, size, price, images, status = 0 }: GardenPostProps) {
+function GardenPost({ id, name, size, price, images, status }: GardenPostProps) {
   const [_, setSelectedGarden] = useRecoilState(selectedGardenIdAtom);
 
   return (
@@ -29,19 +29,15 @@ function GardenPost({ id, name, size, price, images, status = 0 }: GardenPostPro
 
       <InfoDiv>
         <Status>
-          {status === 0 ? (
-            <Text>상시 모집</Text>
-          ) : (
-            <>
-              <Dot />
-              <Text>모집 중</Text>
-            </>
-          )}
+          {status === 'ACTIVE' && <Dot />}
+          {status === 'ACTIVE' && <Text>모집 중</Text>}
+          {status === 'INACTIVE' && <Text>마감</Text>}
+          {status === 'ALWAYS_ACTIVE' && <Text>상시 모집</Text>}
+          {status === null && <Text>상시 모집</Text>}
         </Status>
         <Title onClick={() => setSelectedGarden(id)}>{name.trim()}</Title>
-        <Value>{size} (평)</Value>
-        {/* <Value>{price !== 0 ? `평당 ${price.toLocaleString('ko-KR')}원` : '무료'}</Value> */}
-        <Value>{price === null ? '연락요망' : price === '0' ? '무료' : `${price} (원)`}</Value>
+        <Value>{size}</Value>
+        <Value>{price}</Value>
       </InfoDiv>
     </Post>
   );

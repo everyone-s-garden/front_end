@@ -16,10 +16,19 @@ import Token from 'pages/Login/Kakao/token/token';
 import RegisterUser from 'pages/My/RegisterUser/RegisterUser';
 import RegisterSeller from 'pages/My/RegisterSeller/RegisterSeller';
 import MyHome from 'pages/My/AfterLogin/MyHome';
-import Like from 'pages/My/LikePosts/LikePosts';
-import Recent from 'pages/My/RecentPosts/RecentPosts';
-import MyPost from 'pages/My/MyPosts/MyPosts';
 import PostDetail from 'pages/My/PostDetail/PostDetail';
+import LikePosts from 'pages/My/LikePosts/LikePosts';
+import RecentPosts from 'pages/My/RecentPosts/RecentPosts';
+import MyPosts from 'pages/My/MyPosts/MyPosts';
+
+// 모바일 100vh 세팅
+let vh = window.innerHeight * 0.01;
+document.documentElement.style.setProperty('--vh', `${vh}px`);
+
+window.addEventListener('resize', () => {
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+});
 
 const router = createBrowserRouter([
   {
@@ -60,15 +69,15 @@ const router = createBrowserRouter([
           },
           {
             path: 'like',
-            element: <Like />,
+            element: <LikePosts />,
           },
           {
             path: 'recent',
-            element: <Recent />,
+            element: <RecentPosts />,
           },
           {
             path: 'mypost',
-            element: <MyPost />,
+            element: <MyPosts />,
           },
           {
             path: ':postId',

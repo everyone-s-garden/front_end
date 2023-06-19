@@ -64,6 +64,7 @@ function Weather() {
   };
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
   const [myLocation, setMyLocation] = useState<{
     lat: number;
     lng: number;
@@ -85,8 +86,16 @@ function Weather() {
     let timer: any;
 
     const getWeatherData = async () => {
-      let data = await WeatherAPI.getAllWeather();
-      data = data.data;
+      let data: any;
+      try {
+        data = await WeatherAPI.getAllWeather();
+        data = data.data;
+        setIsError(false);
+      } catch (error) {
+        setIsError(true);
+        setIsLoading(false);
+        return;
+      }
 
       let index = 0;
       const loopWeather = () => {
@@ -99,15 +108,20 @@ function Weather() {
           setIsLoading(false);
 
           index++;
-          if (index < 10) {
-            loopWeather();
+
+          if (index > 16) {
+            index = 0;
           }
+
+          loopWeather();
         }, 8000);
       };
 
       loopWeather();
     };
+
     getWeatherData();
+
     return () => {
       clearTimeout(timer);
     };
@@ -117,8 +131,18 @@ function Weather() {
   useEffect(() => {
     if (myLocation) {
       const getWeatherData = async () => {
-        const perTData = await WeatherAPI.getPerTimeWeather(myLocation.lat, myLocation.lng);
-        const weeklyData = await WeatherAPI.getWeeklyWeather(myLocation.lat, myLocation.lng);
+        let perTData: any;
+        let weeklyData: any;
+
+        try {
+          perTData = await WeatherAPI.getPerTimeWeather(myLocation.lat, myLocation.lng);
+          weeklyData = await WeatherAPI.getWeeklyWeather(myLocation.lat, myLocation.lng);
+          setIsError(false);
+        } catch (error) {
+          setIsError(true);
+          setIsLoading(false);
+          return;
+        }
 
         let tempPTData: LineGraphData[] = [];
         perTData.data['서울']
@@ -151,134 +175,147 @@ function Weather() {
         <MiniLoader isLoading={isLoading} scale={0.6} />
       </LoaderContainer>
 
-      <TodayDate>
-        {month}.{date} {weekday[day]}
-      </TodayDate>
-
-      {region !== '' && (
-        <CurrentWeather>
-          <CurrentSkyImg
-            src={PTY[sky] === '맑음' ? sunny : PTY[sky] === '흐림' ? cloudy : PTY[sky] === '눈' ? rainy : snowy}
-            alt="날씨 이모티콘"
-          />
-          {temperature}˚
-          <Info>
-            <Location>{region}</Location>
-            <Sky>{PTY[sky]}</Sky>
-          </Info>
-        </CurrentWeather>
+      {isError && (
+        <ErrorMessage>
+          <span>죄송합니다</span>
+          <p>
+            날씨를 불러오는 도중 오류가 <br /> 발생했습니다
+          </p>
+        </ErrorMessage>
       )}
 
-      {pTimeData && weeklyData ? (
+      {!isError && (
         <>
-          <WeatherPerTime>
-            <SubjectTitle>시간대별 기온</SubjectTitle>
-            <LineGraph data={pTimeData} />
-          </WeatherPerTime>
+          <TodayDate>
+            {month}.{date} {weekday[day]}
+          </TodayDate>
 
-          <WeeklyWeather>
-            <SubjectTitle>주간 날씨</SubjectTitle>
-            <WeeklyWeatherBox>
-              <WeekWeather
-                imgFile={
-                  weeklyData[0] === '맑음'
-                    ? sunny
-                    : weeklyData[0] === '흐림'
-                    ? cloudy
-                    : weeklyData[0] === '눈'
-                    ? snowy
-                    : rainy
-                }
-                weekday={weekday[day]}
-                isToday={true}
+          {region !== '' && (
+            <CurrentWeather>
+              <CurrentSkyImg
+                src={PTY[sky] === '맑음' ? sunny : PTY[sky] === '흐림' ? cloudy : PTY[sky] === '눈' ? rainy : snowy}
+                alt="날씨 이모티콘"
               />
-              <WeekWeather
-                imgFile={
-                  weeklyData[1] === '맑음'
-                    ? sunny
-                    : weeklyData[1] === '흐림'
-                    ? cloudy
-                    : weeklyData[1] === '눈'
-                    ? snowy
-                    : rainy
-                }
-                weekday={weekday[(day + 1) % 7]}
-              />
-              <WeekWeather
-                imgFile={
-                  weeklyData[2] === '맑음'
-                    ? sunny
-                    : weeklyData[2] === '흐림'
-                    ? cloudy
-                    : weeklyData[2] === '눈'
-                    ? snowy
-                    : rainy
-                }
-                weekday={weekday[(day + 2) % 7]}
-              />
-              <WeekWeather
-                imgFile={
-                  weeklyData[3] === '맑음'
-                    ? sunny
-                    : weeklyData[3] === '흐림'
-                    ? cloudy
-                    : weeklyData[3] === '눈'
-                    ? snowy
-                    : rainy
-                }
-                weekday={weekday[(day + 3) % 7]}
-              />
-              <WeekWeather
-                imgFile={
-                  weeklyData[4] === '맑음'
-                    ? sunny
-                    : weeklyData[4] === '흐림'
-                    ? cloudy
-                    : weeklyData[4] === '눈'
-                    ? snowy
-                    : rainy
-                }
-                weekday={weekday[(day + 4) % 7]}
-              />
-              <WeekWeather
-                imgFile={
-                  weeklyData[5] === '맑음'
-                    ? sunny
-                    : weeklyData[5] === '흐림'
-                    ? cloudy
-                    : weeklyData[5] === '눈'
-                    ? snowy
-                    : rainy
-                }
-                weekday={weekday[(day + 5) % 7]}
-              />
-              <WeekWeather
-                imgFile={
-                  weeklyData[6] === '맑음'
-                    ? sunny
-                    : weeklyData[6] === '흐림'
-                    ? cloudy
-                    : weeklyData[6] === '눈'
-                    ? snowy
-                    : rainy
-                }
-                weekday={weekday[(day + 6) % 7]}
-              />
-            </WeeklyWeatherBox>
-          </WeeklyWeather>
+              {temperature}˚
+              <Info>
+                <Location>{region}</Location>
+                <Sky>{PTY[sky]}</Sky>
+              </Info>
+            </CurrentWeather>
+          )}
 
-          <Rainfall>
-            <SubjectTitle>현재 강수확률</SubjectTitle>
-            <Percentage>30%</Percentage>
-          </Rainfall>
-        </>
-      ) : (
-        <>
-          <FindMyLocBtn onClick={getMyLocation}>내 위치찾기</FindMyLocBtn>
-          <Instruction>
-            위치 찾기로 현 위치의 <br />
-            시간대별, 주간 날씨를 확인해요
-          </Instruction>
+          {pTimeData && weeklyData ? (
+            <>
+              <WeatherPerTime>
+                <SubjectTitle>시간대별 기온</SubjectTitle>
+                <LineGraph data={pTimeData} />
+              </WeatherPerTime>
+
+              <WeeklyWeather>
+                <SubjectTitle>주간 날씨</SubjectTitle>
+                <WeeklyWeatherBox>
+                  <WeekWeather
+                    imgFile={
+                      weeklyData[0] === '맑음'
+                        ? sunny
+                        : weeklyData[0] === '흐림'
+                        ? cloudy
+                        : weeklyData[0] === '눈'
+                        ? snowy
+                        : rainy
+                    }
+                    weekday={weekday[day]}
+                    isToday={true}
+                  />
+                  <WeekWeather
+                    imgFile={
+                      weeklyData[1] === '맑음'
+                        ? sunny
+                        : weeklyData[1] === '흐림'
+                        ? cloudy
+                        : weeklyData[1] === '눈'
+                        ? snowy
+                        : rainy
+                    }
+                    weekday={weekday[(day + 1) % 7]}
+                  />
+                  <WeekWeather
+                    imgFile={
+                      weeklyData[2] === '맑음'
+                        ? sunny
+                        : weeklyData[2] === '흐림'
+                        ? cloudy
+                        : weeklyData[2] === '눈'
+                        ? snowy
+                        : rainy
+                    }
+                    weekday={weekday[(day + 2) % 7]}
+                  />
+                  <WeekWeather
+                    imgFile={
+                      weeklyData[3] === '맑음'
+                        ? sunny
+                        : weeklyData[3] === '흐림'
+                        ? cloudy
+                        : weeklyData[3] === '눈'
+                        ? snowy
+                        : rainy
+                    }
+                    weekday={weekday[(day + 3) % 7]}
+                  />
+                  <WeekWeather
+                    imgFile={
+                      weeklyData[4] === '맑음'
+                        ? sunny
+                        : weeklyData[4] === '흐림'
+                        ? cloudy
+                        : weeklyData[4] === '눈'
+                        ? snowy
+                        : rainy
+                    }
+                    weekday={weekday[(day + 4) % 7]}
+                  />
+                  <WeekWeather
+                    imgFile={
+                      weeklyData[5] === '맑음'
+                        ? sunny
+                        : weeklyData[5] === '흐림'
+                        ? cloudy
+                        : weeklyData[5] === '눈'
+                        ? snowy
+                        : rainy
+                    }
+                    weekday={weekday[(day + 5) % 7]}
+                  />
+                  <WeekWeather
+                    imgFile={
+                      weeklyData[6] === '맑음'
+                        ? sunny
+                        : weeklyData[6] === '흐림'
+                        ? cloudy
+                        : weeklyData[6] === '눈'
+                        ? snowy
+                        : rainy
+                    }
+                    weekday={weekday[(day + 6) % 7]}
+                  />
+                </WeeklyWeatherBox>
+              </WeeklyWeather>
+
+              <Rainfall>
+                <SubjectTitle>현재 강수확률</SubjectTitle>
+                <Percentage>30%</Percentage>
+              </Rainfall>
+            </>
+          ) : (
+            <>
+              <FindMyLocBtn onClick={getMyLocation}>내 위치찾기</FindMyLocBtn>
+              <Instruction>
+                위치 찾기로 현 위치의 <br />
+                시간대별, 주간 날씨를 확인해요
+              </Instruction>
+            </>
+          )}
         </>
       )}
     </Container>
@@ -303,6 +340,27 @@ const LoaderContainer = styled.div`
   top: -10px;
   left: 0;
   width: 100%;
+`;
+
+const ErrorMessage = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  & > span {
+    color: #96d058;
+    font-size: 20px;
+    font-weight: ${FONT_WEIGHT.SEMIBOLD};
+  }
+  & > p {
+    margin-top: 6px;
+    color: #414c38;
+    font-size: 12px;
+    font-weight: ${FONT_WEIGHT.MEDIUM};
+    text-align: center;
+  }
 `;
 
 const TodayDate = styled.span`
