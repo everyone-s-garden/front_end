@@ -231,6 +231,7 @@ const ButtonContainer = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
+  background-color: orange;
 `;
 
 const Button = styled.button<{ active: boolean }>`
