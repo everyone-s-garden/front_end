@@ -44,3 +44,20 @@ export const inputContactFormat = (str: string) => {
 
   return truncatedStr;
 };
+
+export const formDataHandler = async (dataURI: any) => {
+  const byteString = atob(dataURI.split(',')[1]);
+  const ab = new ArrayBuffer(byteString.length);
+  const ia = new Uint8Array(ab);
+  for (let i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+  const blob = new Blob([ia], {
+    type: 'image/jpeg',
+  });
+  const file = new File([blob], 'image.jpg');
+
+  const formData = new FormData();
+  formData.append('file', file);
+  return formData;
+};

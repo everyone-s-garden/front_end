@@ -2,6 +2,16 @@
 /* Pretendard 폰트 가져오기 */
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/variable/pretendardvariable.css');
 
+/* 모바일 브라우저 100vh 설정 */
+.module {
+  width: 100vh;
+}
+@media only screen and (max-device-width: 640px) {
+  .module {
+    height: calc(var(--var, 1vh) * 100);
+  }
+}
+
 /* 초기 세팅 */
 * {
   margin: 0;
@@ -77,12 +87,9 @@ input {
   outline: none;
 }
 
-/* 반응형 이미지 */
-/* img,video {width: 100%;} */
-
 /* clearfix */
 .clearfix {
-  *zoom: 1;
+  zoom: 1;
 }
 .clearfix:before,
 .clearfix:after {

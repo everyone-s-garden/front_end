@@ -5,6 +5,7 @@ import { IGardenDetail } from 'types/GardenDetail';
 
 import { BREAK_POINT, FONT_WEIGHT } from 'constants/style';
 import noImgIcon from 'assets/noImg-icon.svg';
+import filterGardenData from 'utils/filterGardenData';
 
 interface Idata {
   data: IGardenDetail;
@@ -34,9 +35,8 @@ function Post({ data }: Idata) {
           {data.status === null && <Text>상시 모집</Text>}
         </Status>
         <Title>{data.name}</Title>
-        <Value style={{ color: '#afafaf' }}>{data.size} 평</Value>
-        {data.price === null && <Value>무료</Value>}
-        {data.price !== null && <Value>평당 {Number(data.price.split(',').join('')).toLocaleString()} 원</Value>}
+        <Value style={{ color: '#afafaf' }}>{filterGardenData.filterSize(data.size)}</Value>
+        <Value>{filterGardenData.filterPrice(data.price)}</Value>
       </InfoDiv>
     </PostContainer>
   );

@@ -15,6 +15,8 @@ import customAxios from 'utils/token';
 import { AxiosResponse } from 'axios';
 import { IGardenDetail } from 'types/GardenDetail';
 import Heart from 'assets/like_heart.svg';
+import filterGardenData from 'utils/filterGardenData';
+import ContactGardenModal from 'components/Modal/ContactGardenModal';
 
 type PostDetailProps = {
   navermaps: typeof naver.maps;
@@ -25,6 +27,7 @@ function PostDetail() {
   const { navermaps } = useOutletContext<PostDetailProps>();
   const nav = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState<boolean>(false);
   const [_, setIsModalOpen] = useRecoilState(isReportOpenAtom);
   const [__, setReportPostId] = useRecoilState(reportPostIdAtom);
   const animationRef = useRef<Player>(null);
@@ -116,12 +119,8 @@ function PostDetail() {
               <DropDownBtn onClick={() => nav(`/my/post/edit/${postId}`)}>수정하기</DropDownBtn>
             </MenuDropdown>
           </Title>
-          <Price>
-            {post?.price === '0'
-              ? '무료'
-              : `${Number(post?.price?.split(',')?.join('') ?? 0).toLocaleString('ko-KR')}원`}
-          </Price>
-          <Size>{post?.size} 평</Size>
+          <Price>{filterGardenData.filterPrice(post?.price!)}</Price>
+          <Size>{filterGardenData.filterSize(post?.size!)}</Size>
 
           <Facility>
             <h4>부대시설</h4>
@@ -192,10 +191,12 @@ function PostDetail() {
               )}
               찜하기
             </ZzimBtn>
-            <ApplyBtn>신청하기</ApplyBtn>
+            <ApplyBtn onClick={() => setIsContactModalOpen(true)}>신청하기</ApplyBtn>
           </Buttons>
         </ContentSection>
       </MainContent>
+
+      <ContactGardenModal isOpen={isContactModalOpen} setIsOpen={setIsContactModalOpen} contact={post?.contact} />
     </Container>
   );
 }
