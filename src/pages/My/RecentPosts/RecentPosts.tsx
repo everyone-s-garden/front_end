@@ -8,15 +8,9 @@ import Post from '../Post';
 import NoPost from '../NoPost';
 import customAxios from '../../../utils/token';
 import { AxiosResponse } from 'axios';
-<<<<<<< HEAD
 import { IGardenDetail } from '../../../types/GardenDetail';
 import { useRecoilState } from 'recoil';
 import { recentListsAtom, recentPageAtom } from '../../../recoil/atom';
-=======
-import { IGardenDetail } from 'types/GardenDetail';
-import { useRecoilState, useResetRecoilState } from 'recoil';
-import { myListsAtom, recentListsAtom, recentPageAtom } from 'recoil/atom';
->>>>>>> refs/remotes/origin/master
 
 const RecentPosts = () => {
   const [recentLists, setRecentLists] = useRecoilState(recentListsAtom);

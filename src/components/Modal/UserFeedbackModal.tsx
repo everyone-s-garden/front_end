@@ -8,19 +8,11 @@ import Modal from '../../components/Modal/Modal';
 import smileIllust from 'assets/modal/smile.svg';
 import icon from '../../assets/image_small.svg';
 import delete_icon from '../../assets/delete_icon.png';
-<<<<<<< HEAD
 import { getImages } from '../../pages/My/RegisterUser/query';
 import imageCompression from 'browser-image-compression';
 import { formDataHandler } from '../../pages/My/RegisterSeller/query';
 import { AxiosResponse } from 'axios';
 import customAxios from '../../utils/token';
-=======
-import { getImages } from 'pages/My/RegisterUser/query';
-import imageCompression from 'browser-image-compression';
-import { formDataHandler } from 'pages/My/RegisterSeller/query';
-import { AxiosResponse } from 'axios';
-import customAxios from 'utils/token';
->>>>>>> refs/remotes/origin/master
 
 interface UserFeedbackModalProps {
   isOpen: boolean;
