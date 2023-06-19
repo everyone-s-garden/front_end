@@ -106,10 +106,10 @@ const Nav = () => {
         </MobileNav>
       </Container>
 
-      {/* <ReportModal isOpen={isReportOpen} setIsOpen={setIsReportOpen} />
+      <ReportModal isOpen={isReportOpen} setIsOpen={setIsReportOpen} />
       <UserFeedbackModal isOpen={isFeedbackOpen} setIsOpen={setIsFeedbackOpen} />
       <MonthCrop isOpen={isCropOpen} setIsOpen={setIsCropOpen} />
-      <Notification /> */}
+      <Notification />
 
       <Main url={location.pathname}>
         <Outlet context={{ navermaps }} />
@@ -125,13 +125,13 @@ const Container = styled.div<{ isMainPage: boolean; isMapPage: boolean }>`
   position: sticky;
   top: 0;
   padding: ${props => (props.isMainPage ? '0 20px 20px 20px' : props.isMapPage ? '0' : '40px 0 14px 0')};
-  width: 100vw;
+  width: 100%;
   display: flex;
   justify-content: center;
   background-color: ${COLOR.BACKGROUND};
   border-bottom: 1px solid #e1e1e1;
   border-bottom: ${props => (props.isMainPage || props.isMapPage ? 'none' : '1px solid #e1e1e1')};
-
+  background-color: red;
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     padding: 0 20px 20px 20px;
     border: none;
