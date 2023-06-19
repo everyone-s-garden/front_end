@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import imageCompression from 'browser-image-compression';
 
 import { BREAK_POINT } from 'constants/style';
 import Form from './Form';
@@ -7,8 +8,8 @@ import addIcon from 'assets/my/register/add-icon.svg';
 import delete_icon from 'assets/delete_icon.png';
 import { getImages } from 'utils/getImages';
 import { IFormData, ILocation, IUrl, ILen } from './type';
-import { Path, useMatch } from 'react-router-dom';
-import customAxios from 'utils/token';
+import { useMatch } from 'react-router-dom';
+import { formDataHandler } from './query';
 import { AxiosResponse } from 'axios';
 
 const RegisterSeller = () => {
@@ -26,18 +27,28 @@ const RegisterSeller = () => {
     }
     if (event.currentTarget.files) {
       const uploadImg = event.currentTarget.files[0] as File;
-      const formData: IFormData = new FormData();
-      formData.append('file', uploadImg);
+      const options = {
+        maxSizeMB: 0.2,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      };
       try {
-        const res = await getImages(formData);
-
-        const newImage: string[] = [res.data.imageUrl];
-        setImages(prevImages => [...newImage, ...prevImages]);
+        const compressedFile = await imageCompression(uploadImg, options);
+        const reader = new FileReader();
+        reader.readAsDataURL(compressedFile);
+        reader.onload = async () => {
+          const base64data = reader.result;
+          const formData = await formDataHandler(base64data);
+          const res = (await getImages(formData)) as AxiosResponse;
+          const newImage: string[] = [res.data.imageUrl];
+          setImages(prevImages => [...newImage, ...prevImages]);
+        };
       } catch (err) {
         console.log(err);
       }
     }
   };
+
   const deleteImage = (index: number) => {
     setImages(prevImages => prevImages.filter((_, i) => i !== index));
   };
