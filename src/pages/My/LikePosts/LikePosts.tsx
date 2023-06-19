@@ -9,31 +9,50 @@ import closeIcon from 'assets/my/x-icon.svg';
 import customAxios from 'utils/token';
 import { AxiosResponse } from 'axios';
 import { IGardenDetail } from 'types/GardenDetail';
+import { useRecoilState } from 'recoil';
+import { likeListsAtom, likePageAtom } from 'recoil/atom';
+import { useInView } from 'react-intersection-observer';
 
 const LikePosts = () => {
+  const [likeLists, setLikeLists] = useRecoilState(likeListsAtom);
+  const [page, setPage] = useRecoilState(likePageAtom);
+  const [hasMore, setHasMore] = useState(true);
+  const [ref, inView] = useInView();
   const nav = useNavigate();
-  const [likeList, setLikeList] = useState([]);
-  // const [likeList] = useState([]);
-  const init = async () => {
+
+  const fetchData = async () => {
     try {
-      const res: AxiosResponse = await customAxios.get('/v1/garden/like/all');
-      setLikeList(res.data);
+      const res = await customAxios.get(`/v1/garden/like/all?page=${page}`);
+      const newData = res.data;
+
+      if (newData.length === 0) {
+        setHasMore(false);
+      } else {
+        setLikeLists(prevList => [...prevList, ...newData]);
+        setPage(prevPage => prevPage + 1);
+      }
     } catch (err) {
       console.log(err);
     }
   };
+  useEffect(() => {
+    if (inView && hasMore) {
+      fetchData(); // 인터섹션 옵서버가 화면에 들어올 때 데이터 불러오기
+    }
+  }, [inView, hasMore]);
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const deleteLike = async (i: IGardenDetail) => {
     const res: AxiosResponse = await customAxios.delete(`v1/garden/like/${i.id}`);
     if (res.status === 204) {
-      const updatedLikeList = likeList.filter((item: IGardenDetail) => item.id !== i.id);
-      setLikeList([...updatedLikeList]);
+      const updatedLikeList = likeLists.filter((item: IGardenDetail) => item.id !== i.id);
+      setLikeLists([...updatedLikeList]);
     }
   };
 
-  useEffect(() => {
-    init();
-  }, []);
-  const renderPosts = likeList.map((i: IGardenDetail) => (
+  const renderPosts = likeLists.map((i: IGardenDetail) => (
     <PostContainer key={i.id}>
       <Post data={i} />
       <CloseIcon src={closeIcon} alt="close" onClick={() => deleteLike(i)} />
@@ -42,7 +61,7 @@ const LikePosts = () => {
 
   return (
     <Container>
-      {likeList.length === 0 ? (
+      {likeLists.length === 0 ? (
         <NoPost title="찜한 텃밭이 없어요!" subTitle="분양 텃밭들을 보고 싶나요?" url="/map" />
       ) : (
         <LikePostsSection>

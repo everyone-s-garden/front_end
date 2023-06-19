@@ -58,29 +58,31 @@ export const recentListsAtom = atom<IGardenDetail[]>({
   key: 'recentLists',
   default: [],
 });
-export const myPostListsAtom = atom<IGardenDetail[]>({
-  key: 'myPostLists',
+
+export const recentPageAtom = atom<number>({
+  key: 'recentPage',
+  default: 1,
+});
+export const myListsAtom = atom<IGardenDetail[]>({
+  key: 'myLists',
   default: [],
+});
+
+export const myPageAtom = atom<number>({
+  key: 'myPage',
+  default: 1,
 });
 export const likeListsAtom = atom<IGardenDetail[]>({
   key: 'likeLists',
   default: [],
 });
 
-export const recentPageAtom = atom<number>({
-  key: 'recentPage',
-  default: 1,
-});
-export const myPageAtom = atom<number>({
-  key: 'myPage',
-  default: 1,
-});
 export const likePageAtom = atom<number>({
   key: 'likePage',
   default: 1,
 });
 
-export const isOkAtom = atom<boolean>({
-  key: 'isOk',
-  default: false,
+export const hasMoreAtom = atom<boolean>({
+  key: 'hasmore',
+  default: true,
 });

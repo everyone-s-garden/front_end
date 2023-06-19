@@ -32,7 +32,6 @@ const Container = styled.section`
   margin-top: 44px;
   width: 100%;
   display: flex;
-  flex-direction: column;
 `;
 
 const Header = styled.div`

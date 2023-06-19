@@ -9,29 +9,48 @@ import customAxios from 'utils/token';
 import { AxiosResponse } from 'axios';
 import { IGardenDetail } from 'types/GardenDetail';
 import { useRecoilState } from 'recoil';
+import { myListsAtom, myPageAtom } from 'recoil/atom';
+import { useInView } from 'react-intersection-observer';
 
 const MyPosts = () => {
+  const [myPosts, setMyPosts] = useRecoilState(myListsAtom);
+  const [page, setPage] = useRecoilState(myPageAtom);
+  const [hasMore, setHasMore] = useState(true);
+  const [ref, inView] = useInView();
   const nav = useNavigate();
-  const [myPostsList, setMyPostsList] = useState<IGardenDetail[]>([]);
-  const renderPosts = myPostsList.map(i => (
-    <PostContainer key={Math.random()}>
-      <Post data={i} />
-    </PostContainer>
-  ));
-  const init = async () => {
+
+  const fetchData = async () => {
     try {
-      const res: AxiosResponse = await customAxios.get('/v1/garden/mine');
-      setMyPostsList(res.data);
+      const res = await customAxios.get(`/v1/garden/mine?page=${page}`);
+      const newData = res.data;
+
+      if (newData.length === 0) {
+        setHasMore(false);
+      } else {
+        setMyPosts(prevList => [...prevList, ...newData]);
+        setPage(prevPage => prevPage + 1);
+      }
     } catch (err) {
       console.log(err);
     }
   };
   useEffect(() => {
-    init();
+    if (inView && hasMore) {
+      fetchData(); // 인터섹션 옵서버가 화면에 들어올 때 데이터 불러오기
+    }
+  }, [inView, hasMore]);
+  useEffect(() => {
+    fetchData();
   }, []);
+  const renderPosts = myPosts.map(i => (
+    <PostContainer key={Math.random()}>
+      <Post data={i} />
+    </PostContainer>
+  ));
+
   return (
     <Container>
-      {myPostsList.length === 0 ? (
+      {myPosts.length === 0 ? (
         <NoPost title="올린 글이 없어요!" subTitle="판매하고 싶은 밭이 있나요?" url="/map" />
       ) : (
         <MyPostsSection>

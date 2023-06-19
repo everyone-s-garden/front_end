@@ -13,13 +13,12 @@ import { useRecoilState, useResetRecoilState } from 'recoil';
 import { recentListsAtom, recentPageAtom } from 'recoil/atom';
 
 const RecentPosts = () => {
-  const nav = useNavigate();
+  const [recentLists, setRecentLists] = useRecoilState(recentListsAtom);
   const [page, setPage] = useRecoilState(recentPageAtom);
-  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [hasMore, setHasMore] = useState(true);
   const [ref, inView] = useInView();
-  const [recentList, setRecentList] = useRecoilState(recentListsAtom);
-  const resetPage = useResetRecoilState(recentPageAtom);
-  const resetList = useResetRecoilState(recentListsAtom);
+  const nav = useNavigate();
+
   const fetchData = async () => {
     try {
       const res = await customAxios.get(`/v1/garden/recent?page=${page}`);
@@ -28,7 +27,7 @@ const RecentPosts = () => {
       if (newData.length === 0) {
         setHasMore(false);
       } else {
-        setRecentList(prevList => [...prevList, ...newData]);
+        setRecentLists(prevList => [...prevList, ...newData]);
         setPage(prevPage => prevPage + 1);
       }
     } catch (err) {
@@ -36,16 +35,14 @@ const RecentPosts = () => {
     }
   };
   useEffect(() => {
+    if (inView && hasMore) {
+      fetchData(); // 인터섹션 옵서버가 화면에 들어올 때 데이터 불러오기
+    }
+  }, [inView, hasMore]);
+  useEffect(() => {
     fetchData();
   }, []);
-
-  useEffect(() => {
-    if (inView && hasMore) {
-      fetchData();
-    }
-  }, [inView]);
-  console.log(page, recentList);
-  const renderPosts = recentList.map(i => (
+  const renderPosts = recentLists.map((i: IGardenDetail) => (
     <PostContainer key={i.id}>
       <Post data={i} key={i.id} />
     </PostContainer>
@@ -53,7 +50,7 @@ const RecentPosts = () => {
 
   return (
     <Container>
-      {recentList.length === 0 ? (
+      {recentLists.length === 0 ? (
         <NoPost title="최근 본 텃밭이 없어요!" subTitle="분양 텃밭들을 보고 싶나요?" url="/map" />
       ) : (
         <RecentPostsSection>
@@ -62,6 +59,7 @@ const RecentPosts = () => {
             {renderPosts}
             <div ref={ref} />
           </PostList>
+
           <Span>
             분양 텃밭들을 더 보고싶나요?
             <span onClick={() => nav('/map')}> 분양 텃밭 보러가기</span>

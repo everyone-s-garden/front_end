@@ -6,7 +6,7 @@ import { Player } from '@lottiefiles/react-lottie-player';
 import { useRecoilState } from 'recoil';
 
 import { BREAK_POINT, COLOR } from 'constants/style';
-import { isOkAtom, isReportOpenAtom, reportPostIdAtom } from 'recoil/atom';
+import { isReportOpenAtom, reportPostIdAtom } from 'recoil/atom';
 import ImageSlider from 'components/ImageSlider';
 import { ReactComponent as BackIcon } from 'assets/back-icon.svg';
 import { ReactComponent as MenuIcon } from 'assets/three-dot-icon.svg';
@@ -35,7 +35,6 @@ function PostDetail() {
     'https://picsum.photos/id/238/800/600',
     'https://picsum.photos/id/239/800/600',
   ]);
-  const [isOk, setIsOk] = useRecoilState(isOkAtom);
 
   const location = { lat: 37.3595704, long: 127.105399 };
   const fetchGardenData = async () => {
@@ -43,7 +42,6 @@ function PostDetail() {
     const res = await customAxios.get(`v1/garden/${postId}`);
     setPost(res.data);
     setImages(res.data.images);
-    setIsOk(true);
   };
 
   const play = async () => {
