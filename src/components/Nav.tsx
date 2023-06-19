@@ -143,7 +143,7 @@ const Navbar = styled.nav<{ isMainPage: boolean }>`
   flex-shrink: 1;
   max-width: 1200px;
   display: ${props => (props.isMainPage ? 'flex' : 'none')};
-
+  background-color: blue;
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     display: flex;
     flex-direction: column;
@@ -177,7 +177,7 @@ const MenuBar = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
+  background-color: green;
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     margin: 0;
     height: 43px;
