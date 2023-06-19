@@ -13,7 +13,6 @@ interface Idata {
 
 function Post({ data }: Idata) {
   const nav = useNavigate();
-  console.log(data);
   return (
     <PostContainer onClick={() => nav(`/my/${data.id}`)}>
       <ImageContainer>

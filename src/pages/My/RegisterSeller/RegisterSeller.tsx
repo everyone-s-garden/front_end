@@ -11,7 +11,6 @@ import { IFormData, ILocation, IUrl, ILen } from './type';
 import { useMatch } from 'react-router-dom';
 import { formDataHandler } from './query';
 import { AxiosResponse } from 'axios';
-
 const RegisterSeller = () => {
   const [images, setImages] = useState<string[]>([]);
   const [location, setLocation] = useState<ILocation>({
