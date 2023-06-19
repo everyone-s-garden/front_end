@@ -135,6 +135,7 @@ const MenuNavList = styled.li`
     border: 0;
     border-top: 1px solid #d9d9d9;
     border-bottom: 1px solid #d9d9d9;
+    border-radius: 0px;
   }
 `;
 
@@ -150,7 +151,6 @@ const NavBtn = styled.button<{ active: boolean }>`
   color: ${props => (props.active ? '#414C38' : '#a9b6a9')};
   border-bottom: 1px solid #d9d9d9;
   transition: all 0.2s ease-in;
-
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     padding: 0;
     color: #414c38;
@@ -179,6 +179,7 @@ const YellowBtn = styled.button`
   align-items: center;
   background-color: #f7cc8a;
   border-radius: 11px;
+
   cursor: pointer;
 
   span:nth-child(1) {
