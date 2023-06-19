@@ -139,8 +139,7 @@ const Container = styled.div<{ isMainPage: boolean; isMapPage: boolean }>`
 `;
 
 const Navbar = styled.nav<{ isMainPage: boolean }>`
-  flex-grow: 1;
-  flex-shrink: 1;
+  width: 100%;
   max-width: 1200px;
   display: ${props => (props.isMainPage ? 'flex' : 'none')};
   background-color: blue;
