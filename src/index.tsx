@@ -33,7 +33,7 @@ window.addEventListener('resize', () => {
 const router = createBrowserRouter([
   {
     path: '/',
-    // element: <Nav />,
+    element: <Nav />,
     children: [
       {
         index: true,
