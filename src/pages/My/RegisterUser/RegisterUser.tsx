@@ -10,8 +10,8 @@ import { useMatch } from 'react-router-dom';
 import customAxios from 'utils/token';
 import { AxiosResponse } from 'axios';
 import { ReactComponent as MenuIcon } from 'assets/three-dot-icon.svg';
-import { formDataHandler } from '../RegisterSeller/query';
 import imageCompression from 'browser-image-compression';
+import { formDataHandler } from '../RegisterSeller/query';
 
 const RegisterUser = () => {
   const labelRef = useRef<HTMLLabelElement>(null);
@@ -45,9 +45,11 @@ const RegisterUser = () => {
       }
     }
   };
+
   const getMyGarden = async () => {
     const res = await customAxios('/v1/garden/using');
     setMyGarden(res.data[0]);
+
     setImage(res.data[0].image);
   };
   useEffect(() => {
@@ -103,10 +105,10 @@ const Container = styled.div`
   align-items: center;
 
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    width: 96vw;
+    width: 100%;
     height: calc(100vh - 100px);
-    padding: 0;
     margin: 0 auto;
+    padding: 0;
   }
 `;
 

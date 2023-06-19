@@ -32,8 +32,8 @@ const Container = styled.div`
   justify-content: center;
 
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    margin-top: 0px;
-    padding: 20px;
+    margin-top: 20px;
+    padding: 0 19px;
   }
 `;
 

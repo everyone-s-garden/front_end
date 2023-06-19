@@ -32,7 +32,7 @@ export default Login;
 
 const Container = styled.section`
   width: 100vw;
-  height: 100vh;
+  height: var(--vh, 1vh) * 100;
   display: flex;
   position: absolute;
   top: 0px;
