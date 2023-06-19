@@ -1,6 +1,11 @@
 import { atom } from 'recoil';
+<<<<<<< HEAD
 import { GardenDetailType } from '../api/type';
 import { IGardenDetail } from '../types/GardenDetail';
+=======
+import { GardenData } from 'api/type';
+import { IGardenDetail } from 'types/GardenDetail';
+>>>>>>> refs/remotes/origin/master
 
 // Modal Atoms
 export const isReportOpenAtom = atom<boolean>({

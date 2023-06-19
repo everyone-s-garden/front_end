@@ -4,7 +4,11 @@ import { useRecoilState } from 'recoil';
 
 import { gardensAtom } from '../../../recoil/atom';
 import GardenPost from './GardenPost';
+<<<<<<< HEAD
 import filterGardenData from '../../../utils/filterGardenData';
+=======
+import filterGardenData from 'utils/filterGardenData';
+>>>>>>> refs/remotes/origin/master
 
 function GardenList() {
   const [gardens] = useRecoilState(gardensAtom);
@@ -21,7 +25,11 @@ function GardenList() {
               name={garden.name}
               price={filterGardenData.filterPrice(garden.price!)}
               images={garden.images}
+<<<<<<< HEAD
               status={garden.content}
+=======
+              status={garden.status}
+>>>>>>> refs/remotes/origin/master
             />
           );
         })}

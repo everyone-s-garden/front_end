@@ -15,8 +15,13 @@ import customAxios from '../../../utils/token';
 import { AxiosResponse } from 'axios';
 import { IGardenDetail } from '../../../types/GardenDetail';
 import Heart from 'assets/like_heart.svg';
+<<<<<<< HEAD
 import filterGardenData from '../../../utils/filterGardenData';
 import ContactGardenModal from '../../../components/Modal/ContactGardenModal';
+=======
+import filterGardenData from 'utils/filterGardenData';
+import ContactGardenModal from 'components/Modal/ContactGardenModal';
+>>>>>>> refs/remotes/origin/master
 
 type PostDetailProps = {
   navermaps: typeof naver.maps;
