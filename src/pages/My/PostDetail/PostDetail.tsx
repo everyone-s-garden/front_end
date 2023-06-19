@@ -39,7 +39,6 @@ function PostDetail() {
     setPost(res.data);
     setImages(res.data.images);
   };
-
   const play = async () => {
     if (!post?.liked) {
       try {

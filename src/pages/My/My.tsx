@@ -33,7 +33,7 @@ const Container = styled.div`
 
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     margin-top: 20px;
-    padding: 0;
+    padding: 0 19px;
   }
 `;
 
