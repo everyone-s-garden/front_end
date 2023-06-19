@@ -1,5 +1,6 @@
 import { atom } from 'recoil';
 import { GardenData } from 'api/type';
+import { IGardenDetail } from 'types/GardenDetail';
 
 // Modal Atoms
 export const isReportOpenAtom = atom<boolean>({
@@ -51,4 +52,32 @@ export const gardensAtom = atom<GardenData[]>({
 export const selectedGardenIdAtom = atom<number | null>({
   key: 'selectedGarden',
   default: null,
+});
+
+export const recentListsAtom = atom<IGardenDetail[]>({
+  key: 'recentLists',
+  default: [],
+});
+
+export const recentPageAtom = atom<number>({
+  key: 'recentPage',
+  default: 1,
+});
+export const myListsAtom = atom<IGardenDetail[]>({
+  key: 'myLists',
+  default: [],
+});
+
+export const myPageAtom = atom<number>({
+  key: 'myPage',
+  default: 1,
+});
+export const likeListsAtom = atom<IGardenDetail[]>({
+  key: 'likeLists',
+  default: [],
+});
+
+export const likePageAtom = atom<number>({
+  key: 'likePage',
+  default: 1,
 });

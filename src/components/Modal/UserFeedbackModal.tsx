@@ -13,6 +13,8 @@ import imageCompression from 'browser-image-compression';
 import { formDataHandler } from 'pages/My/RegisterSeller/query';
 import { AxiosResponse } from 'axios';
 import customAxios from 'utils/token';
+import imageCompression from 'browser-image-compression';
+import { formDataHandler } from 'pages/My/RegisterSeller/query';
 
 interface UserFeedbackModalProps {
   isOpen: boolean;

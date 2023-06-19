@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import { useMatch, useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { Container as MapDiv, Marker, NaverMap } from 'react-naver-maps';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useRecoilState } from 'recoil';
@@ -33,11 +33,7 @@ function PostDetail() {
   const animationRef = useRef<Player>(null);
   const [map, setMap] = useState<naver.maps.Map | null>(null);
   const [post, setPost] = useState<IGardenDetail | null>(null);
-  const [images, setImages] = useState<string[]>([
-    'https://picsum.photos/id/237/800/600',
-    'https://picsum.photos/id/238/800/600',
-    'https://picsum.photos/id/239/800/600',
-  ]);
+  const [images, setImages] = useState<string[]>([]);
 
   const location = { lat: 37.3595704, long: 127.105399 };
   const fetchGardenData = async () => {
@@ -46,7 +42,6 @@ function PostDetail() {
     setPost(res.data);
     setImages(res.data.images);
   };
-
   const play = async () => {
     if (!post?.liked) {
       try {
@@ -68,6 +63,7 @@ function PostDetail() {
     }
   };
   useEffect(() => {
+    window.scrollTo(0, 0);
     fetchGardenData();
   }, [postId]); // postId가 변경될 때마다 데이터를 가져오도록 설정
 
@@ -211,7 +207,7 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    width: 98%;
+    width: 100%;
     margin: 0 auto;
   }
 `;
@@ -241,7 +237,6 @@ const SliderContainer = styled.div`
 
   @media screen and (max-width: ${BREAK_POINT.TABLET}) {
     width: 100%;
-    max-width: 400px;
   }
 `;
 

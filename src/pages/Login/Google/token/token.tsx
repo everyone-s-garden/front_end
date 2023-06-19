@@ -18,6 +18,7 @@ export const getToken = async (token: string) => {
       Authorization: `${data.access_token}`,
     },
   });
+  console.log(res_server);
   setItem('access_token', res_server.data.appToken);
   setItem('isLogin', 'true');
   return true;
