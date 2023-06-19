@@ -5,18 +5,18 @@ import { Container as MapDiv, Marker, NaverMap } from 'react-naver-maps';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useRecoilState } from 'recoil';
 
-import { BREAK_POINT, COLOR } from 'constants/style';
-import { isReportOpenAtom, reportPostIdAtom } from 'recoil/atom';
-import ImageSlider from 'components/ImageSlider';
+import { BREAK_POINT, COLOR } from '../../../constants/style';
+import { isReportOpenAtom, reportPostIdAtom } from '../../../recoil/atom';
+import ImageSlider from '../../../components/ImageSlider';
 import { ReactComponent as BackIcon } from 'assets/back-icon.svg';
 import { ReactComponent as MenuIcon } from 'assets/three-dot-icon.svg';
 import * as animationData from 'assets/like-animation.json';
-import customAxios from 'utils/token';
+import customAxios from '../../../utils/token';
 import { AxiosResponse } from 'axios';
-import { IGardenDetail } from 'types/GardenDetail';
+import { IGardenDetail } from '../../../types/GardenDetail';
 import Heart from 'assets/like_heart.svg';
-import filterGardenData from 'utils/filterGardenData';
-import ContactGardenModal from 'components/Modal/ContactGardenModal';
+import filterGardenData from '../../../utils/filterGardenData';
+import ContactGardenModal from '../../../components/Modal/ContactGardenModal';
 
 type PostDetailProps = {
   navermaps: typeof naver.maps;
