@@ -81,8 +81,3 @@ export const likePageAtom = atom<number>({
   key: 'likePage',
   default: 1,
 });
-
-export const hasMoreAtom = atom<boolean>({
-  key: 'hasmore',
-  default: true,
-});

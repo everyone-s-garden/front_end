@@ -22,13 +22,16 @@ const LikePosts = () => {
 
   const fetchData = async () => {
     try {
-      const res = await customAxios.get(`/v1/garden/like/all?page=${page}`);
-      const newData = res.data;
-
+      const res = await customAxios.get(`/v1/garden/like/all`);
+      const newData: IGardenDetail[] = res.data;
       if (newData.length === 0) {
         setHasMore(false);
       } else {
-        setLikeLists(prevList => [...prevList, ...newData]);
+        const filteredData = newData.filter(item => {
+          return !likeLists.some(existingItem => existingItem.id === item.id);
+        });
+
+        setLikeLists(prev => [...prev, ...filteredData]);
         setPage(prevPage => prevPage + 1);
       }
     } catch (err) {
@@ -41,7 +44,9 @@ const LikePosts = () => {
     }
   }, [inView, hasMore]);
   useEffect(() => {
-    fetchData();
+    if (likeLists.length === 0) {
+      fetchData();
+    }
   }, []);
 
   const deleteLike = async (i: IGardenDetail) => {
@@ -66,7 +71,10 @@ const LikePosts = () => {
       ) : (
         <LikePostsSection>
           <SectionTitle>찜한 텃밭</SectionTitle>
-          <PostList>{renderPosts}</PostList>
+          <PostList>
+            {renderPosts}
+            <div ref={ref} />
+          </PostList>
           <Span>
             분양 텃밭들을 더 보고싶나요?
             <span onClick={() => nav('/map')}> 분양 텃밭 보러가기</span>

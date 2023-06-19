@@ -6,14 +6,14 @@ import { BREAK_POINT } from 'constants/style';
 import Post from '../Post';
 import NoPost from '../NoPost';
 import customAxios from 'utils/token';
-import { AxiosResponse } from 'axios';
-import { IGardenDetail } from 'types/GardenDetail';
 import { useRecoilState } from 'recoil';
 import { myListsAtom, myPageAtom } from 'recoil/atom';
 import { useInView } from 'react-intersection-observer';
+import { AxiosResponse } from 'axios';
+import { IGardenDetail } from 'types/GardenDetail';
 
 const MyPosts = () => {
-  const [myPosts, setMyPosts] = useRecoilState(myListsAtom);
+  const [myPosts, setMyPosts] = useRecoilState<IGardenDetail[]>(myListsAtom);
   const [page, setPage] = useRecoilState(myPageAtom);
   const [hasMore, setHasMore] = useState(true);
   const [ref, inView] = useInView();
@@ -21,13 +21,17 @@ const MyPosts = () => {
 
   const fetchData = async () => {
     try {
-      const res = await customAxios.get(`/v1/garden/mine?page=${page}`);
-      const newData = res.data;
+      const res = (await customAxios.get(`/v1/garden/mine?page=${page}`)) as AxiosResponse;
+      const newData: IGardenDetail[] = res.data;
 
       if (newData.length === 0) {
         setHasMore(false);
       } else {
-        setMyPosts(prevList => [...prevList, ...newData]);
+        const filteredData = newData.filter(item => {
+          return !myPosts.some(existingItem => existingItem.id === item.id);
+        });
+
+        setMyPosts(prev => [...prev, ...filteredData]);
         setPage(prevPage => prevPage + 1);
       }
     } catch (err) {
@@ -40,7 +44,9 @@ const MyPosts = () => {
     }
   }, [inView, hasMore]);
   useEffect(() => {
-    fetchData();
+    if (myPosts.length === 0) {
+      fetchData();
+    }
   }, []);
   const renderPosts = myPosts.map(i => (
     <PostContainer key={Math.random()}>
@@ -55,7 +61,10 @@ const MyPosts = () => {
       ) : (
         <MyPostsSection>
           <SectionTitle>내 분양글</SectionTitle>
-          <PostList>{renderPosts}</PostList>
+          <PostList>
+            {renderPosts}
+            <div ref={ref} />
+          </PostList>
           <Span>
             판매하고 싶은 밭이 있나요?
             <span onClick={() => nav('/my/garden-register-seller')}> 분양 글 등록하기</span>

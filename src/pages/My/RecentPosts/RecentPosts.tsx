@@ -10,24 +10,28 @@ import customAxios from 'utils/token';
 import { AxiosResponse } from 'axios';
 import { IGardenDetail } from 'types/GardenDetail';
 import { useRecoilState, useResetRecoilState } from 'recoil';
-import { recentListsAtom, recentPageAtom } from 'recoil/atom';
+import { myListsAtom, recentListsAtom, recentPageAtom } from 'recoil/atom';
 
 const RecentPosts = () => {
   const [recentLists, setRecentLists] = useRecoilState(recentListsAtom);
   const [page, setPage] = useRecoilState(recentPageAtom);
-  const [hasMore, setHasMore] = useState(true);
+  const [hasMore, setHasMore] = useState<boolean>(true);
   const [ref, inView] = useInView();
   const nav = useNavigate();
-
   const fetchData = async () => {
     try {
       const res = await customAxios.get(`/v1/garden/recent?page=${page}`);
-      const newData = res.data;
+      const newData: IGardenDetail[] = res.data;
 
       if (newData.length === 0) {
         setHasMore(false);
       } else {
-        setRecentLists(prevList => [...prevList, ...newData]);
+        // 중복된 게시물 필터링
+        const filteredData = newData.filter(item => {
+          return !recentLists.some(existingItem => existingItem.id === item.id);
+        });
+
+        setRecentLists(prev => [...prev, ...filteredData]);
         setPage(prevPage => prevPage + 1);
       }
     } catch (err) {
@@ -40,7 +44,9 @@ const RecentPosts = () => {
     }
   }, [inView, hasMore]);
   useEffect(() => {
-    fetchData();
+    if (recentLists.length === 0) {
+      fetchData();
+    }
   }, []);
   const renderPosts = recentLists.map((i: IGardenDetail) => (
     <PostContainer key={i.id}>

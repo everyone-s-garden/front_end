@@ -30,11 +30,7 @@ function PostDetail() {
   const animationRef = useRef<Player>(null);
   const [map, setMap] = useState<naver.maps.Map | null>(null);
   const [post, setPost] = useState<IGardenDetail | null>(null);
-  const [images, setImages] = useState<string[]>([
-    'https://picsum.photos/id/237/800/600',
-    'https://picsum.photos/id/238/800/600',
-    'https://picsum.photos/id/239/800/600',
-  ]);
+  const [images, setImages] = useState<string[]>([]);
 
   const location = { lat: 37.3595704, long: 127.105399 };
   const fetchGardenData = async () => {

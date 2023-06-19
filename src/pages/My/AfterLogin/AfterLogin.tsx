@@ -20,12 +20,13 @@ const AfterLogin = () => {
   const recentMatch = useMatch('/my/recent');
   const myMatch = useMatch('/my/mypost');
   const likeMatch = useMatch('/my/like');
+
   const detailMatch = useMatch('/my/:id');
 
   useEffect(() => {
     if (recentMatch) {
       resetMy();
-      resetLikePage();
+      resetMyPage();
       resetLike();
       resetLikePage();
     } else if (myMatch) {
@@ -46,7 +47,7 @@ const AfterLogin = () => {
       resetMy();
       resetMyPage();
     }
-  }, [recentMatch, myMatch, likeMatch, detailMatch]);
+  }, [recentMatch, likeMatch, myMatch, detailMatch]);
 
   return (
     <Container>
