@@ -21,6 +21,7 @@ function GardenList() {
               name={garden.name}
               price={filterGardenData.filterPrice(garden.price!)}
               images={garden.images}
+              status={garden.status}
             />
           );
         })}

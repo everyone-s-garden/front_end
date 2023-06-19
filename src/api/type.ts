@@ -7,6 +7,7 @@ export interface GardenData {
   price?: string;
   size?: string;
   contact?: string;
+  status?: string;
 
   address: string;
   latitude: number;
