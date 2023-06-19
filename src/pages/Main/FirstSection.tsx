@@ -37,7 +37,7 @@ export default FirstSection;
 const Container = styled.section`
   position: relative;
   width: 100%;
-  height: calc(100vh - 85px);
+  height: calc(var(--vh, 1vh) * 100 - 85px);
   display: flex;
   flex-direction: column-reverse;
   align-items: center;
@@ -46,7 +46,7 @@ const Container = styled.section`
   overflow: hidden;
 
   @media (min-width: ${BREAK_POINT.LABTOP}) {
-    height: calc(100vh - 106px);
+    height: calc(var(--vh, 1vh) * 100 - 106px);
     flex-direction: row;
     align-items: flex-end;
   }

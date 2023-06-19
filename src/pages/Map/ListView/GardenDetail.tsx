@@ -14,6 +14,7 @@ import { GardenDetailType } from 'api/type';
 import ContactGardenModal from 'components/Modal/ContactGardenModal';
 import Heart from 'assets/like_heart.svg';
 import customAxios from 'utils/token';
+import filterGardenData from 'utils/filterGardenData';
 function GardenDetail() {
   const animationRef = useRef<Player>(null);
   const [selectedGarden, setSelectedGarden] = useRecoilState(selectedGardenIdAtom);
@@ -68,10 +69,10 @@ function GardenDetail() {
         </Row>
         <Row>
           <Key>가격</Key>
-          {postData?.price === null ? '연락요망' : postData?.price === '0' ? '무료' : `${postData?.price} (원)`}
+          {filterGardenData.filterPrice(postData?.price!)}
         </Row>
         <Row>
-          <Key>면적</Key> {postData?.size !== '' ? `${postData?.size} (평)` : '정보 없음'}
+          <Key>면적</Key> {filterGardenData.filterSize(postData?.size!)}
         </Row>
         <Row>
           <Key>부대시설</Key>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import imageCompression from 'browser-image-compression';
 
 import { BREAK_POINT } from 'constants/style';
 import Form from './Form';
@@ -7,8 +8,8 @@ import addIcon from 'assets/my/register/add-icon.svg';
 import delete_icon from 'assets/delete_icon.png';
 import { getImages } from 'utils/getImages';
 import { IFormData, ILocation, IUrl, ILen } from './type';
-import { Path, useMatch } from 'react-router-dom';
-import customAxios from 'utils/token';
+import { useMatch } from 'react-router-dom';
+import { formDataHandler } from './query';
 import { AxiosResponse } from 'axios';
 import imageCompression from 'browser-image-compression';
 import { formDataHandler } from './query';
