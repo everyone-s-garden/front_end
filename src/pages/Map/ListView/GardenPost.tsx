@@ -10,7 +10,7 @@ interface GardenPostProps {
   id: number;
   name: string;
   size?: string;
-  price?: string;
+  price: string | null;
   images: string[];
   status?: number;
 }
@@ -39,9 +39,8 @@ function GardenPost({ id, name, size, price, images, status = 0 }: GardenPostPro
           )}
         </Status>
         <Title onClick={() => setSelectedGarden(id)}>{name.trim()}</Title>
-        <Value>{size} (평)</Value>
-        {/* <Value>{price !== 0 ? `평당 ${price.toLocaleString('ko-KR')}원` : '무료'}</Value> */}
-        <Value>{price === null ? '연락요망' : price === '0' ? '무료' : `${price} (원)`}</Value>
+        <Value>{size}</Value>
+        <Value>{price}</Value>
       </InfoDiv>
     </Post>
   );

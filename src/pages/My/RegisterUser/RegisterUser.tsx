@@ -93,7 +93,7 @@ const Container = styled.div`
 
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     width: 96vw;
-    height: calc(100vh - 100px);
+    height: calc(var(--vh, 1vh) * 100 - 100px);
     padding: 0;
     margin: 0 auto;
   }

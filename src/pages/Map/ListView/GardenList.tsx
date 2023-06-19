@@ -4,25 +4,28 @@ import { useRecoilState } from 'recoil';
 
 import { gardensAtom } from 'recoil/atom';
 import GardenPost from './GardenPost';
+import filterGardenData from 'utils/filterGardenData';
 
 function GardenList() {
   const [gardens] = useRecoilState(gardensAtom);
-  const renderGardenPosts =
-    gardens &&
-    gardens.map(garden => {
-      return (
-        <GardenPost
-          key={garden.id}
-          id={garden.id}
-          size={garden.size}
-          name={garden.name}
-          price={garden.price}
-          images={garden.images}
-        />
-      );
-    });
 
-  return <ListContainer>{renderGardenPosts}</ListContainer>;
+  return (
+    <ListContainer>
+      {gardens &&
+        gardens.map(garden => {
+          return (
+            <GardenPost
+              key={garden.id}
+              id={garden.id}
+              size={filterGardenData.filterSize(garden.size!)}
+              name={garden.name}
+              price={filterGardenData.filterPrice(garden.price!)}
+              images={garden.images}
+            />
+          );
+        })}
+    </ListContainer>
+  );
 }
 
 export default GardenList;
