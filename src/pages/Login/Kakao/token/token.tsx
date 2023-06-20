@@ -44,7 +44,6 @@ const Token = () => {
   };
   useEffect(() => {
     getCode();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return <Loader isLoading={isLoading} />;
 };
