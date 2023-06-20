@@ -1,13 +1,25 @@
 import React from 'react';
+import { useSetRecoilState } from 'recoil';
+import { searchTypeAtom } from 'recoil/atom';
 import styled from 'styled-components';
 
 interface SelectOptionProps {
+  index: number;
   title: string;
   setTitle: React.Dispatch<React.SetStateAction<string>>;
+  setIsListOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function SelectOption({ title, setTitle }: SelectOptionProps) {
-  return <Option onClick={() => setTitle(title)}>{title}</Option>;
+function SelectOption({ index, title, setTitle, setIsListOpen }: SelectOptionProps) {
+  const setSearchType = useSetRecoilState(searchTypeAtom);
+
+  const onOptionClicked = () => {
+    setTitle(title);
+    setSearchType(index);
+    setIsListOpen(false);
+  };
+
+  return <Option onClick={onOptionClicked}>{title}</Option>;
 }
 
 export default SelectOption;

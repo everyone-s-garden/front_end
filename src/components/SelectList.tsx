@@ -8,15 +8,15 @@ import arrowIcon from 'assets/select-arrow.svg';
 function SelectList() {
   const [title, setTitle] = useState<string>('둘다 표시');
   const [isListOpen, setIsListOpen] = useState<boolean>(false);
-  const options = ['공공', '개인', '둘다 표시'];
+  const options = ['둘다 표시', '공공', '개인'];
 
   const renderOptions = options.map((option, index) => {
-    return <SelectOption key={index} title={option} setTitle={setTitle} />;
+    return <SelectOption key={index} index={index} title={option} setTitle={setTitle} setIsListOpen={setIsListOpen} />;
   });
 
   return (
     <SelectDiv>
-      <SelectBtn onFocus={() => setIsListOpen(true)} onBlur={() => setIsListOpen(false)}>
+      <SelectBtn onClick={() => setIsListOpen(true)} onBlur={() => setIsListOpen(false)}>
         {title}
         <ArrowIcon src={arrowIcon} alt="펼치기" isListOpen={isListOpen} />
       </SelectBtn>
