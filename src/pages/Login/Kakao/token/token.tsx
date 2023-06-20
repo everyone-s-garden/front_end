@@ -19,7 +19,7 @@ const Token = () => {
         grant_type: 'authorization_code',
         client_id: process.env.REACT_APP_KAKAO_REST_API_KEY,
         code: code,
-        client_secret: 'DyYVeTmjemqauNn4OWNPgNyfXdnbFvc5',
+        client_secret: process.env.REACT_APP_API_KAKAO_CLIENT_SECRET,
         redirect_uri: process.env.REACT_APP_KAKAO_REDIRECT_URI,
       },
       {
