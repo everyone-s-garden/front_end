@@ -7,6 +7,8 @@ import copyIcon from 'assets/contact/copy.svg';
 import callIcon from 'assets/contact/call.svg';
 import emailIcon from 'assets/contact/email.svg';
 import sadIcon from 'assets/contact/sad_face.svg';
+import { useSetRecoilState } from 'recoil';
+import { NotiContentAtom } from 'recoil/atom';
 
 interface ContactGardenModalProps {
   isOpen: boolean;
@@ -15,10 +17,17 @@ interface ContactGardenModalProps {
 }
 
 function ContactGardenModal({ isOpen, setIsOpen, contact }: ContactGardenModalProps) {
+  const setContent = useSetRecoilState(NotiContentAtom);
+
   const [isCallNTextAvail, setIsCallNTextAvail] = useState<boolean>(true);
   const isDesktopEnv = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
     ? false
     : true;
+
+  const onCopyClicked = () => {
+    navigator.clipboard.writeText(contact!);
+    setContent('복사 되었습니다.');
+  };
 
   const onCallClicked = () => {
     if (isDesktopEnv === true || !contact) {
@@ -66,11 +75,7 @@ function ContactGardenModal({ isOpen, setIsOpen, contact }: ContactGardenModalPr
               <ModalTitle>연락하기</ModalTitle>
               <CopyContact>
                 {contact}
-                <button
-                  onClick={() => {
-                    navigator.clipboard.writeText(contact!);
-                  }}
-                >
+                <button onClick={onCopyClicked}>
                   <img src={copyIcon} />
                 </button>
               </CopyContact>

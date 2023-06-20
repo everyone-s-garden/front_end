@@ -33,7 +33,7 @@ const ListContainer = styled.div<{ isExpand: boolean }>`
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: ${props => (props.isExpand ? 'calc(var(--vh, 1vh) * 100 - 150px)' : '4%')};
+  height: ${props => (props.isExpand ? 'calc(var(--vh, 1vh) * 100 - 150px)' : '2%')};
   background-color: ${COLOR.BACKGROUND};
   transition: all 0.2s ease-in;
 

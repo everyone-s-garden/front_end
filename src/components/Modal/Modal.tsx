@@ -1,8 +1,10 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { COLOR } from 'constants/style';
 import closeIcon from 'assets/x-icon.svg';
+import { useResetRecoilState } from 'recoil';
+import { feedbackCommentAtom, feedbackImgAtom } from 'recoil/atom';
 
 interface ModalProps {
   children?: ReactNode;
@@ -11,14 +13,21 @@ interface ModalProps {
 }
 
 function Modal({ children, isOpen, setIsOpen }: ModalProps) {
+  const resetFeedbackComment = useResetRecoilState(feedbackCommentAtom);
+  const resetFeedbackImg = useResetRecoilState(feedbackImgAtom);
+  const reset = () => {
+    setIsOpen(false);
+    resetFeedbackComment();
+    resetFeedbackImg();
+  };
   return (
-    <ModalBackground isOpen={isOpen} onClick={() => setIsOpen(false)}>
+    <ModalBackground isOpen={isOpen} onClick={reset}>
       <ModalContainer
         onClick={e => {
           e.stopPropagation();
         }}
       >
-        <CloseIcon src={closeIcon} alt="close" onClick={() => setIsOpen(false)} />
+        <CloseIcon src={closeIcon} alt="close" onClick={reset} />
         {children}
       </ModalContainer>
     </ModalBackground>

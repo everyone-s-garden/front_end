@@ -81,3 +81,12 @@ export const likePageAtom = atom<number>({
   key: 'likePage',
   default: 1,
 });
+export const feedbackImgAtom = atom<string[]>({
+  key: 'feedbackImg',
+  default: [],
+});
+
+export const feedbackCommentAtom = atom<string>({
+  key: 'feedbackComment',
+  default: '',
+});

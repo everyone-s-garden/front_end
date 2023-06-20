@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 import { IFormData, ILen, IUrl } from '../../pages/My/RegisterSeller/type';
 
-import { NotiContentAtom } from '../../recoil/atom';
+import { feedbackCommentAtom, feedbackImgAtom, NotiContentAtom } from '../../recoil/atom';
 import Modal from '../../components/Modal/Modal';
 import smileIllust from 'assets/modal/smile.svg';
 import icon from '../../assets/image_small.svg';
@@ -21,8 +21,8 @@ interface UserFeedbackModalProps {
 
 function UserFeedbackModal({ isOpen, setIsOpen }: UserFeedbackModalProps) {
   const [_, setContent] = useRecoilState(NotiContentAtom);
-  const [comment, setComment] = useState<string>('');
-  const [images, setImages] = useState<string[]>([]);
+  const [comment, setComment] = useRecoilState(feedbackCommentAtom);
+  const [images, setImages] = useRecoilState(feedbackImgAtom);
 
   const onSubmit = async () => {
     setIsOpen(false);
@@ -33,7 +33,10 @@ function UserFeedbackModal({ isOpen, setIsOpen }: UserFeedbackModalProps) {
       };
       try {
         const res = await customAxios.post(`v1/feedback`, feedBackData);
-        console.log(res);
+        if (res.status === 200) {
+          setComment('');
+          setImages([]);
+        }
         setContent('제출되었습니다. 소중한 의견 감사합니다 ♥︎');
       } catch (err) {
         console.log(err);
