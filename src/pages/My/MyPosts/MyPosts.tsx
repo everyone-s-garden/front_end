@@ -11,6 +11,7 @@ import { myListsAtom, myPageAtom } from 'recoil/atom';
 import { useInView } from 'react-intersection-observer';
 import { AxiosResponse } from 'axios';
 import { IGardenDetail } from 'types/GardenDetail';
+import { Helmet } from 'react-helmet-async';
 
 const MyPosts = () => {
   const [myPosts, setMyPosts] = useRecoilState<IGardenDetail[]>(myListsAtom);
@@ -56,6 +57,7 @@ const MyPosts = () => {
 
   return (
     <Container>
+      <Helmet>내가 올린 텃밭 매물</Helmet>
       {myPosts.length === 0 ? (
         <NoPost title="올린 글이 없어요!" subTitle="판매하고 싶은 밭이 있나요?" url="/map" />
       ) : (

@@ -11,6 +11,7 @@ import { IFormData, ILocation, IUrl, ILen } from './type';
 import { useMatch } from 'react-router-dom';
 import { formDataHandler } from './query';
 import { AxiosResponse } from 'axios';
+import { Helmet } from 'react-helmet-async';
 const RegisterSeller = () => {
   const [images, setImages] = useState<string[]>([]);
   const [location, setLocation] = useState<ILocation>({
@@ -54,6 +55,9 @@ const RegisterSeller = () => {
 
   return (
     <Container>
+      <Helmet>
+        <title>텃밭 매물 등록하기, 판매하기</title>
+      </Helmet>
       <H1>{match ? '판매 텃밭 수정하기' : ' 판매 텃밭 등록하기'}</H1>
       <ImgContainer>
         <ImgAddBtnBox len={images.length}>
