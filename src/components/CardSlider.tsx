@@ -1,18 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-import jan from 'assets/modal/month-crop/jan-illust.svg';
-import feb from 'assets/modal/month-crop/feb-illust.svg';
-import mar from 'assets/modal/month-crop/mar-illust.svg';
-import apr from 'assets/modal/month-crop/apr-illust.svg';
-import may from 'assets/modal/month-crop/may-illust.svg';
-import jun from 'assets/modal/month-crop/jun-illust.svg';
-import jul from 'assets/modal/month-crop/jul-illust.svg';
-import aug from 'assets/modal/month-crop/aug-illust.svg';
-import sep from 'assets/modal/month-crop/sep-illust.svg';
-import oct from 'assets/modal/month-crop/oct-illust.svg';
-import nov from 'assets/modal/month-crop/nov-illust.svg';
-import dec from 'assets/modal/month-crop/dec-illust.svg';
+import jan from 'assets/modal/month-crop/jan-illust.jpg';
+import feb from 'assets/modal/month-crop/feb-illust.jpg';
+import mar from 'assets/modal/month-crop/mar-illust.jpg';
+import apr from 'assets/modal/month-crop/apr-illust.jpg';
+import may from 'assets/modal/month-crop/may-illust.jpg';
+import jun from 'assets/modal/month-crop/jun-illust.jpg';
+import jul from 'assets/modal/month-crop/jul-illust.jpg';
+import aug from 'assets/modal/month-crop/aug-illust.jpg';
+import sep from 'assets/modal/month-crop/sep-illust.jpg';
+import oct from 'assets/modal/month-crop/oct-illust.jpg';
+import nov from 'assets/modal/month-crop/nov-illust.jpg';
+import dec from 'assets/modal/month-crop/dec-illust.jpg';
 import arrowIcon from 'assets/modal/card-arrow-icon.svg';
 
 interface CardSliderProps {

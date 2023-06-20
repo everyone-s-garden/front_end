@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import logo from 'assets/logo-horizon.svg';
+import logo from 'assets/logo_horizon.png';
 import Kakao from './Kakao/Kakao';
 import Google from './Google/Google';
 import Bubble from 'assets/Bubble.png';
