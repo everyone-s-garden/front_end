@@ -22,7 +22,7 @@ const LikePosts = () => {
 
   const fetchData = async () => {
     try {
-      const res = await customAxios.get(`/v1/garden/like/all`);
+      const res = await customAxios.get(`/v1/garden/like/all?page=${page}`);
       const newData: IGardenDetail[] = res.data;
       if (newData.length === 0) {
         setHasMore(false);

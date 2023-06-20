@@ -453,7 +453,9 @@ const TextArea = styled.textarea`
   padding: 19px 12px;
   border: 0;
   resize: none;
-
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 25px;
   outline-color: white;
   :focus {
     border-color: white;

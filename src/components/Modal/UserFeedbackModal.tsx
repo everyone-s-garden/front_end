@@ -7,7 +7,7 @@ import { NotiContentAtom } from '../../recoil/atom';
 import Modal from '../../components/Modal/Modal';
 import smileIllust from 'assets/modal/smile.svg';
 import icon from '../../assets/image_small.svg';
-import delete_icon from '../../assets/delete_icon.png';
+import delete_icon from '../../assets/delete_icon.svg';
 import { getImages } from '../../pages/My/RegisterUser/query';
 import imageCompression from 'browser-image-compression';
 import { formDataHandler } from '../../pages/My/RegisterSeller/query';

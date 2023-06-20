@@ -17,6 +17,7 @@ import { IGardenDetail } from '../../../types/GardenDetail';
 import Heart from 'assets/like_heart.svg';
 import filterGardenData from '../../../utils/filterGardenData';
 import ContactGardenModal from '../../../components/Modal/ContactGardenModal';
+import { getItem } from 'utils/session';
 
 type PostDetailProps = {
   navermaps: typeof naver.maps;
@@ -34,7 +35,7 @@ function PostDetail() {
   const [map, setMap] = useState<naver.maps.Map | null>(null);
   const [post, setPost] = useState<IGardenDetail | null>(null);
   const [images, setImages] = useState<string[]>([]);
-
+  const userId = Number(getItem('userId'));
   const location = { lat: 37.3595704, long: 127.105399 };
   const fetchGardenData = async () => {
     if (!postId) return;
@@ -111,8 +112,10 @@ function PostDetail() {
               >
                 신고하기
               </DropDownBtn>
-              <DropDownBtn onClick={deletePost}>삭제하기</DropDownBtn>
-              <DropDownBtn onClick={() => nav(`/my/post/edit/${postId}`)}>수정하기</DropDownBtn>
+              {userId === post?.userId && <DropDownBtn onClick={deletePost}>삭제하기</DropDownBtn>}
+              {userId === post?.userId && (
+                <DropDownBtn onClick={() => nav(`/my/post/edit/${postId}`)}>수정하기</DropDownBtn>
+              )}
             </MenuDropdown>
           </Title>
           <Price>{filterGardenData.filterPrice(post?.price!)}</Price>

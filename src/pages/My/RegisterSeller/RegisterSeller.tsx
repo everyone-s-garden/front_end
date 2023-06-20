@@ -4,8 +4,8 @@ import imageCompression from 'browser-image-compression';
 
 import { BREAK_POINT } from '../../../constants/style';
 import Form from './Form';
-// import addIcon from '../../../assets/my/register/add-icon.svg';
-// import delete_icon from "../../../assets/"
+import addIcon from '../../../assets/my/register/add-icon.svg';
+import delete_icon from 'assets/delete_icon.svg';
 import { getImages } from '../../../utils/getImages';
 import { IFormData, ILocation, IUrl, ILen } from './type';
 import { useMatch } from 'react-router-dom';
@@ -59,7 +59,9 @@ const RegisterSeller = () => {
         <ImgAddBtnBox len={images.length}>
           <ImgAddBtn len={images.length}>
             <input accept="image/*" type="file" id="fileInput" onChange={addImage} style={{ display: 'none' }} />
-            <label htmlFor="fileInput">{/* <ImgAddIcon src={addIcon} /> */}</label>
+            <label htmlFor="fileInput">
+              <ImgAddIcon src={addIcon} />
+            </label>
             <span>사진 등록</span>
             <span>(최대 20장)</span>
           </ImgAddBtn>
@@ -68,7 +70,7 @@ const RegisterSeller = () => {
           <ImageList>
             {images.map((image, index) => (
               <ImgBox srcUrl={image} key={index}>
-                {/* <Delete onClick={() => deleteImage(index)} src={delete_icon} /> */}
+                <Delete onClick={() => deleteImage(index)} src={delete_icon} />
               </ImgBox>
             ))}
           </ImageList>
