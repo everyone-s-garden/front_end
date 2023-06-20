@@ -18,6 +18,7 @@ import Heart from 'assets/like_heart.svg';
 import filterGardenData from '../../../utils/filterGardenData';
 import ContactGardenModal from '../../../components/Modal/ContactGardenModal';
 import { getItem } from 'utils/session';
+import { Helmet } from 'react-helmet-async';
 
 type PostDetailProps = {
   navermaps: typeof naver.maps;
@@ -86,6 +87,9 @@ function PostDetail() {
   };
   return (
     <Container>
+      <Helmet>
+        <title>텃밭 상세보기 페이지</title>
+      </Helmet>
       <BackDiv>
         <button onClick={() => nav(-1)}>
           <BackIcon width="11" height="20" stroke="#BEC8B3" strokeWidth="2" />

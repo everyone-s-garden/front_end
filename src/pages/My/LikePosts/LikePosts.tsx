@@ -12,7 +12,7 @@ import { IGardenDetail } from 'types/GardenDetail';
 import { useRecoilState } from 'recoil';
 import { likeListsAtom, likePageAtom } from 'recoil/atom';
 import { useInView } from 'react-intersection-observer';
-
+import { Helmet } from 'react-helmet-async';
 const LikePosts = () => {
   const [likeLists, setLikeLists] = useRecoilState(likeListsAtom);
   const [page, setPage] = useRecoilState(likePageAtom);
@@ -66,6 +66,7 @@ const LikePosts = () => {
 
   return (
     <Container>
+      <title>내가 찜한 텃밭</title>
       {likeLists.length === 0 ? (
         <NoPost title="찜한 텃밭이 없어요!" subTitle="분양 텃밭들을 보고 싶나요?" url="/map" />
       ) : (

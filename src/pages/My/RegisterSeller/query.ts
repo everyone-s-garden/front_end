@@ -21,15 +21,6 @@ export const uncommaPrice = (str: string) => {
   return str.replace(',', '');
 };
 
-export const inputSizeFormat = (str: string) => {
-  const uncomma = (str: string) => {
-    str = String(str);
-    return str.replace(/[^\d]+/g, '');
-  };
-  const uncommedStr = uncomma(str);
-  return uncommedStr + '평';
-};
-
 export const inputContactFormat = (str: string) => {
   const formattedStr = str.replace(/[^\d]+/g, '');
   const maxLength = 11;
