@@ -12,7 +12,7 @@ import { AxiosResponse } from 'axios';
 import { ReactComponent as MenuIcon } from 'assets/three-dot-icon.svg';
 import imageCompression from 'browser-image-compression';
 import { formDataHandler } from '../RegisterSeller/query';
-
+import { Helmet } from 'react-helmet-async';
 const RegisterUser = () => {
   const labelRef = useRef<HTMLLabelElement>(null);
   const [image, setImage] = useState<IImage | null>(null);
@@ -64,6 +64,9 @@ const RegisterUser = () => {
   };
   return (
     <Container>
+      <Helmet>
+        <title>나의 텃밭 관리하기</title>
+      </Helmet>
       <Title>{editMatch ? '나의 텃밭 수정하기' : '나의 텃밭 등록하기'}</Title>
 
       <ImgRegister onClick={onImgRegisterClicked}>

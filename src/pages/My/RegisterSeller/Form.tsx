@@ -64,7 +64,7 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
       };
       try {
         const res = await UploadData(uploadData);
-        if (res.status === 201) nav('/');
+        if (res.status === 201) nav('/my');
       } catch (err) {
         console.log(err);
       }
@@ -277,16 +277,13 @@ const SizeInput = styled.input<{ size: number }>`
   font-size: 17px;
   line-height: 20px;
   border: none;
-  width: ${props => (props.size !== 0 ? `${props.size * 12}px` : 'fit-content')};
+  width: ${props => (props.size !== 0 ? `${props.size * 9.5}px` : 'fit-content')};
   ::placeholder {
     font-style: normal;
     font-weight: 500;
     font-size: 17px;
     line-height: 20px;
     color: #d1d3d7;
-  }
-  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    width: 100%;
   }
 `;
 
