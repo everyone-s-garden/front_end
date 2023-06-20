@@ -10,4 +10,6 @@ export interface IData {
 export interface IData_Sever {
   appToken: string;
   isNewMember: boolean;
+  name: string;
+  userId: number;
 }
