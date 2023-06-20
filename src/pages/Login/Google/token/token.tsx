@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { IData, IData_Sever } from './type';
 import { setItem } from 'utils/session';
-//redirect_rui 를 http://localhost:3000/my 로 하면 에러가난다
+
 //구글 클라우드 콘솔에서 http://localhost:3000/my와
 //http://localhostL3000둘 다 추가해줘야함
 export const getToken = async (token: string) => {
@@ -13,7 +13,7 @@ export const getToken = async (token: string) => {
     grant_type: 'authorization_code',
   });
   const data: IData = res_google.data;
-  const res_server: AxiosResponse = await axios.get<IData_Sever>('https://garden.jinkyumpark.com/auth/google', {
+  const res_server: AxiosResponse = await axios.get<IData_Sever>(`${process.env.REACT_APP_API_BASE_URL}auth/google`, {
     headers: {
       Authorization: `${data.access_token}`,
     },
