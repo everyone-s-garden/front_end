@@ -369,7 +369,6 @@ const SearchWrapper = styled.div`
     width: 268px;
     height: 36px;
     margin: 0 auto;
-    background-color: red;
   }
 `;
 const SearchResult = styled.div<{ check: boolean; len: boolean }>`
