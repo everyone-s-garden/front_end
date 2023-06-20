@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import { COLOR } from 'constants/style';
 import { NotiContentAtom, reportPostIdAtom } from 'recoil/atom';
 import Modal from 'components/Modal/Modal';
-import { AxiosResponse } from 'axios';
 import customAxios from 'utils/token';
+import { getItem } from 'utils/session';
 
 interface ReportModalProps {
   isOpen: boolean;
@@ -14,19 +14,31 @@ interface ReportModalProps {
 }
 
 function ReportModal({ isOpen, setIsOpen }: ReportModalProps) {
-  const postId = useRecoilValue(reportPostIdAtom);
-  const [_, setContent] = useRecoilState(NotiContentAtom);
+  const [reportPostId, setReportPostId] = useRecoilState(reportPostIdAtom);
+  const setContent = useSetRecoilState(NotiContentAtom);
+  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [selected, setSelected] = useState<string>('허위매물');
   const [comment, setComment] = useState<string>('');
-  const [isChecked0, setIsChecked0] = useState<boolean>(false);
-  const [isChecked1, setIsChecked1] = useState<boolean>(false);
-  const [isChecked2, setIsChecked2] = useState<boolean>(false);
-  const [isChecked3, setIsChecked3] = useState<boolean>(false);
-  const [isChecked4, setIsChecked4] = useState<boolean>(false);
-  const [isChecked5, setIsChecked5] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsLogin(Boolean(getItem('isLogin')));
+  }, [isLogin, setIsLogin]);
 
   const onSubmit = async () => {
-    const res: AxiosResponse = await customAxios.post(`/v1/report?postId=1`, { item: '허위매물', content: '' });
-    console.log(res);
+    if (!isLogin) {
+      setContent('로그인이 필요한 서비스입니다.');
+      return;
+    }
+
+    if (!reportPostId) return;
+
+    await customAxios.post('/v1/report', {
+      item: selected,
+      content: comment,
+      postId: reportPostId,
+    });
+
+    setReportPostId(null);
     setIsOpen(false);
     setContent('신고가 접수되었습니다. 신속하게 처리하겠습니다.');
   };
@@ -39,28 +51,64 @@ function ReportModal({ isOpen, setIsOpen }: ReportModalProps) {
 
         <SelectSection>
           <RadioBtn>
-            <input type="checkbox" id="louie" checked={isChecked0} onChange={() => setIsChecked0(!isChecked0)} />
-            <label htmlFor="louie">허위 매물이에요.</label>
+            <input
+              type="radio"
+              name="violation"
+              id="scam"
+              checked={selected === '허위매물'}
+              onChange={() => setSelected('허위매물')}
+            />
+            <label htmlFor="scam">허위 매물이에요.</label>
           </RadioBtn>
           <RadioBtn>
-            <input type="checkbox" id="louie" checked={isChecked1} onChange={() => setIsChecked1(!isChecked1)} />
-            <label htmlFor="louie">도배글이에요.</label>
+            <input
+              type="radio"
+              name="violation"
+              id="spam"
+              checked={selected === '도배글'}
+              onChange={() => setSelected('도배글')}
+            />
+            <label htmlFor="spam">도배글이에요.</label>
           </RadioBtn>
           <RadioBtn>
-            <input type="checkbox" id="louie" checked={isChecked2} onChange={() => setIsChecked2(!isChecked2)} />
-            <label htmlFor="louie">욕설이 포함되어 있어요.</label>
+            <input
+              type="radio"
+              name="violation"
+              id="insult"
+              checked={selected === '욕설'}
+              onChange={() => setSelected('욕설')}
+            />
+            <label htmlFor="insult">욕설이 포함되어 있어요.</label>
           </RadioBtn>
           <RadioBtn>
-            <input type="checkbox" id="louie" checked={isChecked3} onChange={() => setIsChecked3(!isChecked3)} />
-            <label htmlFor="louie">동의하지 않은 개인정보가 있어요.</label>
+            <input
+              type="radio"
+              name="violation"
+              id="privacy"
+              checked={selected === '개인정보노출'}
+              onChange={() => setSelected('개인정보노출')}
+            />
+            <label htmlFor="privacy">동의하지 않은 개인정보가 있어요.</label>
           </RadioBtn>
           <RadioBtn>
-            <input type="checkbox" id="louie" checked={isChecked4} onChange={() => setIsChecked4(!isChecked4)} />
-            <label htmlFor="louie">선정적(신체노출 등), 차별적 내용(종교, 인종 등)이포함되어 있어요.</label>
+            <input
+              type="radio"
+              name="violation"
+              id="sexual"
+              checked={selected === '선정성'}
+              onChange={() => setSelected('선정성')}
+            />
+            <label htmlFor="sexual">선정적(신체노출 등), 차별적 내용(종교, 인종 등)이포함되어 있어요.</label>
           </RadioBtn>
           <RadioBtn>
-            <input type="checkbox" id="louie" checked={isChecked5} onChange={() => setIsChecked5(!isChecked5)} />
-            <label htmlFor="louie">기타.</label>
+            <input
+              type="radio"
+              name="violation"
+              id="etc"
+              checked={selected === '기타'}
+              onChange={() => setSelected('기타')}
+            />
+            <label htmlFor="etc">기타.</label>
           </RadioBtn>
         </SelectSection>
 
@@ -69,7 +117,7 @@ function ReportModal({ isOpen, setIsOpen }: ReportModalProps) {
             placeholder="신고 내용을 직접 입력해주세요"
             onChange={e => setComment(e.target.value)}
             value={comment}
-            disabled={!isChecked5}
+            disabled={selected !== '기타'}
           ></TextArea>
           <WordLimit>({comment.length}/800)</WordLimit>
         </CommentWrapper>
@@ -102,7 +150,7 @@ const SubTitle = styled.h2`
   font-weight: 400;
 `;
 
-const SelectSection = styled.section`
+const SelectSection = styled.fieldset`
   margin-top: 25px;
   margin-bottom: 10px;
   flex-grow: 1;
@@ -110,6 +158,7 @@ const SelectSection = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  border: none;
 `;
 
 const RadioBtn = styled.div`
