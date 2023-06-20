@@ -3,14 +3,14 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
-import { BREAK_POINT } from 'constants/style';
-import { isCropOpenAtom, isFeedbackOpenAtom, isLoginAtom } from 'recoil/atom';
+import { BREAK_POINT } from '../../../constants/style';
+import { isCropOpenAtom, isFeedbackOpenAtom, isLoginAtom } from '../../../recoil/atom';
 import Weather from '../Weather/Weather';
-import heartIcon from 'assets/my/menu/heart-icon.svg';
-import clockIcon from 'assets/my/menu/clock-icon.svg';
-import docIcon from 'assets/my/menu/doc-icon.svg';
-import illust1 from 'assets/my/menu/call-illust.svg';
-import illust2 from 'assets/my/menu/book-illust.svg';
+import heartIcon from '../../../assets/my/menu/heart-icon.svg';
+import clockIcon from '../../../assets/my/menu/clock-icon.svg';
+import docIcon from '../../../assets/my/menu/doc-icon.svg';
+import illust1 from '../../../assets/my/menu/call-illust.svg';
+import illust2 from '../../../assets/my/menu/book-illust.svg';
 
 function Menu() {
   const location = useLocation();

@@ -3,14 +3,14 @@ import styled from 'styled-components';
 import { useMatch, useNavigate } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 
-import { BREAK_POINT } from 'constants/style';
+import { BREAK_POINT } from '../../../constants/style';
 import Post from '../Post';
 import NoPost from '../NoPost';
-import customAxios from 'utils/token';
+import customAxios from '../../../utils/token';
 import { AxiosResponse } from 'axios';
-import { IGardenDetail } from 'types/GardenDetail';
-import { useRecoilState, useResetRecoilState } from 'recoil';
-import { myListsAtom, recentListsAtom, recentPageAtom } from 'recoil/atom';
+import { IGardenDetail } from '../../../types/GardenDetail';
+import { useRecoilState } from 'recoil';
+import { recentListsAtom, recentPageAtom } from '../../../recoil/atom';
 
 const RecentPosts = () => {
   const [recentLists, setRecentLists] = useRecoilState(recentListsAtom);

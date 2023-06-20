@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 
-import { gardensAtom } from 'recoil/atom';
+import { gardensAtom } from '../../../recoil/atom';
 import GardenPost from './GardenPost';
-import filterGardenData from 'utils/filterGardenData';
+import filterGardenData from '../../../utils/filterGardenData';
 
 function GardenList() {
   const [gardens] = useRecoilState(gardensAtom);
@@ -21,7 +21,7 @@ function GardenList() {
               name={garden.name}
               price={filterGardenData.filterPrice(garden.price!)}
               images={garden.images}
-              status={garden.status}
+              status={garden.content}
             />
           );
         })}

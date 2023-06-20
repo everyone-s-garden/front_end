@@ -6,6 +6,7 @@ import { IGardenDetail } from 'types/GardenDetail';
 import { BREAK_POINT, FONT_WEIGHT } from 'constants/style';
 import noImgIcon from 'assets/noImg-icon.svg';
 import filterGardenData from 'utils/filterGardenData';
+import { getItem } from 'utils/session';
 
 interface Idata {
   data: IGardenDetail;

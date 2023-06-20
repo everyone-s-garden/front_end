@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
@@ -15,6 +15,9 @@ import mapImg from 'assets/map-icon.svg';
 import homiImg from 'assets/homi-icon.svg';
 import { ReactComponent as BackIcon } from 'assets/back-icon.svg';
 import { useNavermaps } from 'react-naver-maps';
+import { getQueryData } from 'pages/My/RegisterUser/query';
+import { IData } from 'pages/My/RegisterUser/type';
+import { AxiosResponse } from 'axios';
 
 const Nav = () => {
   const navigate = useNavigate();
@@ -34,6 +37,10 @@ const Nav = () => {
   const isRegisterPage = location.pathname === '/my/garden-register-user';
   const isSellerPage = location.pathname === '/my/garden-register-seller';
 
+  const [searchResults, setSearchResults] = useState<IData[]>([]);
+  const [searchText, setSearchText] = useState<string>('');
+  const [selectedResult, setSelectedResult] = useState<IData | null>(null);
+  const [show, setShow] = useState<boolean>(false);
   useEffect(() => {
     setIsLogin(Boolean(getItem('isLogin')));
   }, [isLogin, setIsLogin]);
@@ -52,7 +59,25 @@ const Nav = () => {
     if (isMapPage || isMyPage) return '/';
     else return '/my';
   };
-
+  const getSearchResult = async (e: React.FormEvent<HTMLInputElement>) => {
+    let query = e.currentTarget.value;
+    setSearchText(query);
+    if (query === '') {
+      setSelectedResult(null);
+      setSearchResults([]);
+      setShow(false);
+    } else {
+      const res = (await getQueryData(query)) as AxiosResponse;
+      setSearchResults(res.data);
+      setShow(true);
+    }
+  };
+  const selectGarden = (result: IData) => {
+    setSearchText(result.name);
+    setSelectedResult(result);
+    setSearchResults([]);
+    setShow(false);
+  };
   return (
     <>
       <Container isMainPage={isMainPage} isMapPage={isMapPage}>
@@ -69,7 +94,27 @@ const Nav = () => {
               <LogoImage src={logoImg} alt="로고" />
             </LogoImageContainer>
 
-            {isMapPage && <RegionSearchInput placeholder="지역명 검색" />}
+            {isMapPage && (
+              <SearchWrapper>
+                <RegionSearchInput onChange={getSearchResult} value={searchText} placeholder="지역명 검색" />{' '}
+                <SearchResult check={searchResults.length === 0} len={show}>
+                  <ResultUl>
+                    {searchResults.length === 0 ? (
+                      <NoResult>
+                        <span>검색 결과가 없습니다.</span>
+                        <span>정확한 검색어를 입력해주세요.</span>
+                      </NoResult>
+                    ) : (
+                      searchResults.map(result => (
+                        <ResultLi onClick={() => selectGarden(result)} key={result.id}>
+                          <span>{result.name !== '' ? result.name : result.address}</span>
+                        </ResultLi>
+                      ))
+                    )}
+                  </ResultUl>
+                </SearchResult>
+              </SearchWrapper>
+            )}
 
             <ButtonContainer>
               <Button active={isMapPage} onClick={() => navigate(`/map`)}>
@@ -90,7 +135,25 @@ const Nav = () => {
           </button>
 
           {isMapPage ? (
-            <RegionSearchInput placeholder="지역명 검색" />
+            <SearchWrapper>
+              <RegionSearchInput onChange={getSearchResult} value={searchText} placeholder="지역명 검색" />{' '}
+              <SearchResult check={searchResults.length === 0} len={show}>
+                <ResultUl>
+                  {searchResults.length === 0 ? (
+                    <NoResult>
+                      <span>검색 결과가 없습니다.</span>
+                      <span>정확한 검색어를 입력해주세요.</span>
+                    </NoResult>
+                  ) : (
+                    searchResults.map(result => (
+                      <ResultLi onClick={() => selectGarden(result)} key={result.id}>
+                        <span>{result.name !== '' ? result.name : result.address}</span>
+                      </ResultLi>
+                    ))
+                  )}
+                </ResultUl>
+              </SearchResult>
+            </SearchWrapper>
           ) : (
             <NavTitle>
               <h1>
@@ -131,7 +194,6 @@ const Container = styled.div<{ isMainPage: boolean; isMapPage: boolean }>`
   background-color: ${COLOR.BACKGROUND};
   border-bottom: 1px solid #e1e1e1;
   border-bottom: ${props => (props.isMainPage || props.isMapPage ? 'none' : '1px solid #e1e1e1')};
-
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     padding: 0 20px 20px 20px;
     border: none;
@@ -139,11 +201,9 @@ const Container = styled.div<{ isMainPage: boolean; isMapPage: boolean }>`
 `;
 
 const Navbar = styled.nav<{ isMainPage: boolean }>`
-  flex-grow: 1;
-  flex-shrink: 1;
+  width: 100%;
   max-width: 1200px;
   display: ${props => (props.isMainPage ? 'flex' : 'none')};
-
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     display: flex;
     flex-direction: column;
@@ -156,7 +216,6 @@ const LoginBar = styled.div`
   display: flex;
   justify-content: flex-end;
   display: none;
-
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     display: flex;
   }
@@ -177,7 +236,6 @@ const MenuBar = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     margin: 0;
     height: 43px;
@@ -205,9 +263,8 @@ const LogoImage = styled.img`
 
 const RegionSearchInput = styled.input`
   flex-grow: 1;
-  margin: 0 20px 0 40px;
   padding: 12px 20px;
-  max-width: 440px;
+  width: 100%;
   height: 100%;
   color: #414c38;
   font-size: 16px;
@@ -222,7 +279,6 @@ const RegionSearchInput = styled.input`
   }
 
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    margin: 0 40px;
     height: 36px;
     font-size: 12px;
   }
@@ -231,7 +287,6 @@ const RegionSearchInput = styled.input`
 const ButtonContainer = styled.div`
   height: 100%;
   display: flex;
-  flex-shrink: 0;
   align-items: center;
 `;
 
@@ -302,5 +357,118 @@ const NavTitle = styled.div`
     font-size: 20px;
     line-height: 24px;
     color: #414c38;
+  }
+`;
+
+const SearchWrapper = styled.div`
+  position: relative;
+  width: 444px;
+  height: 43px;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: 268px;
+    height: 36px;
+    margin: 0 auto;
+    background-color: red;
+  }
+`;
+const SearchResult = styled.div<{ check: boolean; len: boolean }>`
+  visibility: ${props => (props.len ? 'visibility' : 'hidden')};
+  position: absolute;
+  width: 100%;
+  height: ${props => (props.check ? '110px' : '217px')};
+  right: 0;
+  top: 105%;
+  background: #ffffff;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.06);
+  border-radius: 11px;
+  z-index: 99999999999;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    height: ${props => (props.check ? '90px' : '229px')};
+  }
+`;
+const ResultUl = styled.ul`
+  height: 100%;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #e0ebd4;
+
+  &::-webkit-scrollbar {
+    display: block !important; /* Chrome, Safari, Opera*/
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 7px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: white;
+    border-radius: 7px;
+    border: 1px solid #f0f0f0;
+  }
+  &::-moz-scrollbar {
+    width: 6px;
+  }
+
+  &::-moz-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 7px;
+  }
+
+  &::-moz-scrollbar-track {
+    background-color: white;
+    border-radius: 7px;
+    border: 1px solid #f0f0f0;
+  }
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    align-items: center;
+    width: 100%;
+    height: 100%;
+
+    &::-webkit-scrollbar {
+      display: none !important; /* Chrome, Safari, Opera*/
+    }
+  }
+`;
+
+const ResultLi = styled.li`
+  height: 20%;
+  display: flex;
+  align-items: center;
+  border-bottom: 1.15625px solid #f0f0f0;
+  font-size: 13px;
+  line-height: 16px;
+  letter-spacing: -0.08em;
+  color: #414c38;
+  width: 100%;
+  cursor: pointer;
+  span {
+    margin-left: 15px;
+  }
+`;
+
+const NoResult = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  flex-direction: row;
+  span {
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    color: #c8c8c8;
+    margin-right: 5px;
+  }
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    flex-direction: column;
   }
 `;

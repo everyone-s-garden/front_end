@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { GardenData } from 'api/type';
+import { GardenDetailType } from 'api/type';
 import { IGardenDetail } from 'types/GardenDetail';
 
 // Modal Atoms
@@ -45,7 +45,7 @@ export const isExpandAtom = atom<boolean>({
   key: 'isExpand',
   default: false,
 });
-export const gardensAtom = atom<GardenData[]>({
+export const gardensAtom = atom<GardenDetailType[]>({
   key: 'gardens',
   default: [],
 });

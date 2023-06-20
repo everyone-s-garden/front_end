@@ -44,7 +44,6 @@ const Container = styled.section`
   color: white;
   background-color: #f0fbe4;
   overflow: hidden;
-
   @media (min-width: ${BREAK_POINT.LABTOP}) {
     height: calc(var(--vh, 1vh) * 100 - 106px);
     flex-direction: row;

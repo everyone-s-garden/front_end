@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { IFormData, ILen, IUrl } from 'pages/My/RegisterSeller/type';
+import { IFormData, ILen, IUrl } from '../../pages/My/RegisterSeller/type';
 
-import { NotiContentAtom } from 'recoil/atom';
-import Modal from 'components/Modal/Modal';
+import { NotiContentAtom } from '../../recoil/atom';
+import Modal from '../../components/Modal/Modal';
 import smileIllust from 'assets/modal/smile.svg';
 import icon from '../../assets/image_small.svg';
-import delete_icon from '../../assets/delete_icon.png';
-import { getImages } from 'pages/My/RegisterUser/query';
+import delete_icon from '../../assets/delete_icon.svg';
+import { getImages } from '../../pages/My/RegisterUser/query';
 import imageCompression from 'browser-image-compression';
-import { formDataHandler } from 'pages/My/RegisterSeller/query';
+import { formDataHandler } from '../../pages/My/RegisterSeller/query';
 import { AxiosResponse } from 'axios';
-import customAxios from 'utils/token';
-import imageCompression from 'browser-image-compression';
-import { formDataHandler } from 'pages/My/RegisterSeller/query';
+import customAxios from '../../utils/token';
 
 interface UserFeedbackModalProps {
   isOpen: boolean;

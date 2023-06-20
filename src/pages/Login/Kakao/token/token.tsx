@@ -34,6 +34,8 @@ const Token = () => {
         Authorization: `${data.access_token}`,
       },
     });
+    setItem('name', res_server.data.name);
+    setItem('userId', res_server.data.userId);
     setItem('access_token', res_server.data.appToken);
     setItem('isLogin', 'true');
     setIsLogin(true);
