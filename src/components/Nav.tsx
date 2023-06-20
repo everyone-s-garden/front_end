@@ -10,7 +10,7 @@ import ReportModal from './Modal/ReportModal';
 import UserFeedbackModal from './Modal/UserFeedbackModal';
 import MonthCrop from './Modal/MonthCrop';
 import Notification from './Notification';
-import logoImg from 'assets/logo-horizon.svg';
+import logoImg from 'assets/logo_horizon.png';
 import mapImg from 'assets/map-icon.svg';
 import homiImg from 'assets/homi-icon.svg';
 import { ReactComponent as BackIcon } from 'assets/back-icon.svg';
@@ -139,8 +139,7 @@ const Container = styled.div<{ isMainPage: boolean; isMapPage: boolean }>`
 `;
 
 const Navbar = styled.nav<{ isMainPage: boolean }>`
-  flex-grow: 1;
-  flex-shrink: 1;
+  width: 100%;
   max-width: 1200px;
   display: ${props => (props.isMainPage ? 'flex' : 'none')};
 
@@ -185,14 +184,15 @@ const MenuBar = styled.div`
 `;
 
 const LogoImageContainer = styled.div`
-  width: auto;
-  height: 24px;
+  width: 125px;
+  height: 21px;
   display: flex;
   flex-shrink: 0;
   align-items: center;
   cursor: pointer;
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
+    width: 163px;
     height: 28px;
   }
 `;
