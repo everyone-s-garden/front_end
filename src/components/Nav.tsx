@@ -286,6 +286,7 @@ const RegionSearchInput = styled.input`
 `;
 
 const ButtonContainer = styled.div`
+  flex-shrink: 0;
   height: 100%;
   display: flex;
   align-items: center;
@@ -363,13 +364,13 @@ const NavTitle = styled.div`
 
 const SearchWrapper = styled.div`
   position: relative;
+  padding-left: 20px;
   width: 444px;
   height: 43px;
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     width: 268px;
     height: 36px;
     margin: 0 auto;
-    background-color: red;
   }
 `;
 const SearchResult = styled.div<{ check: boolean; len: boolean }>`
