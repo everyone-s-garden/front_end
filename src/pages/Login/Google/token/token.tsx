@@ -18,7 +18,6 @@ export const getToken = async (token: string) => {
       Authorization: `${data.access_token}`,
     },
   });
-  console.log(res_server);
   setItem('name', res_server.data.name);
   setItem('userId', res_server.data.userId);
   setItem('access_token', res_server.data.appToken);
