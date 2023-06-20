@@ -19,4 +19,5 @@ export interface IGardenDetail {
   type: string;
   id: number;
   liked: boolean;
+  userId: number;
 }

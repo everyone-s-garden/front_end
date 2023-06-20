@@ -11,6 +11,7 @@ import btnIcon4 from 'assets/my/my-garden-btn-icon4.svg';
 import { ReactComponent as MenuIcon } from 'assets/three-dot-icon.svg';
 import { AxiosResponse } from 'axios';
 import customAxios from 'utils/token';
+import { getItem } from 'utils/session';
 
 interface IHashMyGarden {
   address: string;
@@ -26,6 +27,7 @@ const MyHome = () => {
   const nav = useNavigate();
   const [hasMyGarden, setHasMyGarden] = useState<IHashMyGarden | null>(null);
   const [isGardenMenuOpen, setIsGardenMenuOpen] = useState<boolean>(false);
+  const userName = getItem('name')?.replaceAll('"', '');
   const init = async () => {
     try {
       const res: AxiosResponse = await customAxios.get('/v1/garden/using');
@@ -62,7 +64,7 @@ const MyHome = () => {
           <SectionTitle>나의 텃밭</SectionTitle>
           <GardenImgContainer>
             <GardenImage src={hasMyGarden?.image || testImg} alt="텃밭 이미지" />
-            <GardenTitle>유미애님의 텃밭</GardenTitle>
+            <GardenTitle>{userName}님의 텃밭</GardenTitle>
 
             <MenuWrapper onClick={() => setIsGardenMenuOpen(!isGardenMenuOpen)}>
               <MenuIcon width="3" height="18" fill="#FFFFFF" />

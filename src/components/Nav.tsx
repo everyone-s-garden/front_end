@@ -131,7 +131,6 @@ const Container = styled.div<{ isMainPage: boolean; isMapPage: boolean }>`
   background-color: ${COLOR.BACKGROUND};
   border-bottom: 1px solid #e1e1e1;
   border-bottom: ${props => (props.isMainPage || props.isMapPage ? 'none' : '1px solid #e1e1e1')};
-  background-color: red;
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     padding: 0 20px 20px 20px;
     border: none;
@@ -142,7 +141,6 @@ const Navbar = styled.nav<{ isMainPage: boolean }>`
   width: 100%;
   max-width: 1200px;
   display: ${props => (props.isMainPage ? 'flex' : 'none')};
-  background-color: blue;
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     display: flex;
     flex-direction: column;
@@ -176,7 +174,6 @@ const MenuBar = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: green;
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     margin: 0;
     height: 43px;
@@ -231,7 +228,6 @@ const ButtonContainer = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
-  background-color: orange;
 `;
 
 const Button = styled.button<{ active: boolean }>`
