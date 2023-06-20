@@ -11,6 +11,7 @@ interface ModalProps {
 }
 
 function Modal({ children, isOpen, setIsOpen }: ModalProps) {
+  console.log(children);
   return (
     <ModalBackground isOpen={isOpen} onClick={() => setIsOpen(false)}>
       <ModalContainer

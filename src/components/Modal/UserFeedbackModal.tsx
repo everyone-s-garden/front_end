@@ -33,7 +33,10 @@ function UserFeedbackModal({ isOpen, setIsOpen }: UserFeedbackModalProps) {
       };
       try {
         const res = await customAxios.post(`v1/feedback`, feedBackData);
-        console.log(res);
+        if (res.status === 200) {
+          setComment('');
+          setImages([]);
+        }
         setContent('제출되었습니다. 소중한 의견 감사합니다 ♥︎');
       } catch (err) {
         console.log(err);
