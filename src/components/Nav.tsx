@@ -108,7 +108,7 @@ const Nav = () => {
             )}
           </LoginBar>
           <MenuBar>
-            <LogoImageContainer>
+            <LogoImageContainer onClick={() => navigate('/')}>
               <LogoImage src={logoImg} alt="로고" />
             </LogoImageContainer>
 
