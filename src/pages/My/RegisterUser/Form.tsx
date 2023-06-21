@@ -59,7 +59,7 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
   };
   const uploadMyGarden = async () => {
     try {
-      if (searchText === '') alert('텃밭 정보는 필수입니다.');
+      if (image?.imageUrl === '') alert('사진은 필수 입니다.');
       else if (getValues('start') === '') alert('사용 시작일은 필수입니다.');
       else if (getValues('end') === '') alert('사용 종료일은 필수입니다.');
       else {
