@@ -21,6 +21,7 @@ import LikePosts from 'pages/My/LikePosts/LikePosts';
 import RecentPosts from 'pages/My/RecentPosts/RecentPosts';
 import MyPosts from 'pages/My/MyPosts/MyPosts';
 import { HelmetProvider } from 'react-helmet-async';
+
 // 모바일 100vh 세팅
 let vh = window.innerHeight * 0.01;
 document.documentElement.style.setProperty('--vh', `${vh}px`);

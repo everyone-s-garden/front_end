@@ -18,6 +18,7 @@ import { useNavermaps } from 'react-naver-maps';
 import { getQueryData } from 'pages/My/RegisterUser/query';
 import { IData } from 'pages/My/RegisterUser/type';
 import { AxiosResponse } from 'axios';
+import ReactGA from 'react-ga';
 
 const Nav = () => {
   const navigate = useNavigate();
@@ -41,6 +42,23 @@ const Nav = () => {
   const [searchText, setSearchText] = useState<string>('');
   const [selectedResult, setSelectedResult] = useState<IData | null>(null);
   const [show, setShow] = useState<boolean>(false);
+  const [GAinitialized, isGAinitialized] = useState<boolean>(false);
+
+  // Google Analytics 설정
+  const gaTrackingId = process.env.REACT_APP_GA_TRACKING_ID!;
+  useEffect(() => {
+    if (!window.location.href.includes('localhost')) {
+      ReactGA.initialize(gaTrackingId);
+      isGAinitialized(true);
+    }
+  }, [gaTrackingId]);
+
+  useEffect(() => {
+    if (GAinitialized) {
+      ReactGA.pageview(location.pathname + location.search);
+    }
+  }, [GAinitialized, location]);
+
   useEffect(() => {
     setIsLogin(Boolean(getItem('isLogin')));
   }, [isLogin, setIsLogin]);
