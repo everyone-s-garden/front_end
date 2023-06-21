@@ -57,6 +57,8 @@ const Nav = () => {
   useEffect(() => {
     if (GAinitialized) {
       ReactGA.pageview(location.pathname + location.search);
+      console.log('GA', GAinitialized);
+      console.log('url', location.pathname + location.search);
     }
   }, [GAinitialized, location]);
 
