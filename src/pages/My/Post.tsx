@@ -7,7 +7,7 @@ import { BREAK_POINT, FONT_WEIGHT } from 'constants/style';
 import noImgIcon from 'assets/noImg-icon.svg';
 import filterGardenData from 'utils/filterGardenData';
 import { getItem } from 'utils/session';
-
+import empt1 from 'assets/empty_bg1.svg';
 interface Idata {
   data: IGardenDetail;
 }
@@ -19,7 +19,7 @@ function Post({ data }: Idata) {
       <ImageContainer>
         {data.images.length === 0 ? (
           <EmptyImg>
-            <Image src={noImgIcon} alt="이미지 없음" />
+            <Image src={empt1} alt="이미지 없음" />
           </EmptyImg>
         ) : (
           <Image src={data.images[0]} alt="텃밭 이미지" />
