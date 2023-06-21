@@ -46,13 +46,14 @@ const Nav = () => {
 
   // Google Analytics 설정
   const gaTrackingId = process.env.REACT_APP_GA_TRACKING_ID!;
+  console.log(gaTrackingId);
   useEffect(() => {
     if (!window.location.href.includes('localhost')) {
       ReactGA.initialize(gaTrackingId);
+      console.log(GAinitialized);
       isGAinitialized(true);
     }
   }, [gaTrackingId]);
-
   useEffect(() => {
     if (GAinitialized) {
       ReactGA.pageview(location.pathname + location.search);
