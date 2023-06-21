@@ -1,6 +1,7 @@
 import { atom } from 'recoil';
 import { GardenDetailType } from 'api/type';
 import { IGardenDetail } from 'types/GardenDetail';
+import { ILocation } from 'components/Nav';
 
 // Modal Atoms
 export const isReportOpenAtom = atom<boolean>({
@@ -51,6 +52,10 @@ export const gardensAtom = atom<GardenDetailType[]>({
 });
 export const selectedGardenIdAtom = atom<number | null>({
   key: 'selectedGarden',
+  default: null,
+});
+export const selectedMapLocationAtom = atom<ILocation | null>({
+  key: 'selectedMapLocation',
   default: null,
 });
 

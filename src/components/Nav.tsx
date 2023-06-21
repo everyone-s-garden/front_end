@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import { BREAK_POINT, COLOR, FONT_WEIGHT } from '../constants/style';
-import { isCropOpenAtom, isFeedbackOpenAtom, isLoginAtom, isReportOpenAtom } from 'recoil/atom';
+import {
+  isCropOpenAtom,
+  isFeedbackOpenAtom,
+  isLoginAtom,
+  isReportOpenAtom,
+  selectedMapLocationAtom,
+} from 'recoil/atom';
 import { getItem } from 'utils/session';
 import ReportModal from './Modal/ReportModal';
 import UserFeedbackModal from './Modal/UserFeedbackModal';
@@ -15,10 +21,15 @@ import mapImg from 'assets/map-icon.svg';
 import homiImg from 'assets/homi-icon.svg';
 import { ReactComponent as BackIcon } from 'assets/back-icon.svg';
 import { useNavermaps } from 'react-naver-maps';
-import { getQueryData } from 'pages/My/RegisterUser/query';
-import { IData } from 'pages/My/RegisterUser/type';
 import { AxiosResponse } from 'axios';
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga4';
+import customAxios from 'utils/token';
+
+export interface ILocation {
+  position: string;
+  latitude: number;
+  longitude: number;
+}
 
 const Nav = () => {
   const navigate = useNavigate();
@@ -28,6 +39,7 @@ const Nav = () => {
   const [isReportOpen, setIsReportOpen] = useRecoilState(isReportOpenAtom);
   const [isFeedbackOpen, setIsFeedbackOpen] = useRecoilState(isFeedbackOpenAtom);
   const [isCropOpen, setIsCropOpen] = useRecoilState(isCropOpenAtom);
+  const setSelectedLocation = useSetRecoilState(selectedMapLocationAtom);
 
   const isMainPage = location.pathname === '/';
   const isMapPage = location.pathname === '/map';
@@ -38,27 +50,27 @@ const Nav = () => {
   const isRegisterPage = location.pathname === '/my/garden-register-user';
   const isSellerPage = location.pathname === '/my/garden-register-seller';
 
-  const [searchResults, setSearchResults] = useState<IData[]>([]);
+  const [searchResults, setSearchResults] = useState<ILocation[]>([]);
   const [searchText, setSearchText] = useState<string>('');
-  const [selectedResult, setSelectedResult] = useState<IData | null>(null);
   const [show, setShow] = useState<boolean>(false);
-  const [GAinitialized, isGAinitialized] = useState<boolean>(false);
+  const [initialized, setInitialized] = useState(false);
 
   // Google Analytics 설정
-  console.log(process.env.REACT_APP_GA_TRACKING_ID!);
-  const gaTrackingId = process.env.REACT_APP_GA_TRACKING_ID!;
   useEffect(() => {
+    // localhost는 기록하지 않음
     if (!window.location.href.includes('localhost')) {
-      ReactGA.initialize(gaTrackingId);
-      ReactGA.set({ page: window.location.pathname });
-      isGAinitialized(true);
+      ReactGA.initialize(process.env.REACT_APP_GA_TRACKING_ID!);
+      setInitialized(true);
     }
-  }, [gaTrackingId]);
+  }, []);
+
+  // location 변경 감지시 pageview 이벤트 전송
   useEffect(() => {
-    if (GAinitialized) {
-      ReactGA.pageview(window.location.pathname + window.location.search);
+    if (initialized) {
+      ReactGA.set({ page: location.pathname });
+      ReactGA.send('pageview');
     }
-  }, [GAinitialized, location]);
+  }, [initialized, location]);
 
   useEffect(() => {
     setIsLogin(Boolean(getItem('isLogin')));
@@ -78,25 +90,37 @@ const Nav = () => {
     if (isMapPage || isMyPage) return '/';
     else return '/my';
   };
+
+  const getLocationData = async (query: string) => {
+    try {
+      const res: AxiosResponse = await customAxios.get(`v1/location?address=${query}`);
+      return res;
+    } catch (err) {
+      return err;
+    }
+  };
+
   const getSearchResult = async (e: React.FormEvent<HTMLInputElement>) => {
     let query = e.currentTarget.value;
     setSearchText(query);
     if (query === '') {
-      setSelectedResult(null);
+      setSelectedLocation(null);
       setSearchResults([]);
       setShow(false);
     } else {
-      const res = (await getQueryData(query)) as AxiosResponse;
+      const res = (await getLocationData(query)) as AxiosResponse;
       setSearchResults(res.data);
       setShow(true);
     }
   };
-  const selectGarden = (result: IData) => {
-    setSearchText(result.name);
-    setSelectedResult(result);
+
+  const selectGarden = (result: ILocation) => {
+    setSearchText(result.position);
+    setSelectedLocation(result);
     setSearchResults([]);
     setShow(false);
   };
+
   return (
     <>
       <Container isMainPage={isMainPage} isMapPage={isMapPage}>
@@ -125,8 +149,8 @@ const Nav = () => {
                       </NoResult>
                     ) : (
                       searchResults.map(result => (
-                        <ResultLi onClick={() => selectGarden(result)} key={result.id}>
-                          <span>{result.name !== '' ? result.name : result.address}</span>
+                        <ResultLi key={result.longitude} onClick={() => selectGarden(result)}>
+                          <span>{result.position}</span>
                         </ResultLi>
                       ))
                     )}
@@ -165,8 +189,8 @@ const Nav = () => {
                     </NoResult>
                   ) : (
                     searchResults.map(result => (
-                      <ResultLi onClick={() => selectGarden(result)} key={result.id}>
-                        <span>{result.name !== '' ? result.name : result.address}</span>
+                      <ResultLi key={result.latitude} onClick={() => selectGarden(result)}>
+                        <span>{result.position}</span>
                       </ResultLi>
                     ))
                   )}
@@ -383,7 +407,7 @@ const NavTitle = styled.div`
 
 const SearchWrapper = styled.div`
   position: relative;
-  padding-left: 20px;
+  margin-left: 20px;
   width: 444px;
   height: 43px;
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
@@ -397,7 +421,6 @@ const SearchResult = styled.div<{ check: boolean; len: boolean }>`
   position: absolute;
   width: 100%;
   height: ${props => (props.check ? '110px' : '217px')};
-  right: 0;
   top: 105%;
   background: #ffffff;
   border: 1px solid #f0f0f0;

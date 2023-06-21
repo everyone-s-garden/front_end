@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Listener, NaverMap, useNavermaps } from 'react-naver-maps';
 import { useQuery } from '@tanstack/react-query';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
-import { gardensAtom, searchTypeAtom } from 'recoil/atom';
+import { gardensAtom, searchTypeAtom, selectedMapLocationAtom } from 'recoil/atom';
 import MarkerCluster from './MarkerCluster';
 import MyLocationBtn from './MyLocationBtn';
 import MyLocationMarker from './MyLocationMarker';
@@ -27,6 +27,7 @@ const MyMap = ({ isLoading, setIsLoading, setIsInitializing, map, setMap }: MyMa
   } | null>(null);
   const [searchType] = useRecoilState(searchTypeAtom);
   const [_, setGardens] = useRecoilState(gardensAtom);
+  const selectedLocation = useRecoilValue(selectedMapLocationAtom);
 
   const fetchGardenData = () => {
     return GardenAPI.getGardenByCoordinate(searchType, map!);
@@ -58,10 +59,15 @@ const MyMap = ({ isLoading, setIsLoading, setIsInitializing, map, setMap }: MyMa
 
   useEffect(() => {
     setGardens(data);
-    // if (data) console.log(data.map((d: any) => d.size));
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
+
+  useEffect(() => {
+    if (!map || !selectedLocation) return;
+    map.panTo(new navermaps.LatLng(selectedLocation?.latitude, selectedLocation?.longitude));
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedLocation]);
 
   return (
     <>

@@ -108,7 +108,7 @@ function ReportModal({ isOpen, setIsOpen }: ReportModalProps) {
               checked={selected === '기타'}
               onChange={() => setSelected('기타')}
             />
-            <label htmlFor="etc">기타.</label>
+            <label htmlFor="etc">기타</label>
           </RadioBtn>
         </SelectSection>
 
