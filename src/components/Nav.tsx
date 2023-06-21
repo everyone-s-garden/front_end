@@ -45,17 +45,19 @@ const Nav = () => {
   const [GAinitialized, isGAinitialized] = useState<boolean>(false);
 
   // Google Analytics 설정
+  console.log(process.env.REACT_APP_GA_TRACKING_ID!);
   const gaTrackingId = process.env.REACT_APP_GA_TRACKING_ID!;
   useEffect(() => {
     if (!window.location.href.includes('localhost')) {
       ReactGA.initialize(gaTrackingId);
+      ReactGA.set({ page: window.location.pathname });
       isGAinitialized(true);
     }
   }, [gaTrackingId]);
 
   useEffect(() => {
     if (GAinitialized) {
-      ReactGA.pageview(location.pathname + location.search);
+      ReactGA.pageview(window.location.pathname + window.location.search);
     }
   }, [GAinitialized, location]);
 
