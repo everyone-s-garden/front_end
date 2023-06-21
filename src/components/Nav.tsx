@@ -18,7 +18,7 @@ import { useNavermaps } from 'react-naver-maps';
 import { getQueryData } from 'pages/My/RegisterUser/query';
 import { IData } from 'pages/My/RegisterUser/type';
 import { AxiosResponse } from 'axios';
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga4';
 
 const Nav = () => {
   const navigate = useNavigate();
@@ -42,23 +42,24 @@ const Nav = () => {
   const [searchText, setSearchText] = useState<string>('');
   const [selectedResult, setSelectedResult] = useState<IData | null>(null);
   const [show, setShow] = useState<boolean>(false);
-  const [GAinitialized, isGAinitialized] = useState<boolean>(false);
+  const [initialized, setInitialized] = useState(false);
 
   // Google Analytics 설정
-  console.log(process.env.REACT_APP_GA_TRACKING_ID!);
-  const gaTrackingId = process.env.REACT_APP_GA_TRACKING_ID!;
   useEffect(() => {
+    // localhost는 기록하지 않음
     if (!window.location.href.includes('localhost')) {
-      ReactGA.initialize(gaTrackingId);
-      ReactGA.set({ page: window.location.pathname });
-      isGAinitialized(true);
+      ReactGA.initialize(process.env.REACT_APP_GA_TRACKING_ID!);
+      setInitialized(true);
     }
-  }, [gaTrackingId]);
+  }, []);
+
+  // location 변경 감지시 pageview 이벤트 전송
   useEffect(() => {
-    if (GAinitialized) {
-      ReactGA.pageview(window.location.pathname + window.location.search);
+    if (initialized) {
+      ReactGA.set({ page: location.pathname });
+      ReactGA.send('pageview');
     }
-  }, [GAinitialized, location]);
+  }, [initialized, location]);
 
   useEffect(() => {
     setIsLogin(Boolean(getItem('isLogin')));
