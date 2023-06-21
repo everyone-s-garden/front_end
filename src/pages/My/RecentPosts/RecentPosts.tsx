@@ -58,7 +58,7 @@ const RecentPosts = () => {
   return (
     <Container>
       <Helmet>
-        <title>최근 본 텃밭 매물</title>
+        <title>최근 본 텃밭 매물 </title>
       </Helmet>
       {recentLists.length === 0 ? (
         <NoPost title="최근 본 텃밭이 없어요!" subTitle="분양 텃밭들을 보고 싶나요?" url="/map" />

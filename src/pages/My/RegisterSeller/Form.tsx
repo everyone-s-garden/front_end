@@ -36,6 +36,7 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
           setLocation(data);
         }
       },
+      onError: err => console.log(err),
     });
   };
 
@@ -234,9 +235,6 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
 };
 export default Form;
 
-interface Ilen {
-  size: number;
-}
 const Wrapper = styled.div`
   border: none;
   border-top: 0.5px solid #e1e1e1;
@@ -382,8 +380,6 @@ const Location = styled.div`
     span {
       margin-right: 45px;
       white-space: nowrap;
-      @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-      }
     }
   }
 `;
