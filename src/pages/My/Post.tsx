@@ -91,6 +91,7 @@ const Image = styled.img`
   border-radius: 5px;
   object-fit: cover;
   object-position: center;
+  width: 100%;
   @media screen {
     width: 174px;
   }
