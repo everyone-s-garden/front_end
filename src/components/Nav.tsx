@@ -174,7 +174,7 @@ const Nav = () => {
             </SearchWrapper>
           ) : (
             <NavTitle>
-              <h1 onClick={() => isMyPage && navigate('/my')}>
+              <h1>
                 {isMyPage && '마이페이지'}
                 {isLikePage && '찜한 텃밭'}
                 {isRecentPage && '최근 본 텃밭'}
