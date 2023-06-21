@@ -59,17 +59,22 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
   };
   const uploadMyGarden = async () => {
     try {
-      const res: AxiosResponse = await customAxios.post('v1/garden/using', {
-        id: selectedResult?.id,
-        name: selectedResult?.name,
-        image,
-        address: selectedResult?.address,
-        latitude: selectedResult?.latitude,
-        longitude: selectedResult?.longitude,
-        useStartDate: getValues('start'),
-        useEndDate: getValues('end'),
-      });
-      if (res.status === 201) nav(-1);
+      if (image?.imageUrl === '') alert('사진은 필수 입니다.');
+      else if (getValues('start') === '') alert('사용 시작일은 필수입니다.');
+      else if (getValues('end') === '') alert('사용 종료일은 필수입니다.');
+      else {
+        const res: AxiosResponse = await customAxios.post('v1/garden/using', {
+          id: selectedResult?.id,
+          name: selectedResult?.name,
+          image,
+          address: selectedResult?.address,
+          latitude: selectedResult?.latitude,
+          longitude: selectedResult?.longitude,
+          useStartDate: getValues('start'),
+          useEndDate: getValues('end'),
+        });
+        if (res.status === 201) nav(-1);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -79,17 +84,22 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
   }, [myGarden]);
   const editMyGarden = async () => {
     try {
-      const res: AxiosResponse = await customAxios.put(`v1/garden/using/${myGarden?.id}`, {
-        id: selectedResult?.id,
-        name: selectedResult?.name,
-        image,
-        address: selectedResult?.address,
-        latitude: selectedResult?.latitude,
-        longitude: selectedResult?.longitude,
-        useStartDate: getValues('start'),
-        useEndDate: getValues('end'),
-      });
-      if (res.status === 200) nav(-1);
+      if (selectedResult?.name === '') alert('텃밭 정보는 필수입니다.');
+      else if (getValues('start') === '') alert('사용 시작일은 필수입니다.');
+      else if (getValues('end') === '') alert('사용 종료일은 필수입니다.');
+      else {
+        const res: AxiosResponse = await customAxios.put(`v1/garden/using/${myGarden?.id}`, {
+          id: selectedResult?.id,
+          name: selectedResult?.name,
+          image,
+          address: selectedResult?.address,
+          latitude: selectedResult?.latitude,
+          longitude: selectedResult?.longitude,
+          useStartDate: getValues('start'),
+          useEndDate: getValues('end'),
+        });
+        if (res.status === 200) nav(-1);
+      }
     } catch (err) {
       console.log(err);
     }

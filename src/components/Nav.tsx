@@ -54,7 +54,6 @@ const Nav = () => {
       isGAinitialized(true);
     }
   }, [gaTrackingId]);
-
   useEffect(() => {
     if (GAinitialized) {
       ReactGA.pageview(window.location.pathname + window.location.search);
@@ -110,7 +109,7 @@ const Nav = () => {
             )}
           </LoginBar>
           <MenuBar>
-            <LogoImageContainer onClick={() => navigate(`/`)}>
+            <LogoImageContainer onClick={() => navigate('/')}>
               <LogoImage src={logoImg} alt="로고" />
             </LogoImageContainer>
 
