@@ -4,11 +4,14 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Item from './Item/Item';
 import { BREAK_POINT } from 'constants/style';
-
+import { Helmet } from 'react-helmet-async';
 const BeforeLogin = () => {
   const nav = useNavigate();
   return (
     <Container>
+      <Helmet>
+        <title>모두의 텃밭 로그인 페이지</title>
+      </Helmet>
       <Content>
         <Icon src={calendar} />
         <ItemBox>
