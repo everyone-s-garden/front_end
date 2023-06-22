@@ -47,7 +47,30 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
     return ''; // 기본값 또는 필요에 따라 다른 값 설정
   };
   const uploadField = async () => {
-    if (location?.address && location.lat && location.lng) {
+    console.log(
+      location,
+      getValues('name'),
+      price,
+      location.address,
+      location.lat,
+      location.lng,
+      getValues('content'),
+      states,
+      facility,
+      size,
+      contact,
+    );
+
+    if (location.address === '') return alert('지역은 필수입니다.');
+    else if (getValues('name') === '') return alert('텃밭 이름은 필수입니다.');
+    else if (price === '') return alert('가격정보는 필수입니다.');
+    else if (states.end === false && states.recruiting === false && states.regular === false)
+      return alert('상태는 필수입니다.');
+    else if (getValues('content') === '') return alert('상세내용은 필수 입니다.');
+    else if (images.length === 0) return alert('이미지는 필수입니다.');
+    else if (size === '') return alert('평수는 필수입니다.');
+    else if (contact === '') return alert('전화번호는 필수입니다.');
+    else if (location?.address && location.lat && location.lng) {
       const uploadPrice = await uncommaPrice(price);
       const status = getStatus(states);
       const uploadData: IUploadData = {
@@ -158,6 +181,7 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
       facility,
     };
     try {
+      console.log(uploadData);
       const res = await customAxios.put(`v1/garden/${match?.params.id}`, uploadData);
       if (res.status === 200) nav(-1);
     } catch (err) {
