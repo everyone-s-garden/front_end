@@ -54,7 +54,6 @@ export const formDataHandler = async (dataURI: any) => {
 };
 
 export const formValidation = (data: IUploadData) => {
-  console.log(data);
   if (data.address === '') {
     alert('지역은 필수입니다.');
     return false;
