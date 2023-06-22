@@ -1,10 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 
+import { searchTypeAtom } from 'recoil/atom';
 import { BREAK_POINT, COLOR, FONT_WEIGHT } from 'constants/style';
 import illurstation from 'assets/main/illust_1.svg';
 
 function FirstSection() {
+  const navigate = useNavigate();
+  const setSearchType = useSetRecoilState(searchTypeAtom);
+
   return (
     <Container>
       <Image src={illurstation} alt="배너 이미지" />
@@ -16,11 +22,22 @@ function FirstSection() {
           손쉽게 확인해보세요
         </SubHeading>
         <Buttons>
-          <Button style={{ marginRight: '20px' }}>
+          <Button
+            style={{ marginRight: '20px' }}
+            onClick={() => {
+              setSearchType(1);
+              navigate('/map');
+            }}
+          >
             공공
             <br /> 분양
           </Button>
-          <Button>
+          <Button
+            onClick={() => {
+              setSearchType(2);
+              navigate('/map');
+            }}
+          >
             개인
             <br /> 분양
           </Button>

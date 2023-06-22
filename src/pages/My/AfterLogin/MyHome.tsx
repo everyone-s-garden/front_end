@@ -91,17 +91,17 @@ const MyHome = () => {
           </>
         ) : (
           <>
-            <Content>
+            <AfterContent>
               <ImgBox src={btnIcon3} alt="버튼 아이콘" />
               <span>{hasMyGarden?.name}</span>
-            </Content>
-            <Content>
+            </AfterContent>
+            <AfterContent>
               <ImgBox src={btnIcon4} alt="버튼 아이콘" />
               {calculateRemainingDays(hasMyGarden?.useEndDate!) >= 0 && (
                 <span>{calculateRemainingDays(hasMyGarden?.useEndDate!)}일 남았습니다.</span>
               )}
               {calculateRemainingDays(hasMyGarden?.useEndDate!) < 0 && <span>만료</span>}
-            </Content>
+            </AfterContent>
           </>
         )}
       </ContentWrapper>
@@ -263,6 +263,30 @@ const Content = styled.button`
   &:hover {
     background-color: #f4f4f4;
   }
+
+  span {
+    font-size: 16px;
+    font-weight: 500;
+
+    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+      font-size: 14px;
+    }
+  }
+`;
+
+const AfterContent = styled.div`
+  flex-grow: 1;
+  padding: 15px;
+  height: 100%;
+  width: 310px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  border: 1px solid #e1e1e1;
+  border-radius: 9px;
+  filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.03));
+  transition: all 0.1s ease-in;
 
   span {
     font-size: 16px;

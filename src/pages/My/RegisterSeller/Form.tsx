@@ -289,6 +289,9 @@ const SizeInput = styled.input<{ size: number }>`
     line-height: 20px;
     color: #d1d3d7;
   }
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    font-size: 12px;
+  }
 `;
 
 const InputWrapper = styled.div`
@@ -330,6 +333,9 @@ const StateBox = styled.div`
     align-items: center;
     font-size: 12px;
     cursor: pointer;
+    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+      margin-right: 10px;
+    }
   }
 `;
 
