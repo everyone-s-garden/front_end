@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { IGardenDetail } from 'types/GardenDetail';
@@ -17,9 +17,13 @@ interface Idata {
 function Post({ data }: Idata) {
   const nav = useNavigate();
   const images = [empty1, empty2, empty3];
-  const randomImageIndex = Math.floor(Math.random() * images.length);
-  const randomImage = images[randomImageIndex];
 
+  const [randomImage, setRandomImage] = useState('');
+  useEffect(() => {
+    const randomImageIndex = Math.floor(Math.random() * images.length);
+    const randomImage = images[randomImageIndex];
+    setRandomImage(randomImage);
+  }, []);
   return (
     <PostContainer onClick={() => nav(`/my/${data.id}`)}>
       <ImageContainer>
