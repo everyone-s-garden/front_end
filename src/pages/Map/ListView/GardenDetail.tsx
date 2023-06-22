@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Player } from '@lottiefiles/react-lottie-player';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import { COLOR, FONT_WEIGHT } from 'constants/style';
-import { isReportOpenAtom, reportPostIdAtom, selectedGardenIdAtom } from 'recoil/atom';
+import { NotiContentAtom, isReportOpenAtom, reportPostIdAtom, selectedGardenIdAtom } from 'recoil/atom';
 import ImageSlider from 'components/ImageSlider';
 import { ReactComponent as BackIcon } from 'assets/back-icon.svg';
 import * as animationData from 'assets/like-animation.json';
@@ -15,21 +15,33 @@ import ContactGardenModal from 'components/Modal/ContactGardenModal';
 import Heart from 'assets/like_heart.svg';
 import customAxios from 'utils/token';
 import filterGardenData from 'utils/filterGardenData';
+import { getItem } from 'utils/session';
+
 function GardenDetail() {
   const animationRef = useRef<Player>(null);
   const [selectedGarden, setSelectedGarden] = useRecoilState(selectedGardenIdAtom);
-  const [_, setIsModalOpen] = useRecoilState(isReportOpenAtom);
-  const [__, setReportPostId] = useRecoilState(reportPostIdAtom);
+  const setIsModalOpen = useSetRecoilState(isReportOpenAtom);
+  const setReportPostId = useSetRecoilState(reportPostIdAtom);
+  const setContent = useSetRecoilState(NotiContentAtom);
   const [isContactModalOpen, setIsContactModalOpen] = useState<boolean>(false);
-  const [like, isLike] = useState<boolean>(false);
+  const [isLogin, setIsLogin] = useState<boolean>(false);
   const [postData, setPostData] = useState<GardenDetailType | null>(null);
+
+  useEffect(() => {
+    setIsLogin(Boolean(getItem('isLogin')));
+  }, [isLogin, setIsLogin]);
 
   const fetchGardenData = async () => {
     if (!selectedGarden) return;
     const { data } = await GardenAPI.getGardenDetail(selectedGarden);
     setPostData(data);
   };
-  const play = async () => {
+  const onLikeClicked = async () => {
+    if (!isLogin) {
+      setContent('로그인이 필요한 서비스입니다!');
+      return;
+    }
+
     if (!postData?.liked) {
       try {
         const res: GardenDetailType = await customAxios.post(`v1/garden/like/${postData?.id}`);
@@ -92,6 +104,11 @@ function GardenDetail() {
       <Buttons>
         <ReportBtn
           onClick={() => {
+            if (!isLogin) {
+              setContent('로그인이 필요한 서비스입니다!');
+              return;
+            }
+
             setIsModalOpen(true);
             setReportPostId(Number(postData?.id));
           }}
@@ -99,7 +116,7 @@ function GardenDetail() {
           <img src={reportIcon} />
           신고하기
         </ReportBtn>
-        <ZzimBtn onClick={play}>
+        <ZzimBtn onClick={onLikeClicked}>
           {postData?.liked ? (
             <HeartImg src={Heart} />
           ) : (
