@@ -39,6 +39,7 @@ export interface GardenDetailType {
   size?: string;
   contact?: string;
   liked: boolean;
+  status: string;
 
   address: string;
   latitude: number;

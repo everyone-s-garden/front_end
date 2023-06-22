@@ -4,7 +4,9 @@ import { useRecoilState } from 'recoil';
 
 import { selectedGardenIdAtom } from 'recoil/atom';
 import { BREAK_POINT, FONT_WEIGHT } from 'constants/style';
-import noImgIcon from 'assets/noImg-icon.svg';
+import empty1 from 'assets/empty_img1.jpg';
+import empty2 from 'assets/empty_img2.jpg';
+import empty3 from 'assets/empty_img3.jpg';
 
 interface GardenPostProps {
   id: number;
@@ -16,15 +18,16 @@ interface GardenPostProps {
 }
 function GardenPost({ id, name, size, price, images, status }: GardenPostProps) {
   const [_, setSelectedGarden] = useRecoilState(selectedGardenIdAtom);
+  const emptyimages = [empty1, empty2, empty3];
+  const randomImageIndex = Math.floor(Math.random() * emptyimages.length);
+  const randomImage = emptyimages[randomImageIndex];
 
   return (
     <Post>
       {images.length > 0 ? (
         <Image src={images[0]} alt="텃밭 이미지"></Image>
       ) : (
-        <NoImage>
-          <NoImgIcon src={noImgIcon} alt="이미지 없음" />
-        </NoImage>
+        <NoImage src={randomImage} alt="이미지 없음" />
       )}
 
       <InfoDiv>
@@ -68,7 +71,7 @@ const Image = styled.img`
   object-position: center;
 `;
 
-const NoImage = styled.div`
+const NoImage = styled.img`
   flex-shrink: 0;
   height: 100%;
   aspect-ratio: 4 / 3;
@@ -78,8 +81,6 @@ const NoImage = styled.div`
   border-radius: 5px;
   background-color: #f0fbe4;
 `;
-
-const NoImgIcon = styled.img``;
 
 const InfoDiv = styled.div`
   padding-left: 16px;
