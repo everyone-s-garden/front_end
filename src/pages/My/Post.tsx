@@ -7,18 +7,25 @@ import { BREAK_POINT, FONT_WEIGHT } from 'constants/style';
 import noImgIcon from 'assets/noImg-icon.svg';
 import filterGardenData from 'utils/filterGardenData';
 import { getItem } from 'utils/session';
+import empty1 from 'assets/empty_img1.svg';
+import empty2 from 'assets/empty_img2.svg';
+import empty3 from 'assets/empty_img3.svg';
 interface Idata {
   data: IGardenDetail;
 }
 
 function Post({ data }: Idata) {
   const nav = useNavigate();
+  const images = [empty1, empty2, empty3];
+  const randomImageIndex = Math.floor(Math.random() * images.length);
+  const randomImage = images[randomImageIndex];
+
   return (
     <PostContainer onClick={() => nav(`/my/${data.id}`)}>
       <ImageContainer>
         {data.images.length === 0 ? (
           <EmptyImg>
-            <Image src={noImgIcon} alt="이미지 없음" />
+            <Image src={randomImage} alt="이미지 없음" />
           </EmptyImg>
         ) : (
           <Image src={data.images[0]} alt="텃밭 이미지" />
@@ -77,17 +84,9 @@ const EmptyImg = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  img {
-    height: 45px;
-    width: 45px;
-  }
 `;
 
 const Image = styled.img`
-  flex-shrink: 0;
-  height: 135px;
-  aspect-ratio: 4 / 3;
-  border-radius: 5px;
   object-fit: cover;
   object-position: center;
   @media screen {

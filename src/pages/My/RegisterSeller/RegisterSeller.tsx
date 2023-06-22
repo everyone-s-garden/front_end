@@ -55,9 +55,6 @@ const RegisterSeller = () => {
 
   return (
     <Container>
-      <Helmet>
-        <title>텃밭 매물 등록하기, 판매하기</title>
-      </Helmet>
       <H1>{match ? '판매 텃밭 수정하기' : ' 판매 텃밭 등록하기'}</H1>
       <ImgContainer>
         <ImgAddBtnBox len={images.length}>

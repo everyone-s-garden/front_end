@@ -22,8 +22,8 @@ import homiImg from 'assets/homi-icon.svg';
 import { ReactComponent as BackIcon } from 'assets/back-icon.svg';
 import { useNavermaps } from 'react-naver-maps';
 import { AxiosResponse } from 'axios';
+import HttpRequest from 'api/HttpRequest';
 import ReactGA from 'react-ga4';
-import customAxios from 'utils/token';
 
 export interface ILocation {
   position: string;
@@ -93,7 +93,7 @@ const Nav = () => {
 
   const getLocationData = async (query: string) => {
     try {
-      const res: AxiosResponse = await customAxios.get(`v1/location?address=${query}`);
+      const res: AxiosResponse = await HttpRequest.get(`v1/location?address=${query}`);
       return res;
     } catch (err) {
       return err;
@@ -109,6 +109,7 @@ const Nav = () => {
       setShow(false);
     } else {
       const res = (await getLocationData(query)) as AxiosResponse;
+      console.log(res);
       setSearchResults(res.data);
       setShow(true);
     }
@@ -149,7 +150,7 @@ const Nav = () => {
                       </NoResult>
                     ) : (
                       searchResults.map(result => (
-                        <ResultLi key={result.longitude} onClick={() => selectGarden(result)}>
+                        <ResultLi key={result.position} onClick={() => selectGarden(result)}>
                           <span>{result.position}</span>
                         </ResultLi>
                       ))
@@ -189,7 +190,7 @@ const Nav = () => {
                     </NoResult>
                   ) : (
                     searchResults.map(result => (
-                      <ResultLi key={result.latitude} onClick={() => selectGarden(result)}>
+                      <ResultLi key={result.position} onClick={() => selectGarden(result)}>
                         <span>{result.position}</span>
                       </ResultLi>
                     ))

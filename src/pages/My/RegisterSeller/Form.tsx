@@ -7,7 +7,7 @@ import { useDaumPostcodePopup } from 'react-daum-postcode';
 import handleComplete from 'utils/PostCode';
 import customAxios from 'utils/token';
 import { IProps, ILocation, IUploadData, IFaclity, IStates, Idata } from './type';
-import { UploadData, inputContactFormat, inputPriceFormat, uncommaPrice } from './query';
+import { UploadData, formValidation, inputContactFormat, inputPriceFormat, uncommaPrice } from './query';
 import { useNavigate } from 'react-router-dom';
 import { AxiosResponse } from 'axios';
 
@@ -36,6 +36,7 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
           setLocation(data);
         }
       },
+      onError: err => console.log(err),
     });
   };
 
@@ -63,8 +64,11 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
         facility,
       };
       try {
-        const res = await UploadData(uploadData);
-        if (res.status === 201) nav('/my');
+        const validation = formValidation(uploadData);
+        if (validation) {
+          const res = await UploadData(uploadData);
+          if (res.status === 201) nav('/my');
+        }
       } catch (err) {
         console.log(err);
       }
@@ -157,8 +161,11 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
       facility,
     };
     try {
-      const res = await customAxios.put(`v1/garden/${match?.params.id}`, uploadData);
-      if (res.status === 200) nav(-1);
+      const validation = formValidation(uploadData);
+      if (validation) {
+        const res = await customAxios.put(`v1/garden/${match?.params.id}`, uploadData);
+        if (res.status === 200) nav(-1);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -234,9 +241,6 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
 };
 export default Form;
 
-interface Ilen {
-  size: number;
-}
 const Wrapper = styled.div`
   border: none;
   border-top: 0.5px solid #e1e1e1;
@@ -388,8 +392,6 @@ const Location = styled.div`
     span {
       margin-right: 45px;
       white-space: nowrap;
-      @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-      }
     }
   }
 `;

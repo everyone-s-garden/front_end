@@ -7,9 +7,9 @@ import { BREAK_POINT } from 'constants/style';
 import formatDateInput from 'utils/formatDateInput';
 import customAxios from 'utils/token';
 import { useNavigate } from 'react-router-dom';
-import { IProps, IData } from './type';
+import { IProps, IData, IMyGarden } from './type';
 import { AxiosResponse } from 'axios';
-import { getQueryData } from './query';
+import { formValidation, getQueryData } from './query';
 
 const Form = ({ editMatch, image, myGarden }: IProps) => {
   const { getValues, register, handleSubmit, setValue } = useForm();
@@ -18,7 +18,6 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
   const [selectedResult, setSelectedResult] = useState<IData | null>(null);
   const [show, setShow] = useState<boolean>(false);
   const nav = useNavigate();
-
   const init = async () => {
     if (myGarden && myGarden.name) {
       setSearchText(myGarden.name);
@@ -58,50 +57,48 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
     setShow(false);
   };
   const uploadMyGarden = async () => {
+    const uploadData = {
+      id: selectedResult?.id || 0,
+      name: selectedResult?.name || '',
+      image: image || null,
+      address: selectedResult?.address || '',
+      latitude: selectedResult?.latitude || 0,
+      longitude: selectedResult?.longitude || 0,
+      useStartDate: getValues('start'),
+      useEndDate: getValues('end'),
+    };
+    const validation = formValidation(uploadData);
     try {
-      if (image?.imageUrl === '') alert('사진은 필수 입니다.');
-      else if (getValues('start') === '') alert('사용 시작일은 필수입니다.');
-      else if (getValues('end') === '') alert('사용 종료일은 필수입니다.');
-      else {
-        const res: AxiosResponse = await customAxios.post('v1/garden/using', {
-          id: selectedResult?.id,
-          name: selectedResult?.name,
-          image,
-          address: selectedResult?.address,
-          latitude: selectedResult?.latitude,
-          longitude: selectedResult?.longitude,
-          useStartDate: getValues('start'),
-          useEndDate: getValues('end'),
-        });
+      if (validation) {
+        const res = await customAxios.post('v1/garden/using', uploadData);
         if (res.status === 201) nav(-1);
       }
     } catch (err) {
-      console.log(err);
+      alert('날씨 형식이 올바르지 않습니다.');
     }
   };
   useEffect(() => {
     init();
-  }, [myGarden]);
+  }, [myGarden, image]);
   const editMyGarden = async () => {
+    const uploadData = {
+      id: selectedResult?.id,
+      name: selectedResult?.name,
+      image,
+      address: selectedResult?.address,
+      latitude: selectedResult?.latitude,
+      longitude: selectedResult?.longitude,
+      useStartDate: getValues('start'),
+      useEndDate: getValues('end'),
+    };
+    const validation = formValidation(uploadData);
     try {
-      if (selectedResult?.name === '') alert('텃밭 정보는 필수입니다.');
-      else if (getValues('start') === '') alert('사용 시작일은 필수입니다.');
-      else if (getValues('end') === '') alert('사용 종료일은 필수입니다.');
-      else {
-        const res: AxiosResponse = await customAxios.put(`v1/garden/using/${myGarden?.id}`, {
-          id: selectedResult?.id,
-          name: selectedResult?.name,
-          image,
-          address: selectedResult?.address,
-          latitude: selectedResult?.latitude,
-          longitude: selectedResult?.longitude,
-          useStartDate: getValues('start'),
-          useEndDate: getValues('end'),
-        });
+      if (validation) {
+        const res: AxiosResponse = await customAxios.put(`v1/garden/using/${myGarden?.id}`, uploadData);
         if (res.status === 200) nav(-1);
       }
     } catch (err) {
-      console.log(err);
+      alert('날씨형식이 올바르지않습니다.');
     }
   };
 

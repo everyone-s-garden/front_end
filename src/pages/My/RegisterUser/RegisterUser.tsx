@@ -38,7 +38,7 @@ const RegisterUser = () => {
           const base64data = reader.result;
           const formData = await formDataHandler(base64data);
           const res = (await getImages(formData)) as AxiosResponse;
-          setImage(res.data.imageUrl);
+          setImage(res.data?.imageUrl);
         };
       } catch (err) {
         console.log(err);
@@ -50,7 +50,7 @@ const RegisterUser = () => {
     const res = await customAxios('/v1/garden/using');
     setMyGarden(res.data[0]);
 
-    setImage(res.data[0].image);
+    setImage(res.data[0]?.image);
   };
   useEffect(() => {
     if (editMatch) {
