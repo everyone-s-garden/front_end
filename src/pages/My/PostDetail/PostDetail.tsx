@@ -80,7 +80,7 @@ function PostDetail() {
   const deletePost = async () => {
     try {
       const res: AxiosResponse = await customAxios.delete(`v1/garden/${post?.id}`);
-      if (res.status === 204) nav('my');
+      if (res.status === 204) nav('/my');
     } catch (err) {
       console.log(err);
     }
