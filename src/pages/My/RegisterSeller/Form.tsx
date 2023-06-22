@@ -72,6 +72,8 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
       } catch (err) {
         console.log(err);
       }
+    } else {
+      alert('지역은 필수입니다.');
     }
   };
   const handleToilet = () => {

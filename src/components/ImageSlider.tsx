@@ -3,10 +3,9 @@ import styled from 'styled-components';
 
 import arrowIcon from 'assets/image-arrow-icon.svg';
 import { COLOR } from 'constants/style';
-import noImgIcon from 'assets/noImg-icon.svg';
-import empty1 from 'assets/empty_img1.svg';
-import empty2 from 'assets/empty_img2.svg';
-import empty3 from 'assets/empty_img3.svg';
+import empty1 from 'assets/empty_img1.jpg';
+import empty2 from 'assets/empty_img2.jpg';
+import empty3 from 'assets/empty_img3.jpg';
 interface ImageSliderProps {
   images: string[] | undefined;
 }
@@ -76,10 +75,8 @@ const ImageContainer = styled.div`
 `;
 
 const EmptyImg = styled.img`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
 `;
 
 const Image = styled.img`
