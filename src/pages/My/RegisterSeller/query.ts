@@ -52,3 +52,31 @@ export const formDataHandler = async (dataURI: any) => {
   formData.append('file', file);
   return formData;
 };
+
+export const formValidation = (data: IUploadData) => {
+  if (data.address === '') {
+    alert('지역은 필수입니다.');
+    return false;
+  } else if (data.name === '') {
+    alert('텃밭 이름은 필수입니다.');
+    return false;
+  } else if (data.price === '') {
+    alert('가격정보는 필수입니다.');
+    return false;
+  } else if (data.content === '') {
+    alert('상세내용은 필수 입니다.');
+    return false;
+  } else if (data.status === '') {
+    alert('상태는 필수입니다.');
+    return false;
+  } else if (data.images.length === 0) {
+    alert('이미지는 필수입니다.');
+    return false;
+  } else if (data.size === '') {
+    alert('평수는 필수입니다.');
+    return false;
+  } else if (data.contact === '') {
+    alert('전화번호는 필수입니다.');
+    return false;
+  } else return true;
+};

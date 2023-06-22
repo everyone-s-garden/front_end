@@ -1,7 +1,7 @@
 import { useMatch } from 'react-router-dom';
 
 export interface IImage {
-  imageUrl: string;
+  imageUrl: string | undefined;
 }
 export interface IFormData extends FormData {
   append(name: string, value: string | Blob, fileName?: string): void;
@@ -10,7 +10,7 @@ export interface IFormData extends FormData {
 export interface IMyGarden {
   id: number;
   name: string;
-  image: string;
+  image: string | null;
   address: string;
   latitude: number;
   longitude: number;
@@ -43,4 +43,5 @@ export interface IData {
   name: string;
   price?: string;
   type?: string;
+  image?: string;
 }

@@ -4,7 +4,9 @@ import styled from 'styled-components';
 import arrowIcon from 'assets/image-arrow-icon.svg';
 import { COLOR } from 'constants/style';
 import noImgIcon from 'assets/noImg-icon.svg';
-
+import empty1 from 'assets/empty_img1.svg';
+import empty2 from 'assets/empty_img2.svg';
+import empty3 from 'assets/empty_img3.svg';
 interface ImageSliderProps {
   images: string[] | undefined;
 }
@@ -12,7 +14,9 @@ interface ImageSliderProps {
 function ImageSlider({ images }: ImageSliderProps) {
   const sliderRef = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState<number>(0);
-
+  const emptyImages = [empty1, empty2, empty3];
+  const randomImageIndex = Math.floor(Math.random() * emptyImages.length);
+  const randomImage = emptyImages[randomImageIndex];
   const onLeftBtnClicked = () => {
     if (index - 1 < 0) return;
     setIndex(index - 1);
@@ -33,7 +37,7 @@ function ImageSlider({ images }: ImageSliderProps) {
     <SliderDiv>
       <ImageContainer ref={sliderRef}>
         {!images || images.length === 0 ? (
-          <EmptyImg src={noImgIcon} alt="이미지 없음" />
+          <EmptyImg src={randomImage} alt="이미지 없음" />
         ) : (
           images.map((img, idx) => <Image key={idx} src={img} alt="텃밭 이미지" />)
         )}
@@ -76,7 +80,6 @@ const EmptyImg = styled.img`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 50px;
 `;
 
 const Image = styled.img`
