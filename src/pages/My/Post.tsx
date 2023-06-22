@@ -7,9 +7,9 @@ import { BREAK_POINT, FONT_WEIGHT } from 'constants/style';
 import noImgIcon from 'assets/noImg-icon.svg';
 import filterGardenData from 'utils/filterGardenData';
 import { getItem } from 'utils/session';
-import empty1 from 'assets/empty_img1.svg';
-import empty2 from 'assets/empty_img2.svg';
-import empty3 from 'assets/empty_img3.svg';
+import empty1 from 'assets/empty_img1.jpg';
+import empty2 from 'assets/empty_img2.jpg';
+import empty3 from 'assets/empty_img3.jpg';
 interface Idata {
   data: IGardenDetail;
 }
