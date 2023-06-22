@@ -75,6 +75,8 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
       }
     } catch (err) {
       alert('날씨 형식이 올바르지 않습니다.');
+      setValue('start', '');
+      setValue('end', '');
     }
   };
   useEffect(() => {
@@ -99,6 +101,8 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
       }
     } catch (err) {
       alert('날씨형식이 올바르지않습니다.');
+      setValue('start', '');
+      setValue('end', '');
     }
   };
 
