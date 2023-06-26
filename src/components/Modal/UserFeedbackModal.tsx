@@ -204,14 +204,14 @@ const TextArea = styled.textarea`
   height: 100%;
   border: none;
   resize: none;
-
+  font-size: 17px;
   &:focus {
     outline: none;
   }
 
   ::placeholder {
     color: #d9d9d9;
-    font-size: 14px;
+    font-size: 17px;
     font-weight: 300;
   }
 `;

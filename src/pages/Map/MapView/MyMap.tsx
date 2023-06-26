@@ -76,7 +76,7 @@ const MyMap = ({ isLoading, setIsLoading, setIsInitializing, map, setMap }: MyMa
         defaultCenter={new navermaps.LatLng(37.3595704, 127.105399)}
         mapDataControl={false}
         scaleControl={false}
-        defaultZoom={12}
+        defaultZoom={10}
         zoomControl
         zoomControlOptions={{
           style: naver.maps.ZoomControlStyle.SMALL,

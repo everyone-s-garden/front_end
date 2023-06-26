@@ -44,7 +44,7 @@ function ContactGardenModal({ isOpen, setIsOpen, contact }: ContactGardenModalPr
       return;
     }
 
-    // 이후에 문자하기 기능 추가 필요
+    window.location.href = `sms:+82${contact.replaceAll('-', '')}`;
   };
 
   useEffect(() => {

@@ -25,12 +25,12 @@
   font-size: 1.4rem;
   font-weight: bold;
   color: white;
-  background-color: rgba(255, 215, 100, 0.8);
+  background-color: rgba(175, 208, 130, 0.85);
   border-radius: 50%;
 }
 
 .cluster_marker1:hover {
-  background-color: rgba(255, 215, 100, 1);
+  background-color: rgba(175, 208, 130, 1);
   transform: scale(1.1);
   transition: all 0.2s ease-in;
 }

@@ -109,7 +109,6 @@ const Nav = () => {
       setShow(false);
     } else {
       const res = (await getLocationData(query)) as AxiosResponse;
-      console.log(res);
       setSearchResults(res.data);
       setShow(true);
     }
