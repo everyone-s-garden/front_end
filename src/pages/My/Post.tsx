@@ -74,12 +74,10 @@ const PostContainer = styled.div`
 const ImageContainer = styled.div`
   height: 100%;
   display: flex;
-  background-color: #f0fbe4;
   transition: transform 0.4s ease-in-out;
 `;
 
 const EmptyImg = styled.div`
-  background: #f0fbe4;
   border-radius: 8px;
   width: 174px;
   height: 135px;
