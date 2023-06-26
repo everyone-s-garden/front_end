@@ -66,40 +66,41 @@ function GardenDetail() {
   }, [selectedGarden]);
   return (
     <DetailDiv>
-      <ImageSlider images={postData?.images} />
-      <BackBtn onClick={() => setSelectedGarden(null)}>
-        <BackIcon width="8" height="15" stroke="#FFFFFF" strokeWidth="2" />
-      </BackBtn>
-
-      <Body>
-        <Title>{postData?.name}</Title>
-        <Row>
-          <Key>신청기간</Key>
-          {!postData?.recruitStartDate || !postData?.recruitEndDate
-            ? '무제한'
-            : `${postData?.recruitStartDate}  ~ ${postData?.recruitEndDate}`}
-        </Row>
-        <Row>
-          <Key>가격</Key>
-          {filterGardenData.filterPrice(postData?.price!)}
-        </Row>
-        <Row>
-          <Key>면적</Key> {filterGardenData.filterSize(postData?.size!)}
-        </Row>
-        <Row>
-          <Key>부대시설</Key>
-          {postData?.facility.toilet && <Label>화장실</Label>}
-          {postData?.facility.waterway && <Label>수로</Label>}
-          {postData?.facility.equipment && <Label>농기구</Label>}
-          {!postData?.facility.toilet && !postData?.facility.waterway && !postData?.facility.equipment && '없음'}
-        </Row>
-        <Row>
-          <Key>세부사항</Key> {postData?.content ? postData?.content : '없음'}
-        </Row>
-        <Row>
-          <Key>위치</Key> {postData?.address}
-        </Row>
-      </Body>
+      <DetailContainer>
+        <BackBtn onClick={() => setSelectedGarden(null)}>
+          <BackIcon width="8" height="15" stroke="#FFFFFF" strokeWidth="2" />
+        </BackBtn>
+        <ImageSlider images={postData?.images} />
+        <Body>
+          <Title>{postData?.name}</Title>
+          <Row>
+            <Key>신청기간</Key>
+            {!postData?.recruitStartDate || !postData?.recruitEndDate
+              ? '무제한'
+              : `${postData?.recruitStartDate}  ~ ${postData?.recruitEndDate}`}
+          </Row>
+          <Row>
+            <Key>가격</Key>
+            {filterGardenData.filterPrice(postData?.price!)}
+          </Row>
+          <Row>
+            <Key>면적</Key> {filterGardenData.filterSize(postData?.size!)}
+          </Row>
+          <Row>
+            <Key>부대시설</Key>
+            {postData?.facility.toilet && <Label>화장실</Label>}
+            {postData?.facility.waterway && <Label>수로</Label>}
+            {postData?.facility.equipment && <Label>농기구</Label>}
+            {!postData?.facility.toilet && !postData?.facility.waterway && !postData?.facility.equipment && '없음'}
+          </Row>
+          <Row>
+            <Key>세부사항</Key> {postData?.content ? postData?.content : '없음'}
+          </Row>
+          <Row>
+            <Key>위치</Key> {postData?.address}
+          </Row>
+        </Body>
+      </DetailContainer>
 
       <Buttons>
         <ReportBtn
@@ -150,7 +151,15 @@ const DetailDiv = styled.div`
   overflow: hidden;
 `;
 
+const DetailContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+`;
+
 const BackBtn = styled.button`
+  z-index: 100;
   position: absolute;
   top: 30px;
   left: 20px;
@@ -162,7 +171,6 @@ const Body = styled.div`
   padding: 0 36px;
   display: flex;
   flex-direction: column;
-  overflow: scroll;
 `;
 
 const Title = styled.h1`

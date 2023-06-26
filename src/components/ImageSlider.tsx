@@ -61,6 +61,7 @@ function ImageSlider({ images }: ImageSliderProps) {
 export default ImageSlider;
 
 const SliderDiv = styled.div`
+  flex-shrink: 0;
   position: relative;
   width: 100%;
   height: 289.39px;
