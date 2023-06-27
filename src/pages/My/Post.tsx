@@ -78,23 +78,12 @@ const ImageContainer = styled.div`
 `;
 
 const EmptyImg = styled.div`
-<<<<<<< HEAD
-=======
-  background: #f0fbe4;
->>>>>>> f52d794 (Feat: 수정(#8))
   border-radius: 8px;
   width: 174px;
   height: 135px;
   display: flex;
   align-items: center;
   justify-content: center;
-<<<<<<< HEAD
-=======
-  img {
-    height: 45px;
-    width: 45px;
-  }
->>>>>>> f52d794 (Feat: 수정(#8))
 `;
 
 const Image = styled.img`
