@@ -117,7 +117,11 @@ function GardenDetail() {
           <img src={reportIcon} />
           신고하기
         </ReportBtn>
+<<<<<<< HEAD
         <ZzimBtn onClick={onLikeClicked}>
+=======
+        <ZzimBtn onClick={play}>
+>>>>>>> bc55b76 (Feat: play 함수 error (#8))
           {postData?.liked ? (
             <HeartImg src={Heart} />
           ) : (
