@@ -24,7 +24,7 @@ function GardenPost({ id, name, size, price, images, status }: GardenPostProps) 
   return (
     <Post>
       {images.length > 0 ? (
-        <Image src={images[0]} alt="텃밭 이미지"></Image>
+        <Image src={images[0]} alt="텃밭 이미지" onClick={() => setSelectedGarden(id)}></Image>
       ) : (
         <NoImage src={randomImage} alt="이미지 없음" />
       )}
