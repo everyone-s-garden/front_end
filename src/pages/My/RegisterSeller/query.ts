@@ -7,14 +7,31 @@ export const UploadData = async (uploadData: IUploadData) => {
 };
 export const inputPriceFormat = (str: string) => {
   const comma = (str: string) => {
-    str = String(str);
+    str = String(str.slice(0, 8));
     return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
   };
   const uncomma = (str: string) => {
     str = String(str);
     return str.replace(/[^\d]+/g, '');
   };
-  return comma(uncomma(str));
+
+  str = comma(uncomma(str));
+
+  return str.slice(0, 10);
+};
+export const inputSizeFormat = (str: string) => {
+  const comma = (str: string) => {
+    str = String(str.slice(0, 4));
+    return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+  };
+  const uncomma = (str: string) => {
+    str = String(str);
+    return str.replace(/[^\d]+/g, '');
+  };
+
+  str = comma(uncomma(str));
+
+  return str.slice(0, 5);
 };
 
 export const uncommaPrice = (str: string) => {

@@ -1,21 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
-import arrowIcon from 'assets/image-arrow-icon.svg';
+import { imageMagnifImagesAtom, selectedGardenIdAtom } from 'recoil/atom';
 import { COLOR } from 'constants/style';
+import arrowIcon from 'assets/image-arrow-icon.svg';
 import empty1 from 'assets/empty_img1.jpg';
 import empty2 from 'assets/empty_img2.jpg';
 import empty3 from 'assets/empty_img3.jpg';
+
 interface ImageSliderProps {
   images: string[] | undefined;
 }
 
 function ImageSlider({ images }: ImageSliderProps) {
   const sliderRef = useRef<HTMLDivElement>(null);
+  const selectedGardenId = useRecoilValue(selectedGardenIdAtom);
+  const setImageMagnifImages = useSetRecoilState(imageMagnifImagesAtom);
   const [index, setIndex] = useState<number>(0);
   const emptyImages = [empty1, empty2, empty3];
-  const randomImageIndex = Math.floor(Math.random() * emptyImages.length);
-  const randomImage = emptyImages[randomImageIndex];
+  const randomImage = emptyImages[selectedGardenId ? selectedGardenId % 3 : 0 % 3];
+
   const onLeftBtnClicked = () => {
     if (index - 1 < 0) return;
     setIndex(index - 1);
@@ -38,7 +43,14 @@ function ImageSlider({ images }: ImageSliderProps) {
         {!images || images.length === 0 ? (
           <EmptyImg src={randomImage} alt="이미지 없음" />
         ) : (
-          images.map((img, idx) => <Image key={idx} src={img} alt="텃밭 이미지" />)
+          images.map((img, idx) => (
+            <Image
+              key={idx}
+              src={img}
+              alt="텃밭 이미지"
+              onClick={() => setImageMagnifImages({ images: images, index: idx })}
+            />
+          ))
         )}
       </ImageContainer>
 
@@ -61,6 +73,7 @@ function ImageSlider({ images }: ImageSliderProps) {
 export default ImageSlider;
 
 const SliderDiv = styled.div`
+  flex-shrink: 0;
   position: relative;
   width: 100%;
   height: 289.39px;
