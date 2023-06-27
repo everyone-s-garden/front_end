@@ -131,8 +131,10 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
     else if (getValues('name') === '') setIsOk(false);
     else if (states.end === false && states.recruiting === false && states.regular === false) setIsOk(false);
     else if (getValues('contact') === '') setIsOk(false);
+    else if (location.address === '') setIsOk(false);
+    else if (getValues('content') === '') setIsOk(false);
     else setIsOk(true);
-  }, [images, location, size, price, getValues('name'), states, getValues('contact')]);
+  }, [images, location, size, price, location, states, getValues('contact'), getValues('name'), getValues('content')]);
   const getEditData = async () => {
     try {
       const res: AxiosResponse = await customAxios.get(`v1/garden/${match?.params.id}`);
@@ -501,9 +503,4 @@ const UploadBtn = styled.button<{ isOk: boolean }>`
   font-size: 19px;
   cursor: pointer;
   transition: 0.3s ease-in-out;
-  :hover {
-    background: #414c38;
-    color: white;
-  }
 `;
-// #d9d9d9;
