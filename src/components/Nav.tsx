@@ -18,7 +18,7 @@ import MonthCrop from './Modal/MonthCrop';
 import Notification from './Notification';
 import logoImg from 'assets/logo_horizon.png';
 import mapImg from 'assets/map-icon.svg';
-import homiImg from 'assets/homi-icon.svg';
+import userImg from 'assets/user.svg';
 import { ReactComponent as BackIcon } from 'assets/back-icon.svg';
 import { useNavermaps } from 'react-naver-maps';
 import { AxiosResponse } from 'axios';
@@ -165,7 +165,7 @@ const Nav = () => {
                 <ButtonSpan>내 주변 분양</ButtonSpan>
               </Button>
               <Button active={isMyPage} onClick={() => navigate(`/my`)}>
-                <ButtonImage src={homiImg} alt="맵아이콘" />
+                <ButtonImage src={userImg} alt="맵아이콘" />
                 <ButtonSpan>마이페이지</ButtonSpan>
               </Button>
             </ButtonContainer>

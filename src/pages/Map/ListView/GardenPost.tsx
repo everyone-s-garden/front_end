@@ -19,8 +19,7 @@ interface GardenPostProps {
 function GardenPost({ id, name, size, price, images, status }: GardenPostProps) {
   const [_, setSelectedGarden] = useRecoilState(selectedGardenIdAtom);
   const emptyimages = [empty1, empty2, empty3];
-  const randomImageIndex = Math.floor(Math.random() * emptyimages.length);
-  const randomImage = emptyimages[randomImageIndex];
+  const randomImage = emptyimages[id % 3];
 
   return (
     <Post>
