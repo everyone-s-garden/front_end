@@ -20,6 +20,10 @@ export const isCropOpenAtom = atom<boolean>({
   key: 'isCropOpen',
   default: false,
 });
+export const imageMagnifImagesAtom = atom<{ images: string[]; index: number }>({
+  key: 'imageMagnifImages',
+  default: { images: [], index: 0 },
+});
 
 // Notification Atom
 export const NotiContentAtom = atom<string>({

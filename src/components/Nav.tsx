@@ -5,6 +5,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import { BREAK_POINT, COLOR, FONT_WEIGHT } from '../constants/style';
 import {
+  imageMagnifImagesAtom,
   isCropOpenAtom,
   isFeedbackOpenAtom,
   isLoginAtom,
@@ -24,6 +25,7 @@ import { useNavermaps } from 'react-naver-maps';
 import { AxiosResponse } from 'axios';
 import HttpRequest from 'api/HttpRequest';
 import ReactGA from 'react-ga4';
+import ImageMagnifModal from './Modal/ImageMagnifModal';
 
 export interface ILocation {
   position: string;
@@ -39,6 +41,7 @@ const Nav = () => {
   const [isReportOpen, setIsReportOpen] = useRecoilState(isReportOpenAtom);
   const [isFeedbackOpen, setIsFeedbackOpen] = useRecoilState(isFeedbackOpenAtom);
   const [isCropOpen, setIsCropOpen] = useRecoilState(isCropOpenAtom);
+  const [imageMagnifImages, setImageMagnifImages] = useRecoilState(imageMagnifImagesAtom);
   const setSelectedLocation = useSetRecoilState(selectedMapLocationAtom);
 
   const isMainPage = location.pathname === '/';
@@ -215,6 +218,7 @@ const Nav = () => {
       <ReportModal isOpen={isReportOpen} setIsOpen={setIsReportOpen} />
       <UserFeedbackModal isOpen={isFeedbackOpen} setIsOpen={setIsFeedbackOpen} />
       <MonthCrop isOpen={isCropOpen} setIsOpen={setIsCropOpen} />
+      <ImageMagnifModal data={imageMagnifImages} setData={setImageMagnifImages} />
       <Notification />
 
       <Main url={location.pathname}>
