@@ -176,6 +176,7 @@ const GardenTitle = styled.h2`
   color: ${COLOR.BACKGROUND};
   font-size: 18px;
   font-weight: 500;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 1);
 `;
 
 const MenuWrapper = styled.button`
