@@ -41,7 +41,7 @@ function Weather() {
   interface PTYType {
     [id: number]: string;
   }
-  const PTY: PTYType = { 0: '맑음', 1: '비', 2: '비', 3: '눈', 5: '흐림', 6: '흐림', 7: '흐림' };
+  const PTY: PTYType = { 0: '맑음', 1: '비', 2: '비', 3: '눈', 5: '흐림', 6: '흐림', 7: '눈' };
 
   interface SKYType {
     [id: string]: string;
@@ -193,7 +193,7 @@ function Weather() {
           {region !== '' && (
             <CurrentWeather>
               <CurrentSkyImg
-                src={PTY[sky] === '맑음' ? sunny : PTY[sky] === '흐림' ? cloudy : PTY[sky] === '눈' ? rainy : snowy}
+                src={PTY[sky] === '맑음' ? sunny : PTY[sky] === '흐림' ? cloudy : PTY[sky] === '비' ? rainy : snowy}
                 alt="날씨 이모티콘"
               />
               {temperature}˚

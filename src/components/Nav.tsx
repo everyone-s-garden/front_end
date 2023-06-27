@@ -271,8 +271,9 @@ const LoginBar = styled.div`
 const LoginBtn = styled.button`
   margin-right: 12px;
   padding-top: 14px;
+  padding-bottom: 10px;
   color: #a0aa95;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: ${FONT_WEIGHT.MEDIUM};
 `;
 
