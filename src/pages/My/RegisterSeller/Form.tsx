@@ -7,7 +7,14 @@ import { useDaumPostcodePopup } from 'react-daum-postcode';
 import handleComplete from 'utils/PostCode';
 import customAxios from 'utils/token';
 import { IProps, ILocation, IUploadData, IFaclity, IStates, Idata } from './type';
-import { UploadData, formValidation, inputContactFormat, inputPriceFormat, uncommaPrice } from './query';
+import {
+  UploadData,
+  formValidation,
+  inputContactFormat,
+  inputPriceFormat,
+  uncommaPrice,
+  inputSizeFormat,
+} from './query';
 import { useNavigate } from 'react-router-dom';
 import { AxiosResponse } from 'axios';
 
@@ -190,7 +197,7 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
         <InputWrapper>
           <SizeInput
             value={size}
-            onChange={(e: React.FormEvent<HTMLInputElement>) => setSize(inputPriceFormat(e.currentTarget.value))}
+            onChange={(e: React.FormEvent<HTMLInputElement>) => setSize(inputSizeFormat(e.currentTarget.value))}
             placeholder="면적(평)"
             size={size.length}
           />
