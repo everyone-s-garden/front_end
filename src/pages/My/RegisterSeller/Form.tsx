@@ -25,6 +25,7 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
   const [size, setSize] = useState<string>('');
   const [contact, setContact] = useState<string>('');
   const { handleSubmit, getValues, register, setValue } = useForm();
+  const [isOk, setIsOk] = useState<boolean>(false);
   const [facility, setFacility] = useState({
     toilet: false,
     waterway: false,
@@ -122,6 +123,18 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
       regular: false,
     }));
   };
+
+  useEffect(() => {
+    if (images.length < 1) setIsOk(false);
+    else if (size === '') setIsOk(false);
+    else if (price === '') setIsOk(false);
+    else if (getValues('name') === '') setIsOk(false);
+    else if (states.end === false && states.recruiting === false && states.regular === false) setIsOk(false);
+    else if (getValues('contact') === '') setIsOk(false);
+    else if (location.address === '') setIsOk(false);
+    else if (getValues('content') === '') setIsOk(false);
+    else setIsOk(true);
+  }, [images, location, size, price, location, states, getValues('contact'), getValues('name'), getValues('content')]);
   const getEditData = async () => {
     try {
       const res: AxiosResponse = await customAxios.get(`v1/garden/${match?.params.id}`);
@@ -243,7 +256,7 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
           </EquipBtn>
         </Facility>
         <TextArea {...register('content')} placeholder="기간, 주의사항 등 상세 내용을 입력해주세요." />
-        <UploadBtn>완료</UploadBtn>
+        <UploadBtn isOk={isOk}>완료</UploadBtn>
       </InfoBox>
     </Wrapper>
   );
@@ -479,10 +492,10 @@ const TextArea = styled.textarea`
   }
 `;
 
-const UploadBtn = styled.button`
+const UploadBtn = styled.button<{ isOk: boolean }>`
   width: 348px;
   height: 59px;
-  background-color: #d9d9d9;
+  background-color: ${props => (props.isOk ? '#414c38' : '#d9d9d9')};
   margin: 20px auto;
   border-radius: 15px;
   color: white;
@@ -490,8 +503,4 @@ const UploadBtn = styled.button`
   font-size: 19px;
   cursor: pointer;
   transition: 0.3s ease-in-out;
-  :hover {
-    background: #414c38;
-    color: white;
-  }
 `;
