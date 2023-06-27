@@ -12,7 +12,6 @@ export const inputPriceFormat = (str: string) => {
   };
   const uncomma = (str: string) => {
     str = String(str);
-    console.log(str);
     return str.replace(/[^\d]+/g, '');
   };
 
@@ -27,7 +26,6 @@ export const inputSizeFormat = (str: string) => {
   };
   const uncomma = (str: string) => {
     str = String(str);
-    console.log(str);
     return str.replace(/[^\d]+/g, '');
   };
 
