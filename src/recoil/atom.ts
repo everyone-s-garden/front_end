@@ -2,7 +2,7 @@ import { atom } from 'recoil';
 import { GardenDetailType } from 'api/type';
 import { IGardenDetail } from 'types/GardenDetail';
 import { ILocation } from 'components/Nav';
-
+import { IHashMyGarden } from 'types/MyGarden';
 // Modal Atoms
 export const isReportOpenAtom = atom<boolean>({
   key: 'isReportOpen',
@@ -11,6 +11,10 @@ export const isReportOpenAtom = atom<boolean>({
 export const reportPostIdAtom = atom<number | null>({
   key: 'reportPostId',
   default: null,
+});
+export const isMyPostOpenAtom = atom<boolean>({
+  key: 'isMyPostOpen',
+  default: false,
 });
 export const isFeedbackOpenAtom = atom<boolean>({
   key: 'isFeedbackOpen',
@@ -94,4 +98,9 @@ export const feedbackImgAtom = atom<string[]>({
 export const feedbackCommentAtom = atom<string>({
   key: 'feedbackComment',
   default: '',
+});
+
+export const hasMyGardenAtom = atom<IHashMyGarden | null>({
+  key: 'hasMyGarden',
+  default: null,
 });

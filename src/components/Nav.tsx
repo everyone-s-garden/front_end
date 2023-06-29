@@ -8,6 +8,7 @@ import {
   isCropOpenAtom,
   isFeedbackOpenAtom,
   isLoginAtom,
+  isMyPostOpenAtom,
   isReportOpenAtom,
   selectedMapLocationAtom,
 } from 'recoil/atom';
@@ -24,6 +25,7 @@ import { useNavermaps } from 'react-naver-maps';
 import { AxiosResponse } from 'axios';
 import HttpRequest from 'api/HttpRequest';
 import ReactGA from 'react-ga4';
+import MyPostRemoveModal from './Modal/MyPostRemoveModal';
 
 export interface ILocation {
   position: string;
@@ -39,6 +41,7 @@ const Nav = () => {
   const [isReportOpen, setIsReportOpen] = useRecoilState(isReportOpenAtom);
   const [isFeedbackOpen, setIsFeedbackOpen] = useRecoilState(isFeedbackOpenAtom);
   const [isCropOpen, setIsCropOpen] = useRecoilState(isCropOpenAtom);
+  const [isMyPostOpen, setIsMyPostOpen] = useRecoilState(isMyPostOpenAtom);
   const setSelectedLocation = useSetRecoilState(selectedMapLocationAtom);
 
   const isMainPage = location.pathname === '/';
@@ -216,6 +219,7 @@ const Nav = () => {
       <ReportModal isOpen={isReportOpen} setIsOpen={setIsReportOpen} />
       <UserFeedbackModal isOpen={isFeedbackOpen} setIsOpen={setIsFeedbackOpen} />
       <MonthCrop isOpen={isCropOpen} setIsOpen={setIsCropOpen} />
+      <MyPostRemoveModal isOpen={isMyPostOpen} setIsOpen={setIsMyPostOpen} />
       <Notification />
 
       <Main url={location.pathname}>
