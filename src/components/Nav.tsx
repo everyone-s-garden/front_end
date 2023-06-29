@@ -9,6 +9,7 @@ import {
   isCropOpenAtom,
   isFeedbackOpenAtom,
   isLoginAtom,
+  isMyPostOpenAtom,
   isReportOpenAtom,
   selectedMapLocationAtom,
 } from 'recoil/atom';
@@ -26,6 +27,7 @@ import { AxiosResponse } from 'axios';
 import HttpRequest from 'api/HttpRequest';
 import ReactGA from 'react-ga4';
 import ImageMagnifModal from './Modal/ImageMagnifModal';
+import MyPostRemoveModal from './Modal/MyPostRemoveModal';
 
 export interface ILocation {
   position: string;
@@ -42,6 +44,7 @@ const Nav = () => {
   const [isFeedbackOpen, setIsFeedbackOpen] = useRecoilState(isFeedbackOpenAtom);
   const [isCropOpen, setIsCropOpen] = useRecoilState(isCropOpenAtom);
   const [imageMagnifImages, setImageMagnifImages] = useRecoilState(imageMagnifImagesAtom);
+  const [isMyPostOpen, setIsMyPostOpen] = useRecoilState(isMyPostOpenAtom);
   const setSelectedLocation = useSetRecoilState(selectedMapLocationAtom);
 
   const isMainPage = location.pathname === '/';
@@ -219,6 +222,7 @@ const Nav = () => {
       <UserFeedbackModal isOpen={isFeedbackOpen} setIsOpen={setIsFeedbackOpen} />
       <MonthCrop isOpen={isCropOpen} setIsOpen={setIsCropOpen} />
       <ImageMagnifModal data={imageMagnifImages} setData={setImageMagnifImages} />
+      <MyPostRemoveModal isOpen={isMyPostOpen} setIsOpen={setIsMyPostOpen} />
       <Notification />
 
       <Main url={location.pathname}>

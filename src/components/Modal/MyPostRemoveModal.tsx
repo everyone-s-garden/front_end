@@ -13,7 +13,7 @@ interface ModalProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function Modal({ isOpen, setIsOpen }: ModalProps) {
+function MyPostRemoveModal({ isOpen, setIsOpen }: ModalProps) {
   const [hasMyGarden, setHasMyGarden] = useRecoilState(hasMyGardenAtom);
   const nav = useNavigate();
   const reset = () => {
@@ -49,7 +49,7 @@ function Modal({ isOpen, setIsOpen }: ModalProps) {
   );
 }
 
-export default Modal;
+export default MyPostRemoveModal;
 
 const ModalBackground = styled.div<{ isOpen: boolean }>`
   visibility: ${props => (props.isOpen ? 'visible' : 'hidden')};
