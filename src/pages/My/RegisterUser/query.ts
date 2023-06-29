@@ -65,7 +65,6 @@ export const formValidation = (data: any) => {
     alert('날짜가 유효하지 않습니다.');
     return false;
   }
-
   if (data?.name === undefined || data?.name === '') {
     alert('텃밭 정보는 필수입니다.');
     return false;
