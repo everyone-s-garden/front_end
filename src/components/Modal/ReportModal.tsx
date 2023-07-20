@@ -16,15 +16,12 @@ interface ReportModalProps {
 function ReportModal({ isOpen, setIsOpen }: ReportModalProps) {
   const [reportPostId, setReportPostId] = useRecoilState(reportPostIdAtom);
   const setContent = useSetRecoilState(NotiContentAtom);
-  const [isLogin, setIsLogin] = useState<boolean>(false);
   const [selected, setSelected] = useState<string>('허위매물');
   const [comment, setComment] = useState<string>('');
 
-  useEffect(() => {
-    setIsLogin(Boolean(getItem('isLogin')));
-  }, [isLogin, setIsLogin]);
-
   const onSubmit = async () => {
+    const isLogin = Boolean(getItem('isLogin'));
+
     if (!isLogin) {
       setContent('로그인이 필요한 서비스입니다.');
       return;

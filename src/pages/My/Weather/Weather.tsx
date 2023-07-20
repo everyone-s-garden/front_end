@@ -153,6 +153,7 @@ function Weather() {
             }
           });
         setPTimeData(tempPTData);
+        console.log(tempPTData);
 
         let tempWeeklyData: string[] = [];
         Object.values(weeklyData.data['서울'][0]).forEach((d: any) => {
@@ -162,9 +163,8 @@ function Weather() {
         setWeeklyData(tempWeeklyData);
       };
 
-      setIsLoading(false);
-
       getWeatherData();
+      setIsLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myLocation]);
