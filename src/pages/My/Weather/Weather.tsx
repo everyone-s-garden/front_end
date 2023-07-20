@@ -145,7 +145,6 @@ function Weather() {
         }
 
         let tempPTData: LineGraphData[] = [];
-        console.log(perTData);
         perTData
           .filter((d: any) => d.category === 'TMP')
           .map((d: any, i: any) => {
