@@ -8,25 +8,16 @@ import btnIcon1 from 'assets/my/my-garden-btn-icon1.svg';
 import btnIcon2 from 'assets/my/my-garden-btn-icon2.svg';
 import btnIcon3 from 'assets/my/my-garden-btn-icon3.svg';
 import btnIcon4 from 'assets/my/my-garden-btn-icon4.svg';
-import { ReactComponent as MenuIcon } from 'assets/three-dot-icon.svg';
 import { AxiosResponse } from 'axios';
 import customAxios from 'utils/token';
 import { getItem } from 'utils/session';
+import { useRecoilState } from 'recoil';
+import { hasMyGardenAtom, isMyPostOpenAtom } from 'recoil/atom';
 
-interface IHashMyGarden {
-  address: string;
-  id: number;
-  image: string;
-  latitude: number;
-  longitude: number;
-  name: string;
-  useEndDate: string;
-  useStartDate: string;
-}
 const MyHome = () => {
   const nav = useNavigate();
-  const [hasMyGarden, setHasMyGarden] = useState<IHashMyGarden | null>(null);
-  const [isGardenMenuOpen, setIsGardenMenuOpen] = useState<boolean>(false);
+  const [hasMyGarden, setHasMyGarden] = useRecoilState(hasMyGardenAtom);
+  const [isGardenMenuOpen, setIsGardenMenuOpen] = useRecoilState(isMyPostOpenAtom);
   const userName = getItem('name')?.replaceAll('"', '');
   const init = async () => {
     try {
@@ -40,16 +31,6 @@ const MyHome = () => {
     init();
   }, []);
 
-  const myGardenDelete = async () => {
-    if (hasMyGarden) {
-      try {
-        const res: AxiosResponse = await customAxios.delete(`/v1/garden/using/${hasMyGarden.id}`);
-        if (res.status === 204) nav('/');
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  };
   const calculateRemainingDays = (endDate: string) => {
     const today = new Date();
     const end = new Date(endDate);
@@ -66,13 +47,10 @@ const MyHome = () => {
             <GardenImage src={hasMyGarden?.image || testImg} alt="텃밭 이미지" />
             <GardenTitle>{userName}님의 텃밭</GardenTitle>
 
-            <MenuWrapper onClick={() => setIsGardenMenuOpen(!isGardenMenuOpen)}>
-              <MenuIcon width="3" height="18" fill="#FFFFFF" />
-            </MenuWrapper>
-            <MenuDropdown isOpen={isGardenMenuOpen}>
-              <DropDownBtn onClick={() => nav('/my/garden/edit')}>수정하기</DropDownBtn>
-              <DropDownBtn onClick={myGardenDelete}>삭제하기</DropDownBtn>
-            </MenuDropdown>
+            <Menu>
+              <Edit onClick={() => nav('/my/garden/edit')}>수정</Edit>
+              <Remove onClick={() => setIsGardenMenuOpen(true)}>삭제</Remove>
+            </Menu>
           </GardenImgContainer>
         </MyGardenSection>
       )}
@@ -179,51 +157,6 @@ const GardenTitle = styled.h2`
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 1);
 `;
 
-const MenuWrapper = styled.button`
-  position: absolute;
-  top: 20px;
-  right: 24px;
-  width: 28px;
-  height: 28px;
-  transition: all 0.1s ease-in;
-
-  &:hover {
-    transform: scale(1.1);
-  }
-`;
-
-const MenuDropdown = styled.div<{ isOpen: boolean }>`
-  visibility: ${props => (props.isOpen ? 'visible' : 'hidden')};
-  opacity: ${props => (props.isOpen ? '1' : '0')};
-  position: absolute;
-  top: 50px;
-  right: 24px;
-  width: 200px;
-  background-color: #f4f4f4;
-  border-radius: 14px;
-  transition: all 0.1s ease-in;
-  overflow: hidden;
-
-  button:nth-child(1) {
-    border-bottom: 1px solid #d0d0d0;
-  }
-`;
-
-const DropDownBtn = styled.button`
-  width: 100%;
-  height: 42px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 16px;
-  font-weight: 400;
-  transition: all 0.1s ease-in;
-
-  &:hover {
-    background-color: #e8e8e8;
-  }
-`;
-
 const ContentWrapper = styled.div<{ hasMyGarden: boolean }>`
   margin-top: ${props => (props.hasMyGarden ? '20px' : '40px')};
   width: 100%;
@@ -309,4 +242,54 @@ const AddPostWrapper = styled.div`
   display: flex;
   justify-content: end;
   width: 100%;
+`;
+
+const Menu = styled.div`
+  display: flex;
+  width: 84px;
+  height: 26px;
+  position: absolute;
+  z-index: 99;
+  top: 14px;
+  right: 14px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 6px;
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #818181;
+    font-size: 13px;
+    font-family: Acme;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    border: 1px solid #d5d5d5;
+    background: rgba(255, 255, 255, 0.9);
+    width: 50%;
+    transition: 0.3s ease-in-out;
+    :hover {
+      border: 1px solid #d5d5d5;
+      background: #d5d5d5;
+      color: #818181;
+    }
+  }
+`;
+const Edit = styled.div`
+  border-radius: 6px 0px 0px 6px;
+  border-right: none;
+`;
+
+const Remove = styled.div`
+  border-radius: 0px 6px 6px 0px;
+`;
+
+const Overlay = styled.div`
+  width: 100%;
+  height: 100%;
+  opacity: 0.550000011920929;
+  background: #000;
+  position: absolute;
+  top: 0;
+  left: 0;
 `;
