@@ -23,15 +23,46 @@ export const getQueryData = async (query: string) => {
     return err;
   }
 };
+function validateDates(startDate: string, endDate: string) {
+  // 날짜 형식 검증 (YYYY.MM.DD)
+  const datePattern = /^\d{4}\.\d{2}\.\d{2}$/;
+  if (!datePattern.test(startDate) || !datePattern.test(endDate)) {
+    return false;
+  }
+
+  // 시작 날짜와 종료 날짜 생성
+  const startParts = startDate.split('.').map(Number);
+  const endParts = endDate.split('.').map(Number);
+
+  // 날짜 유효성 검증
+  const start = new Date(startParts[0], startParts[1] - 1, startParts[2]);
+  const end = new Date(endParts[0], endParts[1] - 1, endParts[2]);
+
+  const isValidStart =
+    start.getFullYear() === startParts[0] &&
+    start.getMonth() === startParts[1] - 1 &&
+    start.getDate() === startParts[2];
+  const isValidEnd =
+    end.getFullYear() === endParts[0] && end.getMonth() === endParts[1] - 1 && end.getDate() === endParts[2];
+
+  if (!isValidStart || !isValidEnd) {
+    return false;
+  }
+
+  // 시작 날짜가 종료 날짜보다 큰 경우
+  if (start > end) {
+    return false;
+  }
+
+  return true;
+}
 
 export const formValidation = (data: any) => {
-  let startDate = data?.useStartDate.split('.');
-  let endDate = data?.useEndDate.split('.');
-  for (let i = 0; i < startDate.length; i++) {
-    if (Number(startDate[i]) > Number(endDate[i])) {
-      alert('날짜가 유효하지 않습니다.');
-      return false;
-    }
+  let startDate = data?.useStartDate;
+  let endDate = data?.useEndDate;
+  if (!validateDates(startDate, endDate)) {
+    alert('날짜가 유효하지 않습니다.');
+    return false;
   }
   if (data?.name === undefined || data?.name === '') {
     alert('텃밭 정보는 필수입니다.');
