@@ -145,7 +145,8 @@ function Weather() {
         }
 
         let tempPTData: LineGraphData[] = [];
-        perTData.data['서울']
+        console.log(perTData);
+        perTData
           .filter((d: any) => d.category === 'TMP')
           .map((d: any, i: any) => {
             if (i % 3 === 0 && i < 13) {
@@ -153,10 +154,9 @@ function Weather() {
             }
           });
         setPTimeData(tempPTData);
-        console.log(tempPTData);
 
         let tempWeeklyData: string[] = [];
-        Object.values(weeklyData.data['서울'][0]).forEach((d: any) => {
+        Object.values(weeklyData[0]).forEach((d: any) => {
           const cur = SKY[String(d)];
           if (cur) tempWeeklyData.push(cur);
         });
