@@ -12,6 +12,7 @@ import cloudy from 'assets/weather/cloudy.svg';
 import sunny from 'assets/weather/sunny.svg';
 import snowy from 'assets/weather/snowy.svg';
 import rainy from 'assets/weather/rainy.svg';
+import { GetAllWeatherResponse } from '../../../api/type';
 
 function Weather() {
   const today = new Date();
@@ -81,51 +82,41 @@ function Weather() {
     setMyLocation(location);
   };
 
+  const fetchWeatherData = async () => {
+    try {
+      const data = await WeatherAPI.getAllWeather();
+      setIsError(false);
+      return data.weatherApiResult;
+    } catch (error) {
+      setIsError(true);
+      setIsLoading(false);
+      return null;
+    }
+  };
+
   useEffect(() => {
     setIsLoading(true);
-    let timer: any;
 
-    const getWeatherData = async () => {
-      let data: any;
-      try {
-        data = await WeatherAPI.getAllWeather();
-        data = data.data;
-        setIsError(false);
-      } catch (error) {
-        setIsError(true);
-        setIsLoading(false);
-        return;
-      }
+    const initWeather = async () => {
+      const weatherData = await fetchWeatherData();
+      if (!weatherData) return; // 데이터가 없으면 업데이트 중단
 
       let index = 0;
-      const loopWeather = () => {
-        setTimeout(function () {
-          const cur = data[regions[index]];
-
-          setRegion(regions[index]);
-          setSky(Number(cur.filter((c: any) => c.category === 'PTY')[0].obsrValue));
-          setTemperature(cur.filter((c: any) => c.category === 'T1H')[0].obsrValue);
-          setIsLoading(false);
-
-          index++;
-
-          if (index > 16) {
-            index = 0;
-          }
-
-          loopWeather();
-        }, 8000);
+      const updateWeather = () => {
+        const cur = weatherData[index];
+        setRegion(cur.regionName);
+        setSky(cur.skyValue);
+        setTemperature(cur.temperatureValue);
+        index = (index + 1) % regions.length;
       };
 
-      loopWeather();
+      updateWeather();
+      const intervalId = setInterval(updateWeather, 8000);
+
+      return () => clearInterval(intervalId); // 클린업 함수
     };
 
-    getWeatherData();
-
-    return () => {
-      clearTimeout(timer);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    initWeather();
   }, []);
 
   useEffect(() => {
