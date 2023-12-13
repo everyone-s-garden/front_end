@@ -13,6 +13,15 @@ import sunny from 'assets/weather/sunny.svg';
 import snowy from 'assets/weather/snowy.svg';
 import rainy from 'assets/weather/rainy.svg';
 
+interface WeatherApiResponse {
+  regionName: string;
+  baseDate: string;
+  skyStatus: string;
+  skyValue: string;
+  temperature: string;
+  temperatureValue: string;
+}
+
 function Weather() {
   const today = new Date();
   const weekday = ['일', '월', '화', '수', '목', '금', '토'];
@@ -89,7 +98,8 @@ function Weather() {
       let data: any;
       try {
         data = await WeatherAPI.getAllWeather();
-        data = data.data;
+        //data = data.data;
+        data = data.weatherApiResult;
         setIsError(false);
       } catch (error) {
         setIsError(true);
@@ -100,22 +110,44 @@ function Weather() {
       let index = 0;
       const loopWeather = () => {
         setTimeout(function () {
-          const cur = data[regions[index]];
+          const cur = data.find((item: WeatherApiResponse) => item.regionName === regions[index]);
+      
+          console.log("Current data:", data);
+          console.log("Current region:", regions[index]);
 
           setRegion(regions[index]);
-          setSky(Number(cur.filter((c: any) => c.category === 'PTY')[0].obsrValue));
-          setTemperature(cur.filter((c: any) => c.category === 'T1H')[0].obsrValue);
+          setSky(Number(cur.skyValue)); // 'skyValue'를 사용하여 sky 상태 설정
+          setTemperature(cur.temperatureValue); // 'temperatureValue'를 사용하여 온도 설정
           setIsLoading(false);
-
+      
           index++;
-
-          if (index > 16) {
+      
+          if (index > regions.length - 1) {
             index = 0;
           }
-
+      
           loopWeather();
         }, 8000);
       };
+      
+      // const loopWeather = () => {
+      //   setTimeout(function () {
+      //     const cur = data[regions[index]];
+
+      //     setRegion(regions[index]);
+      //     setSky(Number(cur.filter((c: any) => c.category === 'PTY')[0].obsrValue));
+      //     setTemperature(cur.filter((c: any) => c.category === 'T1H')[0].obsrValue);
+      //     setIsLoading(false);
+
+      //     index++;
+
+      //     if (index > 16) {
+      //       index = 0;
+      //     }
+
+      //     loopWeather();
+      //   }, 8000);
+      // };
 
       loopWeather();
     };
@@ -133,7 +165,7 @@ function Weather() {
       const getWeatherData = async () => {
         let perTData: any;
         let weeklyData: any;
-
+  
         try {
           perTData = await WeatherAPI.getPerTimeWeather(myLocation.lat, myLocation.lng);
           weeklyData = await WeatherAPI.getWeeklyWeather(myLocation.lat, myLocation.lng);
@@ -143,30 +175,77 @@ function Weather() {
           setIsLoading(false);
           return;
         }
-
+  
+        // 시간별 날씨 데이터 처리
         let tempPTData: LineGraphData[] = [];
-        perTData
-          .filter((d: any) => d.category === 'TMP')
-          .map((d: any, i: any) => {
-            if (i % 3 === 0 && i < 13) {
-              tempPTData.push({ time: Number(d.fcstTime) / 100, temp: d.fcstValue });
-            }
+        perTData.weatherTimeResponses
+          .filter((d: any) => d.baseDate)
+          .forEach((d: any) => {
+            tempPTData.push({ time: Number(d.fsctTime) / 100, temp: d.temperature });
           });
         setPTimeData(tempPTData);
-
+  
+        // 주간 날씨 데이터 처리
         let tempWeeklyData: string[] = [];
-        Object.values(weeklyData[0]).forEach((d: any) => {
-          const cur = SKY[String(d)];
-          if (cur) tempWeeklyData.push(cur);
+        weeklyData.weatherDateResponses.forEach((regionData: any) => {
+          Object.values(regionData).forEach((d: any, index: number) => {
+            // 첫 번째 요소(지역명)는 제외
+            if (index > 0) {
+              const cur = SKY[String(d)];
+              if (cur) tempWeeklyData.push(cur);
+            }
+          });
         });
         setWeeklyData(tempWeeklyData);
+  
+        setIsLoading(false);
       };
-
+  
       getWeatherData();
-      setIsLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myLocation]);
+  
+
+  // useEffect(() => {
+  //   if (myLocation) {
+  //     const getWeatherData = async () => {
+  //       let perTData: any;
+  //       let weeklyData: any;
+
+  //       try {
+  //         perTData = await WeatherAPI.getPerTimeWeather(myLocation.lat, myLocation.lng);
+  //         weeklyData = await WeatherAPI.getWeeklyWeather(myLocation.lat, myLocation.lng);
+  //         setIsError(false);
+  //       } catch (error) {
+  //         setIsError(true);
+  //         setIsLoading(false);
+  //         return;
+  //       }
+
+  //       let tempPTData: LineGraphData[] = [];
+  //       perTData
+  //         .filter((d: any) => d.category === 'TMP')
+  //         .map((d: any, i: any) => {
+  //           if (i % 3 === 0 && i < 13) {
+  //             tempPTData.push({ time: Number(d.fcstTime) / 100, temp: d.fcstValue });
+  //           }
+  //         });
+  //       setPTimeData(tempPTData);
+
+  //       let tempWeeklyData: string[] = [];
+  //       Object.values(weeklyData[0]).forEach((d: any) => {
+  //         const cur = SKY[String(d)];
+  //         if (cur) tempWeeklyData.push(cur);
+  //       });
+  //       setWeeklyData(tempWeeklyData);
+  //     };
+
+  //     getWeatherData();
+  //     setIsLoading(false);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [myLocation]);
 
   return (
     <Container>
