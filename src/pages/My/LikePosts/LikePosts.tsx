@@ -19,7 +19,6 @@ const LikePosts = () => {
   const [hasMore, setHasMore] = useState(true);
   const [ref, inView] = useInView();
   const nav = useNavigate();
-
   const fetchData = async () => {
     try {
       const res = await customAxios.get(`/v1/garden/like/all?page=${page}`);

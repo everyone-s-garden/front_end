@@ -19,6 +19,7 @@ const RecentPosts = () => {
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [ref, inView] = useInView();
   const nav = useNavigate();
+  console.log(recentLists);
   const fetchData = async () => {
     try {
       const res = await customAxios.get(`/v1/garden/recent?page=${page}`);

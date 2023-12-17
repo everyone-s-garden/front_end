@@ -15,7 +15,6 @@ interface ListViewProps {
 function ListView({ map }: ListViewProps) {
   const [isExpand] = useRecoilState(isExpandAtom);
   const [selectedGarden] = useRecoilState(selectedGardenIdAtom);
-
   return (
     <ListContainer isExpand={isExpand}>
       <ListDiv>{selectedGarden ? <GardenDetail /> : <GardenList />}</ListDiv>

@@ -136,7 +136,9 @@ function PostDetail() {
             {post?.contact}
           </Contact>
 
-          <Content>{post?.content}</Content>
+          <Content>
+            {post?.content === null || post?.content === undefined ? '상세 설명이 없습니다.' : post.content}
+          </Content>
 
           <Location>
             <h4>위치</h4>
