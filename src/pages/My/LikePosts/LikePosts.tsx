@@ -13,14 +13,17 @@ import { useRecoilState } from 'recoil';
 import { likeListsAtom, likePageAtom } from 'recoil/atom';
 import { useInView } from 'react-intersection-observer';
 import { Helmet } from 'react-helmet-async';
+import SkeletonUi from 'components/SkeletonUi';
 const LikePosts = () => {
   const [likeLists, setLikeLists] = useRecoilState(likeListsAtom);
   const [page, setPage] = useRecoilState(likePageAtom);
   const [hasMore, setHasMore] = useState(true);
   const [ref, inView] = useInView();
   const nav = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
   const fetchData = async () => {
     try {
+      setIsLoading(true);
       const res = await customAxios.get(`/v1/garden/like/all?page=${page}`);
       const newData: IGardenDetail[] = res.data;
       if (newData.length === 0) {
@@ -33,6 +36,7 @@ const LikePosts = () => {
         setLikeLists(prev => [...prev, ...filteredData]);
         setPage(prevPage => prevPage + 1);
       }
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
     }
@@ -58,8 +62,14 @@ const LikePosts = () => {
 
   const renderPosts = likeLists.map((i: IGardenDetail) => (
     <PostContainer key={i.id}>
-      <Post data={i} />
-      <CloseIcon src={closeIcon} alt="close" onClick={() => deleteLike(i)} />
+      {isLoading ? (
+        <SkeletonUi />
+      ) : (
+        <>
+          <Post data={i} />
+          <CloseIcon src={closeIcon} alt="close" onClick={() => deleteLike(i)} />
+        </>
+      )}
     </PostContainer>
   ));
 
