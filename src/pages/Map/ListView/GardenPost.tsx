@@ -20,7 +20,6 @@ function GardenPost({ id, name, size, price, images, status }: GardenPostProps) 
   const [_, setSelectedGarden] = useRecoilState(selectedGardenIdAtom);
   const emptyimages = [empty1, empty2, empty3];
   const randomImage = emptyimages[id % 3];
-
   return (
     <Post>
       {images.length > 0 ? (
@@ -37,7 +36,13 @@ function GardenPost({ id, name, size, price, images, status }: GardenPostProps) 
           {status === 'ALWAYS_ACTIVE' && <Text>상시 모집</Text>}
           {status === null && <Text>상시 모집</Text>}
         </Status>
-        <Title onClick={() => setSelectedGarden(id)}>{name.trim()}</Title>
+        <Title
+          onClick={() => {
+            setSelectedGarden(id);
+          }}
+        >
+          {name.trim()}
+        </Title>
         <Value>{size}</Value>
         <Value>{price}</Value>
       </InfoDiv>

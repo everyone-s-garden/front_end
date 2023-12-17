@@ -9,7 +9,6 @@ import faceImg from 'assets/map/no_garden_illust.jpg';
 
 function GardenList() {
   const [gardens] = useRecoilState(gardensAtom);
-
   return (
     <ListContainer>
       {gardens && gardens.length > 0 ? (
