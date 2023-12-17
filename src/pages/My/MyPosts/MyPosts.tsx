@@ -12,16 +12,19 @@ import { useInView } from 'react-intersection-observer';
 import { AxiosResponse } from 'axios';
 import { IGardenDetail } from 'types/GardenDetail';
 import { Helmet } from 'react-helmet-async';
+import SkeletonUi from 'components/SkeletonUi';
 
 const MyPosts = () => {
   const [myPosts, setMyPosts] = useRecoilState<IGardenDetail[]>(myListsAtom);
   const [page, setPage] = useRecoilState(myPageAtom);
   const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [ref, inView] = useInView();
   const nav = useNavigate();
 
   const fetchData = async () => {
     try {
+      setIsLoading(true);
       const res = (await customAxios.get(`/v1/garden/mine?page=${page}`)) as AxiosResponse;
       const newData: IGardenDetail[] = res.data;
 
@@ -35,6 +38,7 @@ const MyPosts = () => {
         setMyPosts(prev => [...prev, ...filteredData]);
         setPage(prevPage => prevPage + 1);
       }
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
     }
@@ -50,9 +54,7 @@ const MyPosts = () => {
     }
   }, []);
   const renderPosts = myPosts.map(i => (
-    <PostContainer key={Math.random()}>
-      <Post data={i} />
-    </PostContainer>
+    <PostContainer key={Math.random()}>{isLoading ? <SkeletonUi /> : <Post data={i} />}</PostContainer>
   ));
 
   return (
