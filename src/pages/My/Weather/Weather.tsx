@@ -12,7 +12,7 @@ import cloudy from 'assets/weather/cloudy.svg';
 import sunny from 'assets/weather/sunny.svg';
 import snowy from 'assets/weather/snowy.svg';
 import rainy from 'assets/weather/rainy.svg';
-import { GetAllWeatherResponse } from '../../../api/type';
+import { GetAllWeatherResponse, GetPerTimeWeatherResponse } from '../../../api/type';
 
 function Weather() {
   const today = new Date();
@@ -71,7 +71,7 @@ function Weather() {
     lng: number;
   } | null>(null);
   const [region, setRegion] = useState<string>('');
-  const [sky, setSky] = useState<number>(0);
+  const [sky, setSky] = useState<string>('');
   const [temperature, setTemperature] = useState<string>('');
   const [pTimeData, setPTimeData] = useState<LineGraphData[] | null>(null);
   const [weeklyData, setWeeklyData] = useState<string[] | null>(null);
@@ -122,7 +122,7 @@ function Weather() {
   useEffect(() => {
     if (myLocation) {
       const getWeatherData = async () => {
-        let perTData: any;
+        let perTData: GetPerTimeWeatherResponse;
         let weeklyData: any;
 
         try {
@@ -136,21 +136,39 @@ function Weather() {
         }
 
         let tempPTData: LineGraphData[] = [];
-        console.log(perTData);
-        perTData
-          .filter((d: any) => d.category === 'TMP')
-          .map((d: any, i: any) => {
-            if (i % 3 === 0 && i < 13) {
-              tempPTData.push({ time: Number(d.fcstTime) / 100, temp: d.fcstValue });
-            }
-          });
+        let tempWeeklyData: string[] = [];
+
+        // perTData.weatherTimeResponses
+        //   .filter((d: any) => d.category === 'TMP')
+        //   .map((d: any, i: any) => {
+        //     if (i % 3 === 0 && i < 13) {
+        //       tempPTData.push({ time: Number(d.fcstTime) / 100, temp: d.fcstValue });
+        //     }
+        //   });
+        perTData.weatherTimeResponses.map((data, index) => {
+          /* getWeeklyWeather API가 기상청 API를 그대로 보내주는데
+           * 기상청 API가 오늘날짜로 부터 2일 후 날씨 정보만 주고 있어 내일 날씨정보를 알 수 없는 문제가 발생됨
+           * getPerTimeWeather의 weatherTimeResponses 마지막 인덱스에 다음날 날씨 정보를 넣어서 주기로 함
+           * **/
+          if (index === 0) {
+            tempWeeklyData.push(data['skyStatus']);
+          }
+          if (index < 5) {
+            tempPTData.push({ time: Number(data.fsctTime) / 100, temp: data.temperature });
+          } else {
+            tempWeeklyData.push(data['skyStatus']);
+          }
+        });
         setPTimeData(tempPTData);
 
-        let tempWeeklyData: string[] = [];
-        Object.values(weeklyData[0]).forEach((d: any) => {
-          const cur = SKY[String(d)];
-          if (cur) tempWeeklyData.push(cur);
-        });
+        // Object.values(weeklyData).forEach((data, index) => {
+        // const cur = SKY[String(d)];
+        // if (cur) tempWeeklyData.push(cur);
+        // });
+        Object.keys(weeklyData)
+          .filter(data => data !== 'regionName')
+          .map(key => tempWeeklyData.push(weeklyData[key]));
+        console.log(tempWeeklyData);
         setWeeklyData(tempWeeklyData);
       };
 
@@ -184,13 +202,13 @@ function Weather() {
           {region !== '' && (
             <CurrentWeather>
               <CurrentSkyImg
-                src={PTY[sky] === '맑음' ? sunny : PTY[sky] === '흐림' ? cloudy : PTY[sky] === '비' ? rainy : snowy}
+                src={sky === '맑음' ? sunny : sky === '흐림' ? cloudy : sky === '비' ? rainy : snowy}
                 alt="날씨 이모티콘"
               />
               {temperature}˚
               <Info>
                 <Location>{region}</Location>
-                <Sky>{PTY[sky]}</Sky>
+                <Sky>{sky}</Sky>
               </Info>
             </CurrentWeather>
           )}
