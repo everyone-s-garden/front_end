@@ -34,7 +34,6 @@ window.addEventListener('resize', () => {
 
 // React 코드...
 
-serviceWorkerRegistration.register();
 const router = createBrowserRouter([
   {
     path: '/',
@@ -126,3 +125,5 @@ root.render(
     </HelmetProvider>
   </RecoilRoot>,
 );
+serviceWorkerRegistration.register();
+// serviceWorker.register()
