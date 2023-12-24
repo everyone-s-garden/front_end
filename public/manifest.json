@@ -95,8 +95,6 @@
     {
       "src": "./icons/favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
-<<<<<<< HEAD
-=======
       "type": "image/x-icon"
     },
     {
@@ -202,7 +200,6 @@
     {
       "src": "./icons/mstile-310x310.png",
       "sizes": "310x310",
->>>>>>> 1ee33af056dd4e9be9f69eb7adec6ae822e3ff2a
       "type": "image/png"
     }
   ],
