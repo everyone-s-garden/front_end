@@ -13,9 +13,11 @@ export const GardenAPI = {
     const typeList = ['All', 'PUBLIC', 'PRIVATE'];
 
     const { data } = await HttpRequest.get(
-      `/v2/gardens/by-complexes?gardenType=PUBLIC&pageNumber=0&startLat=${bounds.minY()}&startLong=${bounds.minX()}&endLat=${bounds.maxY()}&endLong=${bounds.maxX()}`,
+      `/v2/gardens/by-complexes?gardenType=${
+        typeList[type]
+      }&pageNumber=0&startLat=${bounds.minY()}&startLong=${bounds.minX()}&endLat=${bounds.maxY()}&endLong=${bounds.maxX()}`,
     );
-    console.log('publicData', data.gardenByComplexesResponses);
+    // console.log('publicData', data.gardenByComplexesResponses);
     return data.gardenByComplexesResponses;
   },
 
