@@ -1,9 +1,10 @@
 // src/serviceWorkerRegistration.js
 
 export const register = () => {
-  if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
+  // if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
+  if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      const swUrl = `${window.location.origin}/serviceWorker.js`;
+      const swUrl = `./serviceWorker.js`;
       navigator.serviceWorker
         .register(swUrl)
         .then(registration => {
