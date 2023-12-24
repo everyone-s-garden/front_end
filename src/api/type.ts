@@ -75,12 +75,15 @@ export interface GardenUsing {
   useEndDate: string;
 }
 
-export interface Corp {
-  id: number;
+interface ICropInfos {
   name: string;
   description: string;
   link: string;
-  image: string;
+}
+
+export interface Corp {
+  month: number;
+  cropInfos: ICropInfos[];
 }
 
 // Weather

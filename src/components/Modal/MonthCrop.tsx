@@ -15,15 +15,14 @@ interface MonthCropProps {
 function MonthCrop({ isOpen, setIsOpen }: MonthCropProps) {
   const [month, setMonth] = useState<number>(new Date().getMonth() + 1);
   const [crop, setCrop] = useState<Corp[] | null>(null);
-
   useEffect(() => {
     const fetchData = async () => {
-      const data = await HttpRequest.get(`/v1/crop?month=${month}`);
-      setCrop(data.data);
+      const res = await HttpRequest.get(`/v1/crops`);
+      const crops = res.data.cropsResponses;
+      setCrop(crops);
     };
     fetchData();
-  }, [month]);
-
+  }, []);
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <ModalContent>
@@ -33,7 +32,14 @@ function MonthCrop({ isOpen, setIsOpen }: MonthCropProps) {
 
         <CropsContainer>
           {crop &&
-            crop.map((crop, idx) => <Crop key={idx} name={crop.name} content={crop.description} link={crop.link} />)}
+            crop.map((cropsData, idx) => {
+              if (cropsData.month === month) {
+                return cropsData.cropInfos.map((v, i) => {
+                  return <Crop key={`${v.name}-i`} name={v.name} content={v.description} link={v.link} />;
+                });
+              }
+              return null;
+            })}
         </CropsContainer>
       </ModalContent>
     </Modal>
