@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { isValidElement, useEffect, useState } from 'react';
 import axios, { AxiosResponse } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Loader from 'components/Loader';
@@ -10,9 +10,12 @@ const Token = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const nav = useNavigate();
   const setIsLogin = useSetRecoilState<boolean>(isLoginAtom);
-  const getCode = async () => {
+
+  const fetchKakaoApi = async (code: string | null) => {
+    if (code === null) {
+      throw new Error('get kakao code is missing');
+    }
     try {
-      const code: string | null = new URLSearchParams(window.location.search).get('code');
       const res_kakao: AxiosResponse = await axios.post<IData>(
         `https://kauth.kakao.com/oauth/token`,
         {
@@ -28,7 +31,18 @@ const Token = () => {
           },
         },
       );
-      const data: IData = res_kakao.data;
+      return res_kakao.data;
+    } catch (err) {
+      console.log('err reason :', err);
+      throw new Error(`kakao api error : ${err}`);
+    }
+  };
+
+  const fetchServerApi = async (data: IData) => {
+    if (data === null) {
+      throw new Error('to request server data is missing');
+    }
+    try {
       const res_server: AxiosResponse = await axios.get<IData_Sever>(
         `${process.env.REACT_APP_API_BASE_URL}auth/kakao`,
         {
@@ -37,9 +51,20 @@ const Token = () => {
           },
         },
       );
-      setItem('name', res_server.data.name);
-      setItem('userId', res_server.data.userId);
-      setItem('access_token', res_server.data.appToken);
+      return res_server.data;
+    } catch (err) {
+      throw new Error(`server api error : ${err}`);
+    }
+  };
+
+  const getCode = async () => {
+    try {
+      const code: string | null = new URLSearchParams(window.location.search).get('code');
+      const responseKakao: IData = await fetchKakaoApi(code);
+      const responseServer = await fetchServerApi(responseKakao);
+      setItem('name', responseServer.name);
+      setItem('userId', responseServer.userId);
+      setItem('access_token', responseServer.appToken);
       setItem('isLogin', 'true');
       setIsLogin(true);
       nav('/');
