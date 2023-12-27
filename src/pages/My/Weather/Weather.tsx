@@ -12,7 +12,7 @@ import cloudy from 'assets/weather/cloudy.svg';
 import sunny from 'assets/weather/sunny.svg';
 import snowy from 'assets/weather/snowy.svg';
 import rainy from 'assets/weather/rainy.svg';
-import { GetAllWeatherResponse, GetPerTimeWeatherResponse } from '../../../api/type';
+import { GetAllWeatherResponse, GetPerTimeWeatherResponse, GetWeeklyWeatherResponse } from '../../../api/type';
 
 function Weather() {
   const today = new Date();
@@ -99,6 +99,7 @@ function Weather() {
 
     const initWeather = async () => {
       const weatherData = await fetchWeatherData();
+      console.log(weatherData);
       if (!weatherData) return; // 데이터가 없으면 업데이트 중단
 
       let index = 0;
@@ -123,7 +124,7 @@ function Weather() {
     if (myLocation) {
       const getWeatherData = async () => {
         let perTData: GetPerTimeWeatherResponse;
-        let weeklyData: any;
+        let weeklyData: GetWeeklyWeatherResponse;
 
         try {
           perTData = await WeatherAPI.getPerTimeWeather(myLocation.lat, myLocation.lng);
@@ -137,14 +138,6 @@ function Weather() {
 
         let tempPTData: LineGraphData[] = [];
         let tempWeeklyData: string[] = [];
-
-        // perTData.weatherTimeResponses
-        //   .filter((d: any) => d.category === 'TMP')
-        //   .map((d: any, i: any) => {
-        //     if (i % 3 === 0 && i < 13) {
-        //       tempPTData.push({ time: Number(d.fcstTime) / 100, temp: d.fcstValue });
-        //     }
-        //   });
         perTData.weatherTimeResponses.map((data, index) => {
           /* getWeeklyWeather API가 기상청 API를 그대로 보내주는데
            * 기상청 API가 오늘날짜로 부터 2일 후 날씨 정보만 주고 있어 내일 날씨정보를 알 수 없는 문제가 발생됨
@@ -160,22 +153,20 @@ function Weather() {
           }
         });
         setPTimeData(tempPTData);
-
-        // Object.values(weeklyData).forEach((data, index) => {
-        // const cur = SKY[String(d)];
-        // if (cur) tempWeeklyData.push(cur);
-        // });
-        Object.keys(weeklyData)
-          .filter(data => data !== 'regionName')
-          .map(key => tempWeeklyData.push(weeklyData[key]));
-        console.log(tempWeeklyData);
+        tempWeeklyData = [
+          ...tempWeeklyData,
+          weeklyData.skyStatusTwoDaysAfter,
+          weeklyData.skyStatusThreeDaysAfter,
+          weeklyData.skyStatusFourDaysAfter,
+          weeklyData.skyStatusFiveDaysAfter,
+          weeklyData.skyStatusSixDaysAfter,
+        ];
         setWeeklyData(tempWeeklyData);
       };
 
       getWeatherData();
       setIsLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myLocation]);
 
   return (
