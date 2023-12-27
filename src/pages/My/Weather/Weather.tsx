@@ -12,7 +12,7 @@ import cloudy from 'assets/weather/cloudy.svg';
 import sunny from 'assets/weather/sunny.svg';
 import snowy from 'assets/weather/snowy.svg';
 import rainy from 'assets/weather/rainy.svg';
-import { GetAllWeatherResponse, GetPerTimeWeatherResponse, GetWeeklyWeatherResponse } from '../../../api/type';
+import { WeatherData } from '../../../api/type';
 
 function Weather() {
   const today = new Date();
@@ -39,30 +39,6 @@ function Weather() {
     '충남',
     '충북',
   ];
-  interface PTYType {
-    [id: number]: string;
-  }
-  const PTY: PTYType = { 0: '맑음', 1: '비', 2: '비', 3: '눈', 5: '흐림', 6: '흐림', 7: '눈' };
-
-  interface SKYType {
-    [id: string]: string;
-  }
-  const SKY: SKYType = {
-    '"1"': '맑음',
-    '"3"': '구름많음',
-    '"4"': '흐림',
-    흐림: '흐림',
-    '흐리고 비': '비',
-    '흐리고 눈': '눈',
-    '흐리고 비/눈': '비',
-    '흐리고 소나기': '비',
-    구름많음: '흐림',
-    '구름많고 비': '비',
-    '구름많고 눈': '눈',
-    '구름많고 비/눈': '눈',
-    '구름많고 소나기': '비',
-    맑음: '맑음',
-  };
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
@@ -82,38 +58,39 @@ function Weather() {
     setMyLocation(location);
   };
 
-  const fetchWeatherData = async () => {
-    try {
-      const data = await WeatherAPI.getAllWeather();
-      setIsError(false);
-      return data.weatherApiResult;
-    } catch (error) {
-      setIsError(true);
-      setIsLoading(false);
-      return null;
-    }
-  };
-
   useEffect(() => {
-    setIsLoading(true);
+    const fetchWeatherData = async () => {
+      try {
+        setIsLoading(true);
+        const data = await WeatherAPI.getAllWeather();
+        setIsLoading(false);
+        return data.weatherApiResult;
+      } catch (error) {
+        setIsError(true);
+        setIsLoading(false);
+        return null;
+      }
+    };
 
-    const initWeather = async () => {
-      const weatherData = await fetchWeatherData();
-      console.log(weatherData);
-      if (!weatherData) return; // 데이터가 없으면 업데이트 중단
-
+    const updateWeather = (weatherData: WeatherData[]) => {
       let index = 0;
-      const updateWeather = () => {
+      return () => {
         const cur = weatherData[index];
         setRegion(cur.regionName);
         setSky(cur.skyValue);
         setTemperature(cur.temperatureValue);
         index = (index + 1) % regions.length;
       };
+    };
 
-      updateWeather();
-      const intervalId = setInterval(updateWeather, 8000);
+    const initWeather = async () => {
+      const weatherData = await fetchWeatherData();
+      if (!weatherData) return; // 데이터가 없으면 업데이트 중단
 
+      const updateWeatherFn = updateWeather(weatherData);
+      updateWeatherFn(); // 초기 업데이트
+
+      const intervalId = setInterval(updateWeatherFn, 8000);
       return () => clearInterval(intervalId); // 클린업 함수
     };
 
@@ -123,45 +100,39 @@ function Weather() {
   useEffect(() => {
     if (myLocation) {
       const getWeatherData = async () => {
-        let perTData: GetPerTimeWeatherResponse;
-        let weeklyData: GetWeeklyWeatherResponse;
-
+        setIsLoading(true);
+        setIsError(false);
         try {
-          perTData = await WeatherAPI.getPerTimeWeather(myLocation.lat, myLocation.lng);
-          weeklyData = await WeatherAPI.getWeeklyWeather(myLocation.lat, myLocation.lng);
-          setIsError(false);
-        } catch (error) {
-          setIsError(true);
-          setIsLoading(false);
-          return;
-        }
+          const [perTData, weeklyData] = await Promise.all([
+            WeatherAPI.getPerTimeWeather(myLocation.lat, myLocation.lng),
+            WeatherAPI.getWeeklyWeather(myLocation.lat, myLocation.lng),
+          ]);
 
-        let tempPTData: LineGraphData[] = [];
-        let tempWeeklyData: string[] = [];
-        perTData.weatherTimeResponses.map((data, index) => {
           /* getWeeklyWeather API가 기상청 API를 그대로 보내주는데
            * 기상청 API가 오늘날짜로 부터 2일 후 날씨 정보만 주고 있어 내일 날씨정보를 알 수 없는 문제가 발생됨
            * getPerTimeWeather의 weatherTimeResponses 마지막 인덱스에 다음날 날씨 정보를 넣어서 주기로 함
            * **/
-          if (index === 0) {
-            tempWeeklyData.push(data['skyStatus']);
-          }
-          if (index < 5) {
-            tempPTData.push({ time: Number(data.fsctTime) / 100, temp: data.temperature });
-          } else {
-            tempWeeklyData.push(data['skyStatus']);
-          }
-        });
-        setPTimeData(tempPTData);
-        tempWeeklyData = [
-          ...tempWeeklyData,
-          weeklyData.skyStatusTwoDaysAfter,
-          weeklyData.skyStatusThreeDaysAfter,
-          weeklyData.skyStatusFourDaysAfter,
-          weeklyData.skyStatusFiveDaysAfter,
-          weeklyData.skyStatusSixDaysAfter,
-        ];
-        setWeeklyData(tempWeeklyData);
+          const tempPTData = perTData.weatherTimeResponses
+            .slice(0, 5)
+            .map(data => ({ time: Number(data.fsctTime) / 100, temp: data.temperature }));
+
+          const tempWeeklyData = [
+            perTData.weatherTimeResponses[0].skyStatus,
+            ...perTData.weatherTimeResponses.slice(5).map(data => data.skyStatus),
+            weeklyData.skyStatusTwoDaysAfter,
+            weeklyData.skyStatusThreeDaysAfter,
+            weeklyData.skyStatusFourDaysAfter,
+            weeklyData.skyStatusFiveDaysAfter,
+            weeklyData.skyStatusSixDaysAfter,
+          ];
+
+          setPTimeData(tempPTData);
+          setWeeklyData(tempWeeklyData);
+        } catch (error) {
+          setIsError(true);
+        } finally {
+          setIsLoading(false);
+        }
       };
 
       getWeatherData();
