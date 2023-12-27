@@ -7,12 +7,11 @@ import LineGraph, { LineGraphData } from './LineGraph';
 import WeekWeather from './WeekWeather';
 import findMyGeoLocation from 'utils/findMyGeoLocation';
 import MiniLoader from 'components/MiniLoader';
-
+import { WeatherData } from '../../../api/type';
 import cloudy from 'assets/weather/cloudy.svg';
 import sunny from 'assets/weather/sunny.svg';
 import snowy from 'assets/weather/snowy.svg';
 import rainy from 'assets/weather/rainy.svg';
-import { WeatherData } from '../../../api/type';
 
 function Weather() {
   const today = new Date();
@@ -185,91 +184,14 @@ function Weather() {
               <WeeklyWeather>
                 <SubjectTitle>주간 날씨</SubjectTitle>
                 <WeeklyWeatherBox>
-                  <WeekWeather
-                    imgFile={
-                      weeklyData[0] === '맑음'
-                        ? sunny
-                        : weeklyData[0] === '흐림'
-                        ? cloudy
-                        : weeklyData[0] === '눈'
-                        ? snowy
-                        : rainy
-                    }
-                    weekday={weekday[day]}
-                    isToday={true}
-                  />
-                  <WeekWeather
-                    imgFile={
-                      weeklyData[1] === '맑음'
-                        ? sunny
-                        : weeklyData[1] === '흐림'
-                        ? cloudy
-                        : weeklyData[1] === '눈'
-                        ? snowy
-                        : rainy
-                    }
-                    weekday={weekday[(day + 1) % 7]}
-                  />
-                  <WeekWeather
-                    imgFile={
-                      weeklyData[2] === '맑음'
-                        ? sunny
-                        : weeklyData[2] === '흐림'
-                        ? cloudy
-                        : weeklyData[2] === '눈'
-                        ? snowy
-                        : rainy
-                    }
-                    weekday={weekday[(day + 2) % 7]}
-                  />
-                  <WeekWeather
-                    imgFile={
-                      weeklyData[3] === '맑음'
-                        ? sunny
-                        : weeklyData[3] === '흐림'
-                        ? cloudy
-                        : weeklyData[3] === '눈'
-                        ? snowy
-                        : rainy
-                    }
-                    weekday={weekday[(day + 3) % 7]}
-                  />
-                  <WeekWeather
-                    imgFile={
-                      weeklyData[4] === '맑음'
-                        ? sunny
-                        : weeklyData[4] === '흐림'
-                        ? cloudy
-                        : weeklyData[4] === '눈'
-                        ? snowy
-                        : rainy
-                    }
-                    weekday={weekday[(day + 4) % 7]}
-                  />
-                  <WeekWeather
-                    imgFile={
-                      weeklyData[5] === '맑음'
-                        ? sunny
-                        : weeklyData[5] === '흐림'
-                        ? cloudy
-                        : weeklyData[5] === '눈'
-                        ? snowy
-                        : rainy
-                    }
-                    weekday={weekday[(day + 5) % 7]}
-                  />
-                  <WeekWeather
-                    imgFile={
-                      weeklyData[6] === '맑음'
-                        ? sunny
-                        : weeklyData[6] === '흐림'
-                        ? cloudy
-                        : weeklyData[6] === '눈'
-                        ? snowy
-                        : rainy
-                    }
-                    weekday={weekday[(day + 6) % 7]}
-                  />
+                  {weeklyData.map((week, index) => (
+                    <WeekWeather
+                      key={index}
+                      imageType={week}
+                      weekday={weekday[(day + index) % 7]}
+                      isToday={index === 0}
+                    />
+                  ))}
                 </WeeklyWeatherBox>
               </WeeklyWeather>
 
