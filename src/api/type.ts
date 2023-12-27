@@ -83,8 +83,6 @@ export interface Corp {
   image: string;
 }
 
-// Weather
-
 export interface WeatherType {
   baseDate: string;
   category: string;
@@ -101,7 +99,7 @@ export interface GetPerTimeWeatherResponse {
   regionName: string;
 }
 
-interface WeatherData {
+export interface WeatherData {
   regionName: string;
   skyValue: string;
   temperatureValue: string;
