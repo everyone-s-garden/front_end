@@ -17,7 +17,11 @@ function MonthCrop({ isOpen, setIsOpen }: MonthCropProps) {
   const [crop, setCrop] = useState<Corp[] | null>(null);
   useEffect(() => {
     const fetchData = async () => {
+<<<<<<< HEAD
       const res = await HttpRequest.get(`/v1/crops`);
+=======
+      const res = await HttpRequest.get(`v1/crops`);
+>>>>>>> 56548e554b27e041a8a20449eafad3f0be5e6021
       const crops = res.data.cropsResponses;
       setCrop(crops);
     };

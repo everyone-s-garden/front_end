@@ -28,6 +28,7 @@ import HttpRequest from 'api/HttpRequest';
 import ReactGA from 'react-ga4';
 import ImageMagnifModal from './Modal/ImageMagnifModal';
 import MyPostRemoveModal from './Modal/MyPostRemoveModal';
+import { removeCookie } from 'utils/cookie';
 
 export interface ILocation {
   position: string;
@@ -78,19 +79,19 @@ const Nav = () => {
     }
   }, [initialized, location]);
 
-  useEffect(() => {
-    setIsLogin(Boolean(getItem('isLogin')));
-  }, [isLogin, setIsLogin]);
-
   const login = () => {
     navigate('/login');
   };
 
   const logout = () => {
+    removeCookie('refresh_token');
     sessionStorage.clear();
     setIsLogin(false);
     navigate('/');
   };
+  useEffect(() => {
+    setIsLogin(Boolean(getItem('isLogin')));
+  }, [isLogin, setIsLogin]);
 
   const getBackNavURL = () => {
     if (isMapPage || isMyPage) return '/';
