@@ -5,6 +5,8 @@ import Loader from 'components/Loader';
 import { setItem } from 'utils/session';
 import { isLoginAtom } from 'recoil/atom';
 import { useSetRecoilState } from 'recoil';
+import { setCookie } from 'utils/cookie';
+
 const NaverToken = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const nav = useNavigate();
@@ -17,24 +19,29 @@ const NaverToken = () => {
     return token;
   };
 
+  const getServerApi = async () => {
+    const naver_access_token = getNaverToken();
+    const server_response = await axios.post(
+      `${process.env.REACT_APP_API_BASE_URL}v1/auth/naver`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${naver_access_token}`,
+        },
+      },
+    );
+
+    return server_response.data;
+  };
   const getCode = async () => {
     try {
-      const accessToken = getNaverToken();
-      const server_response = await axios.post(
-        `https://every-garden.kro.kr/v1/auth/naver`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      );
+      const response_server = await getServerApi();
 
-      const { access_token, refresh_token } = server_response.data;
       // setItem('name', res_server.data.name);
       // setItem('userId', res_server.data.userId);
-      setItem('access_token', access_token);
-      setItem('refresh_token', refresh_token);
+      const { accessToken, refreshToken } = response_server;
+      setItem('access_token', accessToken);
+      setCookie('refresh_token', refreshToken);
       setItem('isLogin', 'true');
       setIsLogin(true);
       nav('/');
