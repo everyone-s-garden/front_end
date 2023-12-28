@@ -12,7 +12,7 @@ import Main from './pages/Main/Main';
 import Map from './pages/Map/Map';
 import Login from './pages/Login/Login';
 import Mypage from 'pages/My/My';
-import Token from 'pages/Login/Kakao/token/token';
+import KaKaoToken from 'pages/Login/Kakao/token/token';
 import RegisterUser from 'pages/My/RegisterUser/RegisterUser';
 import RegisterSeller from 'pages/My/RegisterSeller/RegisterSeller';
 import MyHome from 'pages/My/AfterLogin/MyHome';
@@ -22,6 +22,7 @@ import RecentPosts from 'pages/My/RecentPosts/RecentPosts';
 import MyPosts from 'pages/My/MyPosts/MyPosts';
 import { HelmetProvider } from 'react-helmet-async';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import NaverToken from 'pages/Login/Naver/token/token';
 
 // 모바일 100vh 세팅
 let vh = window.innerHeight * 0.01;
@@ -103,7 +104,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/my/oauth/kakao',
-        element: <Token />,
+        element: <KaKaoToken />,
+      },
+      {
+        path: '/my/oauth/naver',
+        element: <NaverToken />,
       },
     ],
   },
