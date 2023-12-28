@@ -2,11 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import logo from 'assets/logo_horizon.png';
 import Kakao from './Kakao/Kakao';
-import Google from './Google/Google';
+
 import Bubble from 'assets/Bubble.png';
 import { ReactComponent as BackIcon } from 'assets/back-icon.svg';
 import { useNavigate } from 'react-router-dom';
 import { BREAK_POINT } from 'constants/style';
+import Naver from './Naver/Naver';
 
 const Login = () => {
   const nav = useNavigate();
@@ -22,7 +23,7 @@ const Login = () => {
         </BubbleBox>
         <Logo src={logo}></Logo>
         <Kakao />
-        <Google />
+        <Naver />
       </Content>
     </Container>
   );

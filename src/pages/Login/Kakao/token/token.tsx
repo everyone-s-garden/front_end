@@ -6,7 +6,7 @@ import { IData, IData_Sever } from './type';
 import { setItem } from 'utils/session';
 import { isLoginAtom } from 'recoil/atom';
 import { useSetRecoilState } from 'recoil';
-const Token = () => {
+const KaKaoToken = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const nav = useNavigate();
   const setIsLogin = useSetRecoilState<boolean>(isLoginAtom);
@@ -19,7 +19,7 @@ const Token = () => {
           grant_type: 'authorization_code',
           client_id: process.env.REACT_APP_KAKAO_REST_API_KEY,
           code: code,
-          client_secret: process.env.REACT_APP_API_KAKAO_CLIENT_SECRET,
+          // client_secret: process.env.REACT_APP_API_KAKAO_CLIENT_SECRET,
           redirect_uri: process.env.REACT_APP_KAKAO_REDIRECT_URI,
         },
         {
@@ -53,4 +53,4 @@ const Token = () => {
   return <Loader isLoading={isLoading} />;
 };
 
-export default Token;
+export default KaKaoToken;
