@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
 import KakaoLogo from '../../../assets/logo_kakao.svg';
 import { BREAK_POINT } from 'constants/style';
 //카카오 로그인 잘못됨 accessToken 다른방식으로

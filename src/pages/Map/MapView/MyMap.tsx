@@ -32,8 +32,7 @@ const MyMap = ({ isLoading, setIsLoading, setIsInitializing, map, setMap }: MyMa
   const fetchGardenData = () => {
     return GardenAPI.getGardenByCoordinate(searchType, map!);
   };
-  const { data, refetch } = useQuery(['gardens', searchType], fetchGardenData, { enabled: map !== null });
-
+  const { data, refetch, status } = useQuery(['gardens', searchType], fetchGardenData, { enabled: map !== null });
   const getMyLocation = useCallback(async () => {
     if (!map) return;
 
