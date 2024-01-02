@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { GardenDetailType } from 'api/type';
+import { GardenDetailType, GardenListType } from 'api/type';
 import { IGardenDetail } from 'types/GardenDetail';
 import { ILocation } from 'components/Nav';
 import { IHashMyGarden } from 'types/MyGarden';
@@ -55,7 +55,7 @@ export const isExpandAtom = atom<boolean>({
   key: 'isExpand',
   default: false,
 });
-export const gardensAtom = atom<GardenDetailType[]>({
+export const gardensAtom = atom<GardenListType[]>({
   key: 'gardens',
   default: [],
 });

@@ -16,12 +16,12 @@ function GardenList() {
           return (
             <GardenPost
               key={index}
-              id={garden.id}
+              id={garden.gardenId}
               size={filterGardenData.filterSize(garden.size!)}
               name={garden.gardenName}
               price={filterGardenData.filterPrice(garden.price!)}
               images={garden.images}
-              status={garden.status}
+              status={garden.gardenStatus}
             />
           );
         })

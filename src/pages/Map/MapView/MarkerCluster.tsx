@@ -68,7 +68,7 @@ const MarkerCluster = () => {
               map?.autoResize();
             }, 300);
           }
-          setSelectedGarden(garden.id);
+          setSelectedGarden(garden.gardenId);
         };
         // 마우스 호버시 마커를 앞으로 가져옴
         const onMouseOverHandler = () => {
