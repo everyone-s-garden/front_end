@@ -17,7 +17,7 @@ export const GardenAPI = {
         typeList[type]
       }&pageNumber=0&startLat=${bounds.minY()}&startLong=${bounds.minX()}&endLat=${bounds.maxY()}&endLong=${bounds.maxX()}`,
     );
-    // console.log('publicData', data.gardenByComplexesResponses);
+    console.log('publicData', data.gardenByComplexesResponses);
     return data.gardenByComplexesResponses;
   },
 

@@ -29,6 +29,17 @@ export interface GardenData {
     equipment?: boolean;
   };
 }
+export interface GardesType {
+  gardenId: number;
+  gardenName: string;
+  gardenStatus: 'ACTIVE' | 'INACTIVE' | null | undefined;
+  gardenType: 'PRIVATE' | 'PUBLIC';
+  images: string[];
+  latitude: number;
+  longitude: number;
+  price: string;
+  size: string;
+}
 
 export interface GardenDetailType {
   id: number;
