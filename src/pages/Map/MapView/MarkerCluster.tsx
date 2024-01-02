@@ -35,7 +35,7 @@ const MarkerCluster = () => {
     return cluster;
   });
   useEffect(() => {
-    if (!gardens) return;
+    if (!gardens || gardens.length === 0) return;
 
     cluster.setMap(null);
     cluster.DEFAULT_OPTIONS.markers = [];

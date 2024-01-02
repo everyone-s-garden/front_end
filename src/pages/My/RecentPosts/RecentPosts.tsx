@@ -12,15 +12,19 @@ import { IGardenDetail } from '../../../types/GardenDetail';
 import { useRecoilState } from 'recoil';
 import { recentListsAtom, recentPageAtom } from '../../../recoil/atom';
 import { Helmet } from 'react-helmet-async';
+import SkeletonUi from 'components/SkeletonUi';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const RecentPosts = () => {
   const [recentLists, setRecentLists] = useRecoilState(recentListsAtom);
   const [page, setPage] = useRecoilState(recentPageAtom);
   const [hasMore, setHasMore] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [ref, inView] = useInView();
   const nav = useNavigate();
   const fetchData = async () => {
     try {
+      setIsLoading(true);
       const res = await customAxios.get(`/v1/garden/recent?page=${page}`);
       const newData: IGardenDetail[] = res.data;
 
@@ -35,6 +39,7 @@ const RecentPosts = () => {
         setRecentLists(prev => [...prev, ...filteredData]);
         setPage(prevPage => prevPage + 1);
       }
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
     }
@@ -49,10 +54,9 @@ const RecentPosts = () => {
       fetchData();
     }
   }, []);
+
   const renderPosts = recentLists.map((i: IGardenDetail) => (
-    <PostContainer key={i.id}>
-      <Post data={i} key={i.id} />
-    </PostContainer>
+    <PostContainer key={i.id}>{isLoading ? <SkeletonUi /> : <Post data={i} key={i.id} />}</PostContainer>
   ));
 
   return (
@@ -65,6 +69,7 @@ const RecentPosts = () => {
       ) : (
         <RecentPostsSection>
           <SectionTitle>최근 본 텃밭</SectionTitle>
+
           <PostList>
             {renderPosts}
             <div ref={ref} />
