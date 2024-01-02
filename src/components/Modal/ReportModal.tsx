@@ -7,6 +7,7 @@ import { NotiContentAtom, reportPostIdAtom } from 'recoil/atom';
 import Modal from 'components/Modal/Modal';
 import customAxios from 'utils/token';
 import { getItem } from 'utils/session';
+import { ReportApi } from '../../api/ReportAPI';
 
 interface ReportModalProps {
   isOpen: boolean;
@@ -28,6 +29,14 @@ function ReportModal({ isOpen, setIsOpen }: ReportModalProps) {
     }
 
     if (!reportPostId) return;
+
+    // const reportResult = ReportApi({
+    //   postId: reportPostId,
+    //   content:
+    // })
+
+    console.log('~~~call~~~');
+    console.log(selected, comment);
 
     await customAxios.post('/v1/report', {
       item: selected,
