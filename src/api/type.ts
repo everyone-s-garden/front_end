@@ -32,7 +32,7 @@ export interface GardenData {
 
 export interface GardenDetailType {
   id: number;
-  name: string;
+  gardenName: string;
   type: string; // (PUBLIC | PRIVATE | UNKNOWN)
   link?: string;
   price?: string;

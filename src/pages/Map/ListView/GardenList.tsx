@@ -12,13 +12,13 @@ function GardenList() {
   return (
     <ListContainer>
       {gardens && gardens.length > 0 ? (
-        gardens.map(garden => {
+        gardens.map((garden, index) => {
           return (
             <GardenPost
-              key={garden.id}
+              key={index}
               id={garden.id}
               size={filterGardenData.filterSize(garden.size!)}
-              name={garden.name}
+              name={garden.gardenName}
               price={filterGardenData.filterPrice(garden.price!)}
               images={garden.images}
               status={garden.status}

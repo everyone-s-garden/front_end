@@ -72,7 +72,7 @@ function GardenDetail() {
         </BackBtn>
         <ImageSlider images={postData?.images} />
         <Body>
-          <Title>{postData?.name}</Title>
+          <Title>{postData?.gardenName}</Title>
           <Row>
             <Key>신청기간</Key>
             {!postData?.recruitStartDate || !postData?.recruitEndDate
