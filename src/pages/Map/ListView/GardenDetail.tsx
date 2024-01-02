@@ -42,9 +42,9 @@ function GardenDetail() {
       return;
     }
 
-    if (!postData?.liked) {
+    if (!postData?.isLiked) {
       try {
-        const res: GardenDetailType = await customAxios.post(`v1/garden/like/${postData?.id}`);
+        const res: GardenDetailType = await customAxios.post(`v1/garden/like/${postData?.gardenId}`);
         animationRef.current?.play();
         setTimeout(() => {
           fetchGardenData();
@@ -54,7 +54,7 @@ function GardenDetail() {
       }
     } else {
       try {
-        const res: GardenDetailType = await customAxios.delete(`v1/garden/like/${postData?.id}`);
+        const res: GardenDetailType = await customAxios.delete(`v1/garden/like/${postData?.gardenId}`);
         fetchGardenData(); // 찜하기 취소 후 바로 데이터 업데이트
       } catch (err) {
         console.log(err);
@@ -72,7 +72,7 @@ function GardenDetail() {
         </BackBtn>
         <ImageSlider images={postData?.images} />
         <Body>
-          <Title>{postData?.name}</Title>
+          <Title>{postData?.gardenName}</Title>
           <Row>
             <Key>신청기간</Key>
             {!postData?.recruitStartDate || !postData?.recruitEndDate
@@ -88,13 +88,16 @@ function GardenDetail() {
           </Row>
           <Row>
             <Key>부대시설</Key>
-            {postData?.facility.toilet && <Label>화장실</Label>}
-            {postData?.facility.waterway && <Label>수로</Label>}
-            {postData?.facility.equipment && <Label>농기구</Label>}
-            {!postData?.facility.toilet && !postData?.facility.waterway && !postData?.facility.equipment && '없음'}
+            {postData?.gardenFacility.isToilet && <Label>화장실</Label>}
+            {postData?.gardenFacility.isWaterway && <Label>수로</Label>}
+            {postData?.gardenFacility.isEquipment && <Label>농기구</Label>}
+            {!postData?.gardenFacility.isToilet &&
+              !postData?.gardenFacility.isWaterway &&
+              !postData?.gardenFacility.isEquipment &&
+              '없음'}
           </Row>
           <Row>
-            <Key>세부사항</Key> {postData?.content ? postData?.content : '없음'}
+            <Key>세부사항</Key> {postData?.contact ? postData?.contact : '없음'}
           </Row>
           <Row>
             <Key>위치</Key> {postData?.address}
@@ -111,14 +114,14 @@ function GardenDetail() {
             }
 
             setIsModalOpen(true);
-            setReportPostId(Number(postData?.id));
+            setReportPostId(Number(postData?.gardenId));
           }}
         >
           <img src={reportIcon} />
           신고하기
         </ReportBtn>
         <ZzimBtn onClick={onLikeClicked}>
-          {postData?.liked ? (
+          {postData?.isLiked ? (
             <HeartImg src={Heart} />
           ) : (
             <Player
