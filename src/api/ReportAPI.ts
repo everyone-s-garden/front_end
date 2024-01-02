@@ -21,11 +21,11 @@ export const RESULT = {
 
 interface ReportApiType {
   postId: number;
-  content: string;
   reportType: string;
+  content: string;
 }
 
-export const ReportApi = async ({ postId, content, reportType }: ReportApiType) => {
+export const ReportApi = async ({ postId, reportType, content }: ReportApiType) => {
   const { data } = await HttpRequest.post(`/v1/reports/${postId}`, {
     content: content,
     reportType: reportType,
