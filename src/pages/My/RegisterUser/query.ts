@@ -1,6 +1,5 @@
 import customAxios from 'utils/token';
 import { IData, IFormData, IMyGarden } from './type';
-import { AxiosResponse } from 'axios';
 
 export const getImages = async (formData: IFormData) => {
   try {
@@ -13,14 +12,11 @@ export const getImages = async (formData: IFormData) => {
 
 export const getQueryData = async (query: string) => {
   try {
-    const res: AxiosResponse = await customAxios.get('v1/garden', {
-      params: {
-        query,
-      },
-    });
-    return res;
+    const res = await customAxios.get(`v2/gardens?gardenName=${query}&pageNumber=${0}`);
+    return res.data.gardenSearchResponses;
   } catch (err) {
-    return err;
+    // return err;
+    throw new Error('query error');
   }
 };
 function validateDates(startDate: string, endDate: string) {
@@ -60,14 +56,13 @@ function validateDates(startDate: string, endDate: string) {
 export const formValidation = (data: any) => {
   let startDate = data?.useStartDate;
   let endDate = data?.useEndDate;
+  console.log;
   if (!validateDates(startDate, endDate)) {
     alert('날짜가 유효하지 않습니다.');
     return false;
   }
-  if (data?.name === undefined || data?.name === '') {
-    alert('텃밭 정보는 필수입니다.');
-    return false;
-  } else if (data?.useEndDate === '') {
+
+  if (data?.useEndDate === '') {
     alert('종료날짜는 필수입니다.');
     return false;
   } else if (data?.useStartDate === '') {

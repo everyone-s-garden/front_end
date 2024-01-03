@@ -66,7 +66,7 @@ export const formDataHandler = async (dataURI: any) => {
   const file = new File([blob], 'image.jpg');
 
   const formData = new FormData();
-  formData.append('file', file);
+  formData.append('gardenImage', file);
   return formData;
 };
 
