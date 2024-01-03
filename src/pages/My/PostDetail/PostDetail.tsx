@@ -40,14 +40,14 @@ function PostDetail() {
   const location = { lat: 37.3595704, long: 127.105399 };
   const fetchGardenData = async () => {
     if (!postId) return;
-    const res = await customAxios.get(`v1/garden/${postId}`);
+    const res = await customAxios.get(`v2/gardens/${postId}`);
     setPost(res.data);
     setImages(res.data.images);
   };
   const play = async () => {
-    if (!post?.liked) {
+    if (!post?.isLiked) {
       try {
-        const res: IGardenDetail = await customAxios.post(`v1/garden/like/${post?.id}`);
+        const res: IGardenDetail = await customAxios.post(`v2/gardens/likes`, { gardenId: postId });
         animationRef.current?.play();
         setTimeout(() => {
           fetchGardenData();
@@ -57,7 +57,7 @@ function PostDetail() {
       }
     } else {
       try {
-        const res: IGardenDetail = await customAxios.delete(`v1/garden/like/${post?.id}`);
+        const res: IGardenDetail = await customAxios.delete(`v2/gardens/likes`, { data: { gardenId: postId } });
         fetchGardenData();
       } catch (err) {
         console.log(err);
@@ -182,7 +182,7 @@ function PostDetail() {
 
           <Buttons>
             <ZzimBtn onClick={play}>
-              {post?.liked ? (
+              {post?.isLiked ? (
                 <HeartImg src={Heart} />
               ) : (
                 <Player

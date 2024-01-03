@@ -1,8 +1,9 @@
 import { atom } from 'recoil';
-import { GardenDetailType } from 'api/type';
+import { GardenDetailType, GardenListType } from 'api/type';
 import { IGardenDetail } from 'types/GardenDetail';
 import { ILocation } from 'components/Nav';
 import { IHashMyGarden } from 'types/MyGarden';
+import { IGardens } from 'pages/My/RecentPosts/RecentPosts';
 
 // Modal Atoms
 export const isReportOpenAtom = atom<boolean>({
@@ -55,7 +56,7 @@ export const isExpandAtom = atom<boolean>({
   key: 'isExpand',
   default: false,
 });
-export const gardensAtom = atom<GardenDetailType[]>({
+export const gardensAtom = atom<GardenListType[]>({
   key: 'gardens',
   default: [],
 });
@@ -68,7 +69,7 @@ export const selectedMapLocationAtom = atom<ILocation | null>({
   default: null,
 });
 
-export const recentListsAtom = atom<IGardenDetail[]>({
+export const recentListsAtom = atom<IGardens[]>({
   key: 'recentLists',
   default: [],
 });
@@ -77,7 +78,7 @@ export const recentPageAtom = atom<number>({
   key: 'recentPage',
   default: 1,
 });
-export const myListsAtom = atom<IGardenDetail[]>({
+export const myListsAtom = atom<IGardens[]>({
   key: 'myLists',
   default: [],
 });
@@ -86,7 +87,7 @@ export const myPageAtom = atom<number>({
   key: 'myPage',
   default: 1,
 });
-export const likeListsAtom = atom<IGardenDetail[]>({
+export const likeListsAtom = atom<IGardens[]>({
   key: 'likeLists',
   default: [],
 });

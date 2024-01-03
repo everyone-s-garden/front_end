@@ -7,14 +7,21 @@ import { BREAK_POINT } from '../../../constants/style';
 import Post from '../Post';
 import NoPost from '../NoPost';
 import customAxios from '../../../utils/token';
-import { AxiosResponse } from 'axios';
-import { IGardenDetail } from '../../../types/GardenDetail';
 import { useRecoilState } from 'recoil';
 import { recentListsAtom, recentPageAtom } from '../../../recoil/atom';
 import { Helmet } from 'react-helmet-async';
 import SkeletonUi from 'components/SkeletonUi';
 import 'react-loading-skeleton/dist/skeleton.css';
 
+export interface IGardens {
+  gardenId: number;
+  size: number;
+  gardenName: string;
+  price: number;
+  images: string[];
+  gardenStatus: 'INACTIVE' | 'ACTIVE';
+  gardenType: 'PUBLIC' | 'PRIVATE';
+}
 const RecentPosts = () => {
   const [recentLists, setRecentLists] = useRecoilState(recentListsAtom);
   const [page, setPage] = useRecoilState(recentPageAtom);
@@ -25,17 +32,18 @@ const RecentPosts = () => {
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      const res = await customAxios.get(`/v1/garden/recent?page=${page}`);
-      const newData: IGardenDetail[] = res.data;
+      const res = await customAxios.get(`/v2/gardens/recent`);
 
+      const newData: IGardens[] = res.data.recentGardenResponses;
       if (newData.length === 0) {
         setHasMore(false);
       } else {
         // 중복된 게시물 필터링
         const filteredData = newData.filter(item => {
-          return !recentLists.some(existingItem => existingItem.id === item.id);
+          return !recentLists.some(existingItem => existingItem.gardenId === item.gardenId);
         });
-
+        console.log('recent', recentLists);
+        console.log('filter', filteredData);
         setRecentLists(prev => [...prev, ...filteredData]);
         setPage(prevPage => prevPage + 1);
       }
@@ -55,8 +63,8 @@ const RecentPosts = () => {
     }
   }, []);
 
-  const renderPosts = recentLists.map((i: IGardenDetail) => (
-    <PostContainer key={i.id}>{isLoading ? <SkeletonUi /> : <Post data={i} key={i.id} />}</PostContainer>
+  const renderPosts = recentLists.map((i: IGardens) => (
+    <PostContainer key={i.gardenId}>{isLoading ? <SkeletonUi /> : <Post data={i} key={i.gardenId} />}</PostContainer>
   ));
 
   return (

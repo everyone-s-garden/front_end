@@ -15,9 +15,9 @@ import { formDataHandler } from '../RegisterSeller/query';
 import { Helmet } from 'react-helmet-async';
 const RegisterUser = () => {
   const labelRef = useRef<HTMLLabelElement>(null);
-  const [image, setImage] = useState<IImage | null>(null);
+  const [image, setImage] = useState<string>('');
   const editMatch = useMatch('/my/garden/edit');
-  const [myGarden, setMyGarden] = useState<IMyGarden | undefined>(undefined);
+  const [myGarden, setMyGarden] = useState<any>(undefined);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const onImgRegisterClicked = (e: React.MouseEvent<HTMLDivElement>) => {
     labelRef.current?.click();
@@ -36,9 +36,8 @@ const RegisterUser = () => {
         reader.readAsDataURL(compressedFile);
         reader.onload = async () => {
           const base64data = reader.result;
-          const formData = await formDataHandler(base64data);
-          const res = (await getImages(formData)) as AxiosResponse;
-          setImage(res.data?.imageUrl);
+          // const formData = await formDataHandler(base64data);
+          setImage(base64data + '');
         };
       } catch (err) {
         console.log(err);
@@ -47,7 +46,7 @@ const RegisterUser = () => {
   };
 
   const getMyGarden = async () => {
-    const res = await customAxios('/v1/garden/using');
+    const res = await customAxios('/v2/gardens/my-managed');
     setMyGarden(res.data[0]);
 
     setImage(res.data[0]?.image);
@@ -59,7 +58,7 @@ const RegisterUser = () => {
   }, []);
 
   const removeImage = () => {
-    setImage(null);
+    setImage('');
     setMenuOpen(false);
   };
   return (

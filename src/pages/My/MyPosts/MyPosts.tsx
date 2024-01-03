@@ -13,9 +13,10 @@ import { AxiosResponse } from 'axios';
 import { IGardenDetail } from 'types/GardenDetail';
 import { Helmet } from 'react-helmet-async';
 import SkeletonUi from 'components/SkeletonUi';
+import { IGardens } from '../RecentPosts/RecentPosts';
 
 const MyPosts = () => {
-  const [myPosts, setMyPosts] = useRecoilState<IGardenDetail[]>(myListsAtom);
+  const [myPosts, setMyPosts] = useRecoilState<IGardens[]>(myListsAtom);
   const [page, setPage] = useRecoilState(myPageAtom);
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
@@ -25,14 +26,14 @@ const MyPosts = () => {
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      const res = (await customAxios.get(`/v1/garden/mine?page=${page}`)) as AxiosResponse;
-      const newData: IGardenDetail[] = res.data;
+      const res = (await customAxios.get(`v2/gardens/mine`)) as AxiosResponse;
+      const newData: IGardens[] = res.data.gardenMineResponses;
 
       if (newData.length === 0) {
         setHasMore(false);
       } else {
         const filteredData = newData.filter(item => {
-          return !myPosts.some(existingItem => existingItem.id === item.id);
+          return !myPosts.some(existingItem => existingItem.gardenId === item.gardenId);
         });
 
         setMyPosts(prev => [...prev, ...filteredData]);

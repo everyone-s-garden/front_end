@@ -40,7 +40,7 @@ function ImageSlider({ images }: ImageSliderProps) {
   return (
     <SliderDiv>
       <ImageContainer ref={sliderRef}>
-        {!images || images.length === 0 ? (
+        {!images || images.length === 0 || images[0] === null ? (
           <EmptyImg src={randomImage} alt="이미지 없음" />
         ) : (
           images.map((img, idx) => (

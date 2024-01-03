@@ -7,6 +7,7 @@ import { NotiContentAtom, reportPostIdAtom } from 'recoil/atom';
 import Modal from 'components/Modal/Modal';
 import customAxios from 'utils/token';
 import { getItem } from 'utils/session';
+import { ReportApi } from '../../api/ReportAPI';
 
 interface ReportModalProps {
   isOpen: boolean;
@@ -16,8 +17,17 @@ interface ReportModalProps {
 function ReportModal({ isOpen, setIsOpen }: ReportModalProps) {
   const [reportPostId, setReportPostId] = useRecoilState(reportPostIdAtom);
   const setContent = useSetRecoilState(NotiContentAtom);
-  const [selected, setSelected] = useState<string>('허위매물');
+  const [selected, setSelected] = useState<string>('FAKED_SALE');
+  const [selectedContent, setSelectedContent] = useState<string>('');
   const [comment, setComment] = useState<string>('');
+  const reportList = [
+    { type: 'FAKED_SALE', text: '허위 매물이에요.' },
+    { type: 'SPAMMING', text: '도배글이에요.' },
+    { type: 'SWEAR_WORD', text: '욕설이 포함되어 있어요.' },
+    { type: 'PERSONAL_INFORMATION_EXPOSURE', text: '동의하지 않은 개인정보가 있어요.' },
+    { type: 'SENSATIONAL', text: '선정적(신체노출 등), 차별적 내용(종교, 인종 등)이포함되어 있어요.' },
+    { type: comment, text: '기타' },
+  ];
 
   const onSubmit = async () => {
     const isLogin = Boolean(getItem('isLogin'));
@@ -29,15 +39,21 @@ function ReportModal({ isOpen, setIsOpen }: ReportModalProps) {
 
     if (!reportPostId) return;
 
-    await customAxios.post('/v1/report', {
-      item: selected,
-      content: comment,
-      postId: reportPostId,
-    });
+    try {
+      await ReportApi({
+        postId: reportPostId,
+        reportType: selected,
+        content: selectedContent,
+      });
 
-    setReportPostId(null);
-    setIsOpen(false);
-    setContent('신고가 접수되었습니다. 신속하게 처리하겠습니다.');
+      setReportPostId(null);
+      setIsOpen(false);
+      setContent('신고가 접수되었습니다. 신속하게 처리하겠습니다.');
+    } catch (error) {
+      setReportPostId(null);
+      setIsOpen(false);
+      setContent('이미 신고한 게시글 입니다.');
+    }
   };
 
   return (
@@ -47,66 +63,21 @@ function ReportModal({ isOpen, setIsOpen }: ReportModalProps) {
         <SubTitle>신고하는 이유를 선택해주세요.</SubTitle>
 
         <SelectSection>
-          <RadioBtn>
-            <input
-              type="radio"
-              name="violation"
-              id="scam"
-              checked={selected === '허위매물'}
-              onChange={() => setSelected('허위매물')}
-            />
-            <label htmlFor="scam">허위 매물이에요.</label>
-          </RadioBtn>
-          <RadioBtn>
-            <input
-              type="radio"
-              name="violation"
-              id="spam"
-              checked={selected === '도배글'}
-              onChange={() => setSelected('도배글')}
-            />
-            <label htmlFor="spam">도배글이에요.</label>
-          </RadioBtn>
-          <RadioBtn>
-            <input
-              type="radio"
-              name="violation"
-              id="insult"
-              checked={selected === '욕설'}
-              onChange={() => setSelected('욕설')}
-            />
-            <label htmlFor="insult">욕설이 포함되어 있어요.</label>
-          </RadioBtn>
-          <RadioBtn>
-            <input
-              type="radio"
-              name="violation"
-              id="privacy"
-              checked={selected === '개인정보노출'}
-              onChange={() => setSelected('개인정보노출')}
-            />
-            <label htmlFor="privacy">동의하지 않은 개인정보가 있어요.</label>
-          </RadioBtn>
-          <RadioBtn>
-            <input
-              type="radio"
-              name="violation"
-              id="sexual"
-              checked={selected === '선정성'}
-              onChange={() => setSelected('선정성')}
-            />
-            <label htmlFor="sexual">선정적(신체노출 등), 차별적 내용(종교, 인종 등)이포함되어 있어요.</label>
-          </RadioBtn>
-          <RadioBtn>
-            <input
-              type="radio"
-              name="violation"
-              id="etc"
-              checked={selected === '기타'}
-              onChange={() => setSelected('기타')}
-            />
-            <label htmlFor="etc">기타</label>
-          </RadioBtn>
+          {reportList.map((report, index) => (
+            <RadioBtn key={index}>
+              <input
+                type="radio"
+                name="violation"
+                id="scam"
+                checked={selected === report.type}
+                onChange={() => {
+                  setSelected(report.type);
+                  setSelectedContent(report.text);
+                }}
+              />
+              <label htmlFor="scam">{report.text}</label>
+            </RadioBtn>
+          ))}
         </SelectSection>
 
         <CommentWrapper>

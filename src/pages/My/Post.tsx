@@ -8,8 +8,9 @@ import filterGardenData from 'utils/filterGardenData';
 import empty1 from 'assets/empty_img1.jpg';
 import empty2 from 'assets/empty_img2.jpg';
 import empty3 from 'assets/empty_img3.jpg';
+import { IGardens } from './RecentPosts/RecentPosts';
 interface Idata {
-  data: IGardenDetail;
+  data: IGardens;
 }
 
 function Post({ data }: Idata) {
@@ -23,9 +24,9 @@ function Post({ data }: Idata) {
     setRandomImage(randomImage);
   }, []);
   return (
-    <PostContainer onClick={() => nav(`/my/${data.id}`)}>
+    <PostContainer onClick={() => nav(`/my/${data.gardenId}`)}>
       <ImageContainer>
-        {data.images.length === 0 ? (
+        {data.images?.length === 0 || data.images[0] === null ? (
           <EmptyImg>
             <Image src={randomImage} alt="이미지 없음" />
           </EmptyImg>
@@ -36,15 +37,15 @@ function Post({ data }: Idata) {
 
       <InfoDiv>
         <Status>
-          {data.status === 'ACTIVE' && <Dot />}
-          {data.status === 'ACTIVE' && <Text>모집 중</Text>}
-          {data.status === 'INACTIVE' && <Text>마감</Text>}
-          {data.status === 'ALWAYS_ACTIVE' && <Text>상시 모집</Text>}
-          {data.status === null && <Text>상시 모집</Text>}
+          {data.gardenStatus === 'ACTIVE' && <Dot />}
+          {data.gardenStatus === 'ACTIVE' && <Text>모집 중</Text>}
+          {data.gardenStatus === 'INACTIVE' && <Text>마감</Text>}
+          {/* {data.gardenStatus === 'ALWAYS_ACTIVE' && <Text>상시 모집</Text>} */}
+          {data.gardenStatus === null && <Text>상시 모집</Text>}
         </Status>
-        <Title>{data.name}</Title>
-        <Value style={{ color: '#afafaf' }}>{filterGardenData.filterSize(data.size)}</Value>
-        <Value>{filterGardenData.filterPrice(data.price)}</Value>
+        <Title>{data.gardenName}</Title>
+        <Value style={{ color: '#afafaf' }}>{filterGardenData.filterSize(data.size + '')}</Value>
+        <Value>{filterGardenData.filterPrice(data.price + '')}</Value>
       </InfoDiv>
     </PostContainer>
   );
