@@ -14,9 +14,29 @@ import {
   inputPriceFormat,
   uncommaPrice,
   inputSizeFormat,
+  formDataHandler,
 } from './query';
 import { useNavigate } from 'react-router-dom';
 import { AxiosResponse } from 'axios';
+export interface IRequestData {
+  gardenName: string;
+  price: string;
+  size: string;
+  gardenStatus: 'ACTIVE' | 'INACTIVE' | '';
+  linkForRequest: string;
+  contact: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+  isToilet: boolean;
+  isWaterway: boolean;
+  isEquipment: boolean;
+  gardenDescription: string;
+  recruitStartDate: string;
+  recruitEndDate: string;
+  useStartDate: string;
+  useEndDate: string;
+}
 
 const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
   const open = useDaumPostcodePopup(`${process.env.REACT_APP_DAUM_API_URL}`);
@@ -34,7 +54,6 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
   const [states, setStates] = useState({
     recruiting: false,
     end: false,
-    regular: false,
   });
   const getPost = () => {
     open({
@@ -48,38 +67,44 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
     });
   };
 
-  const getStatus = (states: { recruiting: boolean; end: boolean; regular: boolean }) => {
+  const getStatus = (states: { recruiting: boolean; end: boolean }): IRequestData['gardenStatus'] => {
     if (states.recruiting) return 'ACTIVE';
     if (states.end) return 'INACTIVE';
-    if (states.regular) return 'ALWAYS_ACTIVE';
-    return ''; // 기본값 또는 필요에 따라 다른 값 설정
+    return ''; // 명시적으로 빈 문자열을 반환하는 경우를 추가합니다.
   };
+
   const uploadField = async () => {
     if (location?.address && location.lat && location.lng) {
-      const uploadPrice = await uncommaPrice(price);
+      const uploadPrice = uncommaPrice(price);
       const status = getStatus(states);
-      const uploadData: IUploadData = {
-        name: getValues('name'),
+      const gardenImages = await Promise.all(
+        images.map(async v => {
+          return await formDataHandler(v);
+        }),
+      );
+      const uploadData = {
+        gardenName: getValues('name'),
         price: uploadPrice,
         size,
+        gardenStatus: status,
+        linkForRequest: 'www.everygarden.me',
         contact,
         address: location?.address,
         latitude: Number(location?.lat),
         longitude: Number(location?.lng),
-        images,
-        content: getValues('content'),
-        status,
-        facility,
+        isToilet: facility.toilet,
+        isWaterway: facility.waterway,
+        isEquipment: facility.equipment,
+        gardenDescription: getValues('content'),
+        recruitStartDate: '2023.12.01',
+        recruitEndDate: '2023.12.23',
+        useStartDate: '2023.11.01',
+        useEndDate: '2023.12.31',
       };
-      try {
-        const validation = formValidation(uploadData);
-        if (validation) {
-          const res = await UploadData(uploadData);
-          if (res.status === 201) nav('/my');
-        }
-      } catch (err) {
-        console.log(err);
-      }
+      const validation = formValidation(uploadData, gardenImages);
+      if (!validation) return;
+      const res = await UploadData(uploadData, gardenImages);
+      if (res.status === 201) nav('/my');
     } else {
       alert('지역은 필수입니다.');
     }
@@ -106,21 +131,13 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
     setStates((prev: IStates) => ({
       recruiting: true,
       end: false,
-      regular: false,
     }));
   };
-  const handleRegular = () => {
-    setStates((prev: IStates) => ({
-      recruiting: false,
-      end: false,
-      regular: true,
-    }));
-  };
+
   const handleEnd = () => {
     setStates((prev: IStates) => ({
       recruiting: false,
       end: true,
-      regular: false,
     }));
   };
 
@@ -129,16 +146,17 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
     else if (size === '') setIsOk(false);
     else if (price === '') setIsOk(false);
     else if (getValues('name') === '') setIsOk(false);
-    else if (states.end === false && states.recruiting === false && states.regular === false) setIsOk(false);
-    else if (getValues('contact') === '') setIsOk(false);
+    else if (states.end === false && states.recruiting === false) setIsOk(false);
+    else if (contact === '') setIsOk(false);
     else if (location.address === '') setIsOk(false);
     else if (getValues('content') === '') setIsOk(false);
     else setIsOk(true);
-  }, [images, location, size, price, location, states, getValues('contact'), getValues('name'), getValues('content')]);
+  }, [images, location, size, price, location, states, contact, getValues('name'), getValues('content')]);
+
   const getEditData = async () => {
     try {
-      const res: AxiosResponse = await customAxios.get(`v1/garden/${match?.params.id}`);
-      const { data }: Idata = res;
+      const res = await customAxios.get(`v1/garden/${match?.params.id}`);
+      const { data } = res;
       setImages(res.data.images);
       setValue('name', data.name);
       setPrice(inputPriceFormat(data.price));
@@ -153,7 +171,6 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
       });
       setStates({
         recruiting: data.status === 'ACTIVE',
-        regular: data.status === 'ALWAYS_ACTIVE',
         end: data.status === 'INACTIVE',
       });
     } catch (err) {
@@ -168,29 +185,29 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
 
   const editField = async () => {
     const uploadPrice = await uncommaPrice(price);
-    const status = getStatus(states);
-    const uploadData: IUploadData = {
-      name: getValues('name'),
-      price: uploadPrice,
-      size,
-      contact,
-      address: location?.address,
-      latitude: Number(location?.lat),
-      longitude: Number(location?.lng),
-      images,
-      content: getValues('content'),
-      status,
-      facility,
-    };
-    try {
-      const validation = formValidation(uploadData);
-      if (validation) {
-        const res = await customAxios.put(`v1/garden/${match?.params.id}`, uploadData);
-        if (res.status === 200) nav(-1);
-      }
-    } catch (err) {
-      console.log(err);
-    }
+    // const status = getStatus(states);
+    // const uploadData: IUploadData = {
+    //   name: getValues('name'),
+    //   price: uploadPrice,
+    //   size,
+    //   contact,
+    //   address: location?.address,
+    //   latitude: Number(location?.lat),
+    //   longitude: Number(location?.lng),
+    //   images,
+    //   content: getValues('content'),
+    //   status,
+    //   facility,
+    // };
+    // try {
+    //   const validation = formValidation(uploadData);
+    //   if (validation) {
+    //     const res = await customAxios.put(`v1/garden/${match?.params.id}`, uploadData);
+    //     if (res.status === 200) nav(-1);
+    //   }
+    // } catch (err) {
+    //   console.log(err);
+    // }
   };
 
   return (
@@ -229,9 +246,7 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
             <Circle state={states.recruiting} />
             모집 중
           </RecruitingBtn>
-          <ReqularBtn state={states.regular} onClick={handleRegular}>
-            상시모집
-          </ReqularBtn>
+
           <EndBtn state={states.end} onClick={handleEnd}>
             마감
           </EndBtn>

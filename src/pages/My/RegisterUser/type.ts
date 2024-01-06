@@ -1,4 +1,5 @@
 import { useMatch } from 'react-router-dom';
+import { IHashMyGarden } from 'types/MyGarden';
 
 export interface IImage {
   imageUrl: string | undefined;
@@ -17,20 +18,10 @@ export interface IMyGarden {
   useEndDate: string;
   useStartDate: string;
 }
-export interface IHashMyGarden {
-  address: string;
-  id: number;
-  image: string;
-  latitude: number;
-  longitude: number;
-  name: string;
-  useEndDate: string;
-  useStartDate: string;
-}
 
 export interface IProps {
   image: string;
-  myGarden: IMyGarden | undefined;
+  myGarden: IHashMyGarden;
   editMatch: ReturnType<typeof useMatch>;
 }
 

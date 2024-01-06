@@ -34,7 +34,7 @@ function PostDetail() {
   const [__, setReportPostId] = useRecoilState(reportPostIdAtom);
   const animationRef = useRef<Player>(null);
   const [map, setMap] = useState<naver.maps.Map | null>(null);
-  const [post, setPost] = useState<IGardenDetail | null>(null);
+  const [post, setPost] = useState<any>(null);
   const [images, setImages] = useState<string[]>([]);
   const userId = Number(getItem('userId'));
   const location = { lat: 37.3595704, long: 127.105399 };
@@ -68,7 +68,6 @@ function PostDetail() {
     window.scrollTo(0, 0);
     fetchGardenData();
   }, [postId]); // postId가 변경될 때마다 데이터를 가져오도록 설정
-
   useEffect(() => {
     if (post && map) {
       // post와 map이 모두 존재할 때만 실행
@@ -79,12 +78,13 @@ function PostDetail() {
   }, [post, map]);
   const deletePost = async () => {
     try {
-      const res: AxiosResponse = await customAxios.delete(`v1/garden/${post?.id}`);
+      const res: AxiosResponse = await customAxios.delete(`v2/gardens/${post?.id}`);
       if (res.status === 204) nav('/my');
     } catch (err) {
       console.log(err);
     }
   };
+
   return (
     <Container>
       <Helmet>
@@ -103,7 +103,7 @@ function PostDetail() {
 
         <ContentSection>
           <Title>
-            {post?.name}
+            {post?.gardenName}
             <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
               <MenuIcon width="3" height="18" fill="#505462" />
             </button>
@@ -127,9 +127,9 @@ function PostDetail() {
 
           <Facility>
             <h4>부대시설</h4>
-            {post?.facility?.toilet && <span>화장실</span>}
-            {post?.facility?.waterway && <span>수로</span>}
-            {post?.facility?.equipment && <span>농기구</span>}
+            {post?.gardenFacility?.isToilet && <span>화장실</span>}
+            {post?.gardenFacility?.isWaterway && <span>수로</span>}
+            {post?.gardenFacility?.isEquipment && <span>농기구</span>}
           </Facility>
           <Contact>
             <h4>연락처</h4>
@@ -137,7 +137,9 @@ function PostDetail() {
           </Contact>
 
           <Content>
-            {post?.content === null || post?.content === undefined ? '상세 설명이 없습니다.' : post.content}
+            {post?.gardenDescription === null || post?.gardenDescription === undefined
+              ? '상세 설명이 없습니다.'
+              : post.gardenDescription}
           </Content>
 
           <Location>

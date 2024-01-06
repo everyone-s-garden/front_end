@@ -52,7 +52,7 @@ const LikePosts = () => {
     }
   }, []);
   const deleteLike = async (i: IGardens) => {
-    const res: AxiosResponse = await customAxios.delete(`v2/gardens/likes`, { data: { gardenId: i.gardenId } });
+    const res = await customAxios.delete(`v2/gardens/likes`, { data: { gardenId: i.gardenId } });
     if (res.status === 200) {
       const updatedLikeList = likeLists.filter((item: any) => item.gardenId !== i.gardenId);
       setLikeLists([...updatedLikeList]);
@@ -65,7 +65,7 @@ const LikePosts = () => {
         <SkeletonUi />
       ) : (
         <>
-          <Post data={list as any} />
+          <Post data={list} />
           <CloseIcon src={closeIcon} alt="close" onClick={() => deleteLike(list)} />
         </>
       )}

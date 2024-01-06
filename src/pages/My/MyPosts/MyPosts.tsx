@@ -9,8 +9,6 @@ import customAxios from 'utils/token';
 import { useRecoilState } from 'recoil';
 import { myListsAtom, myPageAtom } from 'recoil/atom';
 import { useInView } from 'react-intersection-observer';
-import { AxiosResponse } from 'axios';
-import { IGardenDetail } from 'types/GardenDetail';
 import { Helmet } from 'react-helmet-async';
 import SkeletonUi from 'components/SkeletonUi';
 import { IGardens } from '../RecentPosts/RecentPosts';
@@ -26,7 +24,7 @@ const MyPosts = () => {
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      const res = (await customAxios.get(`v2/gardens/mine`)) as AxiosResponse;
+      const res = await customAxios.get(`v2/gardens/mine`);
       const newData: IGardens[] = res.data.gardenMineResponses;
 
       if (newData.length === 0) {

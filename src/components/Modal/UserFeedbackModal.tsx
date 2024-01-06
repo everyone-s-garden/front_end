@@ -60,13 +60,13 @@ function UserFeedbackModal({ isOpen, setIsOpen }: UserFeedbackModalProps) {
         const compressedFile = await imageCompression(uploadImg, options);
         const reader = new FileReader();
         reader.readAsDataURL(compressedFile);
-        reader.onload = async () => {
-          const base64data = reader.result;
-          const formData = await formDataHandler(base64data);
-          const res = (await getImages(formData)) as AxiosResponse;
-          const newImage: string[] = [res.data.imageUrl];
-          setImages(prevImages => [...newImage, ...prevImages]);
-        };
+        // reader.onload = async () => {
+        //   const base64data = reader.result;
+        //   const formData = await formDataHandler(base64data);
+        //   const res = (await getImages(formData)) as AxiosResponse;
+        //   const newImage: string[] = [res.data.imageUrl];
+        //   setImages(prevImages => [...newImage, ...prevImages]);
+        // };
       } catch (err) {
         console.log(err);
       }

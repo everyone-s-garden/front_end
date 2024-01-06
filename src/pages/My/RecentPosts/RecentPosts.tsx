@@ -42,8 +42,6 @@ const RecentPosts = () => {
         const filteredData = newData.filter(item => {
           return !recentLists.some(existingItem => existingItem.gardenId === item.gardenId);
         });
-        console.log('recent', recentLists);
-        console.log('filter', filteredData);
         setRecentLists(prev => [...prev, ...filteredData]);
         setPage(prevPage => prevPage + 1);
       }

@@ -22,7 +22,7 @@ function MyPostRemoveModal({ isOpen, setIsOpen }: ModalProps) {
   const myGardenDelete = async () => {
     if (hasMyGarden) {
       try {
-        const res: AxiosResponse = await customAxios.delete(`/v1/garden/using/${hasMyGarden.id}`);
+        const res: AxiosResponse = await customAxios.delete(`v2/gardens/my-managed/${hasMyGarden.myManagedGardenId}`);
         if (res.status === 204) {
           nav('/');
           setIsOpen(false);

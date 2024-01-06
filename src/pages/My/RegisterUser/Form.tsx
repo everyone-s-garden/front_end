@@ -7,15 +7,16 @@ import { BREAK_POINT } from 'constants/style';
 import formatDateInput from 'utils/formatDateInput';
 import customAxios from 'utils/token';
 import { useNavigate } from 'react-router-dom';
-import { IProps, IData, IMyGarden } from './type';
-import { AxiosResponse } from 'axios';
+import { IProps } from './type';
 import { formValidation, getQueryData } from './query';
 import { formDataHandler } from '../RegisterSeller/query';
 
 interface ISerachData {
-  gardenId: number;
+  myManagedGardenId: number;
   gardenName: string;
-  address: string;
+  useStartDate: string;
+  useEndDate: string;
+  images: string[];
 }
 
 const Form = ({ editMatch, image, myGarden }: IProps) => {
@@ -26,16 +27,13 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
   const [show, setShow] = useState<boolean>(false);
   const nav = useNavigate();
   const init = async () => {
-    if (myGarden && myGarden.name) {
-      setSearchText(myGarden.name);
+    if (myGarden && myGarden.gardenName) {
+      setSearchText(myGarden.gardenName);
       setSelectedResult((prev: any) => {
         return {
           ...prev,
-          id: myGarden.id,
-          name: myGarden.name,
-          address: myGarden.address,
-          latitude: myGarden.latitude,
-          longitude: myGarden.longitude,
+          id: myGarden.myManagedGardenId,
+          name: myGarden.gardenName,
         };
       });
       const startDate: string = myGarden.useStartDate.split('-').join('.');
@@ -58,28 +56,33 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
     }
   };
   const selectGarden = (result: any) => {
+    console.log(result);
     setSearchText(result.gardenName);
     setSelectedResult(result);
     setSearchResults([]);
     setShow(false);
   };
   const uploadMyGarden = async () => {
-    const formData = await formDataHandler(image);
-
+    const imageFile = await formDataHandler(image);
     const myManagedGardenCreateRequest = {
       gardenId: selectedResult?.gardenId || 0,
       useStartDate: getValues('start'),
       useEndDate: getValues('end'),
     };
     const validation = formValidation(myManagedGardenCreateRequest);
-    formData.append('myManagedGardenCreateRequest', JSON.stringify(myManagedGardenCreateRequest));
     try {
+      const jsonMyMangedGarden = JSON.stringify(myManagedGardenCreateRequest);
+      const blob = new Blob([jsonMyMangedGarden], { type: 'application/json' });
       if (validation) {
-        const res = await customAxios.post('/v2/gardens/my-managed', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
+        const res = await customAxios.post(
+          '/v2/gardens/my-managed',
+          { gardenImage: imageFile, myManagedGardenCreateRequest: blob },
+          {
+            headers: {
+              'Content-Type': `multipart/form-data`,
+            },
           },
-        });
+        );
         if (res.status === 201) nav(-1);
       }
     } catch (err) {
@@ -88,31 +91,32 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
       setValue('end', '');
     }
   };
+
   useEffect(() => {
     init();
   }, [myGarden, image]);
   const editMyGarden = async () => {
-    const uploadData = {
-      id: selectedResult?.id,
-      name: selectedResult?.name,
-      image,
-      address: selectedResult?.address,
-      latitude: selectedResult?.latitude,
-      longitude: selectedResult?.longitude,
-      useStartDate: getValues('start'),
-      useEndDate: getValues('end'),
-    };
-    const validation = formValidation(uploadData);
-    try {
-      if (validation) {
-        const res = await customAxios.put(`v1/garden/using/${myGarden?.id}`, uploadData);
-        if (res.status === 200) nav(-1);
-      }
-    } catch (err) {
-      alert('날씨형식이 올바르지않습니다.');
-      setValue('start', '');
-      setValue('end', '');
-    }
+    // const uploadData = {
+    //   id: selectedResult?.id,
+    //   name: selectedResult?.name,
+    //   image,
+    //   address: selectedResult?.address,
+    //   latitude: selectedResult?.latitude,
+    //   longitude: selectedResult?.longitude,
+    //   useStartDate: getValues('start'),
+    //   useEndDate: getValues('end'),
+    // };
+    // const validation = formValidation(uploadData);
+    // try {
+    //   if (validation) {
+    //     const res = await customAxios.put(`v1/garden/using/${myGarden?.id}`, uploadData);
+    //     if (res.status === 200) nav(-1);
+    //   }
+    // } catch (err) {
+    //   alert('날씨형식이 올바르지않습니다.');
+    //   setValue('start', '');
+    //   setValue('end', '');
+    // }
   };
 
   return (
@@ -131,8 +135,8 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
                 </NoResult>
               ) : (
                 searchResults.map(result => (
-                  <ResultLi onClick={() => selectGarden(result)} key={result.gardenId}>
-                    <span>{result.gardenName !== '' ? result.gardenName : result.address}</span>
+                  <ResultLi onClick={() => selectGarden(result)} key={result.myManagedGardenId}>
+                    <span>{result.gardenName !== '' ? result.gardenName : null}</span>
                   </ResultLi>
                 ))
               )}

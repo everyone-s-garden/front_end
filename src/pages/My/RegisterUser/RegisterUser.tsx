@@ -4,20 +4,23 @@ import styled from 'styled-components';
 import addIcon from 'assets/my/register/add-icon.svg';
 import Form from './Form';
 import { BREAK_POINT, COLOR } from 'constants/style';
-import { IImage, IFormData, IMyGarden } from './type';
-import { getImages } from 'utils/getImages';
 import { useMatch } from 'react-router-dom';
 import customAxios from 'utils/token';
-import { AxiosResponse } from 'axios';
 import { ReactComponent as MenuIcon } from 'assets/three-dot-icon.svg';
 import imageCompression from 'browser-image-compression';
-import { formDataHandler } from '../RegisterSeller/query';
 import { Helmet } from 'react-helmet-async';
+import { IHashMyGarden } from 'types/MyGarden';
 const RegisterUser = () => {
   const labelRef = useRef<HTMLLabelElement>(null);
   const [image, setImage] = useState<string>('');
   const editMatch = useMatch('/my/garden/edit');
-  const [myGarden, setMyGarden] = useState<any>(undefined);
+  const [myGarden, setMyGarden] = useState<IHashMyGarden>({
+    gardenName: '',
+    myManagedGardenId: 0,
+    useStartDate: '',
+    useEndDate: '',
+    images: [''],
+  });
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const onImgRegisterClicked = (e: React.MouseEvent<HTMLDivElement>) => {
     labelRef.current?.click();
@@ -44,12 +47,11 @@ const RegisterUser = () => {
       }
     }
   };
-
   const getMyGarden = async () => {
     const res = await customAxios('/v2/gardens/my-managed');
-    setMyGarden(res.data[0]);
+    setMyGarden(res.data.myManagedGardenGetResponses[0]);
 
-    setImage(res.data[0]?.image);
+    setImage(res.data.myManagedGardenGetResponses[0]?.images[0]);
   };
   useEffect(() => {
     if (editMatch) {

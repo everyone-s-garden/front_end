@@ -8,7 +8,6 @@ import btnIcon1 from 'assets/my/my-garden-btn-icon1.svg';
 import btnIcon2 from 'assets/my/my-garden-btn-icon2.svg';
 import btnIcon3 from 'assets/my/my-garden-btn-icon3.svg';
 import btnIcon4 from 'assets/my/my-garden-btn-icon4.svg';
-import { AxiosResponse } from 'axios';
 import customAxios from 'utils/token';
 import { getItem } from 'utils/session';
 import { useRecoilState } from 'recoil';
@@ -21,8 +20,8 @@ const MyHome = () => {
   const userName = getItem('name')?.replaceAll('"', '');
   const init = async () => {
     try {
-      const res: AxiosResponse = await customAxios.get('/v2/gardens/my-managed');
-      setHasMyGarden(res.data[0]);
+      const res = await customAxios.get('/v2/gardens/my-managed');
+      setHasMyGarden(res.data.myManagedGardenGetResponses[0]);
     } catch (err) {
       console.log(err);
     }
@@ -30,7 +29,6 @@ const MyHome = () => {
   useEffect(() => {
     init();
   }, []);
-
   const calculateRemainingDays = (endDate: string) => {
     const today = new Date();
     const end = new Date(endDate);
@@ -44,7 +42,7 @@ const MyHome = () => {
         <MyGardenSection>
           <SectionTitle>나의 텃밭</SectionTitle>
           <GardenImgContainer>
-            <GardenImage src={hasMyGarden?.image || testImg} alt="텃밭 이미지" />
+            <GardenImage src={hasMyGarden?.images[0] || testImg} alt="텃밭 이미지" />
             <GardenTitle>{userName}님의 텃밭</GardenTitle>
 
             <Menu>
@@ -71,7 +69,7 @@ const MyHome = () => {
           <>
             <AfterContent>
               <ImgBox src={btnIcon3} alt="버튼 아이콘" />
-              <span>{hasMyGarden?.name}</span>
+              <span>{hasMyGarden?.gardenName}</span>
             </AfterContent>
             <AfterContent>
               <ImgBox src={btnIcon4} alt="버튼 아이콘" />

@@ -27,7 +27,6 @@ export interface IFaclity {
 export interface IStates {
   recruiting: boolean;
   end: boolean;
-  regular: boolean;
 }
 
 export interface IUploadImage {
