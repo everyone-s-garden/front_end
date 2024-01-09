@@ -22,6 +22,7 @@ import RecentPosts from 'pages/My/RecentPosts/RecentPosts';
 import MyPosts from 'pages/My/MyPosts/MyPosts';
 import { HelmetProvider } from 'react-helmet-async';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import Chat from 'pages/Chat/Chat';
 
 // 모바일 100vh 세팅
 let vh = window.innerHeight * 0.01;
@@ -104,6 +105,10 @@ const router = createBrowserRouter([
       {
         path: '/my/oauth/kakao',
         element: <Token />,
+      },
+      {
+        path: '/chat',
+        element: <Chat />,
       },
     ],
   },
