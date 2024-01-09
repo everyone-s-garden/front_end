@@ -21,6 +21,8 @@ const ContentHeader = () => {
 
 const Container = styled.div`
   display: flex;
+  width: 100%;
+  position: absolute;
   background-color: #bcbcbc;
   justify-content: space-between;
   align-items: center;
