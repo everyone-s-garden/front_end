@@ -4,4 +4,5 @@ export interface IHashMyGarden {
   useStartDate: string;
   useEndDate: string;
   images: string[];
+  address: string;
 }

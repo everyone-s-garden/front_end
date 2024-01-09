@@ -6,7 +6,7 @@ import searchIcon from 'assets/search.svg';
 import { BREAK_POINT } from 'constants/style';
 import formatDateInput from 'utils/formatDateInput';
 import customAxios from 'utils/token';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { IProps } from './type';
 import { formValidation, getQueryData } from './query';
 import { formDataHandler } from '../RegisterSeller/query';
@@ -26,6 +26,7 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
   const [selectedResult, setSelectedResult] = useState<any>(null);
   const [show, setShow] = useState<boolean>(false);
   const nav = useNavigate();
+
   const init = async () => {
     if (myGarden && myGarden.gardenName) {
       setSearchText(myGarden.gardenName);
@@ -34,6 +35,7 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
           ...prev,
           id: myGarden.myManagedGardenId,
           name: myGarden.gardenName,
+          address: myGarden.address,
         };
       });
       const startDate: string = myGarden.useStartDate.split('-').join('.');
@@ -56,12 +58,12 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
     }
   };
   const selectGarden = (result: any) => {
-    console.log(result);
     setSearchText(result.gardenName);
     setSelectedResult(result);
     setSearchResults([]);
     setShow(false);
   };
+
   const uploadMyGarden = async () => {
     const imageFile = await formDataHandler(image);
     const myManagedGardenCreateRequest = {
@@ -96,27 +98,38 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
     init();
   }, [myGarden, image]);
   const editMyGarden = async () => {
-    // const uploadData = {
-    //   id: selectedResult?.id,
-    //   name: selectedResult?.name,
-    //   image,
-    //   address: selectedResult?.address,
-    //   latitude: selectedResult?.latitude,
-    //   longitude: selectedResult?.longitude,
-    //   useStartDate: getValues('start'),
-    //   useEndDate: getValues('end'),
-    // };
-    // const validation = formValidation(uploadData);
-    // try {
-    //   if (validation) {
-    //     const res = await customAxios.put(`v1/garden/using/${myGarden?.id}`, uploadData);
-    //     if (res.status === 200) nav(-1);
-    //   }
-    // } catch (err) {
-    //   alert('날씨형식이 올바르지않습니다.');
-    //   setValue('start', '');
-    //   setValue('end', '');
-    // }
+    try {
+      const myManagedGardenUpdateRequest = {
+        gardenId: selectedResult.id,
+        useStartDate: getValues('start'),
+        useEndDate: getValues('end'),
+      };
+
+      const gardenImage = JSON.stringify(image);
+      const imageBlob = new Blob([gardenImage], { type: 'image/jpeg' });
+      const imageFile = new File([imageBlob], 'image.jpg');
+      const jsonMyMangedGarden = JSON.stringify(myManagedGardenUpdateRequest);
+      const blob = new Blob([jsonMyMangedGarden], { type: 'application/json' });
+
+      const res = await customAxios.put(
+        `v2/gardens/my-managed/${myGarden?.myManagedGardenId}`,
+        {
+          gardenImage: imageFile,
+          myManagedGardenUpdateRequest: blob,
+        },
+        {
+          headers: {
+            'Content-Type': `multipart/form-data`,
+          },
+        },
+      );
+      console.log(res);
+      // if (res.status === 200) nav(-1);
+    } catch (err) {
+      alert('날씨형식이 올바르지않습니다.');
+      setValue('start', '');
+      setValue('end', '');
+    }
   };
 
   return (

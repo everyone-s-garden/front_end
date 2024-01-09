@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import addIcon from 'assets/my/register/add-icon.svg';
 import Form from './Form';
 import { BREAK_POINT, COLOR } from 'constants/style';
-import { useMatch } from 'react-router-dom';
+import { useMatch, useParams } from 'react-router-dom';
 import customAxios from 'utils/token';
 import { ReactComponent as MenuIcon } from 'assets/three-dot-icon.svg';
 import imageCompression from 'browser-image-compression';
@@ -13,13 +13,15 @@ import { IHashMyGarden } from 'types/MyGarden';
 const RegisterUser = () => {
   const labelRef = useRef<HTMLLabelElement>(null);
   const [image, setImage] = useState<string>('');
-  const editMatch = useMatch('/my/garden/edit');
+  const { id } = useParams();
+  const editMatch = useMatch('/my/garden/edit/:id');
   const [myGarden, setMyGarden] = useState<IHashMyGarden>({
     gardenName: '',
     myManagedGardenId: 0,
     useStartDate: '',
     useEndDate: '',
     images: [''],
+    address: '',
   });
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const onImgRegisterClicked = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -48,10 +50,10 @@ const RegisterUser = () => {
     }
   };
   const getMyGarden = async () => {
-    const res = await customAxios('/v2/gardens/my-managed');
-    setMyGarden(res.data.myManagedGardenGetResponses[0]);
+    const res = await customAxios.get(`v2/gardens/my-managed/${id}`);
+    setMyGarden(res.data);
 
-    setImage(res.data.myManagedGardenGetResponses[0]?.images[0]);
+    setImage(res.data.images[0]);
   };
   useEffect(() => {
     if (editMatch) {

@@ -46,7 +46,7 @@ const MyHome = () => {
             <GardenTitle>{userName}님의 텃밭</GardenTitle>
 
             <Menu>
-              <Edit onClick={() => nav('/my/garden/edit')}>수정</Edit>
+              <Edit onClick={() => nav(`/my/garden/edit/${hasMyGarden.myManagedGardenId}`)}>수정</Edit>
               <Remove onClick={() => setIsGardenMenuOpen(true)}>삭제</Remove>
             </Menu>
           </GardenImgContainer>

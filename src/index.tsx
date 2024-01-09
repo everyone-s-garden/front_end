@@ -89,7 +89,7 @@ const router = createBrowserRouter([
             element: <PostDetail />,
           },
           {
-            path: 'garden/edit',
+            path: 'garden/edit/:id',
             element: <RegisterUser />,
           },
           {

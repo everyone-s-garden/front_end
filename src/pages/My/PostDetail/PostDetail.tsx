@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import { useMatch, useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { Container as MapDiv, Marker, NaverMap } from 'react-naver-maps';
 import { Player } from '@lottiefiles/react-lottie-player';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { BREAK_POINT, COLOR } from '../../../constants/style';
-import { isReportOpenAtom, reportPostIdAtom } from '../../../recoil/atom';
+import { isReportOpenAtom, memberIdAtom, reportPostIdAtom } from '../../../recoil/atom';
 import ImageSlider from '../../../components/ImageSlider';
 import { ReactComponent as BackIcon } from 'assets/back-icon.svg';
 import { ReactComponent as MenuIcon } from 'assets/three-dot-icon.svg';
@@ -27,6 +27,7 @@ type PostDetailProps = {
 function PostDetail() {
   const { postId } = useParams();
   const { navermaps } = useOutletContext<PostDetailProps>();
+  const memberId = useRecoilValue(memberIdAtom);
   const nav = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState<boolean>(false);
@@ -64,6 +65,7 @@ function PostDetail() {
       }
     }
   };
+
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchGardenData();
@@ -84,7 +86,7 @@ function PostDetail() {
       console.log(err);
     }
   };
-
+  console.log(memberId, post.writerId);
   return (
     <Container>
       <Helmet>
@@ -116,8 +118,8 @@ function PostDetail() {
               >
                 신고하기
               </DropDownBtn>
-              {userId === post?.userId && <DropDownBtn onClick={deletePost}>삭제하기</DropDownBtn>}
-              {userId === post?.userId && (
+              {memberId === post?.writerId && <DropDownBtn onClick={deletePost}>삭제하기</DropDownBtn>}
+              {memberId === post?.writerId && (
                 <DropDownBtn onClick={() => nav(`/my/post/edit/${postId}`)}>수정하기</DropDownBtn>
               )}
             </MenuDropdown>
