@@ -86,6 +86,7 @@ function PostDetail() {
       console.log(err);
     }
   };
+
   console.log(memberId, post.writerId);
   return (
     <Container>
