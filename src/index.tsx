@@ -24,6 +24,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import Chat from 'pages/Chat/Chat';
 import Review from 'pages/Review/Review';
+import ReceiveReview from 'pages/ReceiveReview/ReceiveReview';
 
 // 모바일 100vh 세팅
 let vh = window.innerHeight * 0.01;
@@ -114,6 +115,10 @@ const router = createBrowserRouter([
       {
         path: '/review',
         element: <Review />,
+      },
+      {
+        path: '/receive-review',
+        element: <ReceiveReview />,
       },
     ],
   },
