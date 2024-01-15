@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 import { GardenDetailType } from 'api/type';
 import { IGardenDetail } from 'types/GardenDetail';
-import { ILocation } from 'components/Nav';
+import { ILocation } from 'components/Nav/Nav';
 import { IHashMyGarden } from 'types/MyGarden';
 
 // Modal Atoms
