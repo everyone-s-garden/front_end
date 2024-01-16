@@ -3,36 +3,38 @@ import styled from 'styled-components';
 import { BREAK_POINT } from 'constants/style';
 import { Link } from 'react-router-dom';
 
-const postOptions = [
+// TODO: remove this
+const TestData = [
   {
-    title: '나의 밭 등록하기',
-    description: '현재 가지고 있는 밭을 등록해요',
-    link: '/',
+    title: '알람',
+    description: '알람 내용',
+    time: '2021-08-01(월)',
   },
   {
-    title: '판매하는 밭 등록하기',
-    description: '판매 할 개인 밭을 등록해요',
-    link: '/',
+    title: '알람',
+    description: '알람 내용',
+    time: '2021-08-01(월)',
   },
   {
-    title: '작물 거래 글쓰기',
-    description: '다양한 작물을 판매하는 글을 등록해요',
-    link: '/',
+    title: '알람',
+    description: '알람 내용',
+    time: '2021-08-01(월)',
   },
   {
-    title: '속닥속닥 글쓰기',
-    description: '질문, 자랑, 공유 등 다양한 글을 작성해요',
-    link: '/',
+    title: '알람',
+    description: '알람 내용',
+    time: '2021-08-01(월)',
   },
 ];
 
-const PostOptions = () => {
+const Notification = () => {
   return (
     <SelectContainer>
-      {postOptions.map(({ link, title, description }) => (
-        <StyledLink to={link} key={link}>
+      {TestData.map(({ title, description, time }, idx) => (
+        <StyledLink to={'/'} key={idx}>
           <Title>{title}</Title>
           <Description>{description}</Description>
+          {time && <Time>{time}</Time>}
         </StyledLink>
       ))}
     </SelectContainer>
@@ -41,8 +43,8 @@ const PostOptions = () => {
 
 const SelectContainer = styled.div`
   position: absolute;
-  right: 0;
   top: 50px;
+  transform: translateX(-90%);
   z-index: 100000;
   background-color: #fff;
   border: 1px solid #d9d9d9;
@@ -55,13 +57,19 @@ const SelectContainer = styled.div`
 
 const Title = styled.div`
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 700;
 `;
 
 const Description = styled.div`
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 400;
-  color: #494949;
+  color: #222a1a;
+`;
+
+const Time = styled.div`
+  font-size: 14px;
+  font-weight: 400;
+  color: #9b9b9b;
 `;
 
 const StyledLink = styled(Link)`
@@ -79,11 +87,6 @@ const StyledLink = styled(Link)`
   &:first-of-type {
     border-radius: 10px 10px 0 0;
   }
-
-  &:last-of-type {
-    border-bottom: none;
-    border-radius: 0 0 10px 10px;
-  }
 `;
 
-export default PostOptions;
+export default Notification;

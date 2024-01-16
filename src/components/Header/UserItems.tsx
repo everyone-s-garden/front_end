@@ -8,10 +8,12 @@ import { ReactComponent as BellIcon } from 'assets/bell-icon.svg';
 import { ReactComponent as UserIcon } from 'assets/user-icon.svg';
 import { BREAK_POINT } from 'constants/style';
 import PostOptions from './PostOptions';
+import Notification from './Notification';
 
 const UserItems = () => {
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
   const [isPostOptionsOpen, setIsPostOptionsOpen] = useState(false);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
   const logout = () => {
     sessionStorage.clear();
@@ -20,7 +22,12 @@ const UserItems = () => {
 
   return (
     <Container>
-      {isLogin && <StyledBellIcon />}
+      {isLogin && (
+        <BellBtn onClick={() => setIsNotificationOpen(true)} onBlur={() => setIsNotificationOpen(false)}>
+          <BellIcon />
+        </BellBtn>
+      )}
+      {isNotificationOpen && <Notification />}
       {isLogin && <StyledLink to="/my">마이페이지</StyledLink>}
       <StyledUserIcon login={isLogin} />
       {isLogin ? (
@@ -51,7 +58,7 @@ const Container = styled.div`
   }
 `;
 
-const StyledBellIcon = styled(BellIcon)`
+const BellBtn = styled.button`
   width: 24px;
   height: 24px;
   cursor: pointer;
