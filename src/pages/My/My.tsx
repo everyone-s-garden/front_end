@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
@@ -15,13 +15,17 @@ const Mypage = () => {
   const isLogin: boolean = useRecoilValue(isLoginAtom);
   const [memberId, setMemberId] = useRecoilState(memberIdAtom);
   useEffect(() => {
-    (async () => {
-      if (isLogin) {
-        // const res = await customAxios.get('members/my');
-        const memberId = getItem('member_id');
-        setMemberId(Number(memberId));
-      }
-    })();
+    // (async () => {
+    //   if (isLogin) {
+    //     try {
+    //       const res = await customAxios.get('members/my');
+    //       const memberId = getItem('member_id');
+    //       setMemberId(Number(memberId));
+    //     } catch (err: any) {
+    //       throw new Error('회원 닉네임 api 에러 :', err);
+    //     }
+    //   }
+    // })();
   }, [isLogin]);
 
   return (
