@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { BREAK_POINT } from 'constants/style';
 import { Link } from 'react-router-dom';
+import { ReactComponent as PlusIcon } from 'assets/plus-icon.svg';
+import useSelect from 'hooks/useSelect';
 
 const postOptions = [
   {
@@ -27,17 +29,51 @@ const postOptions = [
 ];
 
 const PostOptions = () => {
+  const { toggleSelect, isOpen, closeSelect } = useSelect();
   return (
-    <SelectContainer>
-      {postOptions.map(({ link, title, description }) => (
-        <StyledLink to={link} key={link}>
-          <Title>{title}</Title>
-          <Description>{description}</Description>
-        </StyledLink>
-      ))}
-    </SelectContainer>
+    <>
+      <PostBtn onClick={toggleSelect} onBlur={closeSelect}>
+        <StyledPlusIcon />
+        글쓰기
+      </PostBtn>
+      {isOpen && (
+        <SelectContainer>
+          {postOptions.map(({ link, title, description }) => (
+            <StyledLink to={link} key={link}>
+              <Title>{title}</Title>
+              <Description>{description}</Description>
+            </StyledLink>
+          ))}
+        </SelectContainer>
+      )}
+    </>
   );
 };
+
+const PostBtn = styled.button`
+  background-color: #fceec0;
+  border-radius: 10px;
+  padding: 8px 12px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #000;
+  font-size: 18px;
+  font-weight: 500;
+
+  @media (min-width: ${BREAK_POINT.TABLET}) {
+    display: flex;
+  }
+`;
+
+const StyledPlusIcon = styled(PlusIcon)`
+  width: 16px;
+  height: 16px;
+  & path {
+    stroke: #000;
+  }
+`;
 
 const SelectContainer = styled.div`
   position: absolute;

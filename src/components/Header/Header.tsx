@@ -6,7 +6,6 @@ import { useNavermaps } from 'react-naver-maps';
 import logoImg from 'assets/logo_horizon.png';
 import { BREAK_POINT, COLOR } from 'constants/style';
 import NavLinks from './NavLinks/NavLinks';
-import Nav from 'components/Nav/Nav';
 import MobileNavLinks from './NavLinks/MobileNavLinks';
 import UserItems from './UserItems';
 
@@ -29,7 +28,6 @@ const Header = () => {
           <MobileNavLinks />
         </HeaderContainer>
       </Container>
-      {/* <Nav /> */}
       <Main url={location.pathname}>
         <Outlet context={{ navermaps }} />
       </Main>

@@ -23,7 +23,7 @@ const NavContainer = styled.nav`
   width: 100%;
   padding: 0 13px 14px 13px;
   border-bottom: 2px solid #d9d9d9;
-  /* overflow-x: auto; */
+  overflow-x: auto;
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     display: none;
@@ -35,8 +35,8 @@ const StyledNavLink = styled(NavLink)`
   font-weight: 700;
   color: #d9d9d9;
   flex-shrink: 0;
-  position: relative;
   padding: 0 13px;
+  position: relative;
 
   &.active {
     color: #414141;

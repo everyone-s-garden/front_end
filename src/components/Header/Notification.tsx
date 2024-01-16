@@ -2,6 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { BREAK_POINT } from 'constants/style';
 import { Link } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { ReactComponent as BellIcon } from 'assets/bell-icon.svg';
+import { isLoginAtom } from 'recoil/atom';
+import useSelect from 'hooks/useSelect';
 
 // TODO: remove this
 const TestData = [
@@ -28,18 +32,41 @@ const TestData = [
 ];
 
 const Notification = () => {
+  const isLogin = useRecoilValue(isLoginAtom);
+  const { isOpen, toggleSelect, closeSelect } = useSelect();
+
   return (
-    <SelectContainer>
-      {TestData.map(({ title, description, time }, idx) => (
-        <StyledLink to={'/'} key={idx}>
-          <Title>{title}</Title>
-          <Description>{description}</Description>
-          {time && <Time>{time}</Time>}
-        </StyledLink>
-      ))}
-    </SelectContainer>
+    <>
+      {isLogin && (
+        <BellBtn onClick={toggleSelect} onBlur={closeSelect}>
+          <BellIcon />
+        </BellBtn>
+      )}
+      {isOpen && (
+        <SelectContainer>
+          {TestData.map(({ title, description, time }, idx) => (
+            <StyledLink to={'/'} key={idx}>
+              <Title>{title}</Title>
+              <Description>{description}</Description>
+              {time && <Time>{time}</Time>}
+            </StyledLink>
+          ))}
+        </SelectContainer>
+      )}
+    </>
   );
 };
+
+const BellBtn = styled.button`
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+
+  @media (min-width: ${BREAK_POINT.MOBILE}) {
+    width: 26px;
+    height: 26px;
+  }
+`;
 
 const SelectContainer = styled.div`
   position: absolute;
