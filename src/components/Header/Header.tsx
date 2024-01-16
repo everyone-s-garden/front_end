@@ -4,7 +4,7 @@ import { Link, Outlet } from 'react-router-dom';
 import { useNavermaps } from 'react-naver-maps';
 
 import logoImg from 'assets/logo_horizon.png';
-import { BREAK_POINT } from 'constants/style';
+import { BREAK_POINT, COLOR } from 'constants/style';
 import NavLinks from './NavLinks/NavLinks';
 import Nav from 'components/Nav/Nav';
 import MobileNavLinks from './NavLinks/MobileNavLinks';
@@ -15,19 +15,21 @@ const Header = () => {
 
   return (
     <>
-      <HeaderContainer>
-        <Wrapper>
-          <LinkWrapper>
-            <LogoImageContainer to={'/'}>
-              <LogoImage src={logoImg} alt="로고" />
-            </LogoImageContainer>
-            <NavLinks />
-          </LinkWrapper>
-          <UserItems />
-        </Wrapper>
-        <MobileNavLinks />
-      </HeaderContainer>
-      <Nav />
+      <Container>
+        <HeaderContainer>
+          <Wrapper>
+            <LinkWrapper>
+              <LogoImageContainer to={'/'}>
+                <LogoImage src={logoImg} alt="로고" />
+              </LogoImageContainer>
+              <NavLinks />
+            </LinkWrapper>
+            <UserItems />
+          </Wrapper>
+          <MobileNavLinks />
+        </HeaderContainer>
+      </Container>
+      {/* <Nav /> */}
       <Main url={location.pathname}>
         <Outlet context={{ navermaps }} />
       </Main>
@@ -35,9 +37,15 @@ const Header = () => {
   );
 };
 
+const Container = styled.div`
+  position: sticky;
+  top: 0;
+  z-index: 99999;
+  background-color: ${COLOR.BACKGROUND};
+`;
+
 const HeaderContainer = styled.header`
   max-width: 1252px;
-  width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
