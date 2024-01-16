@@ -10,6 +10,7 @@ import { ReactComponent as MenuIcon } from 'assets/three-dot-icon.svg';
 import imageCompression from 'browser-image-compression';
 import { Helmet } from 'react-helmet-async';
 import { IHashMyGarden } from 'types/MyGarden';
+
 const RegisterUser = () => {
   const labelRef = useRef<HTMLLabelElement>(null);
   const [image, setImage] = useState<string>('');

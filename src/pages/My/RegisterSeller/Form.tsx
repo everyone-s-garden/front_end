@@ -82,6 +82,7 @@ const Form = ({ match, images, setImages, location, setLocation }: IProps) => {
           return await formDataHandler(v);
         }),
       );
+      console.log(gardenImages);
       const uploadData = {
         gardenName: getValues('name'),
         price: uploadPrice,

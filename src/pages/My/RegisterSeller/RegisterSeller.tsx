@@ -51,7 +51,6 @@ const RegisterSeller = () => {
   const deleteImage = (index: number) => {
     setImages(prevImages => prevImages.filter((_, i) => i !== index));
   };
-  console.log(images.length);
   return (
     <Container>
       <H1>{match ? '판매 텃밭 수정하기' : ' 판매 텃밭 등록하기'}</H1>
