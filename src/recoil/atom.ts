@@ -3,6 +3,7 @@ import { GardenDetailType } from 'api/type';
 import { IGardenDetail } from 'types/GardenDetail';
 import { ILocation } from 'components/Nav/Nav';
 import { IHashMyGarden } from 'types/MyGarden';
+import { getItem } from 'utils/session';
 
 // Modal Atoms
 export const isReportOpenAtom = atom<boolean>({
@@ -39,7 +40,7 @@ export const NotiContentAtom = atom<string>({
 // Login Page Atoms
 export const isLoginAtom = atom<boolean>({
   key: 'isLogin',
-  default: false,
+  default: Boolean(getItem('isLogin')),
 });
 
 // Map Page Atoms
