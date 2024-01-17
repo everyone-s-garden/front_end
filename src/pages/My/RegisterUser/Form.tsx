@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 
@@ -6,7 +6,7 @@ import searchIcon from 'assets/search.svg';
 import { BREAK_POINT } from 'constants/style';
 import formatDateInput from 'utils/formatDateInput';
 import customAxios from 'utils/token';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { IProps } from './type';
 import { formValidation, getQueryData } from './query';
 import { formDataHandler } from '../RegisterSeller/query';
@@ -26,7 +26,8 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
   const [selectedResult, setSelectedResult] = useState<any>(null);
   const [show, setShow] = useState<boolean>(false);
   const nav = useNavigate();
-  const init = useCallback(async () => {
+
+  const init = async () => {
     if (myGarden && myGarden.gardenName) {
       setSearchText(myGarden.gardenName);
       setSelectedResult((prev: any) => {
@@ -42,7 +43,7 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
       setValue('start', startDate);
       setValue('end', endDate);
     }
-  }, [myGarden, setValue]);
+  };
   const getSearchResult = async (e: React.FormEvent<HTMLInputElement>) => {
     let query = e.currentTarget.value;
     setSearchText(query);
@@ -62,9 +63,9 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
     setSearchResults([]);
     setShow(false);
   };
+
   const uploadMyGarden = async () => {
     const imageFile = await formDataHandler(image);
-
     const myManagedGardenCreateRequest = {
       gardenId: selectedResult?.gardenId || 0,
       useStartDate: getValues('start'),
@@ -84,7 +85,6 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
             },
           },
         );
-        console.log(res);
         if (res.status === 201) nav(-1);
       }
     } catch (err) {
@@ -93,49 +93,44 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
       setValue('end', '');
     }
   };
-  const editMyGarden = async () => {
-    let requestImage;
-    if (typeof image === 'string') {
-      requestImage = JSON.stringify(image);
-      const blob = new Blob([requestImage], { type: 'image/jpeg' });
-      const file = new File([blob], 'image.jpg');
-      requestImage = file;
-    } else {
-      requestImage = formDataHandler(image);
-    }
 
-    const requestData = {
-      gardenId: selectedResult?.id,
-      useStartDate: getValues('start'),
-      useEndDate: getValues('end'),
-    };
-
-    const jsonMyMangedGarden = JSON.stringify(requestData);
-    const blob = new Blob([jsonMyMangedGarden], { type: 'application/json' });
-    // try {
-    const res = await customAxios.put(
-      `v2/gardens/my-managed/${myGarden?.myManagedGardenId}`,
-      {
-        gardenImage: requestImage,
-        myManagedGardenUpdateRequest: blob,
-      },
-      {
-        headers: {
-          'Content-Type': `multipart/form-data`,
-        },
-      },
-    );
-    console.log(res);
-    // if (res.status === 200) nav(-1);
-    // } catch (err) {
-    //   alert('날씨형식이 올바르지않습니다.');
-    //   setValue('start', '');
-    //   setValue('end', '');
-    // }
-  };
   useEffect(() => {
     init();
-  }, [editMatch, init]);
+  }, [myGarden, image]);
+  const editMyGarden = async () => {
+    try {
+      const myManagedGardenUpdateRequest = {
+        gardenId: selectedResult.id,
+        useStartDate: getValues('start'),
+        useEndDate: getValues('end'),
+      };
+
+      const gardenImage = JSON.stringify(image);
+      const imageBlob = new Blob([gardenImage], { type: 'image/jpeg' });
+      const imageFile = new File([imageBlob], 'image.jpg');
+      const jsonMyMangedGarden = JSON.stringify(myManagedGardenUpdateRequest);
+      const blob = new Blob([jsonMyMangedGarden], { type: 'application/json' });
+
+      const res = await customAxios.put(
+        `v2/gardens/my-managed/${myGarden?.myManagedGardenId}`,
+        {
+          gardenImage: imageFile,
+          myManagedGardenUpdateRequest: blob,
+        },
+        {
+          headers: {
+            'Content-Type': `multipart/form-data`,
+          },
+        },
+      );
+      console.log(res);
+      // if (res.status === 200) nav(-1);
+    } catch (err) {
+      alert('날씨형식이 올바르지않습니다.');
+      setValue('start', '');
+      setValue('end', '');
+    }
+  };
 
   return (
     <>

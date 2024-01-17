@@ -1,16 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { BREAK_POINT } from 'constants/style';
-import { isLoginAtom } from 'recoil/atom';
+import { isLoginAtom, memberIdAtom } from 'recoil/atom';
 import BeforeLogin from './BeforeLogin/BeforeLogin';
 import AfterLogin from './AfterLogin/AfterLogin';
 import Menu from './Menu/Menu';
 import { Helmet } from 'react-helmet-async';
+import customAxios from 'utils/token';
+import { getItem } from 'utils/session';
 
 const Mypage = () => {
   const isLogin: boolean = useRecoilValue(isLoginAtom);
+  const [memberId, setMemberId] = useRecoilState(memberIdAtom);
+  useEffect(() => {
+    (async () => {
+      if (isLogin) {
+        // const res = await customAxios.get('members/my');
+        const memberId = getItem('member_id');
+        setMemberId(Number(memberId));
+      }
+    })();
+  }, [isLogin]);
 
   return (
     <Container>

@@ -14,8 +14,8 @@ import { IHashMyGarden } from 'types/MyGarden';
 const RegisterUser = () => {
   const labelRef = useRef<HTMLLabelElement>(null);
   const [image, setImage] = useState<string>('');
-  const editMatch = useMatch('/my/garden/edit/:id');
   const { id } = useParams();
+  const editMatch = useMatch('/my/garden/edit/:id');
   const [myGarden, setMyGarden] = useState<IHashMyGarden>({
     gardenName: '',
     myManagedGardenId: 0,
@@ -51,8 +51,9 @@ const RegisterUser = () => {
     }
   };
   const getMyGarden = async () => {
-    const res = await customAxios(`v2/gardens/my-managed/${id}`);
+    const res = await customAxios.get(`v2/gardens/my-managed/${id}`);
     setMyGarden(res.data);
+
     setImage(res.data.images[0]);
   };
   useEffect(() => {

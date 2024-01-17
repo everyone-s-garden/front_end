@@ -109,3 +109,12 @@ export const hasMyGardenAtom = atom<IHashMyGarden | null>({
   key: 'hasMyGarden',
   default: null,
 });
+
+export const memberIdAtom = atom<number | null>({
+  key: 'memberId',
+  default: null,
+});
+export const memberName = atom<string | null>({
+  key: 'memberName',
+  default: null,
+});
