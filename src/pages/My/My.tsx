@@ -17,7 +17,7 @@ const Mypage = () => {
   useEffect(() => {
     (async () => {
       if (isLogin) {
-        // const res = await customAxios.get('members/my');
+        const res = await customAxios.get('members/my');
         const memberId = getItem('member_id');
         setMemberId(Number(memberId));
       }
