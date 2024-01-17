@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 
@@ -26,7 +26,7 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
   const [selectedResult, setSelectedResult] = useState<any>(null);
   const [show, setShow] = useState<boolean>(false);
   const nav = useNavigate();
-  const init = async () => {
+  const init = useCallback(async () => {
     if (myGarden && myGarden.gardenName) {
       setSearchText(myGarden.gardenName);
       setSelectedResult((prev: any) => {
@@ -34,6 +34,7 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
           ...prev,
           id: myGarden.myManagedGardenId,
           name: myGarden.gardenName,
+          address: myGarden.address,
         };
       });
       const startDate: string = myGarden.useStartDate.split('-').join('.');
@@ -41,7 +42,7 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
       setValue('start', startDate);
       setValue('end', endDate);
     }
-  };
+  }, [myGarden, setValue]);
   const getSearchResult = async (e: React.FormEvent<HTMLInputElement>) => {
     let query = e.currentTarget.value;
     setSearchText(query);
@@ -56,7 +57,6 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
     }
   };
   const selectGarden = (result: any) => {
-    console.log(result);
     setSearchText(result.gardenName);
     setSelectedResult(result);
     setSearchResults([]);
@@ -64,6 +64,7 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
   };
   const uploadMyGarden = async () => {
     const imageFile = await formDataHandler(image);
+
     const myManagedGardenCreateRequest = {
       gardenId: selectedResult?.gardenId || 0,
       useStartDate: getValues('start'),
@@ -83,6 +84,7 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
             },
           },
         );
+        console.log(res);
         if (res.status === 201) nav(-1);
       }
     } catch (err) {
@@ -91,33 +93,49 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
       setValue('end', '');
     }
   };
-
-  useEffect(() => {
-    init();
-  }, [myGarden, image]);
   const editMyGarden = async () => {
-    // const uploadData = {
-    //   id: selectedResult?.id,
-    //   name: selectedResult?.name,
-    //   image,
-    //   address: selectedResult?.address,
-    //   latitude: selectedResult?.latitude,
-    //   longitude: selectedResult?.longitude,
-    //   useStartDate: getValues('start'),
-    //   useEndDate: getValues('end'),
-    // };
-    // const validation = formValidation(uploadData);
+    let requestImage;
+    if (typeof image === 'string') {
+      requestImage = JSON.stringify(image);
+      const blob = new Blob([requestImage], { type: 'image/jpeg' });
+      const file = new File([blob], 'image.jpg');
+      requestImage = file;
+    } else {
+      requestImage = formDataHandler(image);
+    }
+
+    const requestData = {
+      gardenId: selectedResult?.id,
+      useStartDate: getValues('start'),
+      useEndDate: getValues('end'),
+    };
+
+    const jsonMyMangedGarden = JSON.stringify(requestData);
+    const blob = new Blob([jsonMyMangedGarden], { type: 'application/json' });
     // try {
-    //   if (validation) {
-    //     const res = await customAxios.put(`v1/garden/using/${myGarden?.id}`, uploadData);
-    //     if (res.status === 200) nav(-1);
-    //   }
+    const res = await customAxios.put(
+      `v2/gardens/my-managed/${myGarden?.myManagedGardenId}`,
+      {
+        gardenImage: requestImage,
+        myManagedGardenUpdateRequest: blob,
+      },
+      {
+        headers: {
+          'Content-Type': `multipart/form-data`,
+        },
+      },
+    );
+    console.log(res);
+    // if (res.status === 200) nav(-1);
     // } catch (err) {
     //   alert('날씨형식이 올바르지않습니다.');
     //   setValue('start', '');
     //   setValue('end', '');
     // }
   };
+  useEffect(() => {
+    init();
+  }, [editMatch, init]);
 
   return (
     <>

@@ -20,7 +20,7 @@ const MyPosts = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [ref, inView] = useInView();
   const nav = useNavigate();
-
+  console.log(myPosts);
   const fetchData = async () => {
     try {
       setIsLoading(true);
