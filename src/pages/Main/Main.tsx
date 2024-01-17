@@ -5,6 +5,7 @@ import FirstSection from './FirstSection';
 import SecondSection from './SecondSection';
 import { Helmet } from 'react-helmet-async';
 import Banner from './Banner';
+import GardenList from './GardenList/GardenList';
 const Main = () => {
   return (
     <Container>
@@ -14,6 +15,7 @@ const Main = () => {
       {/* <FirstSection /> */}
       {/* <SecondSection /> */}
       <Banner />
+      <GardenList />
     </Container>
   );
 };

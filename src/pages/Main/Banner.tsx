@@ -48,7 +48,7 @@ const ImgContainer = styled.div<{ index: number }>`
   width: 100%;
   height: 100%;
   transform: ${({ index }) => `translateX(-${index * 100}%)`};
-  transition: transform 0.7s ease-in-out;
+  transition: transform 0.5s ease-in-out;
 `;
 
 const Img = styled.img`
