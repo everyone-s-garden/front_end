@@ -11,7 +11,7 @@ import { Helmet } from 'react-helmet-async';
 import customAxios from 'utils/token';
 import { getItem } from 'utils/session';
 import { NavigateFunction, Outlet, useMatch, useNavigate, useOutletContext } from 'react-router-dom';
-
+import { motion } from 'framer-motion';
 type AfterLoginProps = {
   navermaps: typeof naver.maps;
 };
@@ -44,28 +44,30 @@ const SubHeader = ({ myGardensMatch, gardenManageMatch, cropTradeMatch, whisperM
         <>
           <Btn onClick={() => nav('my_gardens/like')}>
             찜한텃밭
-            {likeMatch && <ButtonHighlight />}
+            {likeMatch && <ButtonHighlight layoutId="1" />}
           </Btn>
           <Btn onClick={() => nav('my_gardens/recent')}>
             최근 본 텃밭
-            {recentMatch && <ButtonHighlight />}
+            {recentMatch && <ButtonHighlight layoutId="1" />}
           </Btn>
-          <Btn onClick={() => nav('my_gardens/mypost')}>내가 올린 글{myPostMatch && <ButtonHighlight />}</Btn>
+          <Btn onClick={() => nav('my_gardens/mypost')}>
+            내가 올린 글{myPostMatch && <ButtonHighlight layoutId="1" />}
+          </Btn>
         </>
       )}
       {cropTradeMatch && (
         <>
           <Btn onClick={() => nav('crop_trade/sales_history')}>
             판매내역
-            {salesMatch && <ButtonHighlight />}
+            {salesMatch && <ButtonHighlight layoutId="1" />}
           </Btn>
           <Btn onClick={() => nav('crop_trade/purchase_history')}>
             구매내역
-            {purchaseMatch && <ButtonHighlight />}
+            {purchaseMatch && <ButtonHighlight layoutId="1" />}
           </Btn>
           <Btn onClick={() => nav('crop_trade/wishlist')}>
             관심목록
-            {wishListMatch && <ButtonHighlight />}
+            {wishListMatch && <ButtonHighlight layoutId="1" />}
           </Btn>
         </>
       )}
@@ -73,15 +75,15 @@ const SubHeader = ({ myGardensMatch, gardenManageMatch, cropTradeMatch, whisperM
         <>
           <Btn onClick={() => nav('garden_manage/my_garden_selling')}>
             나의 분양중인 텃밭
-            {gardenSellingMatch && <ButtonHighlight />}
+            {gardenSellingMatch && <ButtonHighlight layoutId="1" />}
           </Btn>
           <Btn onClick={() => nav('garden_manage/my_garden_using')}>
             내가 이용하는 텃밭
-            {gardenUsingMatch && <ButtonHighlight />}
+            {gardenUsingMatch && <ButtonHighlight layoutId="1" />}
           </Btn>
           <Btn onClick={() => nav('garden_manage/like')}>
             내가 찜한 텃밭
-            {likeGardenMatch && <ButtonHighlight />}
+            {likeGardenMatch && <ButtonHighlight layoutId="1" />}
           </Btn>
         </>
       )}
@@ -90,10 +92,14 @@ const SubHeader = ({ myGardensMatch, gardenManageMatch, cropTradeMatch, whisperM
         <>
           <Btn onClick={() => nav('whisper/my_post')}>
             작성한 글 목록
-            {whisperPostMatch && <ButtonHighlight />}
+            {whisperPostMatch && <ButtonHighlight layoutId="1" />}
           </Btn>
-          <Btn onClick={() => nav('whisper/comment_post')}>댓글 단 글{commentPostMatch && <ButtonHighlight />}</Btn>
-          <Btn onClick={() => nav('whisper/like')}>좋아요 누른 글{whisperLikeMatch && <ButtonHighlight />}</Btn>
+          <Btn onClick={() => nav('whisper/comment_post')}>
+            댓글 단 글{commentPostMatch && <ButtonHighlight layoutId="1" />}
+          </Btn>
+          <Btn onClick={() => nav('whisper/like')}>
+            좋아요 누른 글{whisperLikeMatch && <ButtonHighlight layoutId="1" />}
+          </Btn>
         </>
       )}
     </ButtonWrapper>
@@ -217,7 +223,7 @@ const Btn = styled.button<{ match?: boolean }>`
 // active color : #F77800
 //  none active color :#D9D9D9
 
-const ButtonHighlight = styled.div`
+const ButtonHighlight = styled(motion.div)`
   background-color: #f77800;
   height: 4px;
   position: absolute;
