@@ -6,6 +6,7 @@ import { NavermapsProvider } from 'react-naver-maps';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import Nav from './components/Nav';
 import Main from './pages/Main/Main';
@@ -119,6 +120,7 @@ root.render(
         <GoogleOAuthProvider clientId="999513273898-9fa6iu0cm3jbeancg8f82mjs53trr355.apps.googleusercontent.com">
           <QueryClientProvider client={queryClient}>
             <RouterProvider router={router} />
+            <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
         </GoogleOAuthProvider>
       </NavermapsProvider>
