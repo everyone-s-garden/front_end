@@ -171,7 +171,7 @@ const Nav = () => {
                 <ButtonImage src={mapImg} alt="맵아이콘" />
                 <ButtonSpan>내 주변 분양</ButtonSpan>
               </Button>
-              <Button active={isMyPage} onClick={() => navigate(`/my`)}>
+              <Button active={isMyPage} onClick={() => navigate(`/my/my_gardens/like`)}>
                 <ButtonImage src={userImg} alt="맵아이콘" />
                 <ButtonSpan>마이페이지</ButtonSpan>
               </Button>

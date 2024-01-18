@@ -23,6 +23,15 @@ import MyPosts from 'pages/My/MyPosts/MyPosts';
 import { HelmetProvider } from 'react-helmet-async';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import NaverToken from 'pages/Login/Naver/token/token';
+import GardenSelling from 'pages/My/GardenManage/gardenSelling/GardenSelling';
+import GardenUsing from 'pages/My/GardenManage/gardenUsing/GardenUsing';
+import GardenLike from 'pages/My/GardenManage/gardenLike/GardenLike';
+import SalesHistory from 'pages/My/CropTrade/salesHistory/SalesHistory';
+import PurchaseHistory from 'pages/My/CropTrade/purchaseHistory/PurchaseHistory';
+import WishList from 'pages/My/CropTrade/wishList/WishList';
+import WhisperPost from 'pages/My/Whisper/whisperPost/WhisperPost';
+import CommentPost from 'pages/My/Whisper/commentPost/CommentPost';
+import WhisperLike from 'pages/My/Whisper/Whisper';
 
 // 모바일 100vh 세팅
 let vh = window.innerHeight * 0.01;
@@ -53,36 +62,65 @@ const router = createBrowserRouter([
         element: <Mypage />,
         children: [
           {
+            path: 'my_gardens/like',
             index: true,
-            element: <MyHome />,
-          },
-          {
-            path: 'garden-register-user',
-            element: <RegisterUser />,
-          },
-          {
-            path: 'garden-register-seller',
-            element: <RegisterSeller />,
-          },
-          {
-            path: 'garden-register-user',
-            element: <RegisterUser />,
-          },
-          {
-            path: 'garden-register-seller',
-            element: <RegisterSeller />,
-          },
-          {
-            path: 'like',
             element: <LikePosts />,
           },
           {
-            path: 'recent',
+            path: 'my_gardens/recent',
             element: <RecentPosts />,
           },
           {
-            path: 'mypost',
+            path: 'my_gardens/mypost',
             element: <MyPosts />,
+          },
+          {
+            path: 'garden_manage/my_garden_selling',
+            element: <GardenSelling />,
+          },
+          {
+            path: 'garden_manage/my_garden_using',
+            element: <GardenUsing />,
+          },
+          {
+            path: 'garden_manage/like',
+            element: <GardenLike />,
+          },
+          {
+            path: 'crop_trade/sales_history',
+            element: <SalesHistory />,
+          },
+          {
+            path: 'crop_trade/purchase_history',
+            element: <PurchaseHistory />,
+          },
+          {
+            path: 'crop_trade/wishlist',
+            element: <WishList />,
+          },
+          {
+            path: 'whisper/my_post',
+            element: <WhisperPost />,
+          },
+          {
+            path: 'whisper/comment_post',
+            element: <CommentPost />,
+          },
+          {
+            path: 'whisper/like',
+            element: <WhisperLike />,
+          },
+          {
+            path: 'garden-register-user',
+            element: <RegisterUser />,
+          },
+          {
+            path: 'garden-register-seller',
+            element: <RegisterSeller />,
+          },
+          {
+            path: 'garden-register-user',
+            element: <RegisterUser />,
           },
           {
             path: ':postId',
