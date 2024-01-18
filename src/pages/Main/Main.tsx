@@ -6,7 +6,7 @@ import SecondSection from './SecondSection';
 import { Helmet } from 'react-helmet-async';
 import Banner from './Banner';
 import GardenList from './GardenList/GardenList';
-import CropList from './CropList/CropList';
+import MonthlyCrop from './MonthlyCrop/MonthlyCrop';
 import { BREAK_POINT } from 'constants/style';
 const Main = () => {
   return (
@@ -18,7 +18,7 @@ const Main = () => {
       {/* <SecondSection /> */}
       <Banner />
       <GardenList />
-      <CropList />
+      <MonthlyCrop />
     </Container>
   );
 };
