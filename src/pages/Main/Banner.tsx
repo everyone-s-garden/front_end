@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import banner1 from 'assets/main/banner1.png';
+import banner1Mobile from 'assets/main/banner1-mobile.png';
 import banner2 from 'assets/main/banner2.png';
+import banner2Mobile from 'assets/main/banner2-mobile.png';
 import styled from 'styled-components';
 import { BREAK_POINT } from 'constants/style';
 import { ReactComponent as ArrowIcon } from 'assets/arrow-icon.svg';
 
-const bannerList = [banner1, banner2];
+const bannerList = [
+  [banner1, banner1Mobile],
+  [banner2, banner2Mobile],
+];
+
 const Banner = () => {
   const [index, setIndex] = useState<number>(0);
 
@@ -22,8 +28,11 @@ const Banner = () => {
   return (
     <Slider>
       <ImgContainer index={index}>
-        {bannerList.map((banner, index) => (
-          <Img key={index} src={banner} />
+        {bannerList.map(([banner, mobileBanner], index) => (
+          <Fragment key={index}>
+            <Img src={banner} />
+            <MobileImg key={index} src={mobileBanner} />
+          </Fragment>
         ))}
       </ImgContainer>
       {index !== 0 && <LeftArrow onClick={onLeftBtnClicked} />}
@@ -33,10 +42,9 @@ const Banner = () => {
 };
 
 const Slider = styled.div`
-  width: 100%;
-  height: 300px;
   overflow: hidden;
   position: relative;
+  height: 300px;
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     height: 480px;
@@ -44,18 +52,30 @@ const Slider = styled.div`
 `;
 
 const ImgContainer = styled.div<{ index: number }>`
-  display: flex;
-  width: 100%;
   height: 100%;
+  display: flex;
   transform: ${({ index }) => `translateX(-${index * 100}%)`};
   transition: transform 0.5s ease-in-out;
 `;
 
 const Img = styled.img`
+  flex-shrink: 0;
   width: 100%;
-  height: 100%;
   object-fit: cover;
-  object-position: 10%;
+  object-position: 25%;
+  display: none;
+  @media (min-width: ${BREAK_POINT.MOBILE}) {
+    display: block;
+  }
+`;
+
+const MobileImg = styled(Img)`
+  object-position: center;
+  display: block;
+
+  @media (min-width: ${BREAK_POINT.MOBILE}) {
+    display: none;
+  }
 `;
 
 const LeftArrow = styled(ArrowIcon)`

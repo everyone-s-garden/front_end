@@ -6,6 +6,7 @@ import SecondSection from './SecondSection';
 import { Helmet } from 'react-helmet-async';
 import Banner from './Banner';
 import GardenList from './GardenList/GardenList';
+import CropList from './CropList/CropList';
 const Main = () => {
   return (
     <Container>
@@ -15,7 +16,8 @@ const Main = () => {
       {/* <FirstSection /> */}
       {/* <SecondSection /> */}
       <Banner />
-      <GardenList />
+      {/* <GardenList /> */}
+      <CropList />
     </Container>
   );
 };
@@ -25,6 +27,9 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  gap: 80px;
 `;
 
 export default Main;
