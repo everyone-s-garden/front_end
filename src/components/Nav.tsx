@@ -12,6 +12,7 @@ import {
   isMyPostOpenAtom,
   isReportOpenAtom,
   selectedMapLocationAtom,
+  windowOffsetAtom,
 } from 'recoil/atom';
 import { getItem } from 'utils/session';
 import ReportModal from './Modal/ReportModal';
@@ -61,7 +62,7 @@ const Nav = () => {
   const [searchText, setSearchText] = useState<string>('');
   const [show, setShow] = useState<boolean>(false);
   const [initialized, setInitialized] = useState(false);
-
+  const [offset, setOffset] = useRecoilState(windowOffsetAtom);
   // Google Analytics 설정
   useEffect(() => {
     // localhost는 기록하지 않음
@@ -92,6 +93,22 @@ const Nav = () => {
   useEffect(() => {
     setIsLogin(Boolean(getItem('isLogin')));
   }, [isLogin, setIsLogin]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      setOffset({ width, height });
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const getBackNavURL = () => {
     if (isMapPage || isMyPage) return '/';
@@ -171,7 +188,10 @@ const Nav = () => {
                 <ButtonImage src={mapImg} alt="맵아이콘" />
                 <ButtonSpan>내 주변 분양</ButtonSpan>
               </Button>
-              <Button active={isMyPage} onClick={() => navigate(`/my/my_gardens/like`)}>
+              <Button
+                active={isMyPage}
+                onClick={() => navigate(offset.width < BREAK_POINT.MOBILE_NUMBER ? '/my' : `/my/my_gardens/like`)}
+              >
                 <ButtonImage src={userImg} alt="맵아이콘" />
                 <ButtonSpan>마이페이지</ButtonSpan>
               </Button>

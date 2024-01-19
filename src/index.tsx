@@ -63,7 +63,6 @@ const router = createBrowserRouter([
         children: [
           {
             path: 'my_gardens/like',
-            index: true,
             element: <LikePosts />,
           },
           {
