@@ -37,7 +37,6 @@ function PostDetail() {
   const [map, setMap] = useState<naver.maps.Map | null>(null);
   const [post, setPost] = useState<any>(null);
   const [images, setImages] = useState<string[]>([]);
-  const userId = Number(getItem('userId'));
   const location = { lat: 37.3595704, long: 127.105399 };
   const fetchGardenData = async () => {
     if (!postId) return;
@@ -86,8 +85,6 @@ function PostDetail() {
       console.log(err);
     }
   };
-
-  console.log(memberId, post.writerId);
   return (
     <Container>
       <Helmet>
