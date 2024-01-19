@@ -48,7 +48,7 @@ const StyledIconArrow = styled(IconArrow)<{ open: boolean }>`
   width: 20px;
   height: 20px;
   transform: ${({ open }) => (open ? 'rotate(90deg)' : 'rotate(270deg)')};
-  transition: transform 0.2s ease-in;
+  transition: transform 0.1s ease-in;
 `;
 
 const DescriptionWrapper = styled.div<{ open: boolean }>`
@@ -56,11 +56,7 @@ const DescriptionWrapper = styled.div<{ open: boolean }>`
   flex-direction: column;
   gap: 4px;
   padding: 8px 4px;
-  height: auto;
-  visibility: ${({ open }) => (open ? 'visible' : 'hidden')};
-  max-height: ${({ open }) => (open ? '500px' : '0')};
-  opacity: ${({ open }) => (open ? '1' : '0')};
-  transition: all 0.2s ease-in-out;
+  display: ${({ open }) => (open ? 'flex' : 'none')};
 `;
 
 const Description = styled.p`

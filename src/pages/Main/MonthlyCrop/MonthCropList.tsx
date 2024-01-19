@@ -20,6 +20,7 @@ const Container = styled.ul`
   flex-direction: column;
   gap: 20px;
   margin-top: 24px;
+  height: fit-content;
   max-height: 330px;
   overflow-y: scroll;
 `;
