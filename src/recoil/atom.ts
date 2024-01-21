@@ -118,3 +118,7 @@ export const memberName = atom<string | null>({
   key: 'memberName',
   default: null,
 });
+export const windowOffsetAtom = atom<{ width: number; height: number }>({
+  key: 'offset',
+  default: { width: window.innerWidth, height: window.innerHeight },
+});
