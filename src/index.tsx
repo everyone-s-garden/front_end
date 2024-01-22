@@ -23,6 +23,7 @@ import MyPosts from 'pages/My/MyPosts/MyPosts';
 import { HelmetProvider } from 'react-helmet-async';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import NaverToken from 'pages/Login/Naver/token/token';
+import Trading from 'pages/Trading/Trading';
 
 // 모바일 100vh 세팅
 let vh = window.innerHeight * 0.01;
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
       {
         path: '/map',
         element: <Map />,
+      },
+      {
+        path: '/trading',
+        element: <Trading />,
       },
       {
         path: '/my',
