@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { BREAK_POINT } from '../../../constants/style';
-import CropsList from 'pages/Trading/CropsList/index';
 
 interface CropsModalProps {
   isOpen: boolean;
