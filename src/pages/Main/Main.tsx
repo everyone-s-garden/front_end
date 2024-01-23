@@ -1,24 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import FirstSection from './FirstSection';
-import SecondSection from './SecondSection';
 import { Helmet } from 'react-helmet-async';
 import Banner from './Banner';
 import GardenList from './GardenList/GardenList';
 import MonthlyCrop from './MonthlyCrop/MonthlyCrop';
 import { BREAK_POINT } from 'constants/style';
+import Weather from 'pages/My/Weather/Weather';
+
 const Main = () => {
   return (
     <Container>
       <Helmet>
         <title>모두의 텃밭 메인페이지</title>
       </Helmet>
-      {/* <FirstSection /> */}
-      {/* <SecondSection /> */}
       <Banner />
       <GardenList />
       <MonthlyCrop />
+      <Weather />
     </Container>
   );
 };
