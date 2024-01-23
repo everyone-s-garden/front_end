@@ -11,7 +11,6 @@ interface CropProps {
 
 function Crop({ name, content, link }: CropProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
   return (
     <CropContainer>
       <Header onClick={() => setIsOpen(!isOpen)}>

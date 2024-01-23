@@ -35,7 +35,7 @@ const MarkerCluster = () => {
     return cluster;
   });
   useEffect(() => {
-    if (!gardens) return;
+    if (!gardens || gardens.length === 0) return;
 
     cluster.setMap(null);
     cluster.DEFAULT_OPTIONS.markers = [];
@@ -68,7 +68,7 @@ const MarkerCluster = () => {
               map?.autoResize();
             }, 300);
           }
-          setSelectedGarden(garden.id);
+          setSelectedGarden(garden.gardenId);
         };
         // 마우스 호버시 마커를 앞으로 가져옴
         const onMouseOverHandler = () => {

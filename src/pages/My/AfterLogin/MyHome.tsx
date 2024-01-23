@@ -21,7 +21,7 @@ const MyHome = () => {
   const userName = getItem('name')?.replaceAll('"', '');
   const init = async () => {
     try {
-      const res: AxiosResponse = await customAxios.get('/v1/garden/using');
+      const res: AxiosResponse = await customAxios.get('/v2/gardens/my-managed');
       setHasMyGarden(res.data[0]);
     } catch (err) {
       console.log(err);

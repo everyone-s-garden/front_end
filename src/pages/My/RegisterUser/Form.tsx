@@ -10,18 +10,25 @@ import { useNavigate } from 'react-router-dom';
 import { IProps, IData, IMyGarden } from './type';
 import { AxiosResponse } from 'axios';
 import { formValidation, getQueryData } from './query';
+import { formDataHandler } from '../RegisterSeller/query';
+
+interface ISerachData {
+  gardenId: number;
+  gardenName: string;
+  address: string;
+}
 
 const Form = ({ editMatch, image, myGarden }: IProps) => {
   const { getValues, register, handleSubmit, setValue } = useForm();
-  const [searchResults, setSearchResults] = useState<IData[]>([]);
+  const [searchResults, setSearchResults] = useState<ISerachData[]>([]);
   const [searchText, setSearchText] = useState<string>('');
-  const [selectedResult, setSelectedResult] = useState<IData | null>(null);
+  const [selectedResult, setSelectedResult] = useState<any>(null);
   const [show, setShow] = useState<boolean>(false);
   const nav = useNavigate();
   const init = async () => {
     if (myGarden && myGarden.name) {
       setSearchText(myGarden.name);
-      setSelectedResult((prev: IData | null) => {
+      setSelectedResult((prev: any) => {
         return {
           ...prev,
           id: myGarden.id,
@@ -45,32 +52,34 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
       setSearchResults([]);
       setShow(false);
     } else {
-      const res = (await getQueryData(query)) as AxiosResponse;
-      setSearchResults(res.data);
+      const res = await getQueryData(query);
+      setSearchResults(res);
       setShow(true);
     }
   };
-  const selectGarden = (result: IData) => {
-    setSearchText(result.name);
+  const selectGarden = (result: any) => {
+    setSearchText(result.gardenName);
     setSelectedResult(result);
     setSearchResults([]);
     setShow(false);
   };
   const uploadMyGarden = async () => {
-    const uploadData = {
-      id: selectedResult?.id || 0,
-      name: selectedResult?.name || '',
-      image: image || null,
-      address: selectedResult?.address || '',
-      latitude: selectedResult?.latitude || 0,
-      longitude: selectedResult?.longitude || 0,
+    const formData = await formDataHandler(image);
+
+    const myManagedGardenCreateRequest = {
+      gardenId: selectedResult?.gardenId || 0,
       useStartDate: getValues('start'),
       useEndDate: getValues('end'),
     };
-    const validation = formValidation(uploadData);
+    const validation = formValidation(myManagedGardenCreateRequest);
+    formData.append('myManagedGardenCreateRequest', JSON.stringify(myManagedGardenCreateRequest));
     try {
       if (validation) {
-        const res = await customAxios.post('v1/garden/using', uploadData);
+        const res = await customAxios.post('/v2/gardens/my-managed', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
         if (res.status === 201) nav(-1);
       }
     } catch (err) {
@@ -96,7 +105,7 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
     const validation = formValidation(uploadData);
     try {
       if (validation) {
-        const res: AxiosResponse = await customAxios.put(`v1/garden/using/${myGarden?.id}`, uploadData);
+        const res = await customAxios.put(`v1/garden/using/${myGarden?.id}`, uploadData);
         if (res.status === 200) nav(-1);
       }
     } catch (err) {
@@ -122,8 +131,8 @@ const Form = ({ editMatch, image, myGarden }: IProps) => {
                 </NoResult>
               ) : (
                 searchResults.map(result => (
-                  <ResultLi onClick={() => selectGarden(result)} key={result.id}>
-                    <span>{result.name !== '' ? result.name : result.address}</span>
+                  <ResultLi onClick={() => selectGarden(result)} key={result.gardenId}>
+                    <span>{result.gardenName !== '' ? result.gardenName : result.address}</span>
                   </ResultLi>
                 ))
               )}

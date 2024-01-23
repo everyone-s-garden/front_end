@@ -14,6 +14,7 @@ import { likeListsAtom, likePageAtom } from 'recoil/atom';
 import { useInView } from 'react-intersection-observer';
 import { Helmet } from 'react-helmet-async';
 import SkeletonUi from 'components/SkeletonUi';
+import { IGardens } from '../RecentPosts/RecentPosts';
 const LikePosts = () => {
   const [likeLists, setLikeLists] = useRecoilState(likeListsAtom);
   const [page, setPage] = useRecoilState(likePageAtom);
@@ -24,15 +25,14 @@ const LikePosts = () => {
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      const res = await customAxios.get(`/v1/garden/like/all?page=${page}`);
-      const newData: IGardenDetail[] = res.data;
+      const res = await customAxios.get(`/v2/gardens/likes`);
+      const newData: IGardens[] = res.data.gardenLikeByMemberResponses;
       if (newData.length === 0) {
         setHasMore(false);
       } else {
         const filteredData = newData.filter(item => {
-          return !likeLists.some(existingItem => existingItem.id === item.id);
+          return !likeLists.some(existingItem => existingItem.gardenId === item.gardenId);
         });
-
         setLikeLists(prev => [...prev, ...filteredData]);
         setPage(prevPage => prevPage + 1);
       }
@@ -51,23 +51,22 @@ const LikePosts = () => {
       fetchData();
     }
   }, []);
-
-  const deleteLike = async (i: IGardenDetail) => {
-    const res: AxiosResponse = await customAxios.delete(`v1/garden/like/${i.id}`);
-    if (res.status === 204) {
-      const updatedLikeList = likeLists.filter((item: IGardenDetail) => item.id !== i.id);
+  const deleteLike = async (i: IGardens) => {
+    const res: AxiosResponse = await customAxios.delete(`v2/gardens/likes`, { data: { gardenId: i.gardenId } });
+    if (res.status === 200) {
+      const updatedLikeList = likeLists.filter((item: any) => item.gardenId !== i.gardenId);
       setLikeLists([...updatedLikeList]);
     }
   };
 
-  const renderPosts = likeLists.map((i: IGardenDetail) => (
-    <PostContainer key={i.id}>
+  const renderPosts = likeLists.map(list => (
+    <PostContainer key={list.gardenId}>
       {isLoading ? (
         <SkeletonUi />
       ) : (
         <>
-          <Post data={i} />
-          <CloseIcon src={closeIcon} alt="close" onClick={() => deleteLike(i)} />
+          <Post data={list as any} />
+          <CloseIcon src={closeIcon} alt="close" onClick={() => deleteLike(list)} />
         </>
       )}
     </PostContainer>
