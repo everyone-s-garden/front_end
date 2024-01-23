@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { BREAK_POINT } from '../../../constants/style';
+import { BREAK_POINT } from '../../../../constants/style';
 
 interface CropsModalProps {
   isOpen: boolean;
@@ -90,7 +90,7 @@ const Container = styled.div`
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     width: 100%;
     height: 50%;
-    bottom: 0;
+    top: 50%;
     left: 0;
   }
 `;
@@ -107,4 +107,11 @@ const CropsItem = styled.div<{ itemKey: number; selected: boolean }>`
   border-bottom: ${props => (props.itemKey !== 4 ? '1px solid #e5e5e5' : '')};
   border-radius: 10px;
   background-color: ${props => (props.selected ? '#F1F7E8' : '#fff')};
+
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: 100%;
+    height: 100%;
+    top: 50%;
+    left: 0;
+  }
 `;
