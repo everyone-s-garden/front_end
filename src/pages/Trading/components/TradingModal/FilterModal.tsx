@@ -53,7 +53,7 @@ const Container = styled.div`
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     width: 100%;
     height: 50%;
-    bottom: 0;
+    top: 50%;
     left: 0;
   }
 `;
