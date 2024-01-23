@@ -1,32 +1,27 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { BREAK_POINT } from '../../../constants/style';
-import RangeSlider from '../../../components/RangeSlider';
+import { BREAK_POINT } from '../../../../constants/style';
+import Text from '../../../../components/Text';
 
-interface MoneyModalProps {
+interface FilterModalProps {
   isOpen: boolean;
 }
-const MoneyModal = ({ isOpen }: MoneyModalProps) => {
+
+const FilterModal = ({ isOpen }: FilterModalProps) => {
   return (
     <Dimmed isOpen={isOpen}>
-      <Container
-        onClick={e => {
-          e.stopPropagation();
-        }}
-      >
-        <span style={{ marginTop: '16px', marginLeft: '16px' }}>{'가격'}</span>
-        <SliderBox>
-          <RangeSlider />
-        </SliderBox>
+      <Container onClick={e => e.stopPropagation()}>
+        <TextWrapper style={{ borderBottom: '1px solid #E5E5E5' }}>{'찜이 많은 순'}</TextWrapper>
+        <TextWrapper>{'추천 순'}</TextWrapper>
       </Container>
     </Dimmed>
   );
 };
 
-export default MoneyModal;
+export default FilterModal;
+
 const Dimmed = styled.div<{ isOpen: boolean }>`
   visibility: ${props => (props.isOpen ? 'visible' : 'hidden')};
-  position: relative;
 
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     position: fixed;
@@ -45,11 +40,11 @@ const Dimmed = styled.div<{ isOpen: boolean }>`
 const Container = styled.div`
   position: absolute;
   width: 306px;
-  height: 162px;
+  height: 60px;
   background-color: #ffffff;
   z-index: 1000;
-  left: -70px;
-  top: 20px;
+  left: 0px;
+  top: 37px;
   display: flex;
   flex-direction: column;
   border-radius: 10px;
@@ -63,9 +58,10 @@ const Container = styled.div`
   }
 `;
 
-const SliderBox = styled.div`
+const TextWrapper = styled.div`
+  line-height: 24px;
+  margin-top: 5px;
+  margin-left: 16px;
   width: 100%;
-  height: 100%;
-  margin-left: 26px;
-  margin-top: 84px;
+  height: 50%;
 `;

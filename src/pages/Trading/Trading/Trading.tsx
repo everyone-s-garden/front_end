@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { BREAK_POINT } from '../../constants/style';
-import Text from '../../components/Text';
-import TradingFilter from './TradingFilter/TradingFilter';
+import { useNavigate } from 'react-router-dom';
+import { BREAK_POINT } from '../../../constants/style';
+import Text from '../../../components/Text';
+import TradingFilter from '../components/TradingFilter/TradingFilter';
 import { useQuery } from '@tanstack/react-query';
-import { getCropsList } from '../../api/TradingApi';
+import { getCropsList } from '../../../api/TradingApi';
 import { useInView } from 'react-intersection-observer';
 
 const Trading = () => {
+  const navigate = useNavigate();
+
   const [tradingState, setTradingState] = useState({
     searchContent: null,
     offset: 0,
@@ -63,7 +66,7 @@ const Trading = () => {
       <ListContainer>
         {!!cropsList &&
           cropsList.cropsInfos.map((data, index) => (
-            <ItemContainer key={index}>
+            <ItemContainer key={index} onClick={() => navigate(`/trading/${data.cropsPostId}`)}>
               <Img></Img>
               <Text size={20}>{data.title}</Text>
               <Text size={20}>{`${data.price}원`}</Text>

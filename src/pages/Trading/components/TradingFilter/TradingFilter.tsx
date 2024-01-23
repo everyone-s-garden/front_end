@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Text from '../../../components/Text';
+import Text from '../../../../components/Text';
 import arrowIcon from 'assets/arrow-up-icon.svg';
 import LocationModal from '../TradingModal/LocationModal';
 import CropsModal from '../TradingModal/CropsModal';
