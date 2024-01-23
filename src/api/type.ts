@@ -62,11 +62,41 @@ export interface Corp {
   cropInfos: ICropInfos[];
 }
 
-// Weather
-
 export interface WeatherType {
   baseDate: string;
   category: string;
   obsrValue: string;
+  regionName: string;
+}
+
+export interface GetAllWeatherResponse {
+  weatherApiResult: WeatherData[];
+}
+
+export interface GetPerTimeWeatherResponse {
+  weatherTimeResponses: WeatherTimeData[];
+  regionName: string;
+}
+
+export interface WeatherData {
+  regionName: string;
+  skyValue: string;
+  temperatureValue: string;
+}
+
+interface WeatherTimeData {
+  baseDate: string;
+  temperature: string;
+  skyStatus: string;
+  fsctDate: string;
+  fsctTime: string;
+}
+
+export interface GetWeeklyWeatherResponse {
+  skyStatusTwoDaysAfter: string;
+  skyStatusThreeDaysAfter: string;
+  skyStatusFourDaysAfter: string;
+  skyStatusFiveDaysAfter: string;
+  skyStatusSixDaysAfter: string;
   regionName: string;
 }

@@ -7,7 +7,7 @@ import LineGraph, { LineGraphData } from './LineGraph';
 import WeekWeather from './WeekWeather';
 import findMyGeoLocation from 'utils/findMyGeoLocation';
 import MiniLoader from 'components/MiniLoader';
-
+import { WeatherData } from '../../../api/type';
 import cloudy from 'assets/weather/cloudy.svg';
 import sunny from 'assets/weather/sunny.svg';
 import snowy from 'assets/weather/snowy.svg';
@@ -38,30 +38,6 @@ function Weather() {
     '충남',
     '충북',
   ];
-  interface PTYType {
-    [id: number]: string;
-  }
-  const PTY: PTYType = { 0: '맑음', 1: '비', 2: '비', 3: '눈', 5: '흐림', 6: '흐림', 7: '눈' };
-
-  interface SKYType {
-    [id: string]: string;
-  }
-  const SKY: SKYType = {
-    '"1"': '맑음',
-    '"3"': '구름많음',
-    '"4"': '흐림',
-    흐림: '흐림',
-    '흐리고 비': '비',
-    '흐리고 눈': '눈',
-    '흐리고 비/눈': '비',
-    '흐리고 소나기': '비',
-    구름많음: '흐림',
-    '구름많고 비': '비',
-    '구름많고 눈': '눈',
-    '구름많고 비/눈': '눈',
-    '구름많고 소나기': '비',
-    맑음: '맑음',
-  };
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
@@ -70,7 +46,7 @@ function Weather() {
     lng: number;
   } | null>(null);
   const [region, setRegion] = useState<string>('');
-  const [sky, setSky] = useState<number>(0);
+  const [sky, setSky] = useState<string>('');
   const [temperature, setTemperature] = useState<string>('');
   const [pTimeData, setPTimeData] = useState<LineGraphData[] | null>(null);
   const [weeklyData, setWeeklyData] = useState<string[] | null>(null);
@@ -82,90 +58,85 @@ function Weather() {
   };
 
   useEffect(() => {
-    setIsLoading(true);
-    let timer: any;
-
-    const getWeatherData = async () => {
-      let data: any;
+    const fetchWeatherData = async () => {
       try {
-        data = await WeatherAPI.getAllWeather();
-        data = data.data;
-        setIsError(false);
+        setIsLoading(true);
+        const data = await WeatherAPI.getAllWeather();
+        setIsLoading(false);
+        return data.weatherApiResult;
       } catch (error) {
         setIsError(true);
         setIsLoading(false);
-        return;
+        return null;
       }
+    };
 
+    const updateWeather = (weatherData: WeatherData[]) => {
       let index = 0;
-      const loopWeather = () => {
-        setTimeout(function () {
-          const cur = data[regions[index]];
-
-          setRegion(regions[index]);
-          setSky(Number(cur.filter((c: any) => c.category === 'PTY')[0].obsrValue));
-          setTemperature(cur.filter((c: any) => c.category === 'T1H')[0].obsrValue);
-          setIsLoading(false);
-
-          index++;
-
-          if (index > 16) {
-            index = 0;
-          }
-
-          loopWeather();
-        }, 8000);
+      return () => {
+        const cur = weatherData[index];
+        setRegion(cur.regionName);
+        setSky(cur.skyValue);
+        setTemperature(cur.temperatureValue);
+        index = (index + 1) % regions.length;
       };
-
-      loopWeather();
     };
 
-    getWeatherData();
+    const initWeather = async () => {
+      const weatherData = await fetchWeatherData();
+      if (!weatherData) return; // 데이터가 없으면 업데이트 중단
 
-    return () => {
-      clearTimeout(timer);
+      const updateWeatherFn = updateWeather(weatherData);
+      updateWeatherFn(); // 초기 업데이트
+
+      const intervalId = setInterval(updateWeatherFn, 8000);
+      return () => clearInterval(intervalId); // 클린업 함수
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    initWeather();
   }, []);
 
   useEffect(() => {
     if (myLocation) {
       const getWeatherData = async () => {
-        let perTData: any;
-        let weeklyData: any;
-
+        setIsLoading(true);
+        setIsError(false);
         try {
-          perTData = await WeatherAPI.getPerTimeWeather(myLocation.lat, myLocation.lng);
-          weeklyData = await WeatherAPI.getWeeklyWeather(myLocation.lat, myLocation.lng);
-          setIsError(false);
+          const [perTData, weeklyData] = await Promise.all([
+            WeatherAPI.getPerTimeWeather(myLocation.lat, myLocation.lng),
+            WeatherAPI.getWeeklyWeather(myLocation.lat, myLocation.lng),
+          ]);
+
+          /* getWeeklyWeather API가 기상청 API를 그대로 보내주는데
+           * 기상청 API가 오늘날짜로 부터 2일 후 날씨 정보만 주고 있어 내일 날씨정보를 알 수 없는 문제가 발생됨
+           * getPerTimeWeather의 weatherTimeResponses 마지막 인덱스에 다음날 날씨 정보를 넣어서 주기로 함
+           * **/
+          const tempPTData = perTData.weatherTimeResponses
+            .slice(0, 5)
+            .map(data => ({ time: Number(data.fsctTime) / 100, temp: data.temperature }));
+
+          const tempWeeklyData = [
+            perTData.weatherTimeResponses[0].skyStatus,
+            ...perTData.weatherTimeResponses.slice(5).map(data => data.skyStatus),
+            weeklyData.skyStatusTwoDaysAfter,
+            weeklyData.skyStatusThreeDaysAfter,
+            weeklyData.skyStatusFourDaysAfter,
+            weeklyData.skyStatusFiveDaysAfter,
+            weeklyData.skyStatusSixDaysAfter,
+          ];
+
+          setPTimeData(tempPTData);
+          setWeeklyData(tempWeeklyData);
         } catch (error) {
           setIsError(true);
+        } finally {
           setIsLoading(false);
-          return;
         }
-
-        let tempPTData: LineGraphData[] = [];
-        perTData
-          .filter((d: any) => d.category === 'TMP')
-          .map((d: any, i: any) => {
-            if (i % 3 === 0 && i < 13) {
-              tempPTData.push({ time: Number(d.fcstTime) / 100, temp: d.fcstValue });
-            }
-          });
-        setPTimeData(tempPTData);
-
-        let tempWeeklyData: string[] = [];
-        Object.values(weeklyData[0]).forEach((d: any) => {
-          const cur = SKY[String(d)];
-          if (cur) tempWeeklyData.push(cur);
-        });
-        setWeeklyData(tempWeeklyData);
       };
 
       getWeatherData();
       setIsLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myLocation]);
 
   return (
@@ -192,13 +163,13 @@ function Weather() {
           {region !== '' && (
             <CurrentWeather>
               <CurrentSkyImg
-                src={PTY[sky] === '맑음' ? sunny : PTY[sky] === '흐림' ? cloudy : PTY[sky] === '비' ? rainy : snowy}
+                src={sky === '맑음' ? sunny : sky === '흐림' ? cloudy : sky === '비' ? rainy : snowy}
                 alt="날씨 이모티콘"
               />
               {temperature}˚
               <Info>
                 <Location>{region}</Location>
-                <Sky>{PTY[sky]}</Sky>
+                <Sky>{sky}</Sky>
               </Info>
             </CurrentWeather>
           )}
@@ -213,91 +184,14 @@ function Weather() {
               <WeeklyWeather>
                 <SubjectTitle>주간 날씨</SubjectTitle>
                 <WeeklyWeatherBox>
-                  <WeekWeather
-                    imgFile={
-                      weeklyData[0] === '맑음'
-                        ? sunny
-                        : weeklyData[0] === '흐림'
-                        ? cloudy
-                        : weeklyData[0] === '눈'
-                        ? snowy
-                        : rainy
-                    }
-                    weekday={weekday[day]}
-                    isToday={true}
-                  />
-                  <WeekWeather
-                    imgFile={
-                      weeklyData[1] === '맑음'
-                        ? sunny
-                        : weeklyData[1] === '흐림'
-                        ? cloudy
-                        : weeklyData[1] === '눈'
-                        ? snowy
-                        : rainy
-                    }
-                    weekday={weekday[(day + 1) % 7]}
-                  />
-                  <WeekWeather
-                    imgFile={
-                      weeklyData[2] === '맑음'
-                        ? sunny
-                        : weeklyData[2] === '흐림'
-                        ? cloudy
-                        : weeklyData[2] === '눈'
-                        ? snowy
-                        : rainy
-                    }
-                    weekday={weekday[(day + 2) % 7]}
-                  />
-                  <WeekWeather
-                    imgFile={
-                      weeklyData[3] === '맑음'
-                        ? sunny
-                        : weeklyData[3] === '흐림'
-                        ? cloudy
-                        : weeklyData[3] === '눈'
-                        ? snowy
-                        : rainy
-                    }
-                    weekday={weekday[(day + 3) % 7]}
-                  />
-                  <WeekWeather
-                    imgFile={
-                      weeklyData[4] === '맑음'
-                        ? sunny
-                        : weeklyData[4] === '흐림'
-                        ? cloudy
-                        : weeklyData[4] === '눈'
-                        ? snowy
-                        : rainy
-                    }
-                    weekday={weekday[(day + 4) % 7]}
-                  />
-                  <WeekWeather
-                    imgFile={
-                      weeklyData[5] === '맑음'
-                        ? sunny
-                        : weeklyData[5] === '흐림'
-                        ? cloudy
-                        : weeklyData[5] === '눈'
-                        ? snowy
-                        : rainy
-                    }
-                    weekday={weekday[(day + 5) % 7]}
-                  />
-                  <WeekWeather
-                    imgFile={
-                      weeklyData[6] === '맑음'
-                        ? sunny
-                        : weeklyData[6] === '흐림'
-                        ? cloudy
-                        : weeklyData[6] === '눈'
-                        ? snowy
-                        : rainy
-                    }
-                    weekday={weekday[(day + 6) % 7]}
-                  />
+                  {weeklyData.map((week, index) => (
+                    <WeekWeather
+                      key={index}
+                      imageType={week}
+                      weekday={weekday[(day + index) % 7]}
+                      isToday={index === 0}
+                    />
+                  ))}
                 </WeeklyWeatherBox>
               </WeeklyWeather>
 
