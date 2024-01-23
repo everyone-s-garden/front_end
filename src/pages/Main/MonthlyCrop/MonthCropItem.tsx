@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { MonthCrop } from 'types/Crop';
 import { ReactComponent as IconArrow } from 'assets/arrow-icon.svg';
 import { Link } from 'react-router-dom';
+import { BREAK_POINT } from 'constants/style';
 
 const MonthCropItem = ({ cropInfo }: { cropInfo: MonthCrop }) => {
   const { description, link, name } = cropInfo;
@@ -36,12 +37,18 @@ const TitleWrapper = styled.div`
   align-items: center;
   cursor: pointer;
   padding: 0 4px 8px 4px;
-  border-bottom: 1px solid #e1e1e1;
+  border-bottom: 1px solid #c4c4c4;
+  @media (min-width: ${BREAK_POINT.MOBILE}) {
+    padding: 0 4px 12px 4px;
+  }
 `;
 
 const Title = styled.h2`
   font-size: 20px;
   font-weight: 500;
+  @media (min-width: ${BREAK_POINT.MOBILE}) {
+    font-size: 24px;
+  }
 `;
 
 const StyledIconArrow = styled(IconArrow)<{ open: boolean }>`
@@ -49,6 +56,10 @@ const StyledIconArrow = styled(IconArrow)<{ open: boolean }>`
   height: 20px;
   transform: ${({ open }) => (open ? 'rotate(90deg)' : 'rotate(270deg)')};
   transition: transform 0.1s ease-in;
+  @media (min-width: ${BREAK_POINT.MOBILE}) {
+    width: 24px;
+    height: 24px;
+  }
 `;
 
 const DescriptionWrapper = styled.div<{ open: boolean }>`
@@ -64,6 +75,9 @@ const Description = styled.p`
   font-size: 14px;
   font-weight: 400;
   line-height: 24px;
+  @media (min-width: ${BREAK_POINT.MOBILE}) {
+    font-size: 16px;
+  }
 `;
 
 const StyledLink = styled(Link)`
@@ -72,6 +86,9 @@ const StyledLink = styled(Link)`
   font-weight: 400;
   line-height: 24px;
   text-decoration: underline;
+  @media (min-width: ${BREAK_POINT.MOBILE}) {
+    font-size: 16px;
+  }
 `;
 
 export default MonthCropItem;
