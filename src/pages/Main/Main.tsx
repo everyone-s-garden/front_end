@@ -6,7 +6,7 @@ import Banner from './Banner';
 import GardenList from './GardenList/GardenList';
 import MonthlyCrop from './MonthlyCrop/MonthlyCrop';
 import { BREAK_POINT } from 'constants/style';
-import Weather from 'pages/My/Weather/Weather';
+import Weather from './Weather/Weather';
 
 const Main = () => {
   return (
