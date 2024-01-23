@@ -7,7 +7,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import Nav from './components/Nav';
+import Nav from './components/Nav/Nav';
 import Main from './pages/Main/Main';
 import Map from './pages/Map/Map';
 import Login from './pages/Login/Login';
@@ -22,6 +22,7 @@ import RecentPosts from 'pages/My/RecentPosts/RecentPosts';
 import MyPosts from 'pages/My/MyPosts/MyPosts';
 import { HelmetProvider } from 'react-helmet-async';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import Header from 'components/Header/Header';
 import NaverToken from 'pages/Login/Naver/token/token';
 
 // 모바일 100vh 세팅
@@ -38,7 +39,7 @@ window.addEventListener('resize', () => {
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Nav />,
+    element: <Header />,
     children: [
       {
         index: true,
