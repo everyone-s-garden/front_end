@@ -6,14 +6,16 @@ import { BREAK_POINT } from 'constants/style';
 import month1 from 'assets/main/month1.png';
 
 const MonthCropList = ({ currentMonth }: { currentMonth: number }) => {
-  const { data: monthCrop } = useGetMonthCrop({ month: currentMonth });
+  const { data: monthCrops } = useGetMonthCrop();
+
+  if (!monthCrops) return null;
 
   return (
     <Container>
       <Img src={month1} />
       <ListWrapper>
-        {monthCrop?.map(crop => (
-          <MonthCropItem key={crop.id} cropInfo={crop} />
+        {monthCrops[currentMonth - 1].cropInfos.map(crop => (
+          <MonthCropItem key={crop.name} cropInfo={crop} />
         ))}
       </ListWrapper>
     </Container>

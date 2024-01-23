@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { MonthCrop } from 'types/Crop';
 import { ReactComponent as IconArrow } from 'assets/arrow-icon.svg';
 import { Link } from 'react-router-dom';
 import { BREAK_POINT } from 'constants/style';
+import { CropInfo } from 'types/Crop';
 
-const MonthCropItem = ({ cropInfo }: { cropInfo: MonthCrop }) => {
+const MonthCropItem = ({ cropInfo }: { cropInfo: CropInfo }) => {
   const { description, link, name } = cropInfo;
   const [open, setOpen] = useState(false);
 
