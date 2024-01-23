@@ -68,8 +68,10 @@ const Trading = () => {
           cropsList.cropsInfos.map((data, index) => (
             <ItemContainer key={index} onClick={() => navigate(`/trading/${data.cropsPostId}`)}>
               <Img></Img>
-              <Text size={20}>{data.title}</Text>
-              <Text size={20}>{`${data.price}원`}</Text>
+              <TextWrapper>
+                <Text size={20}>{data.title}</Text>
+                <Text size={20}>{`${data.price}원`}</Text>
+              </TextWrapper>
             </ItemContainer>
           ))}
       </ListContainer>
@@ -131,7 +133,9 @@ const ItemContainer = styled.div`
   cursor: pointer;
 
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    width: 350px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
     height: 108px;
   }
 `;
@@ -143,5 +147,12 @@ const Img = styled.img`
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     width: 111px;
     height: 108px;
+  }
+`;
+
+const TextWrapper = styled.div`
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    display: flex;
+    flex-direction: column;
   }
 `;
