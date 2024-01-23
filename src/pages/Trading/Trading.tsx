@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { BREAK_POINT } from '../../../constants/style';
-import Text from '../../../components/Text';
-import TradingFilter from '../components/TradingFilter/TradingFilter';
+import { BREAK_POINT } from '../../constants/style';
+import Text from '../../components/Text';
+import TradingFilter from './components/TradingFilter/TradingFilter';
 import { useQuery } from '@tanstack/react-query';
-import { getCropsList } from '../../../api/TradingApi';
+import { getCropsList } from '../../api/TradingApi';
 import { useInView } from 'react-intersection-observer';
 
 const Trading = () => {

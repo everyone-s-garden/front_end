@@ -42,3 +42,24 @@ export const getCropsList = async ({
 
   return res.data;
 };
+
+interface Address {
+  sido: string;
+  sigungu: string;
+  upmyeondong: string;
+}
+
+interface GetDetailCropResponse {
+  content: string;
+  author: string;
+  mannerPoint: number;
+  authorAddress: null | Address;
+  cropCategory: string;
+  bookmarkCount: number;
+  images: string[];
+}
+export const getDetailCrop = async (tradingId: string): Promise<GetDetailCropResponse> => {
+  const res = await HttpRequest.get(`/v1/crops/posts/${tradingId}`);
+
+  return res.data;
+};
