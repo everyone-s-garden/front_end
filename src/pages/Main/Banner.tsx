@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import banner1 from 'assets/main/banner1.png';
+import banner1 from 'assets/main/banner1.svg';
 import banner1Mobile from 'assets/main/banner1-mobile.png';
 import banner2 from 'assets/main/banner2.png';
 import banner2Mobile from 'assets/main/banner2-mobile.png';
