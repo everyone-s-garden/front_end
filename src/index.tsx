@@ -6,13 +6,14 @@ import { NavermapsProvider } from 'react-naver-maps';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-import Nav from './components/Nav';
+import Nav from './components/Nav/Nav';
 import Main from './pages/Main/Main';
 import Map from './pages/Map/Map';
 import Login from './pages/Login/Login';
 import Mypage from 'pages/My/My';
-import Token from 'pages/Login/Kakao/token/token';
+import KaKaoToken from 'pages/Login/Kakao/token/token';
 import RegisterUser from 'pages/My/RegisterUser/RegisterUser';
 import RegisterSeller from 'pages/My/RegisterSeller/RegisterSeller';
 import MyHome from 'pages/My/AfterLogin/MyHome';
@@ -25,6 +26,8 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import Chat from 'pages/Chat/Chat';
 import Review from 'pages/Review/Review';
 import ReceiveReview from 'pages/ReceiveReview/ReceiveReview';
+import Header from 'components/Header/Header';
+import NaverToken from 'pages/Login/Naver/token/token';
 
 // 모바일 100vh 세팅
 let vh = window.innerHeight * 0.01;
@@ -40,7 +43,7 @@ window.addEventListener('resize', () => {
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Nav />,
+    element: <Header />,
     children: [
       {
         index: true,
@@ -106,7 +109,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/my/oauth/kakao',
-        element: <Token />,
+        element: <KaKaoToken />,
+      },
+      {
+        path: '/my/oauth/naver',
+        element: <NaverToken />,
       },
       {
         path: '/chat',
@@ -134,6 +141,7 @@ root.render(
         <GoogleOAuthProvider clientId="999513273898-9fa6iu0cm3jbeancg8f82mjs53trr355.apps.googleusercontent.com">
           <QueryClientProvider client={queryClient}>
             <RouterProvider router={router} />
+            <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
         </GoogleOAuthProvider>
       </NavermapsProvider>

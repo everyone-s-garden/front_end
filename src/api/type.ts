@@ -1,65 +1,41 @@
 // Garden
-export interface GardenData {
-  id: number;
-  name: string;
-  type: string; // (PUBLIC | PRIVATE | UNKNOWN)
-  link?: string;
-  price?: string;
+export interface GardenListType {
+  gardenId: number;
   size?: string;
-  contact?: string;
-  status?: string;
-
-  address: string;
+  gardenName: string;
+  price?: string;
+  images: string[];
+  gardenStatus: 'ACTIVE' | 'INACTIVE';
+  gardenType: 'PRIVATE' | 'PUBLIC';
   latitude: number;
   longitude: number;
-
-  // YYYY-MM-DD 형식
-  recruitStartDate?: string;
-  recruitEndDate?: string;
-  useStartDate?: string;
-  useEndDate?: string;
-
-  postTitle: string;
-  content: string;
-  images: string[];
-
-  facility: {
-    toilet?: boolean;
-    waterway?: boolean;
-    equipment?: boolean;
-  };
 }
 
 export interface GardenDetailType {
-  id: number;
-  name: string;
-  type: string; // (PUBLIC | PRIVATE | UNKNOWN)
-  link?: string;
-  price?: string;
-  size?: string;
-  contact?: string;
-  liked: boolean;
-  status: string;
-
+  gardenId: number;
   address: string;
   latitude: number;
   longitude: number;
-
-  // YYYY-MM-DD 형식
-  recruitStartDate?: string;
-  recruitEndDate?: string;
-  useStartDate?: string;
-  useEndDate?: string;
-
-  postTitle: string;
-  content: string;
+  gardenName: string;
+  gardenType: 'PRIVATE' | 'PUBLIC';
+  linkForRequest: string;
+  price: string;
+  contact: string;
+  size: string;
+  gardenStatus: 'ACTIVE' | 'INACTIVE';
+  writerId: number;
+  recruitStartDate: string;
+  recruitEndDate: string;
+  useStartDate: string;
+  useEndDate: string;
+  gardenDescription: string;
   images: string[];
-
-  facility: {
-    toilet?: boolean;
-    waterway?: boolean;
-    equipment?: boolean;
+  gardenFacility: {
+    isToilet: boolean;
+    isWaterway: boolean;
+    isEquipment: boolean;
   };
+  isLiked: boolean;
 }
 
 export interface GardenUsing {
@@ -75,19 +51,52 @@ export interface GardenUsing {
   useEndDate: string;
 }
 
-export interface Corp {
-  id: number;
+interface ICropInfos {
   name: string;
   description: string;
   link: string;
-  image: string;
 }
 
-// Weather
+export interface Corp {
+  month: number;
+  cropInfos: ICropInfos[];
+}
 
 export interface WeatherType {
   baseDate: string;
   category: string;
   obsrValue: string;
+  regionName: string;
+}
+
+export interface GetAllWeatherResponse {
+  weatherApiResult: WeatherData[];
+}
+
+export interface GetPerTimeWeatherResponse {
+  weatherTimeResponses: WeatherTimeData[];
+  regionName: string;
+}
+
+export interface WeatherData {
+  regionName: string;
+  skyValue: string;
+  temperatureValue: string;
+}
+
+interface WeatherTimeData {
+  baseDate: string;
+  temperature: string;
+  skyStatus: string;
+  fsctDate: string;
+  fsctTime: string;
+}
+
+export interface GetWeeklyWeatherResponse {
+  skyStatusTwoDaysAfter: string;
+  skyStatusThreeDaysAfter: string;
+  skyStatusFourDaysAfter: string;
+  skyStatusFiveDaysAfter: string;
+  skyStatusSixDaysAfter: string;
   regionName: string;
 }

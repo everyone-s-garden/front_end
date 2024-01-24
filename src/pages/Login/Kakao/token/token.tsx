@@ -6,20 +6,22 @@ import { IData, IData_Sever } from './type';
 import { setItem } from 'utils/session';
 import { isLoginAtom } from 'recoil/atom';
 import { useSetRecoilState } from 'recoil';
-const Token = () => {
+import { setCookie } from 'utils/cookie';
+const KaKaoToken = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const nav = useNavigate();
   const setIsLogin = useSetRecoilState<boolean>(isLoginAtom);
-  const getCode = async () => {
+
+  const getKakaoApi = async (code: string | null) => {
+    if (!code) return;
     try {
-      const code: string | null = new URLSearchParams(window.location.search).get('code');
       const res_kakao: AxiosResponse = await axios.post<IData>(
         `https://kauth.kakao.com/oauth/token`,
         {
           grant_type: 'authorization_code',
           client_id: process.env.REACT_APP_KAKAO_REST_API_KEY,
           code: code,
-          client_secret: process.env.REACT_APP_API_KAKAO_CLIENT_SECRET,
+          // client_secret: process.env.REACT_APP_API_KAKAO_CLIENT_SECRET,
           redirect_uri: process.env.REACT_APP_KAKAO_REDIRECT_URI,
         },
         {
@@ -29,17 +31,38 @@ const Token = () => {
         },
       );
       const data: IData = res_kakao.data;
-      const res_server: AxiosResponse = await axios.get<IData_Sever>(
-        `${process.env.REACT_APP_API_BASE_URL}auth/kakao`,
+      return data;
+    } catch (error) {
+      if (error instanceof Error) throw new Error('카카오 api 에러 : ', error);
+    }
+  };
+
+  const getServerApi = async (data: IData | undefined) => {
+    if (!data) return;
+    try {
+      const response_server: AxiosResponse = await axios.post<IData_Sever>(
+        `${process.env.REACT_APP_API_BASE_URL}v1/auth/kakao`,
+        {},
         {
           headers: {
-            Authorization: `${data.access_token}`,
+            Authorization: `Bearer ${data.access_token}`,
           },
         },
       );
-      setItem('name', res_server.data.name);
-      setItem('userId', res_server.data.userId);
-      setItem('access_token', res_server.data.appToken);
+      return response_server.data;
+    } catch (err) {
+      if (err instanceof Error) throw new Error('서버 api 에러 :', err);
+    }
+  };
+
+  const getCode = async () => {
+    try {
+      const code: string | null = new URLSearchParams(window.location.search).get('code');
+      const kakao_token = await getKakaoApi(code);
+      const response_server = await getServerApi(kakao_token);
+      const { accessToken, refreshToken } = response_server;
+      setItem('access_token', accessToken);
+      setCookie('refresh_token', refreshToken);
       setItem('isLogin', 'true');
       setIsLogin(true);
       nav('/');
@@ -53,4 +76,4 @@ const Token = () => {
   return <Loader isLoading={isLoading} />;
 };
 
-export default Token;
+export default KaKaoToken;

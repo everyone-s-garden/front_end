@@ -18,6 +18,6 @@ export interface IGardenDetail {
   status: string;
   type: string;
   id: number;
-  liked: boolean;
+  isLiked: boolean;
   userId: number;
 }

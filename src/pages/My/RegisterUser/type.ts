@@ -29,7 +29,7 @@ export interface IHashMyGarden {
 }
 
 export interface IProps {
-  image: IImage | null;
+  image: string;
   myGarden: IMyGarden | undefined;
   editMatch: ReturnType<typeof useMatch>;
 }
