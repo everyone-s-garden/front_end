@@ -26,6 +26,10 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import Header from 'components/Header/Header';
 import NaverToken from 'pages/Login/Naver/token/token';
 import Trading from 'pages/Trading/Trading';
+import TradingDetail from './pages/Trading/TradingDetail/TradingDetail';
+import Community from './pages/Community/Community';
+import CommunityCreate from './pages/Community/CommunityCreate/CommunityCreate';
+import TradingCreate from './pages/Trading/TradingCreate/TradingCreate';
 
 // 모바일 100vh 세팅
 let vh = window.innerHeight * 0.01;
@@ -54,6 +58,22 @@ const router = createBrowserRouter([
       {
         path: '/trading',
         element: <Trading />,
+      },
+      {
+        path: '/trading/:tradingId',
+        element: <TradingDetail />,
+      },
+      {
+        path: '/trading/create',
+        element: <TradingCreate />,
+      },
+      {
+        path: '/community',
+        element: <Community />,
+      },
+      {
+        path: '/community/create',
+        element: <CommunityCreate />,
       },
       {
         path: '/my',
