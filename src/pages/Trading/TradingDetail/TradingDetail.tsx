@@ -9,13 +9,11 @@ import Text from '../../../components/Text';
 import TradingLocationBox from '../components/TradingLocationBox/TradingLocationBox';
 const TradingDetail = () => {
   const { tradingId } = useParams();
-  const { data: tradingDetail, isLoading } = useQuery(
-    ['cropDetail', tradingId],
-    () => getDetailCrop(!tradingId ? '' : tradingId),
-    {
-      enabled: !!tradingId && tradingId.length > 0,
-    },
-  );
+  const { data: tradingDetail, isLoading } = useQuery({
+    queryKey: ['cropDetail', tradingId],
+    queryFn: () => getDetailCrop(!tradingId ? '' : tradingId),
+    enabled: !!tradingId,
+  });
 
   return (
     <Container>

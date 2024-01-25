@@ -22,8 +22,8 @@ const Trading = () => {
   const { ref, inView } = useInView({
     threshold: 0,
   });
-  const { data: cropsList, isLoading } = useQuery(
-    [
+  const { data: cropsList, isLoading } = useQuery({
+    queryKey: [
       'cropsListData',
       tradingState.searchContent,
       tradingState.offset,
@@ -32,7 +32,7 @@ const Trading = () => {
       tradingState.cropCategory,
       tradingState.orderBy,
     ],
-    () =>
+    queryFn: () =>
       getCropsList({
         searchContent: tradingState.searchContent,
         offset: tradingState.offset,
@@ -41,15 +41,13 @@ const Trading = () => {
         cropCategory: tradingState.cropCategory,
         orderBy: tradingState.orderBy,
       }),
-    {
-      enabled:
-        tradingState.offset > 0 ||
-        tradingState.searchContent !== null ||
-        tradingState.tradeType !== null ||
-        tradingState.cropCategory !== null ||
-        !!tradingState.orderBy,
-    },
-  );
+    enabled:
+      tradingState.offset > 0 ||
+      tradingState.searchContent !== null ||
+      tradingState.tradeType !== null ||
+      tradingState.cropCategory !== null ||
+      !!tradingState.orderBy,
+  });
 
   const observer = <div className={'observer'} ref={ref} style={{ width: '100%', height: '2px' }} />;
 
