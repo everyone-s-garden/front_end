@@ -15,7 +15,6 @@ import Mypage from 'pages/My/My';
 import KaKaoToken from 'pages/Login/Kakao/token/token';
 import RegisterUser from 'pages/My/RegisterUser/RegisterUser';
 import RegisterSeller from 'pages/My/RegisterSeller/RegisterSeller';
-import MyHome from 'pages/My/AfterLogin/MyHome';
 import PostDetail from 'pages/My/PostDetail/PostDetail';
 import LikePosts from 'pages/My/LikePosts/LikePosts';
 import RecentPosts from 'pages/My/RecentPosts/RecentPosts';
@@ -32,8 +31,11 @@ import WishList from 'pages/My/CropTrade/wishList/WishList';
 import WhisperPost from 'pages/My/Whisper/whisperPost/WhisperPost';
 import CommentPost from 'pages/My/Whisper/commentPost/CommentPost';
 import WhisperLike from 'pages/My/Whisper/Whisper';
-
+import Index from 'pages/My/Index';
+import RegiontalCertificate from 'pages/My/RegionalCertificatite/RegiontalCertificate';
+import Setting from 'pages/Setting';
 // 모바일 100vh 세팅
+
 let vh = window.innerHeight * 0.01;
 document.documentElement.style.setProperty('--vh', `${vh}px`);
 
@@ -43,7 +45,6 @@ window.addEventListener('resize', () => {
 });
 
 // React 코드...
-
 const router = createBrowserRouter([
   {
     path: '/',
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
         path: '/my',
         element: <Mypage />,
         children: [
+          {
+            index: true,
+            element: <Index />,
+          },
           {
             path: 'my_gardens/like',
             element: <LikePosts />,
@@ -84,6 +89,10 @@ const router = createBrowserRouter([
           {
             path: 'garden_manage/like',
             element: <GardenLike />,
+          },
+          {
+            path: 'crop_trade/regional_certification',
+            element: <RegiontalCertificate />,
           },
           {
             path: 'crop_trade/sales_history',
@@ -132,6 +141,10 @@ const router = createBrowserRouter([
           {
             path: 'post/edit/:id',
             element: <RegisterSeller />,
+          },
+          {
+            path: 'setting',
+            element: <Setting />,
           },
         ],
       },

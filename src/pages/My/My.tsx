@@ -8,7 +8,8 @@ import Menu, { UserAdivce } from './Menu/Menu';
 import { NavigateFunction, Outlet, useMatch, useNavigate, useOutletContext } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import user_default_profile_image from 'assets/profile_image.png';
-import Margin from 'components/Margin';
+import user_profile_flower_icon from 'assets/user_profile_flower_icon.png';
+
 type AfterLoginProps = {
   navermaps: typeof naver.maps;
 };
@@ -19,9 +20,16 @@ interface ISubHeaderProps {
   cropTradeMatch?: boolean;
   whisperMatch?: boolean;
   nav: NavigateFunction;
+  indexRoutingMatch?: boolean;
 }
 
-const UserInfoComponent = ({ setIsFeedbackOpen }: { setIsFeedbackOpen: React.Dispatch<SetStateAction<boolean>> }) => {
+const UserInfoComponent = ({
+  setIsFeedbackOpen,
+  windowWidth,
+}: {
+  setIsFeedbackOpen: React.Dispatch<SetStateAction<boolean>>;
+  windowWidth?: number;
+}) => {
   return (
     <MenuContainer>
       <UserInfoWrapper>
@@ -29,45 +37,35 @@ const UserInfoComponent = ({ setIsFeedbackOpen }: { setIsFeedbackOpen: React.Dis
           <img src={user_default_profile_image} style={{ widows: 25, height: 25 }} />
           <div>
             <span>텃린이</span>
-            <Margin height={10} />
-            <span>새싹등급</span>
           </div>
-          <Margin height={10} />
-          <button>설정</button>
         </UserInfoInnerWrapper>
-
-        <CountWrapper>
-          <div>
-            <span>스크랩</span>
-            <Margin height={11} />
-            <button>13</button>
-          </div>
-          <div>
-            <span>좋아요</span>
-            <Margin height={11} />
-
-            <button>13</button>
-          </div>
-          <div>
-            <span>텃밭 관리</span>
-            <Margin height={11} />
-
-            <button>13</button>
-          </div>
-        </CountWrapper>
+        <UserInfoBottomWrapper>
+          <img src={user_profile_flower_icon} width={42} height={42} />
+          <span style={{ fontSize: 16, color: '#fff' }}>씨앗 등급</span>
+        </UserInfoBottomWrapper>
       </UserInfoWrapper>
-      <UserAdivce setIsFeedbackOpen={setIsFeedbackOpen} />
+      {windowWidth && windowWidth > BREAK_POINT.MOBILE_NUMBER ? (
+        <UserAdivce setIsFeedbackOpen={setIsFeedbackOpen} />
+      ) : null}
     </MenuContainer>
   );
 };
 
-const SubHeader = ({ myGardensMatch, gardenManageMatch, cropTradeMatch, whisperMatch, nav }: ISubHeaderProps) => {
+const SubHeader = ({
+  myGardensMatch,
+  gardenManageMatch,
+  cropTradeMatch,
+  whisperMatch,
+  indexRoutingMatch,
+  nav,
+}: ISubHeaderProps) => {
   const likeMatch = useMatch('/my/my_gardens/like');
   const recentMatch = useMatch('/my/my_gardens/recent');
   const myPostMatch = useMatch('/my/my_gardens/mypost');
   const salesMatch = useMatch('/my/crop_trade/sales_history');
   const purchaseMatch = useMatch('/my/crop_trade/purchase_history');
   const wishListMatch = useMatch('/my/crop_trade/wishlist');
+  const regionalCertificationMatch = useMatch('/my/crop_trade/regional_certification');
   const gardenSellingMatch = useMatch('/my/garden_manage/my_garden_selling');
   const gardenUsingMatch = useMatch('/my/garden_manage/my_garden_using');
   const likeGardenMatch = useMatch('/my/garden_manage/like');
@@ -77,11 +75,15 @@ const SubHeader = ({ myGardensMatch, gardenManageMatch, cropTradeMatch, whisperM
 
   return (
     <ButtonWrapper>
-      {myGardensMatch && (
+      {(myGardensMatch || indexRoutingMatch) && (
         <>
-          <Btn onClick={() => nav('my_gardens/like')} match={likeMatch !== null} secondary={true}>
+          <Btn
+            onClick={() => nav('my_gardens/like')}
+            match={likeMatch !== null || indexRoutingMatch !== null}
+            secondary={true}
+          >
             찜한텃밭
-            {likeMatch && <ButtonHighlight layoutId="1" />}
+            {(likeMatch || indexRoutingMatch) && <ButtonHighlight layoutId="1" />}
           </Btn>
           <Btn onClick={() => nav('my_gardens/recent')} match={recentMatch !== null} secondary={true}>
             최근 본 텃밭
@@ -92,8 +94,17 @@ const SubHeader = ({ myGardensMatch, gardenManageMatch, cropTradeMatch, whisperM
           </Btn>
         </>
       )}
+
       {cropTradeMatch && (
         <>
+          <Btn
+            onClick={() => nav('crop_trade/regional_certification')}
+            match={regionalCertificationMatch !== null}
+            secondary={true}
+          >
+            지역 인증하기
+            {regionalCertificationMatch && <ButtonHighlight layoutId="1" />}
+          </Btn>
           <Btn onClick={() => nav('crop_trade/sales_history')} match={salesMatch !== null} secondary={true}>
             판매내역
             {salesMatch && <ButtonHighlight layoutId="1" />}
@@ -156,7 +167,7 @@ const Mypage = () => {
   const whisperMatch = useMatch('/my/whisper/:params');
   const [isFeedbackOpen, setIsFeedbackOpen] = useRecoilState(isFeedbackOpenAtom);
   const windowWidth = useRecoilValue(windowOffsetAtom);
-
+  const indexRoutingMatch = useMatch('/my');
   return (
     <>
       {windowWidth.width > BREAK_POINT.MOBILE_NUMBER ? (
@@ -164,7 +175,10 @@ const Mypage = () => {
           <Header>
             <InnerHeader>
               <ButtonWrapper>
-                <Btn onClick={() => nav('/my/my_gardens/like')} match={myGardensMatch !== null}>
+                <Btn
+                  onClick={() => nav('/my/my_gardens/like')}
+                  match={myGardensMatch !== null || indexRoutingMatch !== null}
+                >
                   나의 텃밭
                 </Btn>
                 <Btn onClick={() => nav('/my/crop_trade/sales_history')} match={cropTradeMatch !== null}>
@@ -184,13 +198,14 @@ const Mypage = () => {
                 gardenManageMatch={gardenManageMatch !== null}
                 cropTradeMatch={cropTradeMatch !== null}
                 whisperMatch={whisperMatch !== null}
+                indexRoutingMatch={indexRoutingMatch !== null}
                 nav={nav}
               />
             </InnerHeader>
           </Header>
           <ContentWrapper>
             {/* 유저 정보가 들어갈 부분 */}
-            <UserInfoComponent setIsFeedbackOpen={setIsFeedbackOpen} />
+            <UserInfoComponent windowWidth={windowWidth.width} setIsFeedbackOpen={setIsFeedbackOpen} />
 
             {/* 변하는 페이지  */}
             <Outlet context={navermaps} />
@@ -198,7 +213,10 @@ const Mypage = () => {
         </Container>
       ) : (
         <Container>
-          <UserInfoComponent setIsFeedbackOpen={setIsFeedbackOpen} />
+          {windowWidth.width < BREAK_POINT.MOBILE_NUMBER && indexRoutingMatch && (
+            <UserInfoComponent windowWidth={windowWidth.width} setIsFeedbackOpen={setIsFeedbackOpen} />
+          )}
+          <Outlet context={navermaps} />
         </Container>
       )}
     </>
@@ -276,7 +294,7 @@ const ButtonHighlight = styled(motion.div)`
 
 const UserInfoWrapper = styled.div`
   width: 204px;
-  height: 304px;
+  height: 280px;
   border-radius: 8px;
   border: 1px solid #e0e0e0;
   margin-bottom: 16px;
@@ -284,6 +302,7 @@ const UserInfoWrapper = styled.div`
   flex-direction: column;
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     width: 100%;
+    height: 198px;
   }
 `;
 const MenuContainer = styled.div`
@@ -300,41 +319,46 @@ const UserInfoInnerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 20px;
-  padding-bottom: 12px;
+  padding-top: 60px;
+  padding-bottom: 23px;
   border-bottom: 1px solid #e0e0e0;
   img {
     width: 94px !important;
     height: 94px !important;
     margin-bottom: 10px;
+    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+      width: 80px !important;
+      height: 80px !important;
+    }
   }
   span:first-of-type {
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 16px;
+    color: #fff;
   }
-  span:nth-of-type(2) {
-    font-size: 14px;
-    font-weight: bold;
-  }
+
   button {
     background-color: #fdf3e2;
     width: 49px;
     height: 25px;
     border-radius: 4px;
   }
-
+  div {
+    background-color: #ea803d;
+    padding: 4px 10px;
+    border-radius: 8px;
+  }
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    flex-direction: row;
+    padding-top: 15px;
+    padding-bottom: 10px;
   }
 `;
 
-const CountWrapper = styled.div`
+const UserInfoBottomWrapper = styled.div`
+  background-color: #ea803d;
+  flex: 1;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
   display: flex;
   justify-content: space-around;
-  flex: 1;
-  div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
+  align-items: center;
 `;

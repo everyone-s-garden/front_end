@@ -188,10 +188,7 @@ const Nav = () => {
                 <ButtonImage src={mapImg} alt="맵아이콘" />
                 <ButtonSpan>내 주변 분양</ButtonSpan>
               </Button>
-              <Button
-                active={isMyPage}
-                onClick={() => navigate(offset.width < BREAK_POINT.MOBILE_NUMBER ? '/my' : `/my/my_gardens/like`)}
-              >
+              <Button active={isMyPage} onClick={() => navigate('my')}>
                 <ButtonImage src={userImg} alt="맵아이콘" />
                 <ButtonSpan>마이페이지</ButtonSpan>
               </Button>
