@@ -29,9 +29,11 @@ const Container = styled.div`
   width: 100%;
   margin: 0 auto;
   gap: 40px;
+  padding-bottom: 57px;
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     gap: 80px;
+    padding-bottom: 92px;
   }
 `;
 
