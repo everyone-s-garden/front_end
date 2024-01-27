@@ -4,6 +4,7 @@ import { ReactComponent as IconArrow } from 'assets/arrow-icon.svg';
 import { Link } from 'react-router-dom';
 import { BREAK_POINT } from 'constants/style';
 import { CropInfo } from 'types/Crop';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const MonthCropItem = ({ cropInfo }: { cropInfo: CropInfo }) => {
   const { description, link, name } = cropInfo;
@@ -19,19 +20,30 @@ const MonthCropItem = ({ cropInfo }: { cropInfo: CropInfo }) => {
         <Title>{name}</Title>
         <StyledIconArrow open={open} />
       </TitleWrapper>
-      <DescriptionWrapper open={open}>
-        <Description>{description}</Description>
-        <StyledLink to={link} target="_blank">
-          더 알아보기
-        </StyledLink>
-      </DescriptionWrapper>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, visibility: 'hidden' }}
+            animate={{ height: 'auto', visibility: 'visible' }}
+            exit={{ height: 0, visibility: 'hidden' }}
+            transition={{ type: 'spring', duration: 0.3, bounce: 0 }}
+          >
+            <DescriptionWrapper>
+              <Description>{description}</Description>
+              <StyledLink to={link} target="_blank">
+                더 알아보기
+              </StyledLink>
+            </DescriptionWrapper>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Container>
   );
 };
 
 const Container = styled.li``;
 
-const TitleWrapper = styled.div`
+const TitleWrapper = styled(motion.div)`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -62,12 +74,12 @@ const StyledIconArrow = styled(IconArrow)<{ open: boolean }>`
   }
 `;
 
-const DescriptionWrapper = styled.div<{ open: boolean }>`
+const DescriptionWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
   padding: 8px 4px;
-  display: ${({ open }) => (open ? 'flex' : 'none')};
+  display: flex;
 `;
 
 const Description = styled.p`

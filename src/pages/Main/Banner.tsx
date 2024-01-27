@@ -8,8 +8,8 @@ import { BREAK_POINT } from 'constants/style';
 import { ReactComponent as ArrowIcon } from 'assets/arrow-icon.svg';
 
 const bannerList = [
-  [banner1, banner1Mobile],
-  [banner2, banner2Mobile],
+  [banner1, banner1Mobile, '#FEF9E6'],
+  [banner2, banner2Mobile, '#F0FBE4'],
 ];
 
 const Banner = () => {
@@ -28,9 +28,11 @@ const Banner = () => {
   return (
     <Slider>
       <ImgContainer index={index}>
-        {bannerList.map(([banner, mobileBanner], index) => (
+        {bannerList.map(([banner, mobileBanner, color], index) => (
           <Fragment key={index}>
-            <Img src={banner} />
+            <ImgWrapper color={color}>
+              <Img src={banner} />
+            </ImgWrapper>
             <MobileImg key={index} src={mobileBanner} />
           </Fragment>
         ))}
@@ -44,18 +46,27 @@ const Banner = () => {
 const Slider = styled.div`
   overflow: hidden;
   position: relative;
-  height: 300px;
-
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
-    height: 480px;
-  }
 `;
 
 const ImgContainer = styled.div<{ index: number }>`
   height: 100%;
+  width: 100%;
   display: flex;
   transform: ${({ index }) => `translateX(-${index * 100}%)`};
   transition: transform 0.5s ease-in-out;
+`;
+
+const ImgWrapper = styled.div<{ color: string }>`
+  display: none;
+
+  @media (min-width: ${BREAK_POINT.MOBILE}) {
+    width: 100%;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: ${({ color }) => color};
+  }
 `;
 
 const Img = styled.img`
@@ -64,13 +75,15 @@ const Img = styled.img`
   object-fit: cover;
   object-position: 25%;
   display: none;
+  max-width: 1440px;
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     display: block;
   }
 `;
 
 const MobileImg = styled(Img)`
-  object-position: center;
+  /* object-position: center; */
+  /* max-width: 390px; */
   display: block;
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
@@ -88,8 +101,8 @@ const LeftArrow = styled(ArrowIcon)`
   cursor: pointer;
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
   }
 `;
 

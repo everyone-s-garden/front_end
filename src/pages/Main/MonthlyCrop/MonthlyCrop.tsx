@@ -33,7 +33,7 @@ const MonthlyCrop = () => {
 };
 
 const Wrapper = styled.div`
-  @media (min-width: ${BREAK_POINT.TABLET}) {
+  @media (min-width: ${BREAK_POINT.MOBILE}) {
     height: 405px;
     background-color: #fff7ee;
   }
@@ -47,7 +47,7 @@ const Container = styled.div`
   max-width: 1234px;
   width: 100%;
   padding: 0 20px;
-  @media (min-width: ${BREAK_POINT.TABLET}) {
+  @media (min-width: ${BREAK_POINT.MOBILE}) {
     padding: 50px 20px;
   }
 `;

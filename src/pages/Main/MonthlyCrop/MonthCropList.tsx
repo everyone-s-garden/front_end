@@ -26,7 +26,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
-  @media (min-width: ${BREAK_POINT.TABLET}) {
+  @media (min-width: ${BREAK_POINT.MOBILE}) {
     flex-direction: row;
     gap: 30px;
   }
@@ -38,8 +38,9 @@ const Img = styled.img`
   border-radius: 10px;
   object-fit: cover;
 
-  @media (min-width: ${BREAK_POINT.TABLET}) {
-    width: 582px;
+  @media (min-width: ${BREAK_POINT.MOBILE}) {
+    min-width: 305px;
+    max-width: 582px;
     height: 227px;
   }
 `;
@@ -52,8 +53,9 @@ const ListWrapper = styled.ul`
   width: 100%;
   overflow-y: scroll;
 
-  @media (min-width: ${BREAK_POINT.TABLET}) {
+  @media (min-width: ${BREAK_POINT.MOBILE}) {
     max-height: 228px;
+    min-width: 265px;
   }
 `;
 
