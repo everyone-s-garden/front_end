@@ -5,8 +5,6 @@ import location from '../../../../assets/my-location.svg';
 import { BREAK_POINT } from '../../../../constants/style';
 
 const SelectLocationModal = () => {
-  const [test, setText] = useState('내위치 지정');
-
   return (
     <Container>
       <ModalHeader>
@@ -23,7 +21,7 @@ const SelectLocationModal = () => {
         </LocationInput>
         <LocationBox>
           <img src={location} alt={'현재 위치 검색'} style={{ marginRight: '5px', cursor: 'pointer' }} />
-          <span style={{ color: '#494949', fontSize: '12px' }}>{test}</span>
+          <span style={{ color: '#494949', fontSize: '12px' }}></span>
         </LocationBox>
       </ModalHeader>
       <ModalBody>
