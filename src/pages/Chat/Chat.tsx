@@ -8,7 +8,7 @@ const Chat = () => {
   return (
     <Container>
       <ChatList />
-      <ChatContent />
+      {/* <ChatContent /> */}
     </Container>
   );
 };
@@ -19,10 +19,10 @@ const Container = styled.div`
   background-color: #dddd;
   margin: 0 auto;
   display: flex;
-  height: calc(var(--vh, 1vh) * 100 - 51px);
+  /* height: calc(100vh - 110px); */
 
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
-    height: calc(var(--vh, 1vh) * 100 - 106px);
+  @media ${({ theme }) => theme.devices.tablet} {
+    /* height: calc(100vh - 120px); */
   }
 `;
 

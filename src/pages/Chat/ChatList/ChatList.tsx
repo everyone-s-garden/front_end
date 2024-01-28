@@ -12,7 +12,7 @@ const ChatList = () => {
         <Btn>작물거래</Btn>
       </BtnContainer>
       <ChatListUl>
-        {Array.from({ length: 100 }).map((_, idx) => (
+        {Array.from({ length: 3 }).map((_, idx) => (
           <ChatListItem key={idx} />
         ))}
       </ChatListUl>
@@ -22,6 +22,8 @@ const ChatList = () => {
 
 const ChatListContainer = styled.div`
   width: 100%;
+  height: 100%;
+  background-color: black;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -29,6 +31,7 @@ const ChatListContainer = styled.div`
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     width: 408px;
   }
+  overflow: hidden;
 `;
 
 const BtnContainer = styled.div`

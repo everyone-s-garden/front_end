@@ -13,37 +13,37 @@ const Header = () => {
   const navermaps = useNavermaps();
 
   return (
-    <>
-      <Container>
-        <HeaderContainer>
-          <Wrapper>
-            <LinkWrapper>
-              <LogoImageContainer to={'/'}>
-                <LogoImage src={logoImg} alt="로고" />
-              </LogoImageContainer>
-              <NavLinks />
-            </LinkWrapper>
-            <UserItems />
-          </Wrapper>
-          <MobileNavLinks />
-        </HeaderContainer>
-      </Container>
+    <AppContainer>
+      <HeaderContainer>
+        <Wrapper>
+          <LinkWrapper>
+            <LogoImageContainer to={'/'}>
+              <LogoImage src={logoImg} alt="로고" />
+            </LogoImageContainer>
+            <NavLinks />
+          </LinkWrapper>
+          <UserItems />
+        </Wrapper>
+        <MobileNavLinks />
+      </HeaderContainer>
       <Main url={location.pathname}>
         <Outlet context={{ navermaps }} />
       </Main>
-    </>
+    </AppContainer>
   );
 };
 
-const Container = styled.div`
-  position: sticky;
-  top: 0;
-  z-index: 99999;
-  background-color: ${COLOR.BACKGROUND};
+const AppContainer = styled.div`
+  height: 100vh;
 `;
 
 const HeaderContainer = styled.header`
+  position: sticky;
+  top: 0;
+  z-index: 99999;
+  height: 108px;
   max-width: 1252px;
+  background-color: white;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -90,6 +90,7 @@ const Main = styled.main<{ url: string }>`
   flex: 1 1 auto;
   width: 100%;
   overflow: ${props => (props.url === '/map' ? 'hidden' : 'visible')};
+  height: calc(100vh - 108px);
 `;
 
 export default Header;
