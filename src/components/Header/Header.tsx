@@ -55,7 +55,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     padding: 40px 20px;
   }
 `;
