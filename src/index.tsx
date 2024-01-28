@@ -28,6 +28,8 @@ import Review from 'pages/Review/Review';
 import ReceiveReview from 'pages/ReceiveReview/ReceiveReview';
 import Header from 'components/Header/Header';
 import NaverToken from 'pages/Login/Naver/token/token';
+import { ThemeProvider } from 'styled-components';
+import theme from 'styles/theme';
 
 // 모바일 100vh 세팅
 let vh = window.innerHeight * 0.01;
@@ -140,7 +142,9 @@ root.render(
       <NavermapsProvider ncpClientId="jij6pc5oav">
         <GoogleOAuthProvider clientId="999513273898-9fa6iu0cm3jbeancg8f82mjs53trr355.apps.googleusercontent.com">
           <QueryClientProvider client={queryClient}>
-            <RouterProvider router={router} />
+            <ThemeProvider theme={theme}>
+              <RouterProvider router={router} />
+            </ThemeProvider>
             <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
         </GoogleOAuthProvider>
