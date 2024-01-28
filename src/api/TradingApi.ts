@@ -63,3 +63,17 @@ export const getDetailCrop = async (tradingId: string): Promise<GetDetailCropRes
 
   return res.data;
 };
+
+interface CreateTradingCrop {
+  formData: FormData;
+}
+
+export const createTradingCrop = async ({ formData }: CreateTradingCrop) => {
+  const res = await HttpRequest.post(` /v1/crops/posts`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  return res.data;
+};
