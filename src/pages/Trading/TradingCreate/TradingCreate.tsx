@@ -124,7 +124,7 @@ const TradingCreate = () => {
             위치 추가
           </Button>
           <Modal>
-            <SelectLocationModal></SelectLocationModal>
+            <SelectLocationModal />
           </Modal>
         </DesiredLocationWrapper>
         <AppendButton>{'등록하기'}</AppendButton>
