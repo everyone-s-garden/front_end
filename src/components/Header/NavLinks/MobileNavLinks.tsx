@@ -8,34 +8,28 @@ import { motion } from 'framer-motion';
 const MobileNavLinks = () => {
   return (
     <NavContainer>
-      <ul>
-        {headerNavLinks.map((link, idx) => {
-          return (
-            <li key={idx}>
-              <StyledNavLink to={link.href}>
-                {({ isActive }) => (
-                  <>
-                    {link.name}
-                    {isActive && <Underline layoutId="underline" />}
-                  </>
-                )}
-              </StyledNavLink>
-            </li>
-          );
-        })}
-      </ul>
+      {headerNavLinks.map((link, idx) => {
+        return (
+          <StyledNavLink key={idx} to={link.href}>
+            {({ isActive }) => (
+              <>
+                {link.name}
+                {isActive && <Underline layoutId="underline_navLink" />}
+              </>
+            )}
+          </StyledNavLink>
+        );
+      })}
     </NavContainer>
   );
 };
 
 const NavContainer = styled.nav`
+  display: flex;
+  justify-content: space-around;
   width: 100%;
   padding: 0 13px 14px 13px;
   border-bottom: 2px solid ${({ theme }) => theme.colors.gray[200]};
-
-  ul {
-    display: flex;
-  }
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     display: none;
@@ -43,16 +37,21 @@ const NavContainer = styled.nav`
 `;
 
 const StyledNavLink = styled(NavLink)`
-  font-size: 16px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.gray[200]};
   flex-shrink: 0;
-  padding: 0 13px;
+  padding: 0 10px;
+  font-size: 14px;
   position: relative;
   flex-shrink: 0;
 
   &.active {
     color: ${({ theme }) => theme.colors.gray[800]};
+  }
+
+  @media (min-width: 370px) {
+    padding: 0 13px;
+    font-size: 16px;
   }
 `;
 

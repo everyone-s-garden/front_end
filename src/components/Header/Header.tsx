@@ -42,9 +42,7 @@ const HeaderContainer = styled.header`
   top: 0;
   z-index: 99999;
   height: 108px;
-  max-width: 1252px;
-  background-color: white;
-  margin: 0 auto;
+  background-color: ${({ theme }) => theme.colors.white};
   display: flex;
   flex-direction: column;
 `;
@@ -52,6 +50,9 @@ const HeaderContainer = styled.header`
 const Wrapper = styled.div`
   display: flex;
   padding: 25px 20px;
+  width: 100%;
+  max-width: 1252px;
+  margin: 0 auto;
   justify-content: space-between;
   align-items: center;
 
