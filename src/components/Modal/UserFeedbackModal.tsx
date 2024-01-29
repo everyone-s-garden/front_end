@@ -160,7 +160,7 @@ const ImageAddBtn = styled.div`
 `;
 
 const ModalTitle = styled.h1`
-  color: #414c38;
+  color: #282828;
   font-size: 18px;
   font-weight: 500;
 `;

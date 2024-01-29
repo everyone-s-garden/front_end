@@ -1,4 +1,20 @@
 // Garden
+
+export interface IPostListItem {
+  gardenId: number;
+  size: string;
+  gardenName: string;
+  price: string;
+  images: string[];
+  gardenStatus: 'ACTIVE' | 'INACTIVE';
+}
+
+export interface IPurchaseListItem {
+  cropPostId: number;
+  title: string;
+  imageUrl: string;
+}
+
 export interface GardenListType {
   gardenId: number;
   size?: string;

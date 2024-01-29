@@ -279,13 +279,13 @@ const Btn = styled.button<{ match?: boolean; secondary?: boolean }>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: ${props => (props.match && props.secondary ? 'black' : props.match ? '#F77800' : '#D9D9D9')} !important;
+  color: ${props => (props.match && props.secondary ? 'black' : props.match ? '#83A834' : '#D9D9D9')} !important;
 `;
 // active color : #F77800
 //  none active color :#D9D9D9
 
 const ButtonHighlight = styled(motion.div)`
-  background-color: #f77800;
+  background-color: #83a834;
   height: 4px;
   position: absolute;
   bottom: 0;

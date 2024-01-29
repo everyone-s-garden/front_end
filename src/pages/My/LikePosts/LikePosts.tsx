@@ -156,10 +156,29 @@
 //     cursor: pointer;
 //   }
 // `;
-import React from 'react';
+import PostListItem from 'components/PostListItem';
+import React, { useEffect, useState } from 'react';
+import { items } from 'utils/dummydata';
+import { getMyGardensAPI } from 'utils/fetchGardenData';
+import customAxios from 'utils/token';
 
 const LikePosts = () => {
-  return <div>LikePosts</div>;
+  const [gardens, setGardens] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const response = await getMyGardensAPI.fetchLikeGardensAPI();
+    })();
+    return () => {};
+  }, []);
+
+  return (
+    <div style={{ flex: 1 }}>
+      <ul>
+        <PostListItem items={items} />
+      </ul>
+    </div>
+  );
 };
 
 export default LikePosts;
