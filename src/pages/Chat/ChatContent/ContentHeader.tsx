@@ -1,20 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
+import BtnItems from './BtnItems';
+import MobileHeader from './MobileHeader';
 
 const ContentHeader = () => {
   return (
     <Container>
+      <MobileHeader />
       <ProductWrapper>
         <ProductImage />
         <ProductInfoWrapper>
-          <div>
+          <InfoHeader>
             <ProductStatus>판매중</ProductStatus>
             <ProductTitle>방울토마토 판매합니다</ProductTitle>
-          </div>
+          </InfoHeader>
           <ProductPrice>13,000원</ProductPrice>
         </ProductInfoWrapper>
       </ProductWrapper>
-      <ReviewBtn>후기 보내기</ReviewBtn>
+      <BtnItems />
     </Container>
   );
 };
@@ -23,11 +26,22 @@ const Container = styled.div`
   display: flex;
   width: 100%;
   position: absolute;
-  background-color: #bcbcbc;
   justify-content: space-between;
-  align-items: center;
-  height: 86px;
-  padding: 17px;
+  height: 193px;
+  padding: 0 20px 10px 20px;
+  flex-direction: column;
+  border-bottom: ${({ theme }) => `1px solid ${theme.colors.gray[200]}`};
+  background-color: ${({ theme }) => theme.colors.white};
+
+  @media ${({ theme }) => theme.devices.tablet} {
+    background-color: ${({ theme }) => theme.colors.orange[100]};
+    border-left: 1px solid ${({ theme }) => theme.colors.orange[200]};
+    border-bottom: none;
+    height: 86px;
+    padding: 17px;
+    flex-direction: row;
+    align-items: center;
+  }
 `;
 
 const ProductWrapper = styled.div`
@@ -37,10 +51,15 @@ const ProductWrapper = styled.div`
 `;
 
 const ProductImage = styled.img`
-  width: 54px;
-  height: 54px;
+  width: 52px;
+  height: 52px;
   border-radius: 10px;
-  background-color: #d9d9d9;
+  background-color: ${({ theme }) => theme.colors.gray[100]};
+
+  @media ${({ theme }) => theme.devices.tablet} {
+    width: 54px;
+    height: 54px;
+  }
 `;
 
 const ProductInfoWrapper = styled.div`
@@ -48,18 +67,38 @@ const ProductInfoWrapper = styled.div`
   flex-direction: column;
 `;
 
-const ProductStatus = styled.span``;
+const InfoHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
 
-const ProductTitle = styled.span``;
-
-const ProductPrice = styled.div``;
-
-const ReviewBtn = styled.button`
-  font-size: 18px;
+const ProductStatus = styled.span`
+  font-size: 16px;
   font-weight: 600;
-  background-color: #d9d9d9;
-  padding: 9px 28px;
-  border-radius: 10px;
+
+  @media ${({ theme }) => theme.devices.tablet} {
+    font-size: 18px;
+  }
+`;
+
+const ProductTitle = styled.span`
+  font-size: 16px;
+  font-weight: 500;
+
+  @media ${({ theme }) => theme.devices.tablet} {
+    font-size: 18px;
+  }
+`;
+
+const ProductPrice = styled.div`
+  font-size: 16px;
+  font-weight: 700;
+
+  @media ${({ theme }) => theme.devices.tablet} {
+    font-size: 18px;
+    font-weight: 600;
+  }
 `;
 
 export default ContentHeader;

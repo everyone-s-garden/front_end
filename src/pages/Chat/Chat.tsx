@@ -1,28 +1,27 @@
 import React from 'react';
 import styled from 'styled-components';
 import ChatList from './ChatList/ChatList';
-import ChatContent from './ChatContent/ChatContent';
-import { BREAK_POINT } from 'constants/style';
+import { Outlet } from 'react-router-dom';
 
 const Chat = () => {
   return (
     <Container>
       <ChatList />
-      {/* <ChatContent /> */}
+      <Outlet />
     </Container>
   );
 };
 
 const Container = styled.div`
   width: 100%;
+  height: 100%;
   max-width: 1200px;
-  background-color: #dddd;
+  background-color: ${({ theme }) => theme.colors.white};
   margin: 0 auto;
   display: flex;
-  /* height: calc(100vh - 110px); */
 
   @media ${({ theme }) => theme.devices.tablet} {
-    /* height: calc(100vh - 120px); */
+    background-color: ${({ theme }) => theme.colors.orange[100]};
   }
 `;
 

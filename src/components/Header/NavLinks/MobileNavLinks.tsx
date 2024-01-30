@@ -29,7 +29,7 @@ const NavContainer = styled.nav`
   justify-content: space-around;
   width: 100%;
   padding: 0 13px 14px 13px;
-  border-bottom: 2px solid ${({ theme }) => theme.colors.gray[200]};
+  border-bottom: 2px solid ${({ theme }) => theme.colors.gray[100]};
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     display: none;

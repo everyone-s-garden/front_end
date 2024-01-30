@@ -1,5 +1,4 @@
 import React from 'react';
-import { BREAK_POINT } from 'constants/style';
 import styled from 'styled-components';
 import ContentHeader from './ContentHeader';
 import ContentChatList from './ContentChatList';
@@ -17,11 +16,17 @@ const ChatContent = () => {
 
 const Container = styled.div`
   height: 100%;
-  position: relative;
-  display: none;
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  width: 100%;
+  background-color: ${({ theme }) => theme.colors.white};
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 101;
+
+  @media ${({ theme }) => theme.devices.tablet} {
+    position: relative;
     display: block;
-    width: 792px;
   }
 `;
 

@@ -13,23 +13,25 @@ const Header = () => {
   const navermaps = useNavermaps();
 
   return (
-    <AppContainer>
-      <HeaderContainer>
-        <Wrapper>
-          <LinkWrapper>
-            <LogoImageContainer to={'/'}>
-              <LogoImage src={logoImg} alt="로고" />
-            </LogoImageContainer>
-            <NavLinks />
-          </LinkWrapper>
-          <UserItems />
-        </Wrapper>
-        <MobileNavLinks />
-      </HeaderContainer>
-      <Main url={location.pathname}>
-        <Outlet context={{ navermaps }} />
-      </Main>
-    </AppContainer>
+    <>
+      <AppContainer>
+        <HeaderContainer>
+          <Wrapper>
+            <LinkWrapper>
+              <LogoImageContainer to={'/'}>
+                <LogoImage src={logoImg} alt="로고" />
+              </LogoImageContainer>
+              <NavLinks />
+            </LinkWrapper>
+            <UserItems />
+          </Wrapper>
+          <MobileNavLinks />
+        </HeaderContainer>
+        <Main url={location.pathname}>
+          <Outlet context={{ navermaps }} />
+        </Main>
+      </AppContainer>
+    </>
   );
 };
 
@@ -40,7 +42,7 @@ const AppContainer = styled.div`
 const HeaderContainer = styled.header`
   position: sticky;
   top: 0;
-  z-index: 99999;
+  z-index: 100;
   height: 108px;
   background-color: ${({ theme }) => theme.colors.white};
   display: flex;

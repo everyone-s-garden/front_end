@@ -30,6 +30,8 @@ import Header from 'components/Header/Header';
 import NaverToken from 'pages/Login/Naver/token/token';
 import { ThemeProvider } from 'styled-components';
 import theme from 'styles/theme';
+import ChatContent from 'pages/Chat/ChatContent/ChatContent';
+import StartContent from 'pages/Chat/ChatContent/StartContent';
 
 // 모바일 100vh 세팅
 let vh = window.innerHeight * 0.01;
@@ -120,6 +122,16 @@ const router = createBrowserRouter([
       {
         path: '/chat',
         element: <Chat />,
+        children: [
+          {
+            index: true,
+            element: <StartContent />,
+          },
+          {
+            path: ':chatId',
+            element: <ChatContent />,
+          },
+        ],
       },
       {
         path: '/review',

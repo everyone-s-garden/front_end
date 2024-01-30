@@ -1,16 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import ChatListItem from './ChatListItem';
-import { BREAK_POINT } from 'constants/style';
+import { motion } from 'framer-motion';
+
+const NAV_LIST = ['내 주변 분양', '작물거래'];
 
 const ChatList = () => {
+  const [selected, setSelected] = useState(NAV_LIST[0]);
+
   return (
     <ChatListContainer>
       <Title>채팅</Title>
-      <BtnContainer>
-        <Btn>내 주변 분양</Btn>
-        <Btn>작물거래</Btn>
-      </BtnContainer>
+      <Nav>
+        {NAV_LIST.map((nav, idx) => (
+          <Button layout key={idx} active={selected === nav} onClick={() => setSelected(nav)}>
+            {nav}
+            {selected === nav && <UnderLine layoutId="underline_chat" />}
+          </Button>
+        ))}
+      </Nav>
       <ChatListUl>
         {Array.from({ length: 3 }).map((_, idx) => (
           <ChatListItem key={idx} />
@@ -21,43 +29,75 @@ const ChatList = () => {
 };
 
 const ChatListContainer = styled.div`
-  width: 100%;
   height: 100%;
-  background-color: black;
+  width: 100%;
   display: flex;
   flex-direction: column;
   position: relative;
   flex-shrink: 0;
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.tablet} {
     width: 408px;
   }
   overflow: hidden;
 `;
 
-const BtnContainer = styled.div`
-  background-color: #fff;
+const Nav = styled.nav`
+  display: flex;
+  justify-content: space-around;
   padding: 23px 0 17px;
+  background-color: ${({ theme }) => theme.colors.white};
+  border-left: 1px solid ${({ theme }) => theme.colors.gray[100]};
+  border-bottom: 4px solid ${({ theme }) => theme.colors.gray[100]};
 `;
 
-const Btn = styled.button`
+const Button = styled(motion.button)<{ active: boolean }>`
+  position: relative;
+  text-align: center;
+  width: 100%;
   font-size: 18px;
   font-weight: 600;
-  width: 110px;
+  color: ${({ theme, active }) => (active ? theme.colors.black : theme.colors.gray[200])};
+  cursor: pointer;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.black};
+  }
+`;
+
+const UnderLine = styled(motion.div)`
+  position: absolute;
+  bottom: -20px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: ${({ theme }) => theme.colors.orange[500]};
 `;
 
 const ChatListUl = styled.ul`
+  display: flex;
+  flex-direction: column;
+
   overflow-y: scroll;
+  padding: 0;
+
+  @media ${({ theme }) => theme.devices.tablet} {
+    padding: 6px 7px;
+    gap: 6px;
+  }
 `;
 
 const Title = styled.div`
-  font-size: 24px;
-  height: 86px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  padding: 17px;
-  background-color: #d9d9d9;
-  flex-shrink: 0;
+  display: none;
+
+  @media ${({ theme }) => theme.devices.tablet} {
+    display: flex;
+    font-size: 24px;
+    height: 86px;
+    font-weight: 600;
+    align-items: center;
+    padding: 17px;
+    flex-shrink: 0;
+  }
 `;
 
 export default ChatList;

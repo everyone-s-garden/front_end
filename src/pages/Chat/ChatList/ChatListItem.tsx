@@ -4,9 +4,9 @@ import styled from 'styled-components';
 
 const ChatListItem = () => {
   const name = '존리';
-  const location = '서울시 강남구';
+  const grade = '씨앗 등급';
   const time = '1분 전';
-  const message = '저 지금 전화드리겠습니다!';
+  const message = '저 지금 전화드리겠습니다!asfdsafdsafesaㄴㅁㅇㄹㅁㄷㄴㄹㄴㅁㅇㄹ';
 
   return (
     <Container>
@@ -16,7 +16,7 @@ const ChatListItem = () => {
           <DetailInfoWrapper>
             <Nickname>{name}</Nickname>
             <Info>
-              {location} · {time}
+              {grade} · {time}
             </Info>
           </DetailInfoWrapper>
           <Message>{message}</Message>
@@ -28,18 +28,22 @@ const ChatListItem = () => {
 };
 
 const Container = styled.li`
+  background-color: ${({ theme }) => theme.colors.white};
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 20px;
+  padding: 12px 20px;
   cursor: pointer;
+  border-bottom: ${({ theme }) => `1px solid ${theme.colors.gray[200]}`};
   &:hover {
-    background-color: #f2f2f2;
+    background-color: ${({ theme }) => theme.colors.orange[300]};
   }
 
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
-    padding: 16px 10px;
+  @media ${({ theme }) => theme.devices.tablet} {
+    padding: 12px 16px;
+    border: 0;
+    border-radius: 10px;
   }
 `;
 
@@ -53,6 +57,7 @@ const DetailInfoWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
+  margin-bottom: 8px;
 `;
 
 const Nickname = styled.span`
@@ -68,6 +73,10 @@ const Info = styled.span`
 const Message = styled.div`
   font-weight: 500;
   font-size: 16px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
 `;
 
 const ProfileImage = styled.img`
@@ -75,6 +84,7 @@ const ProfileImage = styled.img`
   border-radius: 50%;
   width: 56px;
   height: 56px;
+  flex-shrink: 0;
 `;
 
 const ProductImage = styled.img`
@@ -82,6 +92,7 @@ const ProductImage = styled.img`
   border-radius: 10px;
   width: 72px;
   height: 72px;
+  flex-shrink: 0;
 `;
 
 export default ChatListItem;
