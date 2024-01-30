@@ -1,3 +1,4 @@
+import { BREAK_POINT } from 'constants/style';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { purchaseItems } from 'utils/dummydata';
@@ -62,6 +63,12 @@ const Ul = styled.ul`
       font-size: 18px;
       font-weight: 700;
     }
+    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+      width: 171px;
+      margin-right: 0;
+      margin-left: auto;
+      margin-right: auto;
+    }
   }
 `;
 
@@ -70,6 +77,10 @@ const ImageWrapper = styled.div`
   height: 151px;
   border-radius: 10px;
   margin-bottom: 12px;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: 171px;
+    height: 151px;
+  }
 `;
 
 const Image = styled.img`

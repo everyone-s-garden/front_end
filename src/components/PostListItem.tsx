@@ -1,4 +1,5 @@
 import { IPostListItem } from 'api/type';
+import { BREAK_POINT } from 'constants/style';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -43,5 +44,9 @@ const ImageWrapper = styled.div`
     height: 100%;
     object-fit: cover;
     border-radius: 8px;
+  }
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: 111px;
+    height: 122px;
   }
 `;

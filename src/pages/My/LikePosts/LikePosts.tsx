@@ -160,7 +160,6 @@ import PostListItem from 'components/PostListItem';
 import React, { useEffect, useState } from 'react';
 import { items } from 'utils/dummydata';
 import { getMyGardensAPI } from 'utils/fetchGardenData';
-import customAxios from 'utils/token';
 
 const LikePosts = () => {
   const [gardens, setGardens] = useState([]);

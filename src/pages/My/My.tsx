@@ -165,6 +165,7 @@ const Mypage = () => {
   const gardenManageMatch = useMatch('/my/garden_manage/:params');
   const cropTradeMatch = useMatch('/my/crop_trade/:params');
   const whisperMatch = useMatch('/my/whisper/:params');
+
   const [isFeedbackOpen, setIsFeedbackOpen] = useRecoilState(isFeedbackOpenAtom);
   const windowWidth = useRecoilValue(windowOffsetAtom);
   const indexRoutingMatch = useMatch('/my');
@@ -190,6 +191,7 @@ const Mypage = () => {
                 <Btn onClick={() => nav('/my/whisper/my_post')} match={whisperMatch !== null}>
                   속닥속닥
                 </Btn>
+                <Btn onClick={() => nav('/setting')}>설정</Btn>
               </ButtonWrapper>
             </InnerHeader>
             <InnerHeader>

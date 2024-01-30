@@ -149,7 +149,7 @@ const Index = () => {
             <TitleWrapper onClick={() => setIsFeedBackOpen(true)}>유저의 소리함</TitleWrapper>
           </Li>
           <Li>
-            <TitleWrapper onClick={() => nav('/my/setting')}>설정</TitleWrapper>
+            <TitleWrapper onClick={() => nav('/setting')}>설정</TitleWrapper>
           </Li>
         </ul>
       ) : (

@@ -26,6 +26,19 @@ export interface GardenListType {
   latitude: number;
   longitude: number;
 }
+
+interface IMyManagedGarden {
+  myManagedGardenId: number;
+  gardenName: string;
+  useStartDate: string;
+  useEndDate: string;
+  images: string[];
+}
+
+export interface IMyManagedGardenList {
+  myManagedGardenGetResponses: IMyManagedGarden[];
+}
+
 export interface GardesType {
   gardenId: number;
   gardenName: string;

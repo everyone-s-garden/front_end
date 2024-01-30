@@ -33,7 +33,13 @@ import CommentPost from 'pages/My/Whisper/commentPost/CommentPost';
 import WhisperLike from 'pages/My/Whisper/Whisper';
 import Index from 'pages/My/Index';
 import RegiontalCertificate from 'pages/My/RegionalCertificatite/RegiontalCertificate';
-import Setting from 'pages/Setting';
+import Setting from 'pages/Setting/Setting';
+import Announcement from 'pages/Setting/Announcement/Announcement';
+import Faq from 'pages/Setting/Faq/Faq';
+import EditProfile from 'pages/Setting/EditProfile';
+import DeleteAccount from 'pages/Setting/DeleteAccount';
+import AnnouncementList from 'pages/Setting/Announcement/AnnouncementList';
+import AnnouncementDetail from 'pages/Setting/Announcement/AnnouncementDetail';
 // 모바일 100vh 세팅
 
 let vh = window.innerHeight * 0.01;
@@ -142,11 +148,37 @@ const router = createBrowserRouter([
             path: 'post/edit/:id',
             element: <RegisterSeller />,
           },
+        ],
+      },
+      {
+        path: 'setting',
+        element: <Setting />,
+      },
+      {
+        path: '/announcement',
+        element: <Announcement />,
+        children: [
           {
-            path: 'setting',
-            element: <Setting />,
+            index: true,
+            element: <AnnouncementList />,
+          },
+          {
+            path: 'detail/:id',
+            element: <AnnouncementDetail />,
           },
         ],
+      },
+      {
+        path: '/faq',
+        element: <Faq />,
+      },
+      {
+        path: '/edit_profile',
+        element: <EditProfile />,
+      },
+      {
+        path: '/delete_account',
+        element: <DeleteAccount />,
       },
       {
         path: '/login',

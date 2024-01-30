@@ -1,4 +1,4 @@
-import { IPostListItem, IPurchaseListItem } from 'api/type';
+import { IMyManagedGardenList, IPostListItem, IPurchaseListItem } from 'api/type';
 
 export const items: IPostListItem[] = [
   {
@@ -133,3 +133,17 @@ export const purchaseItems: IPurchaseListItem[] = [
     imageUrl: 'https://tgzzmmgvheix1905536.cdn.ntruss.com/2021/10/ff8332a172ee493eaf3bb61911e43815',
   },
 ];
+
+export const usingItem: IMyManagedGardenList = {
+  myManagedGardenGetResponses: [
+    {
+      myManagedGardenId: 1,
+      gardenName: '별이네 주말농장',
+      useStartDate: '2023.12.01',
+      useEndDate: '2023.12.31',
+      images: [
+        'http://wiki.hash.kr/images/thumb/0/0c/%EC%A3%BC%EB%A7%90%EB%86%8D%EC%9E%A5.png/300px-%EC%A3%BC%EB%A7%90%EB%86%8D%EC%9E%A5.png',
+      ],
+    },
+  ],
+};
