@@ -3,10 +3,11 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
+import { BREAK_POINT } from 'constants/style';
 
 const WhisperPayload = () => {
   return (
-    <>
+    <MobileWrapper>
       <PayLoadTitle>1. 속닥속닥</PayLoadTitle>
       <Box>
         <InnerBox>
@@ -22,13 +23,13 @@ const WhisperPayload = () => {
           <span style={{ color: '#282828' }}>#태그</span>
         </InnerBox>
       </Box>
-    </>
+    </MobileWrapper>
   );
 };
 
 const ChattingPayload = () => {
   return (
-    <div>
+    <MobileWrapper>
       <PayLoadTitle>1. PC 버전</PayLoadTitle>
       <ChattingBox>
         <div>내 주변 분양</div>
@@ -44,7 +45,7 @@ const ChattingPayload = () => {
         <FontAwesomeIcon icon={faEllipsisVertical} />
       </IconWrapper>
       <ChattinPayloadSpan>- 편집 버튼을 클릭하여 원하는 채팅장을 삭제할 수 있습니다.</ChattinPayloadSpan>
-    </div>
+    </MobileWrapper>
   );
 };
 
@@ -72,6 +73,10 @@ export default FaqDetail;
 const Container = styled.div`
   flex: 1;
   margin-top: 91px;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    margin-top: 0px;
+    padding-top: 16px;
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -86,6 +91,10 @@ const H1 = styled.h1`
   font-size: 20px;
   font-weight: 600;
   color: #282828;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    font-size: 16px;
+    font-weight: 500;
+  }
 `;
 
 const H1Wrapper = styled.div`
@@ -93,12 +102,18 @@ const H1Wrapper = styled.div`
   border-bottom: 1px solid #d7d7d7;
   padding-left: 20px;
   margin-bottom: 60px;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    margin-bottom: 30px;
+  }
 `;
 const Payload = styled.p`
   white-space: pre-line;
   font-size: 16px;
   font-weight: 600;
   color: #282828;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    padding: 0px 20px;
+  }
 `;
 
 const Button = styled.button`
@@ -113,6 +128,9 @@ const Button = styled.button`
   left: 50%;
   transform: translateX(-50%);
   bottom: 10%;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    display: none;
+  }
 `;
 
 const PayLoadTitle = styled.h2`
@@ -212,4 +230,8 @@ const IconWrapper = styled.div`
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
+`;
+
+const MobileWrapper = styled.div`
+  padding: 0px 27px;
 `;

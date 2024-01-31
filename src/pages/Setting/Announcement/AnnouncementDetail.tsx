@@ -1,3 +1,4 @@
+import { BREAK_POINT } from 'constants/style';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -41,16 +42,26 @@ const TitleWrapper = styled.div`
     font-size: 20px;
     font-weight: 500;
     margin-bottom: 4px;
+    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+      font-size: 16px;
+      font-weight: 500;
+    }
   }
   p {
     font-size: 16px;
     font-weight: 600;
     color: #282828;
+    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+      display: none;
+    }
+  }
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    padding: 16px 20px;
   }
 `;
 
 const PayloadWrapper = styled.div`
-  padding-left: 20px;
+  padding: 0px 20px;
   font-size: 16px;
   font-weight: 500;
   color: #282828;

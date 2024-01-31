@@ -7,7 +7,7 @@ import { isFeedbackOpenAtom, memberIdAtom, windowOffsetAtom } from 'recoil/atom'
 import Menu, { UserAdivce } from './Menu/Menu';
 import { NavigateFunction, Outlet, useMatch, useNavigate, useOutletContext } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import user_default_profile_image from 'assets/profile_image.png';
+import user_default_profile_image from 'assets/my/profile-image.png';
 import user_profile_flower_icon from 'assets/user_profile_flower_icon.png';
 
 type AfterLoginProps = {

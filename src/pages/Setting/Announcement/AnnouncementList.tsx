@@ -37,4 +37,7 @@ const Li = styled.li`
   padding: 12px 0px 33px 20px;
   border-bottom: 1px solid #d7d7d7;
   cursor: pointer;
+  @media screen {
+    padding: 20px 16px;
+  }
 `;

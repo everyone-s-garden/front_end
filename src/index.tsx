@@ -36,12 +36,12 @@ import RegiontalCertificate from 'pages/My/RegionalCertificatite/RegiontalCertif
 import Setting from 'pages/Setting/Setting';
 import Announcement from 'pages/Setting/Announcement/Announcement';
 import Faq from 'pages/Setting/Faq/Faq';
-import EditProfile from 'pages/Setting/EditProfile';
 import DeleteAccount from 'pages/Setting/DeleteAccount';
 import AnnouncementList from 'pages/Setting/Announcement/AnnouncementList';
 import AnnouncementDetail from 'pages/Setting/Announcement/AnnouncementDetail';
 import FaqList from 'pages/Setting/Faq/FaqList';
 import FaqDetail from 'pages/Setting/Faq/FaqDetail';
+import EditUserProfile from 'pages/Setting/EditUserProfile';
 // 모바일 100vh 세팅
 
 let vh = window.innerHeight * 0.01;
@@ -186,7 +186,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/edit_profile',
-        element: <EditProfile />,
+        element: <EditUserProfile />,
       },
       {
         path: '/delete_account',

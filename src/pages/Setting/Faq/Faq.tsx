@@ -20,6 +20,7 @@ export default Faq;
 
 const Container = styled.div`
   flex: 1;
+  padding-bottom: 90px;
 `;
 const Header = styled.div`
   flex: 1;

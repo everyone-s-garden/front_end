@@ -1,3 +1,4 @@
+import { BREAK_POINT } from 'constants/style';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -139,6 +140,9 @@ const Ul = styled.ul`
   margin-left: auto;
   margin-right: auto;
   margin-top: 48px;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    margin-top: 0;
+  }
 `;
 
 const UlTitle = styled.div`
