@@ -4,6 +4,9 @@
   "private": true,
   "homepage": "http://everyones-garden.com/",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
+    "@fortawesome/free-solid-svg-icons": "^6.5.1",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "@lottiefiles/react-lottie-player": "^3.5.3",
     "@react-oauth/google": "^0.11.0",
     "@tanstack/react-query": "^4.29.5",

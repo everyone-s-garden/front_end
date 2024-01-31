@@ -40,6 +40,8 @@ import EditProfile from 'pages/Setting/EditProfile';
 import DeleteAccount from 'pages/Setting/DeleteAccount';
 import AnnouncementList from 'pages/Setting/Announcement/AnnouncementList';
 import AnnouncementDetail from 'pages/Setting/Announcement/AnnouncementDetail';
+import FaqList from 'pages/Setting/Faq/FaqList';
+import FaqDetail from 'pages/Setting/Faq/FaqDetail';
 // 모바일 100vh 세팅
 
 let vh = window.innerHeight * 0.01;
@@ -171,6 +173,16 @@ const router = createBrowserRouter([
       {
         path: '/faq',
         element: <Faq />,
+        children: [
+          {
+            index: true,
+            element: <FaqList />,
+          },
+          {
+            path: 'detail',
+            element: <FaqDetail />,
+          },
+        ],
       },
       {
         path: '/edit_profile',

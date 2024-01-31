@@ -8,19 +8,19 @@ const settingRouter = [
     id: 1,
     name: '고객 센터 도움말',
     subRouter: [
-      { id: 2, subName: '공지사항', routeUrl: '/announcement' },
-      { id: 3, subName: '자주 묻는 질문', routeUrl: '/faq' },
+      { id: 2, subName: '공지사항', route: '/announcement' },
+      { id: 3, subName: '자주 묻는 질문', route: '/faq' },
     ],
   },
   {
     id: 4,
     name: '정보 수정',
-    subRouter: [{ id: 5, subName: '개인정보수정', routeUrl: '/edit_profile' }],
+    subRouter: [{ id: 5, subName: '개인정보수정', route: '/edit_profile' }],
   },
   {
     id: 7,
     name: '회원 정보',
-    subRouter: [{ id: 8, subName: '회원 탈퇴', routeUrl: '/delete_account' }],
+    subRouter: [{ id: 8, subName: '회원 탈퇴', route: '/delete_account' }],
   },
 ];
 
@@ -40,7 +40,7 @@ const Setting = () => {
               <ul>
                 {routes.subRouter.map((route, idx) => {
                   return (
-                    <Li key={route.id} onClick={() => nav(route.routeUrl)}>
+                    <Li key={route.id} onClick={() => nav(route.route)}>
                       {route.subName}
                     </Li>
                   );
