@@ -13,7 +13,7 @@ const PurchaseHistory = () => {
   }, []);
 
   return (
-    <div style={{ flex: 1 }}>
+    <Container>
       <Ul>
         {purchaseItems.map((item, idx) => {
           return (
@@ -28,11 +28,17 @@ const PurchaseHistory = () => {
           );
         })}
       </Ul>
-    </div>
+    </Container>
   );
 };
 
 export default PurchaseHistory;
+const Container = styled.div`
+  flex: 1;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    margin-top: 24px;
+  }
+`;
 
 const Ul = styled.ul`
   display: flex;
@@ -63,8 +69,12 @@ const Ul = styled.ul`
       font-size: 18px;
       font-weight: 700;
     }
+    @media screen and (max-width: ${BREAK_POINT.TABLET}) {
+      width: 210px;
+    }
+
     @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-      width: 171px;
+      width: 160px;
       margin-right: 0;
       margin-left: auto;
       margin-right: auto;
@@ -77,8 +87,12 @@ const ImageWrapper = styled.div`
   height: 151px;
   border-radius: 10px;
   margin-bottom: 12px;
+  @media screen and (max-width: ${BREAK_POINT.TABLET}) {
+    width: 190px;
+    height: 160px;
+  }
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    width: 171px;
+    width: 160px;
     height: 151px;
   }
 `;

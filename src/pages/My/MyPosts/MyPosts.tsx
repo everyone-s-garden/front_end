@@ -134,6 +134,7 @@
 
 import PostListItem from 'components/PostListItem';
 import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import { items } from 'utils/dummydata';
 import { getMyGardensAPI } from 'utils/fetchGardenData';
 import customAxios from 'utils/token';
@@ -146,12 +147,17 @@ const MyPosts = () => {
     return () => {};
   }, []);
   return (
-    <div style={{ flex: 1 }}>
-      <ul>
-        <PostListItem items={items} />
-      </ul>
-    </div>
+    <Container>
+      <PostListItem items={items} />
+    </Container>
   );
 };
 
 export default MyPosts;
+
+const Container = styled.ul`
+  display: flex;
+  flex: 1;
+  max-width: 662px;
+  min-width: 334px;
+`;

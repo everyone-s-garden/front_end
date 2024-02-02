@@ -234,6 +234,7 @@ const Container = styled.div`
   justify-content: center;
 
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    margin-top: 0px;
   }
 `;
 
@@ -270,6 +271,11 @@ const ButtonWrapper = styled.div`
 const ContentWrapper = styled.div`
   display: flex;
   padding: 0px 123px;
+  flex: 1;
+
+  @media screen and (max-width: ${BREAK_POINT.TABLET}) {
+    padding: 0;
+  }
 `;
 
 const Btn = styled.button<{ match?: boolean; secondary?: boolean }>`
@@ -302,15 +308,17 @@ const UserInfoWrapper = styled.div`
   margin-bottom: 16px;
   display: flex;
   flex-direction: column;
+
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     width: 100%;
     height: 198px;
+    margin-top: 40px;
   }
 `;
 const MenuContainer = styled.div`
   margin-right: 72px;
   @media screen and (max-width: ${BREAK_POINT.TABLET}) {
-    margin-right: 36px;
+    margin-right: 24px;
   }
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     margin-right: 0;

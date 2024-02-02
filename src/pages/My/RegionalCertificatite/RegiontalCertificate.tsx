@@ -1,11 +1,14 @@
 import { BREAK_POINT } from 'constants/style';
 import React from 'react';
 import styled from 'styled-components';
+import CloseIcon from 'components/icon/CloseIcon';
 
 const LocationList = ({ children }: { children: string }) => {
   return (
     <Li>
-      <RemoveButton>닫기</RemoveButton>
+      <RemoveButton>
+        <CloseIcon fill="#fff" />
+      </RemoveButton>
       <ListTextWrapper>{children}</ListTextWrapper>
     </Li>
   );
@@ -41,6 +44,9 @@ const Container = styled.div`
   flex: 1;
   display: flex;
   justify-content: center;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    margin-top: 40px;
+  }
 `;
 
 const Title = styled.h2`
@@ -83,27 +89,31 @@ const Button = styled.button`
 const Li = styled.li`
   display: flex;
   align-items: center;
+  margin-bottom: 10px;
 `;
 
 const ListTextWrapper = styled.span`
   background-color: #f1f7e4;
   flex: 1;
-  padding: 16px 0px;
   display: flex;
   justify-content: center;
   align-items: center;
   color: #9ec646;
-  margin-bottom: 10px;
   border-radius: 10px;
   font-weight: 600;
   font-size: 16px;
+  height: 48px;
 `;
 
 const RemoveButton = styled.button`
   margin-right: 12px;
   background-color: #5a5a5a;
   border-radius: 99px;
-  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
 `;
 
 const ConfirmButton = styled.button`
@@ -116,6 +126,14 @@ const ConfirmButton = styled.button`
   font-weight: 600;
   margin-left: auto;
   margin-right: auto;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-radius: 0;
+    background-color: #9ec646;
+  }
 `;
 
 const LocationWrapper = styled.ul`
