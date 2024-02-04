@@ -1,8 +1,23 @@
 import { IUploadData } from './type';
 import customAxios from '../../../utils/token';
-
-export const UploadData = async (uploadData: IUploadData) => {
-  const res = await customAxios.post('/v1/garden', uploadData);
+import { IRequestData } from './Form';
+const valueToJson = async (data: any) => {
+  const jsonValue = JSON.stringify(data);
+  const blob = new Blob([jsonValue], { type: 'application/json' });
+  return blob;
+};
+export const UploadData = async (uploadData: any, images: any) => {
+  const gardenCreateRequest = await valueToJson(uploadData);
+  const gardenImages = await valueToJson(images);
+  const res = await customAxios.post(
+    'v2/gardens',
+    { gardenCreateRequest, gardenImages },
+    {
+      headers: {
+        'Content-Type': `multipart/form-data`,
+      },
+    },
+  );
   return res;
 };
 export const inputPriceFormat = (str: string) => {
@@ -49,7 +64,6 @@ export const inputContactFormat = (str: string) => {
 
     return `${prefix}-${middle}-${suffix}`;
   }
-
   return truncatedStr;
 };
 
@@ -65,29 +79,24 @@ export const formDataHandler = async (dataURI: any) => {
   });
   const file = new File([blob], 'image.jpg');
 
-  const formData = new FormData();
-  formData.append('gardenImage', file);
-  return formData;
+  return file;
 };
-
-export const formValidation = (data: IUploadData) => {
+export const formValidation = (data: IRequestData, images: any) => {
+  if (images.length === 0) {
+    alert('이미지는 필수 입니다.');
+    return;
+  }
   if (data.address === '') {
     alert('지역은 필수입니다.');
     return false;
-  } else if (data.name === '') {
+  } else if (data.gardenName === '') {
     alert('텃밭 이름은 필수입니다.');
     return false;
   } else if (data.price === '') {
     alert('가격정보는 필수입니다.');
     return false;
-  } else if (data.content === '') {
+  } else if (data.gardenDescription === '') {
     alert('상세내용은 필수 입니다.');
-    return false;
-  } else if (data.status === '') {
-    alert('상태는 필수입니다.');
-    return false;
-  } else if (data.images.length === 0) {
-    alert('이미지는 필수입니다.');
     return false;
   } else if (data.size === '') {
     alert('평수는 필수입니다.');

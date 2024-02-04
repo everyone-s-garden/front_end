@@ -41,7 +41,7 @@ function GardenPost({ id, name, size, price, images, status }: GardenPostProps) 
             setSelectedGarden(id);
           }}
         >
-          {name.trim()}
+          {/* {name.trim()} */}
         </Title>
         <Value>{size}</Value>
         <Value>{price}</Value>
