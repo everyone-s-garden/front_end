@@ -73,9 +73,13 @@ const Container = styled.ul`
 `;
 
 const MobileUnderBar = styled(motion.div)`
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  background-color: #9ec646;
-  bottom: -12px;
+  display: none;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: #9ec646;
+    bottom: -12px;
+    display: flex;
+  }
 `;

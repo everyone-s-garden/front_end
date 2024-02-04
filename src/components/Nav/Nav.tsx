@@ -12,7 +12,6 @@ import {
   isMyPostOpenAtom,
   isReportOpenAtom,
   selectedMapLocationAtom,
-  windowOffsetAtom,
 } from 'recoil/atom';
 import { getItem } from 'utils/session';
 import ReportModal from '../Modal/ReportModal';
@@ -62,7 +61,6 @@ const Nav = () => {
   const [searchText, setSearchText] = useState<string>('');
   const [show, setShow] = useState<boolean>(false);
   const [initialized, setInitialized] = useState(false);
-  const [offset, setOffset] = useRecoilState(windowOffsetAtom);
   // Google Analytics 설정
   useEffect(() => {
     // localhost는 기록하지 않음
@@ -93,22 +91,6 @@ const Nav = () => {
   useEffect(() => {
     setIsLogin(Boolean(getItem('isLogin')));
   }, [isLogin, setIsLogin]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      setOffset({ width, height });
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    handleResize();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
 
   const getBackNavURL = () => {
     if (isMapPage || isMyPage) return '/';
