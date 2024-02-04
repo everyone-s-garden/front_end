@@ -49,16 +49,13 @@ const GardenUsing = () => {
         </ImageWrapper>
 
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
-            <span style={{ fontSize: 18, fontWeight: 600, marginRight: 12 }}>
-              사용기한이 {calculateDaysBetweenDates(item.useStartDate, item.useEndDate)}일 남았습니다
+          <DateOfUse>
+            <span>사용기한이 {calculateDaysBetweenDates(item.useStartDate, item.useEndDate)}일 남았습니다</span>
+            <span style={{ fontSize: 14, color: '#5A5A5A' }}>
+              ({item.useStartDate} ~ {item.useEndDate})
             </span>
-            <div>
-              <span style={{ fontSize: 14, color: '#5A5A5A' }}>
-                ({item.useStartDate} ~ {item.useEndDate})
-              </span>
-            </div>
-          </div>
+          </DateOfUse>
+
           <div style={{ marginBottom: 8 }}>
             <span style={{ marginRight: 8 }}>이름</span>
             <span style={{ fontWeight: 600 }}>{item.gardenName}</span>
@@ -92,6 +89,9 @@ const Menu = styled.div`
       display: none;
     }
   }
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    justify-content: end;
+  }
 `;
 const MenuButtonWrapper = styled.div`
   display: flex;
@@ -106,9 +106,6 @@ const MenuButtonWrapper = styled.div`
     font-weight: 600;
     color: #000;
   }
-  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    background-color: red;
-  }
 `;
 
 const ImageWrapper = styled.div`
@@ -122,5 +119,28 @@ const ImageWrapper = styled.div`
     height: 100%;
     object-fit: cover;
     border-radius: 8px;
+  }
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: 111px;
+    height: 122px;
+  }
+`;
+
+const DateOfUse = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  span:first-child {
+    font-size: 18px;
+    font-weight: 600;
+    margin-right: 12px;
+    @media screen and (max-width: ${BREAK_POINT.TABLET}) {
+      font-size: 17px;
+      margin-bottom: 8px;
+    }
+  }
+  @media screen and (max-width: ${BREAK_POINT.TABLET}) {
+    flex-direction: column;
+    align-items: flex-start;
   }
 `;
