@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { SetStateAction, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
@@ -12,6 +12,17 @@ import docIcon from '../../../assets/my/menu/doc-icon.svg';
 import illust1 from '../../../assets/my/menu/call-illust.svg';
 import illust2 from '../../../assets/my/menu/book-illust.svg';
 
+export const UserAdivce = ({ setIsFeedbackOpen }: { setIsFeedbackOpen: React.Dispatch<SetStateAction<boolean>> }) => {
+  return (
+    <YellowBtn onClick={() => setIsFeedbackOpen(true)}>
+      <BtnTextBox>
+        <span>제안사항이 있나요?</span>
+        <span>유저의 소리함</span>
+      </BtnTextBox>
+      <img src={illust1} alt="일러스트" />
+    </YellowBtn>
+  );
+};
 function Menu() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -46,13 +57,7 @@ function Menu() {
             </NavBtn>
           </MenuNavList>
 
-          <YellowBtn onClick={() => setIsFeedbackOpen(true)}>
-            <BtnTextBox>
-              <span>제안사항이 있나요?</span>
-              <span>유저의 소리함</span>
-            </BtnTextBox>
-            <img src={illust1} alt="일러스트" />
-          </YellowBtn>
+          <UserAdivce setIsFeedbackOpen={setIsFeedbackOpen} />
         </>
       )}
       <YellowBtn onClick={() => setIsCropOpen(true)}>

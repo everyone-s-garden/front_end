@@ -1,4 +1,20 @@
 // Garden
+
+export interface IPostListItem {
+  gardenId: number;
+  size: string;
+  gardenName: string;
+  price: string;
+  images: string[];
+  gardenStatus: 'ACTIVE' | 'INACTIVE';
+}
+
+export interface IPurchaseListItem {
+  cropPostId: number;
+  title: string;
+  imageUrl: string;
+}
+
 export interface GardenListType {
   gardenId: number;
   size?: string;
@@ -10,6 +26,30 @@ export interface GardenListType {
   latitude: number;
   longitude: number;
 }
+export interface GardesType {
+  gardenId: number;
+  gardenName: string;
+  gardenStatus: 'ACTIVE' | 'INACTIVE' | null | undefined;
+  gardenType: 'PRIVATE' | 'PUBLIC';
+  images: string[];
+  latitude: number;
+  longitude: number;
+  price: string;
+  size: string;
+}
+
+interface IMyManagedGarden {
+  myManagedGardenId: number;
+  gardenName: string;
+  useStartDate: string;
+  useEndDate: string;
+  images: string[];
+}
+
+export interface IMyManagedGardenList {
+  myManagedGardenGetResponses: IMyManagedGarden[];
+}
+
 export interface GardesType {
   gardenId: number;
   gardenName: string;
@@ -73,11 +113,41 @@ export interface Corp {
   cropInfos: ICropInfos[];
 }
 
-// Weather
-
 export interface WeatherType {
   baseDate: string;
   category: string;
   obsrValue: string;
+  regionName: string;
+}
+
+export interface GetAllWeatherResponse {
+  weatherApiResult: WeatherData[];
+}
+
+export interface GetPerTimeWeatherResponse {
+  weatherTimeResponses: WeatherTimeData[];
+  regionName: string;
+}
+
+export interface WeatherData {
+  regionName: string;
+  skyValue: string;
+  temperatureValue: string;
+}
+
+interface WeatherTimeData {
+  baseDate: string;
+  temperature: string;
+  skyStatus: string;
+  fsctDate: string;
+  fsctTime: string;
+}
+
+export interface GetWeeklyWeatherResponse {
+  skyStatusTwoDaysAfter: string;
+  skyStatusThreeDaysAfter: string;
+  skyStatusFourDaysAfter: string;
+  skyStatusFiveDaysAfter: string;
+  skyStatusSixDaysAfter: string;
   regionName: string;
 }
