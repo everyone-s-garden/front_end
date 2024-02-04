@@ -58,6 +58,10 @@ export default Setting;
 
 const Container = styled.div`
   flex: 1;
+  padding-bottom: 100px;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    /* padding-bottom: 0; */
+  }
 `;
 
 const Header = styled.div`

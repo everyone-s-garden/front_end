@@ -3,7 +3,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
-import { BREAK_POINT, COLOR, FONT_WEIGHT } from '../constants/style';
+import { BREAK_POINT, COLOR, FONT_WEIGHT } from '../../constants/style';
 import {
   imageMagnifImagesAtom,
   isCropOpenAtom,
@@ -15,10 +15,10 @@ import {
   windowOffsetAtom,
 } from 'recoil/atom';
 import { getItem } from 'utils/session';
-import ReportModal from './Modal/ReportModal';
-import UserFeedbackModal from './Modal/UserFeedbackModal';
-import MonthCrop from './Modal/MonthCrop';
-import Notification from './Notification';
+import ReportModal from '../Modal/ReportModal';
+import UserFeedbackModal from '../Modal/UserFeedbackModal';
+import MonthCrop from '../Modal/MonthCrop';
+import Notification from '../Notification';
 import logoImg from 'assets/logo_horizon.png';
 import mapImg from 'assets/map-icon.svg';
 import userImg from 'assets/user.svg';
@@ -27,8 +27,8 @@ import { useNavermaps } from 'react-naver-maps';
 import { AxiosResponse } from 'axios';
 import HttpRequest from 'api/HttpRequest';
 import ReactGA from 'react-ga4';
-import ImageMagnifModal from './Modal/ImageMagnifModal';
-import MyPostRemoveModal from './Modal/MyPostRemoveModal';
+import ImageMagnifModal from '../Modal/ImageMagnifModal';
+import MyPostRemoveModal from '../Modal/MyPostRemoveModal';
 import { removeCookie } from 'utils/cookie';
 
 export interface ILocation {

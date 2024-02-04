@@ -1,4 +1,5 @@
 import PostListItem from 'components/PostListItem';
+import { BREAK_POINT } from 'constants/style';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { usingItem } from 'utils/dummydata';
@@ -86,6 +87,11 @@ const Menu = styled.div`
   font-size: 16px;
   cursor: pointer;
   font-weight: 600;
+  div:first-child {
+    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+      display: none;
+    }
+  }
 `;
 const MenuButtonWrapper = styled.div`
   display: flex;
@@ -99,6 +105,9 @@ const MenuButtonWrapper = styled.div`
     font-size: 14px;
     font-weight: 600;
     color: #000;
+  }
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    background-color: red;
   }
 `;
 
