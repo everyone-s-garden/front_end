@@ -6,6 +6,7 @@ import { useRecoilValue } from 'recoil';
 import { ReactComponent as BellIcon } from 'assets/bell-icon.svg';
 import { isLoginAtom } from 'recoil/atom';
 import useSelect from 'hooks/useSelect';
+import { Console } from 'console';
 
 // TODO: remove this
 const TestData = [
