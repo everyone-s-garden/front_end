@@ -60,13 +60,13 @@ function UserFeedbackModal({ isOpen, setIsOpen }: UserFeedbackModalProps) {
         const compressedFile = await imageCompression(uploadImg, options);
         const reader = new FileReader();
         reader.readAsDataURL(compressedFile);
-        reader.onload = async () => {
-          const base64data = reader.result;
-          const formData = await formDataHandler(base64data);
-          const res = (await getImages(formData)) as AxiosResponse;
-          const newImage: string[] = [res.data.imageUrl];
-          setImages(prevImages => [...newImage, ...prevImages]);
-        };
+        // reader.onload = async () => {
+        //   const base64data = reader.result;
+        //   const formData = await formDataHandler(base64data);
+        //   const res = (await getImages(formData)) as AxiosResponse;
+        //   const newImage: string[] = [res.data.imageUrl];
+        //   setImages(prevImages => [...newImage, ...prevImages]);
+        // };
       } catch (err) {
         console.log(err);
       }
@@ -160,7 +160,7 @@ const ImageAddBtn = styled.div`
 `;
 
 const ModalTitle = styled.h1`
-  color: #414c38;
+  color: #282828;
   font-size: 18px;
   font-weight: 500;
 `;

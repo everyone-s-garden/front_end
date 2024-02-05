@@ -4,7 +4,6 @@ import { IGardenDetail } from 'types/GardenDetail';
 import { ILocation } from 'components/Nav/Nav';
 import { IHashMyGarden } from 'types/MyGarden';
 import { getItem } from 'utils/session';
-import { IGardens } from 'pages/My/RecentPosts/RecentPosts';
 
 // Modal Atoms
 export const isReportOpenAtom = atom<boolean>({
@@ -70,28 +69,28 @@ export const selectedMapLocationAtom = atom<ILocation | null>({
   default: null,
 });
 
-export const recentListsAtom = atom<IGardens[]>({
-  key: 'recentLists',
-  default: [],
-});
+// export const recentListsAtom = atom<IGardens[]>({
+//   key: 'recentLists',
+//   default: [],
+// });
 
 export const recentPageAtom = atom<number>({
   key: 'recentPage',
   default: 1,
 });
-export const myListsAtom = atom<IGardens[]>({
-  key: 'myLists',
-  default: [],
-});
+// export const myListsAtom = atom<IGardens[]>({
+//   key: 'myLists',
+//   default: [],
+// });
 
 export const myPageAtom = atom<number>({
   key: 'myPage',
   default: 1,
 });
-export const likeListsAtom = atom<IGardens[]>({
-  key: 'likeLists',
-  default: [],
-});
+// export const likeListsAtom = atom<IGardens[]>({
+//   key: 'likeLists',
+//   default: [],
+// });
 
 export const likePageAtom = atom<number>({
   key: 'likePage',
@@ -109,4 +108,18 @@ export const feedbackCommentAtom = atom<string>({
 export const hasMyGardenAtom = atom<IHashMyGarden | null>({
   key: 'hasMyGarden',
   default: null,
+});
+
+export const memberIdAtom = atom<number | null>({
+  key: 'memberId',
+  default: null,
+});
+export const memberName = atom<string | null>({
+  key: 'memberName',
+  default: null,
+});
+
+export const windowOffsetAtom = atom<{ width: number; height: number }>({
+  key: 'offset',
+  default: { width: window.innerWidth, height: window.innerHeight },
 });

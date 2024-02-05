@@ -18,9 +18,9 @@ const handleComplete = async (data: IAddressData) => {
     process.env.REACT_APP_GOOGLE_API_KEY
   }` as const;
   const res: AxiosResponse<{ results: IResponse[] }> = await axios.get(apiUrl);
-
   const potential_address = res.data.results.find((i: IResponse) => i.formatted_address.startsWith('대한민국'));
   const potential_address2 = res.data.results.find((I: IResponse) => I.formatted_address.includes('Korea'));
+
   if (potential_address) {
     const { lat, lng } = potential_address.geometry.location;
     const address_data = {
