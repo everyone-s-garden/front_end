@@ -3,7 +3,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
-import { BREAK_POINT, COLOR, FONT_WEIGHT } from '../constants/style';
+import { BREAK_POINT, COLOR, FONT_WEIGHT } from '../../constants/style';
 import {
   imageMagnifImagesAtom,
   isCropOpenAtom,
@@ -15,10 +15,10 @@ import {
   windowOffsetAtom,
 } from 'recoil/atom';
 import { getItem } from 'utils/session';
-import ReportModal from './Modal/ReportModal';
-import UserFeedbackModal from './Modal/UserFeedbackModal';
-import MonthCrop from './Modal/MonthCrop';
-import Notification from './Notification';
+import ReportModal from '../Modal/ReportModal';
+import UserFeedbackModal from '../Modal/UserFeedbackModal';
+import MonthCrop from '../Modal/MonthCrop';
+import Notification from '../Notification';
 import logoImg from 'assets/logo_horizon.png';
 import mapImg from 'assets/map-icon.svg';
 import userImg from 'assets/user.svg';
@@ -27,15 +27,18 @@ import { useNavermaps } from 'react-naver-maps';
 import { AxiosResponse } from 'axios';
 import HttpRequest from 'api/HttpRequest';
 import ReactGA from 'react-ga4';
-import ImageMagnifModal from './Modal/ImageMagnifModal';
-import MyPostRemoveModal from './Modal/MyPostRemoveModal';
+import ImageMagnifModal from '../Modal/ImageMagnifModal';
+import MyPostRemoveModal from '../Modal/MyPostRemoveModal';
 import { removeCookie } from 'utils/cookie';
-
 export interface ILocation {
   position: string;
   latitude: number;
   longitude: number;
 }
+
+// const NotificationComponenet = ({}) => {
+//   return null;
+// };
 
 const Nav = () => {
   const navigate = useNavigate();
@@ -62,7 +65,8 @@ const Nav = () => {
   const [searchText, setSearchText] = useState<string>('');
   const [show, setShow] = useState<boolean>(false);
   const [initialized, setInitialized] = useState(false);
-  const [offset, setOffset] = useRecoilState(windowOffsetAtom);
+  const [Offset, setOffset] = useRecoilState(windowOffsetAtom);
+
   // Google Analytics 설정
   useEffect(() => {
     // localhost는 기록하지 않음
@@ -93,6 +97,21 @@ const Nav = () => {
   useEffect(() => {
     setIsLogin(Boolean(getItem('isLogin')));
   }, [isLogin, setIsLogin]);
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      setOffset({ width, height });
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -375,7 +394,7 @@ const Button = styled.button<{ active: boolean }>`
   background-color: ${props => (props.active ? '#EAF1E8' : 'transparent')};
   border-radius: 15px;
   transition: all 0.2s ease-in;
-
+  position: relative;
   &:hover {
     transform: translateY(-3px);
   }

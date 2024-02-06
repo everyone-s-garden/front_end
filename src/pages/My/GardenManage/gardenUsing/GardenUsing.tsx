@@ -1,4 +1,8 @@
 import PostListItem from 'components/PostListItem';
+<<<<<<< HEAD
+=======
+import { BREAK_POINT } from 'constants/style';
+>>>>>>> ce0ea358495b325daec7f900e8123b46fa009f0f
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { usingItem } from 'utils/dummydata';
@@ -48,6 +52,7 @@ const GardenUsing = () => {
         </ImageWrapper>
 
         <div style={{ display: 'flex', flexDirection: 'column' }}>
+<<<<<<< HEAD
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
             <span style={{ fontSize: 18, fontWeight: 600, marginRight: 12 }}>
               사용기한이 {calculateDaysBetweenDates(item.useStartDate, item.useEndDate)}일 남았습니다
@@ -58,6 +63,15 @@ const GardenUsing = () => {
               </span>
             </div>
           </div>
+=======
+          <DateOfUse>
+            <span>사용기한이 {calculateDaysBetweenDates(item.useStartDate, item.useEndDate)}일 남았습니다</span>
+            <span style={{ fontSize: 14, color: '#5A5A5A' }}>
+              ({item.useStartDate} ~ {item.useEndDate})
+            </span>
+          </DateOfUse>
+
+>>>>>>> ce0ea358495b325daec7f900e8123b46fa009f0f
           <div style={{ marginBottom: 8 }}>
             <span style={{ marginRight: 8 }}>이름</span>
             <span style={{ fontWeight: 600 }}>{item.gardenName}</span>
@@ -86,6 +100,17 @@ const Menu = styled.div`
   font-size: 16px;
   cursor: pointer;
   font-weight: 600;
+<<<<<<< HEAD
+=======
+  div:first-child {
+    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+      display: none;
+    }
+  }
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    justify-content: end;
+  }
+>>>>>>> ce0ea358495b325daec7f900e8123b46fa009f0f
 `;
 const MenuButtonWrapper = styled.div`
   display: flex;
@@ -114,4 +139,30 @@ const ImageWrapper = styled.div`
     object-fit: cover;
     border-radius: 8px;
   }
+<<<<<<< HEAD
+=======
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: 111px;
+    height: 122px;
+  }
+`;
+
+const DateOfUse = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  span:first-child {
+    font-size: 18px;
+    font-weight: 600;
+    margin-right: 12px;
+    @media screen and (max-width: ${BREAK_POINT.TABLET}) {
+      font-size: 17px;
+      margin-bottom: 8px;
+    }
+  }
+  @media screen and (max-width: ${BREAK_POINT.TABLET}) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+>>>>>>> ce0ea358495b325daec7f900e8123b46fa009f0f
 `;

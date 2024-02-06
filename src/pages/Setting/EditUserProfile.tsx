@@ -55,6 +55,10 @@ export default EditUserProfile;
 const Container = styled.section`
   flex: 1;
   padding-top: 47px;
+<<<<<<< HEAD
+=======
+  padding-bottom: 100px;
+>>>>>>> ce0ea358495b325daec7f900e8123b46fa009f0f
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     padding-top: 15px;
   }

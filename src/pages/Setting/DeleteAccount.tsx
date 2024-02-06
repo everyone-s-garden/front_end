@@ -33,7 +33,13 @@ const DeleteAccount = () => {
           <LiComponent>새 프로필을 만들고 싶어요.</LiComponent>
           <LiComponent>개인정보를 삭제하고 싶어요.</LiComponent>
         </ul>
+<<<<<<< HEAD
         <p>계정을 삭제하면 게시글,채팅 등 모든 활동 정보가 삭제됩니다. 계정 삭제 후 7일간 다시 가입할 수 없어요.</p>
+=======
+        <p style={{ marginBottom: 60 }}>
+          계정을 삭제하면 게시글,채팅 등 모든 활동 정보가 삭제됩니다. 계정 삭제 후 7일간 다시 가입할 수 없어요.
+        </p>
+>>>>>>> ce0ea358495b325daec7f900e8123b46fa009f0f
         <ButtonWrapper>
           <button onClick={() => nav(-1)} style={{ backgroundColor: '#9EC646', color: 'white' }}>
             뒤로가기
@@ -50,8 +56,15 @@ export default DeleteAccount;
 const Container = styled.section`
   flex: 1;
   padding-top: 47px;
+<<<<<<< HEAD
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     padding-top: 22px;
+=======
+  padding-bottom: 40px;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    padding-top: 22px;
+    padding-bottom: 0;
+>>>>>>> ce0ea358495b325daec7f900e8123b46fa009f0f
   }
 `;
 
@@ -106,11 +119,18 @@ const Li = styled.li`
 `;
 
 const ButtonWrapper = styled.div`
+<<<<<<< HEAD
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   bottom: 10%;
   display: flex;
+=======
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+>>>>>>> ce0ea358495b325daec7f900e8123b46fa009f0f
   button:first-child {
     margin-right: 21px;
     @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
@@ -131,5 +151,10 @@ const ButtonWrapper = styled.div`
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     bottom: 0;
     width: 100%;
+<<<<<<< HEAD
+=======
+    position: absolute;
+    bottom: 0;
+>>>>>>> ce0ea358495b325daec7f900e8123b46fa009f0f
   }
 `;

@@ -1,9 +1,13 @@
 import { atom } from 'recoil';
 import { GardenDetailType, GardenListType } from 'api/type';
 import { IGardenDetail } from 'types/GardenDetail';
-import { ILocation } from 'components/Nav';
+import { ILocation } from 'components/Nav/Nav';
 import { IHashMyGarden } from 'types/MyGarden';
+<<<<<<< HEAD
 // import { IGardens } from 'pages/My/RecentPosts/RecentPosts';
+=======
+import { getItem } from 'utils/session';
+>>>>>>> ce0ea358495b325daec7f900e8123b46fa009f0f
 
 // Modal Atoms
 export const isReportOpenAtom = atom<boolean>({
@@ -40,7 +44,7 @@ export const NotiContentAtom = atom<string>({
 // Login Page Atoms
 export const isLoginAtom = atom<boolean>({
   key: 'isLogin',
-  default: false,
+  default: Boolean(getItem('isLogin')),
 });
 
 // Map Page Atoms
@@ -118,7 +122,10 @@ export const memberName = atom<string | null>({
   key: 'memberName',
   default: null,
 });
+<<<<<<< HEAD
 
+=======
+>>>>>>> ce0ea358495b325daec7f900e8123b46fa009f0f
 export const windowOffsetAtom = atom<{ width: number; height: number }>({
   key: 'offset',
   default: { width: window.innerWidth, height: window.innerHeight },

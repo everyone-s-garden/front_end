@@ -18,6 +18,10 @@ export default Announcement;
 
 const Container = styled.div`
   flex: 1;
+<<<<<<< HEAD
+=======
+  padding-bottom: 100px;
+>>>>>>> ce0ea358495b325daec7f900e8123b46fa009f0f
 `;
 
 const ContentWrapper = styled.div`

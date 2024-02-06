@@ -6,8 +6,9 @@ import { NavermapsProvider } from 'react-naver-maps';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-import Nav from './components/Nav';
+import Nav from './components/Nav/Nav';
 import Main from './pages/Main/Main';
 import Map from './pages/Map/Map';
 import Login from './pages/Login/Login';
@@ -21,7 +22,14 @@ import RecentPosts from 'pages/My/RecentPosts/RecentPosts';
 import MyPosts from 'pages/My/MyPosts/MyPosts';
 import { HelmetProvider } from 'react-helmet-async';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import Header from 'components/Header/Header';
 import NaverToken from 'pages/Login/Naver/token/token';
+<<<<<<< HEAD
+=======
+import { ThemeProvider } from 'styled-components';
+import theme from 'styles/theme';
+
+>>>>>>> ce0ea358495b325daec7f900e8123b46fa009f0f
 import GardenSelling from 'pages/My/GardenManage/gardenSelling/GardenSelling';
 import GardenUsing from 'pages/My/GardenManage/gardenUsing/GardenUsing';
 import GardenLike from 'pages/My/GardenManage/gardenLike/GardenLike';
@@ -56,7 +64,7 @@ window.addEventListener('resize', () => {
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Nav />,
+    element: <Header />,
     children: [
       {
         index: true,
@@ -217,7 +225,10 @@ root.render(
       <NavermapsProvider ncpClientId="jij6pc5oav">
         <GoogleOAuthProvider clientId="999513273898-9fa6iu0cm3jbeancg8f82mjs53trr355.apps.googleusercontent.com">
           <QueryClientProvider client={queryClient}>
-            <RouterProvider router={router} />
+            <ThemeProvider theme={theme}>
+              <RouterProvider router={router} />
+            </ThemeProvider>
+            <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
         </GoogleOAuthProvider>
       </NavermapsProvider>
