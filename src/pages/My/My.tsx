@@ -13,7 +13,6 @@ import user_profile_flower_icon from 'assets/user_profile_flower_icon.png';
 type AfterLoginProps = {
   navermaps: typeof naver.maps;
 };
-<<<<<<< HEAD
 
 interface ISubHeaderProps {
   myGardensMatch?: boolean;
@@ -32,90 +31,6 @@ const UserInfoComponent = ({
   windowWidth?: number;
 }) => {
   return (
-    <MenuContainer>
-      <UserInfoWrapper>
-        <UserInfoInnerWrapper>
-          <img src={user_default_profile_image} style={{ widows: 25, height: 25 }} />
-          <div>
-            <span>텃린이</span>
-          </div>
-        </UserInfoInnerWrapper>
-        <UserInfoBottomWrapper>
-          <img src={user_profile_flower_icon} width={42} height={42} />
-          <span style={{ fontSize: 16, color: '#fff' }}>씨앗 등급</span>
-        </UserInfoBottomWrapper>
-      </UserInfoWrapper>
-      {windowWidth && windowWidth > BREAK_POINT.MOBILE_NUMBER ? (
-        <UserAdivce setIsFeedbackOpen={setIsFeedbackOpen} />
-      ) : null}
-    </MenuContainer>
-  );
-};
-
-const SubHeader = ({
-  myGardensMatch,
-  gardenManageMatch,
-  cropTradeMatch,
-  whisperMatch,
-  indexRoutingMatch,
-  nav,
-}: ISubHeaderProps) => {
-  const likeMatch = useMatch('/my/my_gardens/like');
-  const recentMatch = useMatch('/my/my_gardens/recent');
-  const myPostMatch = useMatch('/my/my_gardens/mypost');
-  const salesMatch = useMatch('/my/crop_trade/sales_history');
-  const purchaseMatch = useMatch('/my/crop_trade/purchase_history');
-  const wishListMatch = useMatch('/my/crop_trade/wishlist');
-  const regionalCertificationMatch = useMatch('/my/crop_trade/regional_certification');
-  const gardenSellingMatch = useMatch('/my/garden_manage/my_garden_selling');
-  const gardenUsingMatch = useMatch('/my/garden_manage/my_garden_using');
-  const likeGardenMatch = useMatch('/my/garden_manage/like');
-  const whisperPostMatch = useMatch('/my/whisper/my_post');
-  const commentPostMatch = useMatch('/my/whisper/comment_post');
-  const whisperLikeMatch = useMatch('/my/whisper/like');
-=======
->>>>>>> ce0ea358495b325daec7f900e8123b46fa009f0f
-
-interface ISubHeaderProps {
-  myGardensMatch?: boolean;
-  gardenManageMatch?: boolean;
-  cropTradeMatch?: boolean;
-  whisperMatch?: boolean;
-  nav: NavigateFunction;
-  indexRoutingMatch?: boolean;
-}
-
-const UserInfoComponent = ({
-  setIsFeedbackOpen,
-  windowWidth,
-}: {
-  setIsFeedbackOpen: React.Dispatch<SetStateAction<boolean>>;
-  windowWidth?: number;
-}) => {
-  return (
-<<<<<<< HEAD
-    <ButtonWrapper>
-      {(myGardensMatch || indexRoutingMatch) && (
-        <>
-          <Btn
-            onClick={() => nav('my_gardens/like')}
-            match={likeMatch !== null || indexRoutingMatch !== null}
-            secondary={true}
-          >
-            찜한텃밭
-            {(likeMatch || indexRoutingMatch) && <ButtonHighlight layoutId="1" />}
-          </Btn>
-          <Btn onClick={() => nav('my_gardens/recent')} match={recentMatch !== null} secondary={true}>
-            최근 본 텃밭
-            {recentMatch && <ButtonHighlight layoutId="1" />}
-          </Btn>
-          <Btn onClick={() => nav('my_gardens/mypost')} match={myPostMatch !== null} secondary={true}>
-            내가 올린 글{myPostMatch && <ButtonHighlight layoutId="1" />}
-          </Btn>
-        </>
-      )}
-
-=======
     <MenuContainer>
       <UserInfoWrapper>
         <UserInfoInnerWrapper>
@@ -183,7 +98,6 @@ const SubHeader = ({
         </>
       )}
 
->>>>>>> ce0ea358495b325daec7f900e8123b46fa009f0f
       {cropTradeMatch && (
         <>
           <Btn

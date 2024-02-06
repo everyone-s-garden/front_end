@@ -24,12 +24,9 @@ import { HelmetProvider } from 'react-helmet-async';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import Header from 'components/Header/Header';
 import NaverToken from 'pages/Login/Naver/token/token';
-<<<<<<< HEAD
-=======
 import { ThemeProvider } from 'styled-components';
 import theme from 'styles/theme';
 
->>>>>>> ce0ea358495b325daec7f900e8123b46fa009f0f
 import GardenSelling from 'pages/My/GardenManage/gardenSelling/GardenSelling';
 import GardenUsing from 'pages/My/GardenManage/gardenUsing/GardenUsing';
 import GardenLike from 'pages/My/GardenManage/gardenLike/GardenLike';

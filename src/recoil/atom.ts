@@ -3,15 +3,7 @@ import { GardenDetailType, GardenListType } from 'api/type';
 import { IGardenDetail } from 'types/GardenDetail';
 import { ILocation } from 'components/Nav/Nav';
 import { IHashMyGarden } from 'types/MyGarden';
-<<<<<<< HEAD
-<<<<<<< HEAD
-// import { IGardens } from 'pages/My/RecentPosts/RecentPosts';
-=======
 import { getItem } from 'utils/session';
->>>>>>> ce0ea358495b325daec7f900e8123b46fa009f0f
-=======
-import { getItem } from 'utils/session';
->>>>>>> 62833b0086f350d45f8c02cd0b5e6aabbefe45c8
 
 // Modal Atoms
 export const isReportOpenAtom = atom<boolean>({
@@ -126,10 +118,6 @@ export const memberName = atom<string | null>({
   key: 'memberName',
   default: null,
 });
-<<<<<<< HEAD
-
-=======
->>>>>>> ce0ea358495b325daec7f900e8123b46fa009f0f
 export const windowOffsetAtom = atom<{ width: number; height: number }>({
   key: 'offset',
   default: { width: window.innerWidth, height: window.innerHeight },

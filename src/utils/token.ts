@@ -18,19 +18,24 @@ const onRequest = (config: InternalAxiosRequestConfig): InternalAxiosRequestConf
   let replaced_str = token.replaceAll('"', '');
   if (method === 'get') {
     config.timeout = 15000;
-    config.headers.Authorization = `Bearer ${replaced_str}`;
+    // config.headers.Authorization = `Bearer ${replaced_str}`;
+    config.headers['access-token'] = replaced_str;
   } else if (method === 'post') {
     config.timeout = 15000;
-    config.headers.Authorization = `Bearer ${replaced_str}`;
+    // config.headers.Authorization = `Bearer ${replaced_str}`;
+    config.headers['access-token'] = replaced_str;
   } else if (method === 'delete') {
     config.timeout = 15000;
-    config.headers.Authorization = `Bearer ${replaced_str}`;
+    // config.headers.Authorization = `Bearer ${replaced_str}`;
+    config.headers['access-token'] = replaced_str;
   } else if (method === 'patch') {
     config.timeout = 15000;
-    config.headers.Authorization = `Bearer ${replaced_str}`;
+    // config.headers.Authorization = `Bearer ${replaced_str}`;
+    config.headers['access-token'] = replaced_str;
   } else if (method === 'put') {
     config.timeout = 15000;
-    config.headers.Authorization = `Bearer ${replaced_str}`;
+    // config.headers.Authorization = `Bearer ${replaced_str}`;
+    config.headers['access-token'] = replaced_str;
   }
   return config;
 };
