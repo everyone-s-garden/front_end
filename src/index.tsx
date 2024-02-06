@@ -24,6 +24,9 @@ import { HelmetProvider } from 'react-helmet-async';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import Header from 'components/Header/Header';
 import NaverToken from 'pages/Login/Naver/token/token';
+import { ThemeProvider } from 'styled-components';
+import theme from 'styles/theme';
+
 import GardenSelling from 'pages/My/GardenManage/gardenSelling/GardenSelling';
 import GardenUsing from 'pages/My/GardenManage/gardenUsing/GardenUsing';
 import GardenLike from 'pages/My/GardenManage/gardenLike/GardenLike';
@@ -219,7 +222,9 @@ root.render(
       <NavermapsProvider ncpClientId="jij6pc5oav">
         <GoogleOAuthProvider clientId="999513273898-9fa6iu0cm3jbeancg8f82mjs53trr355.apps.googleusercontent.com">
           <QueryClientProvider client={queryClient}>
-            <RouterProvider router={router} />
+            <ThemeProvider theme={theme}>
+              <RouterProvider router={router} />
+            </ThemeProvider>
             <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
         </GoogleOAuthProvider>
