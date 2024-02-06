@@ -73,6 +73,9 @@ const SubHeader = ({
   const commentPostMatch = useMatch('/my/whisper/comment_post');
   const whisperLikeMatch = useMatch('/my/whisper/like');
 
+  // const res = await customAxios.get('members/my');
+  // const memberId = getItem('member_id');
+  // setMemberId(Number(memberId));
   return (
     <ButtonWrapper>
       {(myGardensMatch || indexRoutingMatch) && (

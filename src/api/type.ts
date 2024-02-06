@@ -26,6 +26,17 @@ export interface GardenListType {
   latitude: number;
   longitude: number;
 }
+export interface GardesType {
+  gardenId: number;
+  gardenName: string;
+  gardenStatus: 'ACTIVE' | 'INACTIVE' | null | undefined;
+  gardenType: 'PRIVATE' | 'PUBLIC';
+  images: string[];
+  latitude: number;
+  longitude: number;
+  price: string;
+  size: string;
+}
 
 interface IMyManagedGarden {
   myManagedGardenId: number;
