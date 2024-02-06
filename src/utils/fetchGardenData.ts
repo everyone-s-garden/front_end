@@ -4,7 +4,7 @@ const gardenBaseUrl = 'v2/gardens';
 
 export const getMyGardensAPI = {
   fetchLikeGardensAPI: async () => {
-    const res = await customAxios.get(`${gardenBaseUrl}/like`);
+    const res = await customAxios.get(`${gardenBaseUrl}/likes`);
     return res;
   },
   fetchRecentGardensAPI: async () => {
