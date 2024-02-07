@@ -1,17 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 import defaultProfile from 'assets/default_profile.png';
-interface ChatBubbleProps {
-  position: 'left' | 'right';
-}
+import { ChatContent } from 'types/Chat';
 
-const ChatBubble = ({ position }: ChatBubbleProps) => {
+type ChatBubbleProps = {
+  isMine: boolean;
+};
+
+const ChatBubble = ({ chat }: { chat: ChatContent }) => {
+  const { isMine, contents } = chat;
+
   return (
-    <Container position={position}>
-      {position === 'left' && <ProfileImage src={defaultProfile} />}
+    <Container isMine={isMine}>
+      {!isMine && <ProfileImage src={defaultProfile} />}
       <ChatInfoWrapper>
-        <Message position={position}>안녕하세요!</Message>
-        <Time position={position}>오전 10:57</Time>
+        <Message isMine={isMine}>{contents}</Message>
+        <Time isMine={isMine}>오전 10:57</Time>
       </ChatInfoWrapper>
     </Container>
   );
@@ -21,7 +25,7 @@ const Container = styled.li<ChatBubbleProps>`
   display: flex;
   align-items: center;
   gap: 16px;
-  justify-content: ${({ position }) => (position === 'left' ? 'flex-start' : 'flex-end')};
+  justify-content: ${({ isMine }) => (isMine ? 'flex-end' : 'flex-start')};
 `;
 
 const ProfileImage = styled.img`
@@ -48,8 +52,7 @@ const Message = styled.p<ChatBubbleProps>`
   font-size: 16px;
   font-weight: 500;
   padding: 8px 12px;
-  background-color: ${({ theme, position }) =>
-    position === 'left' ? theme.colors.orange[200] : theme.colors.orange[400]};
+  background-color: ${({ theme, isMine }) => (isMine ? theme.colors.orange[400] : theme.colors.orange[200])};
   border-radius: 10px;
 
   @media ${({ theme }) => theme.devices.tablet} {
@@ -62,7 +65,7 @@ const Time = styled.span<ChatBubbleProps>`
   font-size: 12px;
   color: ${({ theme }) => theme.colors.gray[400]};
   align-self: flex-end;
-  order: ${({ position }) => (position === 'left' ? 1 : -1)};
+  order: ${({ isMine }) => (isMine ? -1 : 1)};
 
   @media ${({ theme }) => theme.devices.tablet} {
     font-size: 16px;

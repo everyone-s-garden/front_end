@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { ReactComponent as IconPlus } from 'assets/chat/plus-icon.svg';
 
-const ContentInput = () => {
+const ContentInput = ({ roomId }: { roomId: number }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('dfads');
@@ -34,7 +34,7 @@ const Container = styled.div`
 
   @media ${({ theme }) => theme.devices.tablet} {
     height: 155px;
-    border-top: 1px solid ${({ theme }) => theme.colors.gray[200]};
+    border: 1px solid ${({ theme }) => theme.colors.gray[200]};
   }
 `;
 

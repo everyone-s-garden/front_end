@@ -2,19 +2,22 @@ import React from 'react';
 import styled from 'styled-components';
 import BtnItems from './BtnItems';
 import MobileHeader from './MobileHeader';
+import { EnterChatRoom } from 'types/Chat';
 
-const ContentHeader = () => {
+const ContentHeader = ({ productInfo }: { productInfo: EnterChatRoom }) => {
+  const { gardenName, gardenStatus, images, partnerNickName, price } = productInfo;
+
   return (
     <Container>
       <MobileHeader />
       <ProductWrapper>
-        <ProductImage />
+        <ProductImage src={images[0]} />
         <ProductInfoWrapper>
           <InfoHeader>
-            <ProductStatus>판매중</ProductStatus>
-            <ProductTitle>방울토마토 판매합니다</ProductTitle>
+            <ProductStatus>{gardenStatus === 'ACTIVE' ? '분양중' : '분양 완료'}</ProductStatus>
+            <ProductTitle>{gardenName}</ProductTitle>
           </InfoHeader>
-          <ProductPrice>13,000원</ProductPrice>
+          <ProductPrice>{price}원</ProductPrice>
         </ProductInfoWrapper>
       </ProductWrapper>
       <BtnItems />

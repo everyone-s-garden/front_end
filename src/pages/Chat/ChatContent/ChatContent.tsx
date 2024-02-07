@@ -1,15 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import ContentHeader from './ContentHeader';
 import ContentChatList from './ContentChatList';
 import ContentInput from './ContentInput';
+import { useEnterGardenChatRoom } from 'api/ChatAPI';
+import { useLocation } from 'react-router-dom';
 
 const ChatContent = () => {
+  const location = useLocation();
+  const roomId = Number(location.pathname.split('/').pop());
+  const { mutate: enterChatRoom, data: productInfo } = useEnterGardenChatRoom();
+
+  useEffect(() => {
+    if (roomId) {
+      enterChatRoom({ chatRoomId: Number(roomId) });
+    }
+  }, [roomId, enterChatRoom]);
+
+  if (!productInfo) return null;
+
   return (
     <Container>
-      <ContentHeader />
-      <ContentChatList />
-      <ContentInput />
+      <ContentHeader productInfo={productInfo} />
+      <ContentChatList roomId={roomId} />
+      <ContentInput roomId={roomId} />
     </Container>
   );
 };

@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import ChatListItem from './ChatListItem';
 import { motion } from 'framer-motion';
+import { useGetGardenChatRooms } from 'api/ChatAPI';
 
 const NAV_LIST = ['내 주변 분양', '작물거래'];
 
 const ChatList = () => {
   const [selected, setSelected] = useState(NAV_LIST[0]);
+  const { data } = useGetGardenChatRooms();
+
+  if (!data) return null;
 
   return (
     <ChatListContainer>
@@ -20,8 +24,8 @@ const ChatList = () => {
         ))}
       </Nav>
       <ChatListUl>
-        {Array.from({ length: 3 }).map((_, idx) => (
-          <ChatListItem key={idx} />
+        {data.responses.map(chat => (
+          <ChatListItem key={chat.chatRoomId} chat={chat} />
         ))}
       </ChatListUl>
     </ChatListContainer>

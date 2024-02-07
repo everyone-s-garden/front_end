@@ -1,28 +1,31 @@
-import { BREAK_POINT } from 'constants/style';
 import React from 'react';
 import styled from 'styled-components';
+import { ChatRoom } from 'types/Chat';
+import defaultProfile from 'assets/default_profile.png';
+import { useNavigate } from 'react-router-dom';
 
-const ChatListItem = () => {
-  const name = '존리';
-  const grade = '씨앗 등급';
-  const time = '1분 전';
-  const message = '저 지금 전화드리겠습니다!asfdsafdsafesaㄴㅁㅇㄹㅁㄷㄴㄹㄴㅁㅇㄹ';
+const ChatListItem = ({ chat }: { chat: ChatRoom }) => {
+  const navigate = useNavigate();
+  const { partnerInfo, readNotCnt, recentContents, postInfo, chatRoomId } = chat;
+  const { imageUrl, nickName } = partnerInfo;
+
+  const handleEnterChatRoom = () => {
+    navigate(`/chat/${chatRoomId}`);
+  };
 
   return (
-    <Container>
+    <Container onClick={handleEnterChatRoom}>
       <ProfileInfoWrapper>
-        <ProfileImage />
+        <ProfileImage src={imageUrl ?? defaultProfile} />
         <div>
           <DetailInfoWrapper>
-            <Nickname>{name}</Nickname>
-            <Info>
-              {grade} · {time}
-            </Info>
+            <Nickname>{nickName}</Nickname>
+            <Info>씨앗 · 1분전</Info>
           </DetailInfoWrapper>
-          <Message>{message}</Message>
+          <Message>{recentContents}</Message>
         </div>
       </ProfileInfoWrapper>
-      <ProductImage />
+      <ProductImage src={postInfo.images[0]} />
     </Container>
   );
 };
