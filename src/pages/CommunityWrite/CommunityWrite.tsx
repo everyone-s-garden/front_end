@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import { useForm, SubmitHandler } from 'react-hook-form';
-// import { Editor, EditorState } from 'draft-js';
 import CameraIcon from '../../assets/community/camera.svg';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -11,13 +10,16 @@ type Inputs = {
   title: string;
   content: string;
   images: Blob[];
-  // 이미지 폼 데이터
 };
 
 const CommunityWrite = () => {
   // const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
-  const [imagesPreview, setImagesPreview] = useState<string[]>([]);
-  const [imageFiles, setImageFiles] = useState<Blob[]>([]);
+  const [imageFiles, setImageFiles] = useState<
+    {
+      file: Blob;
+      src: string;
+    }[]
+  >([]);
 
   const {
     register,
@@ -29,7 +31,7 @@ const CommunityWrite = () => {
   const images = watch('images');
 
   useEffect(() => {
-    if (!images) return;
+    if (!images || !images.length) return;
 
     if (images.length > 10) {
       alert('이미지는 10개까지만 업로드 가능합니다.');
@@ -38,8 +40,14 @@ const CommunityWrite = () => {
 
     const imageFiles = Object.values(images);
 
-    setImagesPreview(imageFiles.map(image => URL.createObjectURL(image)));
-    setImageFiles(imageFiles);
+    setImageFiles(
+      imageFiles.map(image => {
+        return {
+          file: image,
+          src: URL.createObjectURL(image),
+        };
+      }),
+    );
   }, [images]);
 
   const onSubmit: SubmitHandler<Inputs> = ({ content, images, title }) => {
@@ -47,6 +55,10 @@ const CommunityWrite = () => {
     const img = images[0];
     const formData = new FormData();
     formData.append('file', img);
+  };
+
+  const onDelete = (image: string) => {
+    setImageFiles(imageFiles.filter(({ src }) => src !== image));
   };
 
   return (
@@ -76,13 +88,14 @@ const CommunityWrite = () => {
           />
           <ImageAdder htmlFor="fileInput">
             <img src={CameraIcon} alt="사진 추가 아이콘" />
-            <p>{imagesPreview.length} / 10</p>
+            <p>{imageFiles.length} / 10</p>
           </ImageAdder>
         </ImageBox>
 
-        {imagesPreview.map(image => (
-          <ImageBox key={image}>
-            <Image src={image} alt="이미지 미리보기" />
+        {imageFiles.map(({ src }) => (
+          <ImageBox key={src}>
+            <ImageDelBtn onClick={() => onDelete(src)}>X</ImageDelBtn>
+            <Image src={src} alt="이미지 미리보기" />
           </ImageBox>
         ))}
       </ImageContainer>
@@ -122,6 +135,8 @@ const ImageAdder = styled.label`
   height: 100%;
   cursor: pointer;
 `;
+
+const ImageDelBtn = styled.button``;
 
 const Image = styled.img`
   width: 100%;
