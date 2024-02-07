@@ -9,12 +9,13 @@ import axios, {
 } from 'axios';
 import { getItem, removeItem } from './session';
 // Request Interceptor
+const token = getItem('access_token') as string;
+
 const onRequest = (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
   const { method, url } = config;
   // Set Headers Here
   // Check Authentication Here
   // Set Loading Start Here
-  const token = getItem('access_token') as string;
   let replaced_str = token.replaceAll('"', '');
   if (method === 'get') {
     config.timeout = 15000;
@@ -42,9 +43,12 @@ const onRequest = (config: InternalAxiosRequestConfig): InternalAxiosRequestConf
 const onResponse = (response: AxiosResponse): AxiosResponse => {
   const { method, url } = response.config;
   const { status } = response;
-  // Set Loading End Here
-  // Handle Response Data Here
   return response;
+};
+
+const handle400error = async () => {
+  const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}v1/auth/refresh`);
+  console.log(res);
 };
 const onErrorResponse = (error: AxiosError | Error): Promise<AxiosError> => {
   if (axios.isAxiosError(error)) {
@@ -52,6 +56,9 @@ const onErrorResponse = (error: AxiosError | Error): Promise<AxiosError> => {
     const { method, url } = error.config as AxiosRequestConfig;
     const { statusText, status } = (error.response as AxiosResponse) ?? {};
     switch (status) {
+      case 400: {
+        handle400error();
+      }
       case 401: {
         break;
       }
