@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -16,6 +16,8 @@ type Inputs = {
 
 const CommunityWrite = () => {
   // const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
+
+  const [isActive, setIsActive] = useState(false);
   const [imageFiles, setImageFiles] = useState<
     {
       file: Blob;
@@ -23,14 +25,31 @@ const CommunityWrite = () => {
     }[]
   >([]);
 
+  const buttonRef = useRef<HTMLDivElement>(null);
+
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    // formState: { errors },
   } = useForm<Inputs>();
 
+  const title = watch('title');
+  const content = watch('content');
   const images = watch('images');
+
+  useEffect(() => {
+    if (title && content && images) {
+      if (images.length && buttonRef.current && buttonRef.current.classList.contains('error')) {
+        buttonRef.current.classList.remove('error');
+      }
+      setIsActive(true);
+
+      return;
+    }
+
+    setIsActive(false);
+  }, [title, content, images]);
 
   useEffect(() => {
     if (!images || !images.length) return;
@@ -54,10 +73,17 @@ const CommunityWrite = () => {
 
   const onSubmit: SubmitHandler<Inputs> = ({ content, images, title }) => {
     console.log(imageFiles);
+
+    if (!imageFiles.length && buttonRef.current && !buttonRef.current.classList.contains('error')) {
+      buttonRef.current.classList.add('error');
+    }
+
     const img = images[0];
     const formData = new FormData();
     formData.append('file', img);
   };
+
+  console.log(isActive);
 
   const onDelete = (image: string) => {
     setImageFiles(imageFiles.filter(({ src }) => src !== image));
@@ -72,13 +98,13 @@ const CommunityWrite = () => {
 
       <Content>
         <input placeholder="제목" {...register('title', { required: '필수 입력 항목입니다.' })} />
-        <div>{errors.title && <p>{errors.title.message}</p>}</div>
+        <div>{title !== undefined && !title.length && <p>필수 입력 항목입니다.</p>}</div>
 
         <textarea
           placeholder="질문, 자랑, 공유 등 다양한 글을 작성해보세요."
           {...register('content', { required: '필수 입력 항목입니다.' })}
         />
-        <div>{errors.content && <p>{errors.content.message}</p>}</div>
+        <div>{content !== undefined && !content.length && <p>필수 입력 항목입니다.</p>}</div>
       </Content>
 
       <ImageContainer>
@@ -91,7 +117,7 @@ const CommunityWrite = () => {
             {...register('images')}
           />
           <ImageAdder htmlFor="fileInput">
-            <div>
+            <div ref={buttonRef}>
               <img src={CameraIcon} alt="사진 추가 아이콘" />
               <p>{imageFiles.length}/10</p>
             </div>
@@ -106,7 +132,7 @@ const CommunityWrite = () => {
         ))}
       </ImageContainer>
 
-      <SubmitBtn type="submit" value="등록하기" />
+      <SubmitBtn type="submit" value="등록하기" disabled={!isActive} className={isActive ? '' : 'disabled'} />
     </Container>
   );
 };
@@ -123,6 +149,11 @@ const Container = styled.form`
   width: 100%;
   height: 80vh;
   margin-bottom: 100px;
+
+  & .disabled {
+    background-color: ${theme.colors.orange[200]};
+    cursor: default;
+  }
 `;
 
 const ToolBar = styled.div`
@@ -130,14 +161,14 @@ const ToolBar = styled.div`
   align-items: center;
   width: 100%;
   justify-content: center;
-  border-top: 1px solid #000;
-  border-bottom: 1px solid #000;
+  border-top: 1px solid ${theme.colors.gray[200]};
+  border-bottom: 1px solid ${theme.colors.gray[200]};
   height: 64px;
   flex-shrink: 0;
 `;
 
 const Content = styled.div`
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid ${theme.colors.gray[200]};
   flex-shrink: 1;
   width: 100%;
   max-width: 1188px;
@@ -148,7 +179,12 @@ const Content = styled.div`
     font-size: 24px;
     font-weight: 600;
     border: none;
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid ${theme.colors.gray[200]};
+    color: ${theme.colors.black};
+
+    &::placeholder {
+      color: ${theme.colors.gray[300]};
+    }
   }
 
   & textarea {
@@ -156,6 +192,12 @@ const Content = styled.div`
     height: 550px;
     resize: none;
     border: none;
+    font-size: 16px;
+    color: ${theme.colors.black};
+
+    &::placeholder {
+      color: ${theme.colors.gray[300]};
+    }
 
     &:focus {
       outline: none;
@@ -198,10 +240,6 @@ const ImageAdder = styled.label`
   cursor: pointer;
   border-radius: 10px;
 
-  &:hover {
-    border: 1px solid ${theme.colors.red};
-  }
-
   & div {
     display: flex;
     flex-direction: column;
@@ -209,6 +247,11 @@ const ImageAdder = styled.label`
     justify-content: center;
     height: 100%;
     gap: 8px;
+  }
+
+  & .error {
+    border: 1px solid ${theme.colors.red};
+    border-radius: 10px;
   }
 
   & p {
