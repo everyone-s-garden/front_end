@@ -101,10 +101,10 @@ const CommunityWrite = () => {
         <title>속닥속닥 글쓰기 페이지</title>
       </Helmet>
 
-      {/* <h1>글쓰기</h1>
+      <h1>글쓰기</h1>
       <div style={{ border: '0.1rem solid', width: '100%' }}>
         <DraftEditor />
-      </div> */}
+      </div>
 
       <ToolBar>{/* 툴바 */}툴바</ToolBar>
 
