@@ -1,4 +1,4 @@
-import { useGetAllPosts } from 'api/PostAPI';
+import { useGetAllPosts } from 'api/CommunityAPI';
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
