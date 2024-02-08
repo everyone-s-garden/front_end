@@ -3,10 +3,9 @@ import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import CameraIcon from '../../assets/community/camera.svg';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import { BREAK_POINT } from 'constants/style';
 import theme from 'styles/theme';
+import DraftEditor from './DraftEditor';
+import { useCreatePost } from 'api/CommunityAPI';
 
 type Inputs = {
   title: string;
@@ -15,8 +14,6 @@ type Inputs = {
 };
 
 const CommunityWrite = () => {
-  // const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
-
   const [isActive, setIsActive] = useState(false);
   const [imageFiles, setImageFiles] = useState<
     {
@@ -24,6 +21,7 @@ const CommunityWrite = () => {
       src: string;
     }[]
   >([]);
+  const { mutate: createPost } = useCreatePost();
 
   const buttonRef = useRef<HTMLDivElement>(null);
 
@@ -71,19 +69,27 @@ const CommunityWrite = () => {
     );
   }, [images]);
 
-  const onSubmit: SubmitHandler<Inputs> = ({ content, images, title }) => {
-    console.log(imageFiles);
-
+  const onSubmit: SubmitHandler<Inputs> = ({ content, title }) => {
     if (!imageFiles.length && buttonRef.current && !buttonRef.current.classList.contains('error')) {
       buttonRef.current.classList.add('error');
     }
 
-    const img = images[0];
     const formData = new FormData();
-    formData.append('file', img);
-  };
 
-  console.log(isActive);
+    /** 속닥속닥 게시글 blob */
+    const jsonBlob = new Blob([JSON.stringify({ title, content, postType: 'QUESTION' })], { type: 'application/json' });
+
+    imageFiles.forEach(({ file }) => {
+      formData.append('images', file);
+    });
+    formData.append('texts', jsonBlob);
+
+    createPost(formData, {
+      onSuccess(data) {
+        console.log(data);
+      },
+    });
+  };
 
   const onDelete = (image: string) => {
     setImageFiles(imageFiles.filter(({ src }) => src !== image));
@@ -94,17 +100,27 @@ const CommunityWrite = () => {
       <Helmet>
         <title>속닥속닥 글쓰기 페이지</title>
       </Helmet>
+
+      {/* <h1>글쓰기</h1>
+      <div style={{ border: '0.1rem solid', width: '100%' }}>
+        <DraftEditor />
+      </div> */}
+
       <ToolBar>{/* 툴바 */}툴바</ToolBar>
 
       <Content>
-        <input placeholder="제목" {...register('title', { required: '필수 입력 항목입니다.' })} />
-        <div>{title !== undefined && !title.length && <p>필수 입력 항목입니다.</p>}</div>
+        <div>
+          <input placeholder="제목" {...register('title', { required: '필수 입력 항목입니다.' })} />
+          {title !== undefined && !title.length && <p>필수 입력 항목입니다.</p>}
+        </div>
 
-        <textarea
-          placeholder="질문, 자랑, 공유 등 다양한 글을 작성해보세요."
-          {...register('content', { required: '필수 입력 항목입니다.' })}
-        />
-        <div>{content !== undefined && !content.length && <p>필수 입력 항목입니다.</p>}</div>
+        <div>
+          <textarea
+            placeholder="질문, 자랑, 공유 등 다양한 글을 작성해보세요."
+            {...register('content', { required: '필수 입력 항목입니다.' })}
+          />
+          {content !== undefined && !content.length && <p>필수 입력 항목입니다.</p>}
+        </div>
       </Content>
 
       <ImageContainer>
@@ -169,9 +185,9 @@ const ToolBar = styled.div`
 
 const Content = styled.div`
   border-bottom: 1px solid ${theme.colors.gray[200]};
-  flex-shrink: 1;
   width: 100%;
   max-width: 1188px;
+  flex-grow: 1;
 
   & input {
     height: 48px;
@@ -187,9 +203,21 @@ const Content = styled.div`
     }
   }
 
+  & div:first-child {
+    margin-bottom: 15px;
+  }
+
+  & div:last-child {
+    position: relative;
+
+    & p {
+      position: absolute;
+      bottom: 0px;
+    }
+  }
+
   & textarea {
     width: 100%;
-    height: 550px;
     resize: none;
     border: none;
     font-size: 16px;
@@ -204,13 +232,9 @@ const Content = styled.div`
     }
   }
 
-  & div {
-    height: 20px;
-    margin-bottom: 15px;
-  }
-
   & p {
     font-size: 14px;
+    color: ${theme.colors.red};
   }
 `;
 
