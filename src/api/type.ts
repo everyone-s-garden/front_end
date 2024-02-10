@@ -9,6 +9,12 @@ export interface IPostListItem {
   gardenStatus: 'ACTIVE' | 'INACTIVE';
 }
 
+export interface ICropTradeItem {
+  cropPostId: number;
+  title: string;
+  imageUrl: string;
+}
+
 export interface IPurchaseListItem {
   cropPostId: number;
   title: string;

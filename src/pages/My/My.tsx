@@ -181,7 +181,7 @@ const Mypage = () => {
                 >
                   나의 텃밭
                 </Btn>
-                <Btn onClick={() => nav('/my/crop_trade/sales_history')} match={cropTradeMatch !== null}>
+                <Btn onClick={() => nav('/my/crop_trade/regional_certification')} match={cropTradeMatch !== null}>
                   작물거래
                 </Btn>
                 <Btn onClick={() => nav('/my/garden_manage/my_garden_selling')} match={gardenManageMatch !== null}>

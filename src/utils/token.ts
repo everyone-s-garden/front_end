@@ -7,7 +7,8 @@ import axios, {
   AxiosRequestConfig,
   Axios,
 } from 'axios';
-import { getItem, removeItem } from './session';
+import { getCookie } from './cookie';
+import { getItem, removeItem, setItem } from './session';
 // Request Interceptor
 const token = getItem('access_token') as string;
 
@@ -47,8 +48,18 @@ const onResponse = (response: AxiosResponse): AxiosResponse => {
 };
 
 const handle400error = async () => {
-  const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}v1/auth/refresh`);
-  console.log(res);
+  const refresh_token = getCookie('refresh_token');
+  const res = await axios.post(
+    `${process.env.REACT_APP_API_BASE_URL}v1/auth/refresh`,
+    {},
+    {
+      headers: {
+        Refresh: refresh_token, // 'Refresh' 값을 요청 헤더에 추가
+      },
+    },
+  );
+  const { accessToken } = res.data;
+  setItem('access_token', accessToken);
 };
 const onErrorResponse = (error: AxiosError | Error): Promise<AxiosError> => {
   if (axios.isAxiosError(error)) {
@@ -58,6 +69,7 @@ const onErrorResponse = (error: AxiosError | Error): Promise<AxiosError> => {
     switch (status) {
       case 400: {
         handle400error();
+        break;
       }
       case 401: {
         break;

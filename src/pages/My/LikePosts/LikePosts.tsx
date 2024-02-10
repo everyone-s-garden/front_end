@@ -156,25 +156,32 @@
 //     cursor: pointer;
 //   }
 // `;
+import { IPostListItem } from 'api/type';
 import PostListItem from 'components/PostListItem';
 import React, { useEffect, useState } from 'react';
 import { items } from 'utils/dummydata';
 import { getMyGardensAPI } from 'utils/fetchGardenData';
 
 const LikePosts = () => {
-  const [gardens, setGardens] = useState([]);
+  const [gardens, setGardens] = useState<IPostListItem[]>([]);
 
   useEffect(() => {
     (async () => {
       const response = await getMyGardensAPI.fetchLikeGardensAPI();
+      const { gardenLikeByMemberResponses } = response.data;
+      setGardens([...gardenLikeByMemberResponses]);
     })();
     return () => {};
   }, []);
 
+  if (gardens.length === 0) {
+    return <h1>좋아요한 게시글이 존재하지 않습니다.</h1>;
+  }
+
   return (
     <div style={{ flex: 1 }}>
       <ul>
-        <PostListItem items={items} />
+        <PostListItem items={gardens} />
       </ul>
     </div>
   );

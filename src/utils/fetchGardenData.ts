@@ -19,11 +19,15 @@ export const getMyGardensAPI = {
 
 export const getCropTradeAPI = {
   fetchSalesHistoryAPI: async () => {
-    const res = await customAxios.get('');
+    const res = await customAxios.get('v1/my/crops/bookmarks?offset=0&limit=10');
     return res;
   },
   fetchPurChaseHIstoryAPI: async () => {
     const res = await customAxios.get('v1/my/crops/buy?offset=0&limit=10');
+    return res;
+  },
+  fetchWishListAPI: async () => {
+    const res = await customAxios.get('v1/my/crops/bookmarks?offset=0&limit=10');
     return res;
   },
 };

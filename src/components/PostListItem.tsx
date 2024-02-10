@@ -1,4 +1,4 @@
-import { IPostListItem } from 'api/type';
+import { ICropTradeItem, IPostListItem, IPurchaseListItem } from 'api/type';
 import { BREAK_POINT } from 'constants/style';
 import React, { useState } from 'react';
 import { useMatch } from 'react-router-dom';
@@ -8,47 +8,50 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import IconCheck from './icon/CheckIcon';
 import { reportPostIdAtom } from 'recoil/atom';
+import EmptyImage from 'components/icon/EmptyImage';
 
-interface IProps {
-  items: IPostListItem[];
+interface IItemsRendererPropss {
+  items?: IPostListItem[];
+  tradeItems?: ICropTradeItem[];
+  likeMatch: boolean; // useMatch의 결과를 boolean으로 처리
+  wishListMatch: boolean;
+  whisperLikeMatch: boolean;
+  checkBoxOpen: boolean;
+  openStates: { [key: number]: boolean }; // 또는 OpenStates 타입 사용
+  toggleOpen: (id: number) => void; // 숫자 타입의 id를 받고 반환 값이 없는 함수
+  myPostMatch: boolean;
+  salesHistoryMatch: boolean;
+  whisperMyPostMatch: boolean;
+  commentPostMatch: boolean;
 }
-interface OpenStates {
-  [key: number]: boolean;
-}
-const PostListItem = ({ items }: IProps) => {
-  const likeMatch = useMatch('/my/my_gardens/like');
-  const myPostMatch = useMatch('/my/my_gardens/mypost');
-  const salesHistoryMatch = useMatch('/my/crop_trade/sales_history');
-  const wishListMatch = useMatch('/my/crop_trade/wishlist');
-  const whisperMyPostMatch = useMatch('/my/whisper/my_post');
-  const commentPostMatch = useMatch('/my/whisper/comment_post');
-  const whisperLikeMatch = useMatch('/my/whisper/like');
-  const whisperPost = useMatch('/my/whisper/my_post');
-  const [openStates, setOpenStates] = useState<OpenStates>({});
-  const [checkBoxOpen, setCheckBoxOpen] = useState(false);
-  const toggleOpen = (id: number) => {
-    setOpenStates(prev => ({ ...prev, [id]: !prev[id] }));
-  };
 
+const ItemRenderer = ({
+  items,
+  likeMatch,
+  wishListMatch,
+  whisperLikeMatch,
+  checkBoxOpen,
+  openStates,
+  toggleOpen,
+  myPostMatch,
+  salesHistoryMatch,
+  whisperMyPostMatch,
+  commentPostMatch,
+}: IItemsRendererPropss) => {
   return (
-    <Contaner>
-      {(myPostMatch || salesHistoryMatch || whisperPost) && (
-        <MobileEditWrapper>
-          {!checkBoxOpen && <button onClick={() => setCheckBoxOpen(true)}>편집</button>}
-          {checkBoxOpen && (
-            <div style={{ display: 'flex' }}>
-              <button>삭제</button>
-              <div style={{ margin: '0px 12px', width: 1, height: '100%', backgroundColor: '#D7D7D7' }} />
-              <button onClick={() => setCheckBoxOpen(false)}>취소</button>
-            </div>
-          )}
-        </MobileEditWrapper>
-      )}
-      {items.map((item, idx) => {
+    <>
+      {items?.map((item, idx) => {
         return (
           <Li key={item.gardenId}>
             <ImageWrapper>
-              <img src={item.images[0]} />
+              {item.images[0] === null || item.images[0].length === 0 ? (
+                <SVGWrapper>
+                  <EmptyImage fill="#f0f0f0" />
+                </SVGWrapper>
+              ) : (
+                <img src={item.images[0]} />
+              )}
+
               {(likeMatch || wishListMatch || whisperLikeMatch) && (
                 <div>
                   <IconHeart fill="white" />
@@ -87,6 +90,143 @@ const PostListItem = ({ items }: IProps) => {
           </Li>
         );
       })}
+    </>
+  );
+};
+const TradeRenderer = ({
+  tradeItems,
+  likeMatch,
+  wishListMatch,
+  whisperLikeMatch,
+  checkBoxOpen,
+  openStates,
+  toggleOpen,
+  myPostMatch,
+  salesHistoryMatch,
+  whisperMyPostMatch,
+  commentPostMatch,
+}: IItemsRendererPropss) => {
+  return (
+    <>
+      {tradeItems?.map((item, idx) => {
+        return (
+          <Li key={item.cropPostId}>
+            <ImageWrapper>
+              {item.imageUrl === null || item.imageUrl.length === 0 ? (
+                <SVGWrapper>
+                  <EmptyImage fill="#f0f0f0" />
+                </SVGWrapper>
+              ) : (
+                <img src={item.imageUrl} />
+              )}
+              {(likeMatch || wishListMatch || whisperLikeMatch) && (
+                <div>
+                  <IconHeart fill="white" />
+                </div>
+              )}
+              {idx === 3 && <ReportedOverlay />}
+              {checkBoxOpen && (
+                <CheckBox checked={openStates[item.cropPostId]} onClick={() => toggleOpen(item.cropPostId)}>
+                  <IconCheck fill="white" />
+                </CheckBox>
+              )}
+            </ImageWrapper>
+
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <Title>{item.title}</Title>
+              <MobileSpanWrapper>
+                {/* <span>평당 {item.price.toLocaleString()} 원</span> */}
+                {/* <span>/ {item.size} 평</span> */}
+              </MobileSpanWrapper>
+              {/* <PCspan style={{ color: '#5A5A5A', marginBottom: 8 }}>{item.size}평</PCspan> */}
+              {/* <PCspan style={{ color: '#282828' }}>평당 {item.price.toLocaleString()}원</PCspan> */}
+              {idx === 3 && <ReportedSpan>신고가 접수된 게시물입니다.</ReportedSpan>}
+              <MobileEditButton>수정하기</MobileEditButton>
+            </div>
+            {(myPostMatch || salesHistoryMatch || whisperMyPostMatch || commentPostMatch) && (
+              // <MenuButtonWrapper onClick={() => toggleOpen(item.gardenId)} style={{}}>
+              <FontAwesomeIcon icon={faEllipsisVertical} />
+              // </MenuButtonWrapper>
+            )}
+            {/* {openStates[item.gardenId] && ( */}
+            {/* <EditButtonWrapper>
+              <button>게시글 수정</button>
+              <button>삭제하기</button>
+            </EditButtonWrapper> */}
+            {/* )} */}
+          </Li>
+        );
+      })}
+    </>
+  );
+};
+
+interface IProps {
+  items?: IPostListItem[];
+  tradeItems?: ICropTradeItem[];
+}
+interface OpenStates {
+  [key: number]: boolean;
+}
+const PostListItem = ({ items, tradeItems }: IProps) => {
+  const likeMatch = useMatch('/my/my_gardens/like');
+  const myPostMatch = useMatch('/my/my_gardens/mypost');
+  const salesHistoryMatch = useMatch('/my/crop_trade/sales_history');
+  const wishListMatch = useMatch('/my/crop_trade/wishlist');
+  const whisperMyPostMatch = useMatch('/my/whisper/my_post');
+  const commentPostMatch = useMatch('/my/whisper/comment_post');
+  const whisperLikeMatch = useMatch('/my/whisper/like');
+  const whisperPost = useMatch('/my/whisper/my_post');
+  const [openStates, setOpenStates] = useState<OpenStates>({});
+  const [checkBoxOpen, setCheckBoxOpen] = useState(false);
+  const toggleOpen = (id: number) => {
+    setOpenStates(prev => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  // const thumbnail = items[0] === null || items[0].length === 0
+
+  return (
+    <Contaner>
+      {(myPostMatch || salesHistoryMatch || whisperPost) && (
+        <MobileEditWrapper>
+          {!checkBoxOpen && <button onClick={() => setCheckBoxOpen(true)}>편집</button>}
+          {checkBoxOpen && (
+            <div style={{ display: 'flex' }}>
+              <button>삭제</button>
+              <div style={{ margin: '0px 12px', width: 1, height: '100%', backgroundColor: '#D7D7D7' }} />
+              <button onClick={() => setCheckBoxOpen(false)}>취소</button>
+            </div>
+          )}
+        </MobileEditWrapper>
+      )}
+
+      {/* 여기 삽입 */}
+      <ItemRenderer
+        items={items}
+        likeMatch={!!likeMatch}
+        wishListMatch={!!wishListMatch}
+        whisperLikeMatch={!!whisperLikeMatch}
+        checkBoxOpen={checkBoxOpen}
+        openStates={openStates}
+        toggleOpen={toggleOpen}
+        myPostMatch={!!myPostMatch}
+        salesHistoryMatch={!!salesHistoryMatch}
+        whisperMyPostMatch={!!whisperMyPostMatch}
+        commentPostMatch={!!commentPostMatch}
+      />
+      <TradeRenderer
+        tradeItems={tradeItems}
+        likeMatch={!!likeMatch}
+        wishListMatch={!!wishListMatch}
+        whisperLikeMatch={!!whisperLikeMatch}
+        checkBoxOpen={checkBoxOpen}
+        openStates={openStates}
+        toggleOpen={toggleOpen}
+        myPostMatch={!!myPostMatch}
+        salesHistoryMatch={!!salesHistoryMatch}
+        whisperMyPostMatch={!!whisperMyPostMatch}
+        commentPostMatch={!!commentPostMatch}
+      />
     </Contaner>
   );
 };
@@ -107,11 +247,13 @@ const Li = styled.li`
   }
 `;
 const ImageWrapper = styled.div`
+  width: 234px;
   height: 122px;
   flex-shrink: 0;
   border-radius: 8px;
   margin-right: 24px;
   position: relative;
+  background-color: #f0f0f0;
 
   img {
     width: 100%;
@@ -202,6 +344,23 @@ const MobileSpanWrapper = styled.div`
   }
 `;
 
+const SVGWrapper = styled.div`
+  width: 70px !important;
+  height: 70px !important;
+  position: absolute !important;
+  top: 50% !important;
+  transform: translateY(-50%) translateX(-50%) !important;
+  left: 50% !important;
+  background-color: #d7d7d7;
+  padding: 10px;
+  border-radius: 10px;
+  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    width: 40px !important;
+    height: 40px !important;
+    padding: 5px;
+    border-radius: 6px;
+  }
+`;
 const ReportedSpan = styled.span`
   font-size: 14px;
   font-weight: 500;
