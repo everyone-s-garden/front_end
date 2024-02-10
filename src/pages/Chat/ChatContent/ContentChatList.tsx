@@ -4,58 +4,65 @@ import styled from 'styled-components';
 import { useGetGardenChatContents } from 'api/ChatAPI';
 import SockJS from 'sockjs-client';
 import * as StompJS from '@stomp/stompjs';
+// import { Stomp } from '@stomp/stompjs';
 import { getItem } from 'utils/session';
 
 const ContentChatList = ({ roomId }: { roomId: number }) => {
   const { data: ChatContents } = useGetGardenChatContents({ roomId });
-  // const baseUrl = process.env.REACT_APP_API_BASE_URL;
-
-  // connectHeaders: {
-  //   'access-token': getItem('access_token') || '',
-  // },
-
   const token = getItem('access_token');
+  let stompClient = null;
+
+  useEffect(() => {
+    client.activate();
+    // connect();
+  }, []);
 
   if (!token) return null;
 
+  // function connect() {
+  //   let socket = new SockJS('https://every-garden.kro.kr/ws/connect');
+  //   stompClient = Stomp.over(socket);
+  //   stompClient.webSocketFactory = () => new SockJS('https://every-garden.kro.kr/ws/connect');
+  //   stompClient.connectHeaders = { Authorization: `Bearer ${token}` };
+  //   stompClient.onConnect = function (frame: any) {
+  //     console.log('Connected: ' + frame);
+  //     createSession({ sessionId: 1, roomId });
+  //   };
+  //   stompClient.connect({}, function (frame: any) {
+  //     console.log('dfasdfdas: ' + frame);
+  //     // createSession({ sessionId: 1, roomId });
+  //   });
+  //   stompClient.activate();
+  // }
+
   const client = new StompJS.Client({
-    brokerURL: `ws://every-garden.kro.kr/ws/chats`,
+    brokerURL: `ws://every-garden.kro.kr/ws/connect`,
     connectHeaders: {
       'access-token': token,
+    },
+    webSocketFactory: function () {
+      return new SockJS('https://every-garden.kro.kr/ws/connect');
     },
     debug: function (str) {
       console.log(str);
     },
-    onConnect: function (frame) {
-      console.log('Connected: ' + frame);
+    onConnect: frame => {
+      console.log('dddd' + frame);
+      // // createSession({ sessionId, roomId });
+      // client.subscribe(`/queue/garden-chats/chats/${roomId}`, (message: any) => {
+      //   console.log('aaaaaa' + message);
+      // });
+      // client.publish({
+      //   headers: { Authorization: `Bearer ${token}` },
+      //   destination: `/app/chats/${roomId}/messages`,
+      //   body: JSON.stringify({ content: 'hello' }),
+      // });
+    },
+    onStompError: function (frame) {
+      // console.log('Broker reported error: ' + frame.headers['message']);
+      // console.log('Additional details: ' + frame.body);
     },
   });
-
-  client.activate();
-
-  // function connect() {
-  //   let socket = new SockJS(`ws//every-garden.kro.kr/ws/chats`);
-  //   stompClient = Stomp.over(socket);
-  //   stompClient.connect({}, function (frame) {
-  //     console.log('Connected: ' + frame);
-  //   });
-  // }
-
-  // const client = new StompJS.Client({
-  //   brokerURL: `/ws/chats`,
-  //   connectHeaders: {
-  //     Authorization:
-  //       'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTM2MTU1NDA0MjEzODcxODk4MTIiLCJyb2xlIjoiUk9MRV9VU0VSIiwibWVtYmVySWQiOjUsImV4cCI6MTY5NjczNjE1Mn0.VbyQqdDE8byIs3gp1MRmhkvQ8sh9GFKIQukXnhUDDRU',
-  //   },
-  //   webSocketFactory: function () {
-  //     return new SockJS(baseUrl!);
-  //   },
-  // });
-
-  // client.activate();
-  // client.subscribe(`/queue/chats/${roomId}`, message => {
-  //   console.log(message);
-  // });
 
   if (!ChatContents) return null;
 

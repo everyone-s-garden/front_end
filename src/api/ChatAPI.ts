@@ -32,12 +32,6 @@ const getGardenChatContents = async ({ roomId }: { roomId: number }): Promise<Ch
   return response.data;
 };
 
-const createGardenChatSession = async ({ sessionId, roomId }: { sessionId: number; roomId: number }) => {
-  const response = await HttpRequest.post(`/garden-chats/sessions`, { sessionId, roomId });
-
-  return response;
-};
-
 export const useCreateGardenChatRoom = () => {
   return useMutation({
     mutationFn: createGardenChatRoom,
@@ -67,11 +61,5 @@ export const useGetGardenChatContents = ({ roomId }: { roomId: number }) => {
   return useQuery({
     queryKey: ['gardenChatContents', roomId],
     queryFn: () => getGardenChatContents({ roomId }),
-  });
-};
-
-export const useCreateGardenChatSession = () => {
-  return useMutation({
-    mutationFn: createGardenChatSession,
   });
 };
