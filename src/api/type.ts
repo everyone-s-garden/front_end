@@ -1,4 +1,20 @@
 // Garden
+
+export interface IPostListItem {
+  gardenId: number;
+  size: string;
+  gardenName: string;
+  price: string;
+  images: string[];
+  gardenStatus: 'ACTIVE' | 'INACTIVE';
+}
+
+export interface IPurchaseListItem {
+  cropPostId: number;
+  title: string;
+  imageUrl: string;
+}
+
 export interface GardenListType {
   gardenId: number;
   size?: string;
@@ -9,6 +25,41 @@ export interface GardenListType {
   gardenType: 'PRIVATE' | 'PUBLIC';
   latitude: number;
   longitude: number;
+}
+export interface GardesType {
+  gardenId: number;
+  gardenName: string;
+  gardenStatus: 'ACTIVE' | 'INACTIVE' | null | undefined;
+  gardenType: 'PRIVATE' | 'PUBLIC';
+  images: string[];
+  latitude: number;
+  longitude: number;
+  price: string;
+  size: string;
+}
+
+interface IMyManagedGarden {
+  myManagedGardenId: number;
+  gardenName: string;
+  useStartDate: string;
+  useEndDate: string;
+  images: string[];
+}
+
+export interface IMyManagedGardenList {
+  myManagedGardenGetResponses: IMyManagedGarden[];
+}
+
+export interface GardesType {
+  gardenId: number;
+  gardenName: string;
+  gardenStatus: 'ACTIVE' | 'INACTIVE' | null | undefined;
+  gardenType: 'PRIVATE' | 'PUBLIC';
+  images: string[];
+  latitude: number;
+  longitude: number;
+  price: string;
+  size: string;
 }
 
 export interface GardenDetailType {

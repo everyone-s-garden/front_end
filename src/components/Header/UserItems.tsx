@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { isLoginAtom } from 'recoil/atom';
 import styled from 'styled-components';
@@ -10,6 +10,7 @@ import Notification from './Notification';
 
 const UserItems = () => {
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
+  const nav = useNavigate();
 
   const logout = () => {
     sessionStorage.clear();
@@ -20,7 +21,7 @@ const UserItems = () => {
     <Container>
       <Notification />
       {isLogin && <StyledLink to="/my">마이페이지</StyledLink>}
-      <StyledUserIcon login={isLogin} />
+      <StyledUserIcon onClick={() => nav('/my')} login={isLogin.toString()} />
       {isLogin ? (
         <StyledLink to="/" onClick={logout}>
           로그아웃

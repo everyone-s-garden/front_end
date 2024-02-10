@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Loader from 'components/Loader';
 import { setItem } from 'utils/session';
-import { isLoginAtom } from 'recoil/atom';
+import { isLoginAtom, memberIdAtom } from 'recoil/atom';
 import { useSetRecoilState } from 'recoil';
 import { setCookie } from 'utils/cookie';
 
@@ -11,6 +11,7 @@ const NaverToken = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const nav = useNavigate();
   const setIsLogin = useSetRecoilState<boolean>(isLoginAtom);
+  const setMemberId = useSetRecoilState(memberIdAtom);
   const location = useLocation();
 
   const getNaverToken = () => {
@@ -39,11 +40,13 @@ const NaverToken = () => {
 
       // setItem('name', res_server.data.name);
       // setItem('userId', res_server.data.userId);
-      const { accessToken, refreshToken } = response_server;
+      const { accessToken, refreshToken, memberId } = response_server;
+      setItem('member_id', memberId);
       setItem('access_token', accessToken);
       setCookie('refresh_token', refreshToken);
       setItem('isLogin', 'true');
       setIsLogin(true);
+      setMemberId(memberId);
       nav('/');
     } catch (err) {
       console.log(err);

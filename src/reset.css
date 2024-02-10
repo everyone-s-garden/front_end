@@ -17,10 +17,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  color: #414c38;
   font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue',
     'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol', sans-serif;
+  color: #282828;
 }
 
 *::-webkit-scrollbar {
@@ -34,18 +34,7 @@
 
 /* a 링크 초기화 */
 a {
-  color: #222a1a;
   text-decoration: none;
-}
-
-/* 폰트 초기화 */
-body,
-input,
-textarea,
-select,
-button,
-table {
-  color: #222a1a;
 }
 
 /* 폰트 스타일 초기화 */

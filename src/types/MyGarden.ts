@@ -1,10 +1,8 @@
 export interface IHashMyGarden {
-  address: string;
-  id: number;
-  image: string;
-  latitude: number;
-  longitude: number;
-  name: string;
-  useEndDate: string;
+  myManagedGardenId: number;
+  gardenName: string;
   useStartDate: string;
+  useEndDate: string;
+  images: string[];
+  address: string;
 }

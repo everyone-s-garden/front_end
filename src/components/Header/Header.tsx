@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Link, Outlet } from 'react-router-dom';
 import { useNavermaps } from 'react-naver-maps';
@@ -8,9 +8,25 @@ import { BREAK_POINT, COLOR } from 'constants/style';
 import NavLinks from './NavLinks/NavLinks';
 import MobileNavLinks from './NavLinks/MobileNavLinks';
 import UserItems from './UserItems';
+import { useRecoilState } from 'recoil';
+import { windowOffsetAtom } from 'recoil/atom';
 
 const Header = () => {
   const navermaps = useNavermaps();
+  const [offset, setOffset] = useRecoilState(windowOffsetAtom);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      setOffset({ width, height });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
 
   return (
     <>
@@ -55,7 +71,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     padding: 40px 20px;
   }
 `;
