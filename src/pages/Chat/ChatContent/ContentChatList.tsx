@@ -1,74 +1,93 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ChatBubble from './ChatBubble';
 import styled from 'styled-components';
 import { useGetGardenChatContents } from 'api/ChatAPI';
 import SockJS from 'sockjs-client';
 import * as StompJS from '@stomp/stompjs';
-// import { Stomp } from '@stomp/stompjs';
+import { Stomp } from '@stomp/stompjs';
 import { getItem } from 'utils/session';
 
 const ContentChatList = ({ roomId }: { roomId: number }) => {
-  const { data: ChatContents } = useGetGardenChatContents({ roomId });
+  const { data: chatContents } = useGetGardenChatContents({ roomId });
   const token = getItem('access_token');
-  let stompClient = null;
+  const [opponentChat, setOpponentChat] = useState<string[]>([]);
+  const client = useRef<StompJS.Client>();
 
   useEffect(() => {
-    client.activate();
-    // connect();
-  }, []);
+    // client.activate();
+    client.current = new StompJS.Client({
+      brokerURL: 'wss://every-garden.kro.kr/ws/connect',
+      connectHeaders: {
+        'access-token': token!,
+      },
+      // webSocketFactory: function () {
+      //   return new SockJS('https://every-garden.kro.kr/ws/connect');
+      // },
+      debug: function (str) {
+        console.log(str);
+      },
+      onConnect: frame => {
+        client.current &&
+          client.current.subscribe(`/queue/garden-chats/${roomId}`, (message: any) => {
+            setOpponentChat(prev => [...prev, JSON.parse(message.body)]);
+          });
+      },
+      onStompError: function (frame) {
+        console.log('Broker reported error: ' + frame.headers['message']);
+        console.log('Additional details: ' + frame.body);
+      },
+    });
+    client.current && client.current.activate();
+  }, [roomId, token]);
+
+  useEffect(() => {
+    console.log(opponentChat);
+  }, [opponentChat]);
 
   if (!token) return null;
+  // const client = new StompJS.Client({
+  //   brokerURL: 'wss://every-garden.kro.kr/ws/connect',
+  //   connectHeaders: {
+  //     'access-token': token,
+  //   },
+  //   // webSocketFactory: function () {
+  //   //   return new SockJS('https://every-garden.kro.kr/ws/connect');
+  //   // },
+  //   debug: function (str) {
+  //     console.log(str);
+  //   },
+  //   onConnect: frame => {
+  //     client.subscribe(`/queue/garden-chats/${roomId}`, (message: any) => {
+  //       setOpponentChat(prev => [...prev, JSON.parse(message.body)]);
+  //     });
+  //   },
+  //   onStompError: function (frame) {
+  //     console.log('Broker reported error: ' + frame.headers['message']);
+  //     console.log('Additional details: ' + frame.body);
+  //   },
+  // });
 
-  // function connect() {
-  //   let socket = new SockJS('https://every-garden.kro.kr/ws/connect');
-  //   stompClient = Stomp.over(socket);
-  //   stompClient.webSocketFactory = () => new SockJS('https://every-garden.kro.kr/ws/connect');
-  //   stompClient.connectHeaders = { Authorization: `Bearer ${token}` };
-  //   stompClient.onConnect = function (frame: any) {
-  //     console.log('Connected: ' + frame);
-  //     createSession({ sessionId: 1, roomId });
-  //   };
-  //   stompClient.connect({}, function (frame: any) {
-  //     console.log('dfasdfdas: ' + frame);
-  //     // createSession({ sessionId: 1, roomId });
-  //   });
-  //   stompClient.activate();
-  // }
+  if (!chatContents) return null;
 
-  const client = new StompJS.Client({
-    brokerURL: `ws://every-garden.kro.kr/ws/connect`,
-    connectHeaders: {
-      'access-token': token,
-    },
-    webSocketFactory: function () {
-      return new SockJS('https://every-garden.kro.kr/ws/connect');
-    },
-    debug: function (str) {
-      console.log(str);
-    },
-    onConnect: frame => {
-      console.log('dddd' + frame);
-      // // createSession({ sessionId, roomId });
-      // client.subscribe(`/queue/garden-chats/chats/${roomId}`, (message: any) => {
-      //   console.log('aaaaaa' + message);
-      // });
-      // client.publish({
-      //   headers: { Authorization: `Bearer ${token}` },
-      //   destination: `/app/chats/${roomId}/messages`,
-      //   body: JSON.stringify({ content: 'hello' }),
-      // });
-    },
-    onStompError: function (frame) {
-      // console.log('Broker reported error: ' + frame.headers['message']);
-      // console.log('Additional details: ' + frame.body);
-    },
-  });
+  if (!client) return null;
 
-  if (!ChatContents) return null;
+  console.log(chatContents.gardenChatMessageResponses);
 
   return (
     <Container>
-      {ChatContents.gardenChatMessageResponses.map((chat, index) => (
+      <button
+        onClick={() => {
+          client.current &&
+            client.current.publish({
+              headers: { 'access-token': token },
+              destination: `/app/garden-chats/${roomId}`,
+              body: JSON.stringify({ content: '안녕하세요' }),
+            });
+        }}
+      >
+        메세지 보내기
+      </button>
+      {chatContents.gardenChatMessageResponses.map((chat, index) => (
         <ChatBubble key={index} chat={chat} />
       ))}
     </Container>
