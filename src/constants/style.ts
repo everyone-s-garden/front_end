@@ -35,10 +35,16 @@ interface IBREAK_POINT {
   MOBILE: string;
   TABLET: string;
   LABTOP: string;
+  MOBILE_NUMBER: number;
+  TABLET_NUMBER: number;
+  LABTOP_NUMBER: number;
 }
 
 export const BREAK_POINT: IBREAK_POINT = {
   MOBILE: '640px',
   TABLET: '992px',
   LABTOP: '1024px',
+  MOBILE_NUMBER: 640,
+  TABLET_NUMBER: 992,
+  LABTOP_NUMBER: 1024,
 };

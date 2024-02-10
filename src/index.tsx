@@ -16,7 +16,6 @@ import Mypage from 'pages/My/My';
 import KaKaoToken from 'pages/Login/Kakao/token/token';
 import RegisterUser from 'pages/My/RegisterUser/RegisterUser';
 import RegisterSeller from 'pages/My/RegisterSeller/RegisterSeller';
-import MyHome from 'pages/My/AfterLogin/MyHome';
 import PostDetail from 'pages/My/PostDetail/PostDetail';
 import LikePosts from 'pages/My/LikePosts/LikePosts';
 import RecentPosts from 'pages/My/RecentPosts/RecentPosts';
@@ -33,7 +32,28 @@ import theme from 'styles/theme';
 import ChatContent from 'pages/Chat/ChatContent/ChatContent';
 import StartContent from 'pages/Chat/ChatContent/StartContent';
 
+import GardenSelling from 'pages/My/GardenManage/gardenSelling/GardenSelling';
+import GardenUsing from 'pages/My/GardenManage/gardenUsing/GardenUsing';
+import GardenLike from 'pages/My/GardenManage/gardenLike/GardenLike';
+import SalesHistory from 'pages/My/CropTrade/salesHistory/SalesHistory';
+import PurchaseHistory from 'pages/My/CropTrade/purchaseHistory/PurchaseHistory';
+import WishList from 'pages/My/CropTrade/wishList/WishList';
+import WhisperPost from 'pages/My/Whisper/whisperPost/WhisperPost';
+import CommentPost from 'pages/My/Whisper/commentPost/CommentPost';
+import WhisperLike from 'pages/My/Whisper/Whisper';
+import Index from 'pages/My/Index';
+import RegiontalCertificate from 'pages/My/RegionalCertificatite/RegiontalCertificate';
+import Setting from 'pages/Setting/Setting';
+import Announcement from 'pages/Setting/Announcement/Announcement';
+import Faq from 'pages/Setting/Faq/Faq';
+import DeleteAccount from 'pages/Setting/DeleteAccount';
+import AnnouncementList from 'pages/Setting/Announcement/AnnouncementList';
+import AnnouncementDetail from 'pages/Setting/Announcement/AnnouncementDetail';
+import FaqList from 'pages/Setting/Faq/FaqList';
+import FaqDetail from 'pages/Setting/Faq/FaqDetail';
+import EditUserProfile from 'pages/Setting/EditUserProfile';
 // 모바일 100vh 세팅
+
 let vh = window.innerHeight * 0.01;
 document.documentElement.style.setProperty('--vh', `${vh}px`);
 
@@ -43,7 +63,6 @@ window.addEventListener('resize', () => {
 });
 
 // React 코드...
-
 const router = createBrowserRouter([
   {
     path: '/',
@@ -63,42 +82,78 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <MyHome />,
+            element: <Index />,
           },
           {
-            path: 'garden-register-user',
-            element: <RegisterUser />,
-          },
-          {
-            path: 'garden-register-seller',
-            element: <RegisterSeller />,
-          },
-          {
-            path: 'garden-register-user',
-            element: <RegisterUser />,
-          },
-          {
-            path: 'garden-register-seller',
-            element: <RegisterSeller />,
-          },
-          {
-            path: 'like',
+            path: 'my_gardens/like',
             element: <LikePosts />,
           },
           {
-            path: 'recent',
+            path: 'my_gardens/recent',
             element: <RecentPosts />,
           },
           {
-            path: 'mypost',
+            path: 'my_gardens/mypost',
             element: <MyPosts />,
+          },
+          {
+            path: 'garden_manage/my_garden_selling',
+            element: <GardenSelling />,
+          },
+          {
+            path: 'garden_manage/my_garden_using',
+            element: <GardenUsing />,
+          },
+          {
+            path: 'garden_manage/like',
+            element: <GardenLike />,
+          },
+          {
+            path: 'crop_trade/regional_certification',
+            element: <RegiontalCertificate />,
+          },
+          {
+            path: 'crop_trade/sales_history',
+            element: <SalesHistory />,
+          },
+          {
+            path: 'crop_trade/purchase_history',
+            element: <PurchaseHistory />,
+          },
+          {
+            path: 'crop_trade/wishlist',
+            element: <WishList />,
+          },
+          {
+            path: 'whisper/my_post',
+            element: <WhisperPost />,
+          },
+          {
+            path: 'whisper/comment_post',
+            element: <CommentPost />,
+          },
+          {
+            path: 'whisper/like',
+            element: <WhisperLike />,
+          },
+          {
+            path: 'garden-register-user',
+            element: <RegisterUser />,
+          },
+          {
+            path: 'garden-register-seller',
+            element: <RegisterSeller />,
+          },
+          {
+            path: 'garden-register-user',
+            element: <RegisterUser />,
           },
           {
             path: ':postId',
             element: <PostDetail />,
           },
           {
-            path: 'garden/edit',
+            path: 'garden/edit/:id',
             element: <RegisterUser />,
           },
           {
@@ -106,6 +161,46 @@ const router = createBrowserRouter([
             element: <RegisterSeller />,
           },
         ],
+      },
+      {
+        path: 'setting',
+        element: <Setting />,
+      },
+      {
+        path: '/announcement',
+        element: <Announcement />,
+        children: [
+          {
+            index: true,
+            element: <AnnouncementList />,
+          },
+          {
+            path: 'detail/:id',
+            element: <AnnouncementDetail />,
+          },
+        ],
+      },
+      {
+        path: '/faq',
+        element: <Faq />,
+        children: [
+          {
+            index: true,
+            element: <FaqList />,
+          },
+          {
+            path: 'detail',
+            element: <FaqDetail />,
+          },
+        ],
+      },
+      {
+        path: '/edit_profile',
+        element: <EditUserProfile />,
+      },
+      {
+        path: '/delete_account',
+        element: <DeleteAccount />,
       },
       {
         path: '/login',

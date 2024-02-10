@@ -39,8 +39,8 @@ const RegisterSeller = () => {
         reader.onload = async () => {
           const base64data = reader.result;
           const formData = await formDataHandler(base64data);
-          const res = (await getImages(formData)) as AxiosResponse;
-          const newImage: string[] = [res.data.imageUrl];
+          // const res = (await getImages(formData)) as AxiosResponse;
+          const newImage: string[] = [base64data + ''];
           setImages(prevImages => [...newImage, ...prevImages]);
         };
       } catch (err) {
@@ -48,11 +48,9 @@ const RegisterSeller = () => {
       }
     }
   };
-
   const deleteImage = (index: number) => {
     setImages(prevImages => prevImages.filter((_, i) => i !== index));
   };
-
   return (
     <Container>
       <H1>{match ? '판매 텃밭 수정하기' : ' 판매 텃밭 등록하기'}</H1>

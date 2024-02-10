@@ -31,7 +31,9 @@ function Crop({ name, content, link }: CropProps) {
           {content}
           <br />
           <br />
-          <CroptLink href={link}>더 알아보기</CroptLink>
+          <CroptLink href={link} target="_blank">
+            더 알아보기
+          </CroptLink>
         </Content>
       </ContentContainer>
     </CropContainer>
