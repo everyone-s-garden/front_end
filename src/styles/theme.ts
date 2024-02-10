@@ -1,11 +1,12 @@
 const colors = {
   black: '#282828',
-  white: '#FFF',
+  white: '#FFFFFF',
   primary: '#B3D36F',
   secondary: '#FF9029',
-  red: '#D80C18',
+  error: '#EF2B2A',
   gray: {
-    100: '#F0F0F0',
+    50: '#F0F0F0',
+    100: '#EBEBEB',
     200: '#D7D7D7',
     300: '#BEBEBE',
     400: '#A5A5A5',
