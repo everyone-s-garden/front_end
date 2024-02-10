@@ -27,12 +27,13 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  max-width: 1440px;
   margin: 0 auto;
   gap: 40px;
+  padding-bottom: 57px;
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     gap: 80px;
+    padding-bottom: 92px;
   }
 `;
 
