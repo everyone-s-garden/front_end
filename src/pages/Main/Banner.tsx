@@ -1,11 +1,11 @@
 import React, { Fragment, useState } from 'react';
-import banner1 from 'assets/main/banner1.svg';
+import banner1 from 'assets/main/banner1.png';
 import banner1Mobile from 'assets/main/banner1-mobile.png';
 import banner2 from 'assets/main/banner2.png';
 import banner2Mobile from 'assets/main/banner2-mobile.png';
 import styled from 'styled-components';
 import { BREAK_POINT } from 'constants/style';
-import { ReactComponent as ArrowIcon } from 'assets/arrow-icon.svg';
+import { ReactComponent as ArrowIcon } from 'assets/main/arrow-icon.svg';
 
 const bannerList = [
   [banner1, banner1Mobile, '#FEF9E6'],
@@ -97,7 +97,7 @@ const LeftArrow = styled(ArrowIcon)`
   top: 50%;
   width: 24px;
   height: 24px;
-  transform: translateY(-50%);
+  transform: translateY(-50%) rotate(180deg);
   cursor: pointer;
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
@@ -109,7 +109,7 @@ const LeftArrow = styled(ArrowIcon)`
 const RightArrow = styled(LeftArrow)`
   right: 3%;
   left: auto;
-  transform: translateY(-50%) rotate(180deg);
+  transform: translateY(-50%);
 `;
 
 export default Banner;
