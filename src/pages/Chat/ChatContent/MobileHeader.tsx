@@ -2,10 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { ReactComponent as IconETC } from 'assets/chat/etc-icon.svg';
 
-const MobileHeader = () => {
+const MobileHeader = ({ partnerNickname }: { partnerNickname: string }) => {
   return (
     <Container>
-      <Name>존리</Name>
+      <Name>{partnerNickname}</Name>
       <Grade>새싹등급</Grade>
       <StyledIconEtc />
       <Divider />

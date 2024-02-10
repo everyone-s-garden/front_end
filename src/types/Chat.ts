@@ -22,7 +22,7 @@ export interface ChatRooms {
 
 export interface EnterChatRoom {
   partnerId: number;
-  partnerNickName: string;
+  partnerNickname: string;
   postId: number;
   gardenStatus: string;
   gardenName: string;

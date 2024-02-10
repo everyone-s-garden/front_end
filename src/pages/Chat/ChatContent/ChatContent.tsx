@@ -19,6 +19,8 @@ const ChatContent = () => {
 
   if (!productInfo) return null;
 
+  console.log(productInfo);
+
   return (
     <Container>
       <ContentHeader productInfo={productInfo} />

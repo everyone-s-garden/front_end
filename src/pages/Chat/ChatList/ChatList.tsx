@@ -12,8 +12,6 @@ const ChatList = () => {
 
   if (!data) return null;
 
-  console.log(data);
-
   return (
     <ChatListContainer>
       <Title>채팅</Title>
