@@ -45,7 +45,7 @@ const Container = styled.div`
   align-items: center;
   padding: 12px 16px;
   justify-content: space-between;
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     padding: 14px 30px;
   }
 `;
@@ -59,7 +59,7 @@ const LocationWrapper = styled.div`
 const Location = styled.div`
   font-size: 16px;
   font-weight: 500;
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     font-size: 24px;
   }
 `;
@@ -67,7 +67,7 @@ const Location = styled.div`
 const Time = styled.div`
   font-size: 14px;
   font-weight: 400;
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     font-size: 20px;
   }
 `;
@@ -81,7 +81,7 @@ const LocationBtn = styled.button`
 const StyledLocationIcon = styled(LocationIcon)`
   width: 18px;
   height: 18px;
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     width: 24px;
     height: 24px;
   }
@@ -90,7 +90,7 @@ const StyledLocationIcon = styled(LocationIcon)`
 const BtnContent = styled.span`
   font-size: 14px;
   font-weight: 400;
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     font-size: 20px;
   }
 `;

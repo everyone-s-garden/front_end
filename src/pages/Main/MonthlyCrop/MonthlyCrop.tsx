@@ -33,16 +33,17 @@ const MonthlyCrop = () => {
 };
 
 const Wrapper = styled.div`
+  background-color: #fff7ee;
+  padding: 50px 0;
   @media (min-width: ${BREAK_POINT.MOBILE}) {
-    height: 405px;
-    background-color: #fff7ee;
+    padding: 0;
   }
 `;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 30px;
   margin: 0 auto;
   max-width: 1234px;
   width: 100%;

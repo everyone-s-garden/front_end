@@ -3,7 +3,6 @@ import React from 'react';
 import styled from 'styled-components';
 import getWeatherIcon from 'utils/getWeatherIcon';
 import { LineChart, Line, XAxis, ResponsiveContainer } from 'recharts';
-import { BREAK_POINT } from 'constants/style';
 
 const TimeWeather = ({ timeData }: { timeData: GetPerTimeWeatherResponse }) => {
   const timeWeather = timeData.weatherTimeResponses.sort((a, b) => {
@@ -109,7 +108,7 @@ const TimeWeather = ({ timeData }: { timeData: GetPerTimeWeatherResponse }) => {
 };
 
 const MobileContainer = styled(ResponsiveContainer)`
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.tablet} {
     display: none;
   }
 `;
@@ -117,7 +116,7 @@ const MobileContainer = styled(ResponsiveContainer)`
 const Container = styled(ResponsiveContainer)`
   display: none;
 
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.tablet} {
     display: block;
   }
 `;
@@ -129,7 +128,7 @@ const ForeignObject = styled.foreignObject<{ x: number; y: number }>`
   x: ${props => props.x};
   y: ${props => props.y};
 
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.tablet} {
     width: 40px;
     height: 40px;
 
@@ -148,7 +147,7 @@ const Time = styled.text`
   font-weight: 500;
   text-anchor: middle;
 
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.tablet} {
     font-size: 24px;
   }
 `;
@@ -159,7 +158,7 @@ const Temp = styled.text`
   text-anchor: middle;
   display: none;
 
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.tablet} {
     display: block;
   }
 `;
@@ -169,7 +168,7 @@ const MobileTemp = styled.text`
   font-weight: 500;
   text-anchor: middle;
 
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.tablet} {
     display: none;
   }
 `;

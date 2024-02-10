@@ -15,7 +15,7 @@ const WeatherCard = () => {
 };
 
 const Container = styled.div`
-  border: 1px solid #d7d7d7;
+  border: 1px solid ${({ theme }) => theme.colors.gray[100]};
   border-radius: 10px;
 `;
 export default WeatherCard;

@@ -1,4 +1,3 @@
-import { BREAK_POINT } from 'constants/style';
 import React from 'react';
 import styled from 'styled-components';
 import WeatherCard from './WeatherCard';
@@ -21,7 +20,7 @@ const Container = styled.div`
   width: 100%;
   padding: 0 20px;
 
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     gap: 30px;
   }
 `;
@@ -30,7 +29,7 @@ const Title = styled.div`
   font-size: 20px;
   font-weight: 600;
 
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     font-size: 26px;
     font-weight: 700;
   }

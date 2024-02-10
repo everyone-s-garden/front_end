@@ -99,8 +99,10 @@ const LeftArrow = styled(ArrowIcon)`
   height: 24px;
   transform: translateY(-50%) rotate(180deg);
   cursor: pointer;
+  opacity: 0.2;
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
+    opacity: 1;
     width: 30px;
     height: 30px;
   }

@@ -1,6 +1,5 @@
 import { useGetAllWeather } from 'api/WeatherAPI';
 import { WeatherData } from 'api/type';
-import { BREAK_POINT } from 'constants/style';
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { myLocationAtom } from 'recoil/atom';
@@ -47,7 +46,7 @@ const Container = styled.div`
   flex-direction: column;
   gap: 15px;
   overflow: hidden;
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     flex-direction: row-reverse;
     justify-content: space-between;
     padding: 16px 30px;
@@ -59,7 +58,7 @@ const InfoWrapper = styled.div`
   align-items: center;
   height: 40px;
   gap: 22px;
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     height: 100%;
     justify-content: center;
   }
@@ -68,8 +67,8 @@ const InfoWrapper = styled.div`
 const Divider = styled.div`
   width: 1px;
   height: 100%;
-  background-color: #cfcfcf;
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  background-color: ${({ theme }) => theme.colors.gray[200]};
+  @media ${({ theme }) => theme.devices.mobile} {
     height: 77px;
   }
 `;
@@ -77,7 +76,7 @@ const Divider = styled.div`
 const Temp = styled.div`
   font-size: 32px;
   font-weight: 600;
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     font-size: 64px;
   }
 `;
@@ -85,7 +84,7 @@ const Temp = styled.div`
 const Weather = styled.div`
   font-size: 14px;
   font-weight: 500;
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     font-size: 20px;
   }
 `;
@@ -99,7 +98,7 @@ const Rainfall = styled.div``;
 const WeatherImg = styled.img`
   width: 140px;
   height: 140px;
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     width: 228px;
     height: 228px;
   }
