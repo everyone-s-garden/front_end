@@ -48,7 +48,7 @@ import FaqList from 'pages/Setting/Faq/FaqList';
 import FaqDetail from 'pages/Setting/Faq/FaqDetail';
 import EditUserProfile from 'pages/Setting/EditUserProfile';
 import Community from 'pages/Community/Community';
-import CommunityWrite from 'pages/CommunityWrite/CommunityWrite';
+import CommunityWrite from 'pages/CommunityWrite';
 // 모바일 100vh 세팅
 
 let vh = window.innerHeight * 0.01;
