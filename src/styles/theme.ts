@@ -36,6 +36,7 @@ const colors = {
     800: '#8F4500',
     900: '#5C2C00',
   },
+  error: '#EF2B2A',
 };
 
 const devices = {
