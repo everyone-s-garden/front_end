@@ -28,8 +28,12 @@ const NavContainer = styled.nav`
   display: flex;
   justify-content: space-around;
   width: 100%;
-  padding: 0 13px 14px 13px;
+  padding: 0 13px 16px 13px;
   border-bottom: 2px solid ${({ theme }) => theme.colors.gray[100]};
+
+  @media (min-width: 370px) {
+    padding: 0 13px 14px 13px;
+  }
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     display: none;
@@ -57,11 +61,15 @@ const StyledNavLink = styled(NavLink)`
 
 const Underline = styled(motion.div)`
   position: absolute;
-  bottom: -16px;
+  bottom: -18px;
   left: 0;
   right: 0;
   height: 2px;
   background: ${({ theme }) => theme.colors.orange[600]};
+
+  @media (min-width: 370px) {
+    bottom: -16px;
+  }
 `;
 
 export default MobileNavLinks;

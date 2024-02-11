@@ -28,6 +28,8 @@ export interface EnterChatRoom {
   gardenName: string;
   price: number;
   images: string[];
+  partnerMannerGrade: string;
+  partnerProfileImage: string;
 }
 
 export interface ChatContent {
@@ -36,7 +38,6 @@ export interface ChatContent {
   contents: string;
   createdAt: number[];
   readOrNot: boolean;
-  isMine: boolean;
 }
 
 export interface ChatContentsResponse {

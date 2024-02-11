@@ -66,7 +66,7 @@ const ListWrapper = styled.ul`
   overflow-y: scroll;
 
   @media ${({ theme }) => theme.devices.mobile} {
-    max-height: 228px;
+    max-height: 225px;
     min-width: 265px;
   }
 `;

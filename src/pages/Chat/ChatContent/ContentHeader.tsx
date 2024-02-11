@@ -5,11 +5,11 @@ import MobileHeader from './MobileHeader';
 import { EnterChatRoom } from 'types/Chat';
 
 const ContentHeader = ({ productInfo }: { productInfo: EnterChatRoom }) => {
-  const { gardenName, gardenStatus, images, partnerNickname, price } = productInfo;
+  const { gardenName, gardenStatus, images, partnerNickname, price, partnerMannerGrade } = productInfo;
 
   return (
     <Container>
-      <MobileHeader partnerNickname={partnerNickname} />
+      <MobileHeader partnerNickname={partnerNickname} partnerMannerGrade={partnerMannerGrade} />
       <ProductWrapper>
         <ProductImage src={images[0]} />
         <ProductInfoWrapper>

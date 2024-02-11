@@ -2,11 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import { ReactComponent as IconETC } from 'assets/chat/etc-icon.svg';
 
-const MobileHeader = ({ partnerNickname }: { partnerNickname: string }) => {
+interface MobileHeaderProps {
+  partnerNickname: string;
+  partnerMannerGrade: string;
+}
+
+const MobileHeader = ({ partnerNickname, partnerMannerGrade }: MobileHeaderProps) => {
   return (
     <Container>
       <Name>{partnerNickname}</Name>
-      <Grade>새싹등급</Grade>
+      <Grade>{partnerMannerGrade}</Grade>
       <StyledIconEtc />
       <Divider />
     </Container>

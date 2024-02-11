@@ -1,11 +1,22 @@
-import React from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as IconPlus } from 'assets/chat/plus-icon.svg';
 
-const ContentInput = ({ roomId }: { roomId: number }) => {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+interface ContentInputProps {
+  roomId: number;
+  sendMessage: (message: string) => void;
+}
+
+const ContentInput = ({ roomId, sendMessage }: ContentInputProps) => {
+  const [message, setMessage] = useState<string>('');
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('dfads');
+    sendMessage(message);
+  };
+
+  const handleMessageChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(event.target.value);
   };
 
   return (
@@ -14,7 +25,7 @@ const ContentInput = ({ roomId }: { roomId: number }) => {
         <StyledPlusIcon />
       </EtcBtn>
       <Form onSubmit={handleSubmit}>
-        <TextArea placeholder="메세지 보내기" />
+        <TextArea placeholder="메세지 보내기" value={message} onChange={handleMessageChange} />
         <SendBtn>보내기</SendBtn>
       </Form>
     </Container>

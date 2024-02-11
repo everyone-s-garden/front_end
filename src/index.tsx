@@ -29,7 +29,7 @@ import Header from 'components/Header/Header';
 import NaverToken from 'pages/Login/Naver/token/token';
 import { ThemeProvider } from 'styled-components';
 import theme from 'styles/theme';
-import ChatContent from 'pages/Chat/ChatContent/ChatContent';
+import ChatContents from 'pages/Chat/ChatContent/ChatContents';
 import StartContent from 'pages/Chat/ChatContent/StartContent';
 
 import GardenSelling from 'pages/My/GardenManage/gardenSelling/GardenSelling';
@@ -224,7 +224,7 @@ const router = createBrowserRouter([
           },
           {
             path: ':chatId',
-            element: <ChatContent />,
+            element: <ChatContents />,
           },
         ],
       },

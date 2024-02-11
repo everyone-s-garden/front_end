@@ -61,10 +61,6 @@ const mockData = [
   },
 ];
 
-// GET /notification/all
-// GET /notification/new
-// GET /notification/new/poll
-// PATCH /notification/{id}/mark-as-read
 const Notification = () => {
   const isLogin = useRecoilValue(isLoginAtom);
   const { isOpen, toggleSelect, closeSelect } = useSelect();
@@ -140,35 +136,36 @@ const Notification = () => {
 };
 
 export default Notification;
+
 const NotificationUl = styled.ul`
-  padding-top: 30px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    padding-top: 0px;
+  padding-top: 0px;
+  @media ${({ theme }) => theme.devices.mobile} {
+    padding-top: 30px;
   }
 `;
 
 const NotificationContainer = styled.div`
   position: absolute;
-  left: -400px;
-  width: 420px;
-  height: 615px;
-  top: 50;
-  border: 1px solid #d9d9d9;
-  background-color: #fff;
-  border-radius: 20px;
   overflow: scroll;
-  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    border-radius: 0;
-    border: 0;
-    position: fixed;
-    z-index: 99999999;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  border-radius: 0;
+  border: 0;
+  position: fixed;
+  z-index: 99999999;
+  @media ${({ theme }) => theme.devices.mobile} {
+    /* left: -400px; */
+    width: 420px;
+    height: 615px;
+    top: 50;
+    border: 1px solid #d9d9d9;
+    background-color: #fff;
+    border-radius: 20px;
   }
 `;
 
@@ -177,7 +174,7 @@ const NotificationLi = styled.li`
 
   div {
     padding: 0 28px;
-    @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+    @media ${({ theme }) => theme.devices.mobile} {
       padding: 0px 28px;
     }
   }
@@ -188,7 +185,7 @@ const NotificationTitleWrapper = styled.div`
   align-items: center;
   justify-content: center;
   margin-bottom: 36;
-  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     display: flex;
   }
 `;

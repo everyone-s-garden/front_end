@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import defaultProfile from 'assets/default_profile.png';
 import { ChatContent } from 'types/Chat';
 
-type ChatBubbleProps = {
+interface ChatBubbleProps {
   isMine: boolean;
-};
+  chat: ChatContent;
+}
 
-const ChatBubble = ({ chat }: { chat: ChatContent }) => {
-  const { isMine, contents } = chat;
+const ChatBubble = ({ chat, isMine }: ChatBubbleProps) => {
+  const { contents } = chat;
 
   return (
     <Container isMine={isMine}>
@@ -21,7 +22,7 @@ const ChatBubble = ({ chat }: { chat: ChatContent }) => {
   );
 };
 
-const Container = styled.li<ChatBubbleProps>`
+const Container = styled.li<Pick<ChatBubbleProps, 'isMine'>>`
   display: flex;
   align-items: center;
   gap: 16px;
@@ -48,7 +49,9 @@ const ChatInfoWrapper = styled.div`
   }
 `;
 
-const Message = styled.p<ChatBubbleProps>`
+const Message = styled.p<Pick<ChatBubbleProps, 'isMine'>>`
+  max-width: 200px;
+  word-break: break-all;
   font-size: 16px;
   font-weight: 500;
   padding: 8px 12px;
@@ -61,7 +64,8 @@ const Message = styled.p<ChatBubbleProps>`
   }
 `;
 
-const Time = styled.span<ChatBubbleProps>`
+const Time = styled.span<Pick<ChatBubbleProps, 'isMine'>>`
+  flex-shrink: 0;
   font-size: 12px;
   color: ${({ theme }) => theme.colors.gray[400]};
   align-self: flex-end;
