@@ -1,6 +1,5 @@
 import { useMutation, useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import HttpRequest from './HttpRequest';
-import customAxios from 'utils/token';
 
 interface PageParam {
   searchContent: string;
@@ -30,7 +29,7 @@ export const CommunityAPI = {
     return data;
   },
   createPost: async (data: FormData): Promise<any> => {
-    const res = await customAxios.post(`v1/posts`, data);
+    const res = await HttpRequest.post(`v1/posts`, data);
     return res;
   },
 };
