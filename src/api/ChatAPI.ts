@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import HttpRequest from './HttpRequest';
 import { ChatContentsResponse, ChatRooms, EnterChatRoom } from 'types/Chat';
 
@@ -26,8 +26,14 @@ const getGardenChatRooms = async (): Promise<ChatRooms> => {
   return response.data;
 };
 
-const getGardenChatContents = async ({ roomId }: { roomId: number }): Promise<ChatContentsResponse> => {
-  const response = await HttpRequest.get(`/garden-chats/${roomId}/messages?pageNumber=0`);
+const getGardenChatContents = async ({
+  roomId,
+  pageParam,
+}: {
+  roomId: number;
+  pageParam: number;
+}): Promise<ChatContentsResponse> => {
+  const response = await HttpRequest.get(`/garden-chats/${roomId}/messages?pageNumber=${pageParam}`);
 
   return response.data;
 };
@@ -58,8 +64,12 @@ export const useGetGardenChatRooms = () => {
 };
 
 export const useGetGardenChatContents = ({ roomId }: { roomId: number }) => {
-  return useQuery({
-    queryKey: ['gardenChatContents', roomId],
-    queryFn: () => getGardenChatContents({ roomId }),
+  return useInfiniteQuery({
+    queryKey: ['gardenChatContents', { roomId }],
+    queryFn: ({ pageParam = 0 }) => getGardenChatContents({ roomId, pageParam }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.hasNext ? allPages.length : undefined;
+    },
   });
 };

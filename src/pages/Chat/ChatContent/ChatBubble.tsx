@@ -6,14 +6,15 @@ import { ChatContent } from 'types/Chat';
 interface ChatBubbleProps {
   isMine: boolean;
   chat: ChatContent;
+  profile: string;
 }
 
-const ChatBubble = ({ chat, isMine }: ChatBubbleProps) => {
+const ChatBubble = ({ chat, isMine, profile }: ChatBubbleProps) => {
   const { contents } = chat;
 
   return (
     <Container isMine={isMine}>
-      {!isMine && <ProfileImage src={defaultProfile} />}
+      {!isMine && <ProfileImage src={profile || defaultProfile} />}
       <ChatInfoWrapper>
         <Message isMine={isMine}>{contents}</Message>
         <Time isMine={isMine}>오전 10:57</Time>
@@ -24,7 +25,6 @@ const ChatBubble = ({ chat, isMine }: ChatBubbleProps) => {
 
 const Container = styled.li<Pick<ChatBubbleProps, 'isMine'>>`
   display: flex;
-  align-items: center;
   gap: 16px;
   justify-content: ${({ isMine }) => (isMine ? 'flex-end' : 'flex-start')};
 `;

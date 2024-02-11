@@ -66,8 +66,8 @@ const ChatContents = () => {
   return (
     <Container>
       <ContentHeader productInfo={productInfo} />
-      <ContentChatList roomId={roomId} socketMessage={socketMessage} partnerId={productInfo.partnerId} />
-      <ContentInput roomId={roomId} sendMessage={sendMessage} />
+      <ContentChatList roomId={roomId} socketMessage={socketMessage} productInfo={productInfo} />
+      <ContentInput sendMessage={sendMessage} />
     </Container>
   );
 };

@@ -1,22 +1,35 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as IconPlus } from 'assets/chat/plus-icon.svg';
+import { set } from 'react-hook-form';
 
 interface ContentInputProps {
-  roomId: number;
   sendMessage: (message: string) => void;
 }
 
-const ContentInput = ({ roomId, sendMessage }: ContentInputProps) => {
+const ContentInput = ({ sendMessage }: ContentInputProps) => {
   const [message, setMessage] = useState<string>('');
+
+  const submitMessage = (message: string) => {
+    if (!message) return;
+    sendMessage(message);
+    setMessage('');
+  };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    sendMessage(message);
+    submitMessage(message);
   };
 
   const handleMessageChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(event.target.value);
+  };
+
+  const handleTextAreaKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      submitMessage(message);
+    }
   };
 
   return (
@@ -25,7 +38,12 @@ const ContentInput = ({ roomId, sendMessage }: ContentInputProps) => {
         <StyledPlusIcon />
       </EtcBtn>
       <Form onSubmit={handleSubmit}>
-        <TextArea placeholder="메세지 보내기" value={message} onChange={handleMessageChange} />
+        <TextArea
+          placeholder="메세지 보내기"
+          value={message}
+          onChange={handleMessageChange}
+          onKeyDown={handleTextAreaKeyDown}
+        />
         <SendBtn>보내기</SendBtn>
       </Form>
     </Container>
