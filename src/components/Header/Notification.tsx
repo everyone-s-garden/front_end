@@ -65,16 +65,31 @@ const mockData = [
 // GET /notification/new
 // GET /notification/new/poll
 // PATCH /notification/{id}/mark-as-read
+
+interface INotifications {
+  title: string;
+  content: string;
+  isRead: boolean;
+}
 const Notification = () => {
   const isLogin = useRecoilValue(isLoginAtom);
   const { isOpen, toggleSelect, closeSelect } = useSelect();
   const [openNotification, setOpenNotification] = useState(false);
+  const [notifications, setNotifications] = useState<INotifications[]>([]);
 
   useEffect(() => {
-    (async () => {
-      const res = await customAxios.get('notification/new/poll');
-      console.log(res.data);
-    })();
+    const fetchNotifications = async () => {
+      try {
+        const res = await customAxios.get('notification/new');
+        setNotifications([...res.data]);
+      } catch (error) {
+        console.error('Error fetching notifications:', error);
+      }
+    };
+
+    const intervalId = setInterval(fetchNotifications, 5000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   return (
@@ -97,9 +112,10 @@ const Notification = () => {
                 color: 'white',
                 padding: '1px 4px',
                 borderRadius: 5,
+                display: notifications.length === 0 ? 'none' : 'flex',
               }}
             >
-              {mockData.length}
+              {notifications.length}
             </div>
           </button>
           {openNotification && (
@@ -115,21 +131,38 @@ const Notification = () => {
               </NotificationTitleWrapper>
 
               <NotificationUl>
-                {mockData.map((data, idx) => {
-                  return (
-                    <NotificationLi key={idx}>
-                      <div style={{ padding: '20px 28px' }}>
-                        <span style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 8, display: 'block' }}>
-                          {data.category}
-                        </span>
-                        <p style={{ display: 'block', marginBottom: 8 }}>{data.payload}</p>
-                        <p style={{ fontSize: 14, color: '#9B9B9B' }}>
-                          {formatDateToYYYYMMDD(data.createdAt)} {`(${getDayOfWeek(data.createdAt)})`}
-                        </p>
-                      </div>
-                    </NotificationLi>
-                  );
-                })}
+                {notifications.length === 0 ? (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: '0',
+                      top: '0',
+                      width: '100%',
+                      height: '100%',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      paddingTop: 20,
+                    }}
+                  >
+                    <h1 style={{ fontSize: 18, fontWeight: 'bold' }}>알림이 없습니다.</h1>
+                  </div>
+                ) : (
+                  notifications.map((data, idx) => {
+                    return (
+                      <NotificationLi key={idx}>
+                        <div style={{ padding: '20px 28px' }}>
+                          <span style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 8, display: 'block' }}>
+                            {/* {data.category} */}
+                          </span>
+                          <p style={{ display: 'block', marginBottom: 8 }}>{data.content}</p>
+                          <p style={{ fontSize: 14, color: '#9B9B9B' }}>
+                            {/* {formatDateToYYYYMMDD(data.createdAt)} {`(${getDayOfWeek(data.createdAt)})`} */}
+                          </p>
+                        </div>
+                      </NotificationLi>
+                    );
+                  })
+                )}
               </NotificationUl>
             </NotificationContainer>
           )}
