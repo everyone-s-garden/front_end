@@ -87,7 +87,7 @@ const Notification = () => {
       }
     };
 
-    const intervalId = setInterval(fetchNotifications, 5000);
+    const intervalId = setInterval(fetchNotifications, 50000);
 
     return () => clearInterval(intervalId);
   }, []);
