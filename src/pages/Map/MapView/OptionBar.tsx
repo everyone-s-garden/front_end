@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 
 import { searchTypeAtom } from 'recoil/atom';
-import { BREAK_POINT, COLOR, FONT_WEIGHT } from 'constants/style';
+import { FONT_WEIGHT } from 'constants/style';
 import SelectList from 'components/SelectList';
+import SearchInput from './SearchInput';
 
 function OptionBar() {
   const [searchType, setSearchType] = useRecoilState(searchTypeAtom);
@@ -25,8 +26,8 @@ function OptionBar() {
             둘다 표시
           </OptionButton>
         </OptionBox>
-
         <SelectList />
+        <SearchInput />
       </Option>
     </Container>
   );
@@ -35,56 +36,45 @@ function OptionBar() {
 export default OptionBar;
 
 const Container = styled.div`
-  padding: 0 1rem;
-  padding-bottom: 6px;
-  display: flex;
-  justify-content: center;
   width: 100%;
-  border-bottom: 1px solid #afafaf;
-
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
-    padding: 0 1.5rem;
-  }
-
-  @media (min-width: ${BREAK_POINT.LABTOP}) {
-    padding: 0 2rem;
-  }
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[100]};
+  padding-bottom: 15px;
 `;
 
 const Option = styled.div`
   z-index: 1;
-  padding-top: 10px;
   position: relative;
-  flex-grow: 1;
-  max-width: 1200px;
-  height: 57px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
+  width: 100%;
+  gap: 32px;
+  max-width: 1265px;
+  padding: 0 20px;
 `;
 
 const OptionTitle = styled.span`
-  margin: 0 18px;
   font-size: 15px;
   font-weight: ${FONT_WEIGHT.MEDIUM};
+  display: none;
 
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
-    margin-left: 0;
-    margin-right: 36px;
+  @media ${({ theme }) => theme.devices.mobile} {
+    display: block;
   }
 `;
 
 const OptionBox = styled.div`
   display: none;
   align-items: center;
+  gap: 32px;
 
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     display: flex;
   }
 `;
 
 const OptionButton = styled.button<{ active: boolean }>`
-  margin-right: 32px;
   font-size: 18px;
   font-weight: ${props => (props.active ? FONT_WEIGHT.SEMIBOLD : FONT_WEIGHT.MEDIUM)};
-  color: ${props => (props.active ? COLOR.BLACK : '#C5CFBD')};
+  color: ${props => (props.active ? props.theme.colors.black : props.theme.colors.gray[400])};
 `;

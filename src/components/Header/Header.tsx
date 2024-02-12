@@ -4,7 +4,6 @@ import { Link, Outlet } from 'react-router-dom';
 import { useNavermaps } from 'react-naver-maps';
 
 import logoImg from 'assets/logo_horizon.png';
-import { BREAK_POINT, COLOR } from 'constants/style';
 import NavLinks from './NavLinks/NavLinks';
 import MobileNavLinks from './NavLinks/MobileNavLinks';
 import UserItems from './UserItems';
@@ -93,7 +92,7 @@ const LogoImageContainer = styled(Link)`
   align-items: center;
   cursor: pointer;
 
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     width: 163px;
     height: 28px;
   }
@@ -108,7 +107,6 @@ const LogoImage = styled.img`
 const Main = styled.main<{ url: string }>`
   flex: 1 1 auto;
   width: 100%;
-  overflow: ${props => (props.url === '/map' ? 'hidden' : 'visible')};
   height: calc(100vh - 108px);
 `;
 

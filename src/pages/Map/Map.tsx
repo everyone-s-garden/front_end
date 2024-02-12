@@ -49,14 +49,9 @@ export default Map;
 
 const MapPage = styled.div`
   position: relative;
-  width: 100vw;
-  height: calc(var(--vh, 1vh) * 100 - 51px);
   display: flex;
   flex-direction: column;
-
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
-    height: calc(var(--vh, 1vh) * 100 - 106px);
-  }
+  height: 100%;
 `;
 
 const MapViewer = styled.div`
