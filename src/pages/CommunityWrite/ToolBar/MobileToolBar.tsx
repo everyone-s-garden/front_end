@@ -8,22 +8,17 @@ import { ALIGN_TYPE, SIZE_TYPE } from '../constants';
 import { EditorState, RichUtils } from 'draft-js';
 import styled from 'styled-components';
 
-const postTypes = ['정보 공유', '텃밭 자랑', '질문하기', '기타'] as const;
-
-interface PostToolBarProps {
+interface MobileToolBarProps {
   value: EditorState;
 }
 
-const PostToolBar = ({ value }: PostToolBarProps) => {
-  const [fontSize, setFontSize] = useState('본문');
-  const [align, setAlign] = useState<'LEFT' | 'CENTER' | 'RIGHT'>('LEFT');
+const alignArr = ['LEFT', 'CENTER', 'RIGHT'] as const;
 
-  const {
-    setValue,
-    watch,
-    clearErrors,
-    formState: { errors },
-  } = useFormContext<Post>();
+const MobileToolBar = ({ value }: MobileToolBarProps) => {
+  const [fontSize, setFontSize] = useState('본문');
+  const [alignIdx, setAlignIdx] = useState(0);
+
+  const { setValue } = useFormContext<Post>();
 
   const toggleInline = (e: MouseEvent<HTMLElement>, type: InlineStyles) => {
     e.preventDefault();
@@ -40,12 +35,13 @@ const PostToolBar = ({ value }: PostToolBarProps) => {
     setFontSize(key);
   };
 
-  const handleClickAlign = (e: MouseEvent<HTMLElement>, type: 'LEFT' | 'CENTER' | 'RIGHT') => {
-    toggleBlock(e, type);
-    setAlign(type);
-  };
+  const handleClickAlign = (e: MouseEvent<HTMLElement>, idx: number) => {
+    const index = idx % 3;
+    const type = alignArr[index];
 
-  const postType = watch('postType');
+    toggleBlock(e, type);
+    setAlignIdx(index);
+  };
 
   return (
     <Container>
@@ -54,34 +50,11 @@ const PostToolBar = ({ value }: PostToolBarProps) => {
           <Dropdown>
             <Dropdown.Trigger>
               <ToolBar.Tool>
-                <PostType errorState={!!errors.postType}>{postType}</PostType>
-                <ArrowBelowIcon />
-              </ToolBar.Tool>
-            </Dropdown.Trigger>
-            <Dropdown.Menu top={45}>
-              {postTypes.map((type, index) => (
-                <li
-                  key={index}
-                  onClick={() => {
-                    setValue('postType', type);
-                    clearErrors('postType');
-                  }}
-                >
-                  <Dropdown.Item>{type}</Dropdown.Item>
-                </li>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
-        </ToolBar.Group>
-
-        <ToolBar.Group>
-          <Dropdown>
-            <Dropdown.Trigger>
-              <ToolBar.Tool>
                 <span>{fontSize}</span>
                 <ArrowBelowIcon />
               </ToolBar.Tool>
             </Dropdown.Trigger>
+            {/* <Dropdown.BackGround /> */}
             <Dropdown.Menu top={45}>
               {Object.keys(SIZE_TYPE).map((key, index) => (
                 <li key={index} onClick={e => handleClickSize(e, key as keyof typeof SIZE_TYPE)}>
@@ -111,37 +84,19 @@ const PostToolBar = ({ value }: PostToolBarProps) => {
         </ToolBar.Group>
 
         <ToolBar.Group>
-          <Dropdown>
-            <Dropdown.Trigger>
-              <ToolBar.Tool>
-                {ALIGN_TYPE[align]}
-                <ArrowBelowIcon />
-              </ToolBar.Tool>
-            </Dropdown.Trigger>
-            <Dropdown.Menu top={45}>
-              {Object.keys(ALIGN_TYPE).map((key, index) => (
-                <li key={index} onClick={e => handleClickAlign(e, key as 'LEFT' | 'CENTER' | 'RIGHT')}>
-                  <Dropdown.Item>{ALIGN_TYPE[key as 'LEFT' | 'CENTER' | 'RIGHT']}</Dropdown.Item>
-                </li>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
+          <ToolBar.Tool>
+            <button onClick={e => handleClickAlign(e, alignIdx + 1)}>{ALIGN_TYPE[alignArr[alignIdx]]}</button>
+          </ToolBar.Tool>
         </ToolBar.Group>
       </ToolBar>
     </Container>
   );
 };
 
-export default PostToolBar;
-
-const PostType = styled.span<{ errorState?: boolean }>`
-  color: ${({ errorState, theme }) => (errorState ? theme.colors.error : '')};
-`;
+export default MobileToolBar;
 
 const Container = styled.div`
-  display: none;
-
   @media (${({ theme }) => theme.devices.mobile}) {
-    display: block;
+    display: none;
   }
 `;

@@ -37,7 +37,7 @@ const ToolGroup = styled.ul`
   display: flex;
   align-items: center;
   padding: 0 36px;
-  gap: 36px;
+  gap: 30px;
 `;
 
 const ToolItem = styled.li`
@@ -51,5 +51,9 @@ const ToolItem = styled.li`
   & button {
     display: flex;
     align-items: center;
+  }
+
+  & * {
+    flex-shrink: 0;
   }
 `;

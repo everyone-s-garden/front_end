@@ -45,7 +45,7 @@ const PostEditor = ({ value, onChange }: PostEditorProps) => {
   }, []);
 
   return (
-    <>
+    <Container>
       <TitleContainer>
         <Title {...register('title', { required: '필수 입력 항목입니다.' })} placeholder="제목" />
         {errors.title && <ErrorMsg>{errors.title.message}</ErrorMsg>}
@@ -60,26 +60,69 @@ const PostEditor = ({ value, onChange }: PostEditorProps) => {
         />
         {errors.content && <ErrorMsg>{errors.content.message}</ErrorMsg>}
       </EditorContainer>
-    </>
+    </Container>
   );
 };
 
 export default PostEditor;
 
+const Container = styled.div`
+  max-width: 1188px;
+  width: 100%;
+  flex-grow: 1;
+  font-size: 16px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+
+  & h1 {
+    font-size: 20px;
+  }
+  & h2 {
+    font-size: 18px;
+  }
+  & h3 {
+    font-size: 14px;
+  }
+  & .align-left div {
+    text-align: left;
+  }
+  & .align-center div {
+    text-align: center;
+  }
+  & .align-right div {
+    text-align: right;
+  }
+
+  @media (${({ theme }) => theme.devices.mobile}) {
+    margin-top: 48px;
+  }
+`;
+
 const TitleContainer = styled.section`
   position: relative;
+
+  padding: 0 20px;
+
+  @media (${({ theme }) => theme.devices.mobile}) {
+    padding: 0;
+  }
 `;
 
 const Title = styled.input`
   &::placeholder {
     color: ${({ theme }) => theme.colors.gray[300]};
   }
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 600;
   width: 100%;
   padding: 8px 0;
   border: none;
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray[100]};
+
+  @media (${({ theme }) => theme.devices.mobile}) {
+    font-size: 24px;
+  }
 `;
 
 const EditorContainer = styled.section`
@@ -107,6 +150,12 @@ const EditorContainer = styled.section`
     border-left: 0.1px solid transparent;
     position: relative;
     z-index: 1;
+  }
+
+  padding: 0 20px;
+
+  @media (${({ theme }) => theme.devices.mobile}) {
+    padding: 0;
   }
 `;
 

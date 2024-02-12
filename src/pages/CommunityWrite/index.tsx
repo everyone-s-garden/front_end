@@ -9,6 +9,8 @@ import PostToolBar from './ToolBar/PostToolBar';
 import PostEditor from './PostEditor';
 import ImageAdder from './ImageAdder';
 import { useNavigate } from 'react-router-dom';
+import MobileToolBar from './ToolBar/MobileToolBar';
+import PostTypeSelector from './ToolBar/PostTypeSelector';
 
 const CommunityWrite = () => {
   const [isActive, setIsActive] = useState(false);
@@ -93,18 +95,19 @@ const CommunityWrite = () => {
           <Controller
             render={({ field: { value, onChange } }) => (
               <>
+                <PostTypeSelector />
                 <PostToolBar value={value} />
 
-                <Content>
-                  <PostEditor value={value} onChange={onChange} />
-                </Content>
+                <PostEditor value={value} onChange={onChange} />
+
+                <ImageAdder imageFiles={imageFiles} setImageFiles={setImageFiles} />
+
+                <MobileToolBar value={value} />
               </>
             )}
             name="content"
             control={methods.control}
           />
-
-          <ImageAdder imageFiles={imageFiles} setImageFiles={setImageFiles} />
 
           <SubmitBtn type="submit" value="등록하기" disabled={!isActive} className={isActive ? '' : 'disabled'} />
         </Form>
@@ -125,41 +128,14 @@ const Container = styled.div`
   width: 100%;
   height: 80vh;
   margin-bottom: 100px;
-  padding: 0 20px;
 
   & .disabled {
     background-color: ${({ theme }) => theme.colors.orange[200]};
     cursor: default;
   }
-`;
 
-const Content = styled.div`
-  max-width: 1188px;
-  width: 100%;
-  flex-grow: 1;
-  font-size: 16px;
-  margin: 0 auto;
-  margin-top: 48px;
-  display: flex;
-  flex-direction: column;
-
-  & h1 {
-    font-size: 20px;
-  }
-  & h2 {
-    font-size: 18px;
-  }
-  & h3 {
-    font-size: 14px;
-  }
-  & .align-left div {
-    text-align: left;
-  }
-  & .align-center div {
-    text-align: center;
-  }
-  & .align-right div {
-    text-align: right;
+  @media (${({ theme }) => theme.devices.mobile}) {
+    padding: 0 20px;
   }
 `;
 
@@ -171,10 +147,9 @@ const Form = styled.form`
 `;
 
 const SubmitBtn = styled.input`
-  width: 350px;
-  height: 56px;
+  width: 100%;
+  height: 60px;
   flex-shrink: 0;
-  border-radius: 10px;
   margin: 0 auto;
   margin-top: 100px;
   background-color: ${({ theme }) => theme.colors.orange[600]};
@@ -182,5 +157,16 @@ const SubmitBtn = styled.input`
   font-size: 18px;
   font-weight: 600;
   border: none;
+  border-radius: 0;
   cursor: pointer;
+
+  position: fixed;
+  bottom: 0;
+
+  @media (${({ theme }) => theme.devices.mobile}) {
+    position: relative;
+    width: 350px;
+    height: 56px;
+    border-radius: 10px;
+  }
 `;

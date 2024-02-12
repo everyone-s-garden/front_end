@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
 import { Post } from '../types';
-import { CameraIcon } from 'assets/community';
+import { CameraIcon, DeleteIcon } from 'assets/community';
 
 interface ImageAdderProps {
   imageFiles: {
@@ -21,8 +21,6 @@ interface ImageAdderProps {
 
 const ImageAdder = ({ imageFiles, setImageFiles }: ImageAdderProps) => {
   const {
-    setValue,
-    getValues,
     watch,
     register,
     formState: { errors },
@@ -84,7 +82,9 @@ const ImageAdder = ({ imageFiles, setImageFiles }: ImageAdderProps) => {
 
       {imageFiles.map(({ src }) => (
         <ImageBox key={src}>
-          <ImageDelBtn onClick={() => handleDelete(src)}>X</ImageDelBtn>
+          <ImageDelBtn>
+            <DeleteIcon onClick={() => handleDelete(src)} />
+          </ImageDelBtn>
           <Image src={src} alt="이미지 미리보기" />
         </ImageBox>
       ))}
@@ -97,11 +97,20 @@ export default ImageAdder;
 const ImageContainer = styled.ul`
   display: flex;
   margin: 0 auto;
-  padding-top: 34px;
   border-top: 1px solid ${({ theme }) => theme.colors.gray[100]};
   gap: 14px;
   width: 100%;
   max-width: 1188px;
+  overflow-x: auto;
+  padding: 0 20px;
+  padding-top: 16px;
+  margin-bottom: 16px;
+
+  @media (${({ theme }) => theme.devices.mobile}) {
+    margin-bottom: 0;
+    padding: 0 20px;
+    padding-top: 34px;
+  }
 `;
 
 const ImageInput = styled.input`
@@ -109,11 +118,18 @@ const ImageInput = styled.input`
 `;
 
 const ImageBox = styled.li`
-  width: 100px;
-  height: 100px;
   position: relative;
   border-radius: 10px;
   background-color: ${({ theme }) => theme.colors.orange[100]};
+  flex-shrink: 0;
+
+  width: 110px;
+  height: 110px;
+
+  @media (${({ theme }) => theme.devices.tablet}) {
+    height: 136px;
+    width: 136px;
+  }
 `;
 
 const ImageLabel = styled.label<{ errorState?: boolean }>`
@@ -143,15 +159,13 @@ const ImageDelBtn = styled.button`
   position: absolute;
   top: -5px;
   right: -5px;
-  background-color: white;
   border-radius: 50%;
-  padding: 5px;
   width: 20px;
   height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 100;
+  z-index: 1;
 `;
 
 const Image = styled.img`
