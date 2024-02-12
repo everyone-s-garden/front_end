@@ -3,6 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
 import { Post } from '../types';
 import { CameraIcon, DeleteIcon } from 'assets/community';
+import ImageSlider from './ImageSlider';
 
 interface ImageAdderProps {
   imageFiles: {
@@ -63,32 +64,34 @@ const ImageAdder = ({ imageFiles, setImageFiles }: ImageAdderProps) => {
   }, [images, setImageFiles]);
 
   return (
-    <ImageContainer>
-      <ImageBox>
-        <ImageInput
-          type="file"
-          id="fileInput"
-          multiple={true}
-          accept="image/jpg,image/png,image/jpeg,image/gif"
-          {...register('images', { required: '이미지를 추가해주세요.' })}
-        />
-        <ImageLabel htmlFor="fileInput" errorState={!!errors.images}>
-          <div>
-            <CameraIcon />
-            <p>{imageFiles.length}/10</p>
-          </div>
-        </ImageLabel>
-      </ImageBox>
-
-      {imageFiles.map(({ src }) => (
-        <ImageBox key={src}>
-          <ImageDelBtn>
-            <DeleteIcon onClick={() => handleDelete(src)} />
-          </ImageDelBtn>
-          <Image src={src} alt="이미지 미리보기" />
+    <>
+      <ImageSlider>
+        <ImageBox>
+          <ImageInput
+            type="file"
+            id="fileInput"
+            multiple={true}
+            accept="image/jpg,image/png,image/jpeg,image/gif"
+            {...register('images', { required: '이미지를 추가해주세요.' })}
+          />
+          <ImageLabel htmlFor="fileInput" errorState={!!errors.images}>
+            <div>
+              <CameraIcon />
+              <p>{imageFiles.length}/10</p>
+            </div>
+          </ImageLabel>
         </ImageBox>
-      ))}
-    </ImageContainer>
+
+        {imageFiles.map(({ src }) => (
+          <ImageBox key={src}>
+            <ImageDelBtn>
+              <DeleteIcon onClick={() => handleDelete(src)} />
+            </ImageDelBtn>
+            <Image src={src} alt="이미지 미리보기" />
+          </ImageBox>
+        ))}
+      </ImageSlider>
+    </>
   );
 };
 
@@ -122,14 +125,6 @@ const ImageBox = styled.li`
   border-radius: 10px;
   background-color: ${({ theme }) => theme.colors.orange[100]};
   flex-shrink: 0;
-
-  width: 110px;
-  height: 110px;
-
-  @media (${({ theme }) => theme.devices.tablet}) {
-    height: 136px;
-    width: 136px;
-  }
 `;
 
 const ImageLabel = styled.label<{ errorState?: boolean }>`
@@ -157,8 +152,8 @@ const ImageLabel = styled.label<{ errorState?: boolean }>`
 
 const ImageDelBtn = styled.button`
   position: absolute;
-  top: -5px;
-  right: -5px;
+  top: 5px;
+  right: 5px;
   border-radius: 50%;
   width: 20px;
   height: 20px;

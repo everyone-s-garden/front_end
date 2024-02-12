@@ -54,7 +54,6 @@ const MobileToolBar = ({ value }: MobileToolBarProps) => {
                 <ArrowBelowIcon />
               </ToolBar.Tool>
             </Dropdown.Trigger>
-            {/* <Dropdown.BackGround /> */}
             <Dropdown.Menu top={45}>
               {Object.keys(SIZE_TYPE).map((key, index) => (
                 <li key={index} onClick={e => handleClickSize(e, key as keyof typeof SIZE_TYPE)}>
