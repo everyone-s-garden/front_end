@@ -7,8 +7,10 @@ import IconHeart from './icon/HeartIcon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import IconCheck from './icon/CheckIcon';
-import { reportPostIdAtom } from 'recoil/atom';
+import { reportPostIdAtom, windowOffsetAtom } from 'recoil/atom';
 import EmptyImage from 'components/icon/EmptyImage';
+import customAxios from 'utils/token';
+import { useRecoilState } from 'recoil';
 
 interface IItemsRendererPropss {
   items?: IPostListItem[];
@@ -23,6 +25,7 @@ interface IItemsRendererPropss {
   salesHistoryMatch: boolean;
   whisperMyPostMatch: boolean;
   commentPostMatch: boolean;
+  deletePost: (id: number) => void;
 }
 
 const ItemRenderer = ({
@@ -37,6 +40,7 @@ const ItemRenderer = ({
   salesHistoryMatch,
   whisperMyPostMatch,
   commentPostMatch,
+  deletePost,
 }: IItemsRendererPropss) => {
   return (
     <>
@@ -84,7 +88,7 @@ const ItemRenderer = ({
             {openStates[item.gardenId] && (
               <EditButtonWrapper>
                 <button>게시글 수정</button>
-                <button>삭제하기</button>
+                {item && <button onClick={() => item.gardenId && deletePost(item.gardenId)}>삭제하기</button>}
               </EditButtonWrapper>
             )}
           </Li>
@@ -105,6 +109,7 @@ const TradeRenderer = ({
   salesHistoryMatch,
   whisperMyPostMatch,
   commentPostMatch,
+  deletePost,
 }: IItemsRendererPropss) => {
   return (
     <>
@@ -179,11 +184,22 @@ const PostListItem = ({ items, tradeItems }: IProps) => {
   const whisperPost = useMatch('/my/whisper/my_post');
   const [openStates, setOpenStates] = useState<OpenStates>({});
   const [checkBoxOpen, setCheckBoxOpen] = useState(false);
+  const [offset, setOffset] = useRecoilState(windowOffsetAtom);
   const toggleOpen = (id: number) => {
     setOpenStates(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
-  // const thumbnail = items[0] === null || items[0].length === 0
+  const deletePost = async (gardenId?: number) => {
+    if (offset.width < BREAK_POINT.MOBILE_NUMBER) {
+      const gardenIds = Object.keys(openStates);
+      gardenIds.forEach(async id => {
+        const res = await customAxios.delete(`v2/gardens/${id}`);
+        console.log(res);
+      });
+    } else {
+      const res = await customAxios.delete(`v2/gardens/${gardenId}`);
+    }
+  };
 
   return (
     <Contaner>
@@ -192,7 +208,7 @@ const PostListItem = ({ items, tradeItems }: IProps) => {
           {!checkBoxOpen && <button onClick={() => setCheckBoxOpen(true)}>편집</button>}
           {checkBoxOpen && (
             <div style={{ display: 'flex' }}>
-              <button>삭제</button>
+              <button onClick={() => deletePost()}>삭제</button>
               <div style={{ margin: '0px 12px', width: 1, height: '100%', backgroundColor: '#D7D7D7' }} />
               <button onClick={() => setCheckBoxOpen(false)}>취소</button>
             </div>
@@ -213,6 +229,7 @@ const PostListItem = ({ items, tradeItems }: IProps) => {
         salesHistoryMatch={!!salesHistoryMatch}
         whisperMyPostMatch={!!whisperMyPostMatch}
         commentPostMatch={!!commentPostMatch}
+        deletePost={deletePost}
       />
       <TradeRenderer
         tradeItems={tradeItems}
@@ -226,6 +243,7 @@ const PostListItem = ({ items, tradeItems }: IProps) => {
         salesHistoryMatch={!!salesHistoryMatch}
         whisperMyPostMatch={!!whisperMyPostMatch}
         commentPostMatch={!!commentPostMatch}
+        deletePost={deletePost}
       />
     </Contaner>
   );
