@@ -1,12 +1,27 @@
 import { SearchIcon } from 'assets/community';
-import React from 'react';
+import useDebounce from 'hooks/useDebounce';
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { communityParamsAtom } from 'recoil/atom';
 import styled from 'styled-components';
 
 const SearchBar = () => {
+  const [value, setValue] = useState('');
+  const debouncedValue = useDebounce(value, 500);
+  const [, setParams] = useRecoilState(communityParamsAtom);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+  };
+
+  useEffect(() => {
+    setParams(prevParams => ({ ...prevParams, searchContent: debouncedValue }));
+  }, [debouncedValue, setParams]);
+
   return (
     <Container>
       <SearchIcon />
-      <Input placeholder="검색어를 작성하세요." />
+      <Input type="text" value={value} onChange={handleChange} placeholder="검색어를 작성하세요." />
     </Container>
   );
 };

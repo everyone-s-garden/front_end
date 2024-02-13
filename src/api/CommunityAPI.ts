@@ -1,21 +1,22 @@
-import { useMutation, useSuspenseInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import HttpRequest from './HttpRequest';
 
 interface PageParam {
   searchContent: string;
-  offset: number;
-  limit: number;
-  orderBy: 'COMMENT_COUNT' | 'RECENT_DATE' | 'LIKE_COUNT' | 'OLDER_DATE';
+  offset?: number;
+  limit?: number;
+  postType: 'INFORMATION_SHARE' | 'GARDEN_SHOWCASE' | 'QUESTION' | 'ETC' | '';
+  orderBy: 'COMMENT_COUNT' | 'RECENT_DATE' | 'LIKE_COUNT' | 'OLDER_DATE' | '';
 }
 
-// interface Post {
-//   texts: {
-//     title: string;
-//     content: string;
-//     postType: 'INFORMATION_SHARE' | 'GARDEN_SHOWCASE' | 'QUESTION' | 'ETC';
-//   };
-//   images: FormData;
-// }
+interface Post {
+  texts: {
+    title: string;
+    content: string;
+    postType: 'INFORMATION_SHARE' | 'GARDEN_SHOWCASE' | 'QUESTION' | 'ETC';
+  };
+  images: FormData;
+}
 
 export const CommunityAPI = {
   getAllPosts: async (pageParam: PageParam): Promise<any> => {
@@ -34,20 +35,23 @@ export const CommunityAPI = {
   },
 };
 
-export const useGetAllPosts = () => {
-  return useSuspenseInfiniteQuery({
-    queryKey: ['reviews', '/reviews'],
+export const useGetAllPosts = (params: PageParam) => {
+  return useInfiniteQuery({
+    queryKey: ['posts'],
     queryFn: ({ pageParam }) => CommunityAPI.getAllPosts(pageParam),
     initialPageParam: {
-      searchContent: '',
+      ...params,
       offset: 0,
       limit: 10,
-      orderBy: 'RECENT_DATE',
     } as PageParam,
     getNextPageParam: lastPage => {
-      console.log(lastPage);
+      console.log('이전 페이지: ', lastPage);
 
       return null;
+    },
+    select(data) {
+      console.log('data: ', data);
+      return data;
     },
   });
 };

@@ -123,3 +123,13 @@ export const windowOffsetAtom = atom<{ width: number; height: number }>({
   key: 'offset',
   default: { width: window.innerWidth, height: window.innerHeight },
 });
+
+// Community
+export const communityParamsAtom = atom<{
+  searchContent: string;
+  postType: 'INFORMATION_SHARE' | 'GARDEN_SHOWCASE' | 'QUESTION' | 'ETC' | '';
+  orderBy: 'COMMENT_COUNT' | 'RECENT_DATE' | 'LIKE_COUNT' | 'OLDER_DATE' | '';
+}>({
+  key: 'communityParams',
+  default: { searchContent: '', postType: '', orderBy: '' },
+});

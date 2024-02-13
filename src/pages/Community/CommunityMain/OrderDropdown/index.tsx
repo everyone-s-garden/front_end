@@ -1,31 +1,38 @@
+import React, { useCallback, useEffect } from 'react';
 import { ArrowBelowIcon } from 'assets/community';
 import Dropdown from 'components/Dropdown';
-import React from 'react';
+import { useRecoilState } from 'recoil';
+import { communityParamsAtom } from 'recoil/atom';
 import styled from 'styled-components';
+import { ORDER_BY, ORDER_BY_REVERSE } from '../constants';
 
 const OrderDropdown = () => {
+  const [params, setParams] = useRecoilState(communityParamsAtom);
+
+  const handleClickOrder = useCallback(
+    (order: keyof typeof ORDER_BY_REVERSE) => {
+      if (params.orderBy === ORDER_BY_REVERSE[order]) return;
+
+      setParams(prevParams => ({ ...prevParams, orderBy: ORDER_BY_REVERSE[order] }));
+    },
+    [params.orderBy, setParams],
+  );
+
   return (
     <Container>
       <Dropdown>
         <Dropdown.Trigger>
           <Order>
-            <span>정렬</span>
+            <span>{ORDER_BY[params.orderBy as keyof typeof ORDER_BY] || '정렬'}</span>
             <ArrowBelowIcon />
           </Order>
         </Dropdown.Trigger>
         <Dropdown.Menu top={30} width={110} portal="bottom-right">
-          <List>
-            <Dropdown.Item>댓글순</Dropdown.Item>
-          </List>
-          <List>
-            <Dropdown.Item>최근 날짜순</Dropdown.Item>
-          </List>
-          <List>
-            <Dropdown.Item>오래된 날짜순</Dropdown.Item>
-          </List>
-          <List>
-            <Dropdown.Item>좋아요 순</Dropdown.Item>
-          </List>
+          {Object.values(ORDER_BY).map((order, index) => (
+            <List key={index} onClick={() => handleClickOrder(order)}>
+              <Dropdown.Item>{order}</Dropdown.Item>
+            </List>
+          ))}
         </Dropdown.Menu>
       </Dropdown>
     </Container>

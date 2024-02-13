@@ -1,5 +1,6 @@
-import { CommentIcon, HeartIcon } from 'assets/community';
 import React from 'react';
+import { CommentIcon, HeartIcon } from 'assets/community';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 interface PostListProps {
@@ -8,39 +9,46 @@ interface PostListProps {
     title: string;
     likeCount: number;
     commentCount: number;
+    content: string;
+    preview: string;
+    authorId: number;
+    postType: 'INFORMATION_SHARE' | 'GARDEN_SHOWCASE' | 'QUESTION' | 'ETC';
     createdAt: string;
   }[];
 }
 
-const PostList = ({ posts }: PostListProps) => {
-  const dummyData = Array.from({ length: 30 }, (_, i) => {
-    const postTypeOptions = ['INFORMATION_SHARE', 'GARDEN_SHOWCASE', 'QUESTION', 'ETC'];
-    const randomPostType = postTypeOptions[Math.floor(Math.random() * postTypeOptions.length)];
+const dummyData = Array.from({ length: 30 }, (_, i) => {
+  const postTypeOptions = ['INFORMATION_SHARE', 'GARDEN_SHOWCASE', 'QUESTION', 'ETC'];
+  const randomPostType = postTypeOptions[Math.floor(Math.random() * postTypeOptions.length)];
 
-    return {
-      postType: randomPostType,
-      title: `저희 텃밭에서 몇가지 야채를 수확했어요 ! #텃밭 #수확의기쁨`,
-      content: `텃밭에서 키운 방울토마토와 상추를 수확했어요. 주말농장을 운영하는 내내 힘들기도하고 어떻게 시작을 해야 할지 모르는 상태에서 시작 했는데 수확해서 너무 기뻐요! 모르시는 것 있으면 아래 댓글 달아주시면 답변 해드리겠습니다!`,
-      img:
-        (i + 1) % 2 === 0
-          ? 'https://media.hellobot.co/fixedmenu/%E1%84%89%E1%85%B5%E1%84%85%E1%85%A9_%E1%84%8B%E1%85%A1%E1%84%86%E1%85%AE%20%E1%84%8B%E1%85%B5%E1%84%85%E1%85%B3%E1%86%B7%20%E1%84%8C%E1%85%B5%E1%86%BA%E1%84%80%E1%85%B5.png'
-          : null,
-      likeCount: Math.floor(Math.random() * 100),
-      commentCount: Math.floor(Math.random() * 50),
-      author: `Author ${i + 1}`,
-      profile:
-        'https://media.hellobot.co/fixedmenu/%E1%84%89%E1%85%B5%E1%84%85%E1%85%A9_%E1%84%8B%E1%85%A1%E1%84%86%E1%85%AE%20%E1%84%8B%E1%85%B5%E1%84%85%E1%85%B3%E1%86%B7%20%E1%84%8C%E1%85%B5%E1%86%BA%E1%84%80%E1%85%B5.png',
-    };
-  });
+  return {
+    postId: i + 1,
+    title: `저희 텃밭에서 몇가지 야채를 수확했어요 ! #텃밭 #수확의기쁨`,
+    content: `텃밭에서 키운 방울토마토와 상추를 수확했어요. 주말농장을 운영하는 내내 힘들기도하고 어떻게 시작을 해야 할지 모르는 상태에서 시작 했는데 수확해서 너무 기뻐요! 모르시는 것 있으면 아래 댓글 달아주시면 답변 해드리겠습니다!`,
+    preview:
+      (i + 1) % 2 === 0
+        ? 'https://media.hellobot.co/fixedmenu/%E1%84%89%E1%85%B5%E1%84%85%E1%85%A9_%E1%84%8B%E1%85%A1%E1%84%86%E1%85%AE%20%E1%84%8B%E1%85%B5%E1%84%85%E1%85%B3%E1%86%B7%20%E1%84%8C%E1%85%B5%E1%86%BA%E1%84%80%E1%85%B5.png'
+        : null,
+    likeCount: Math.floor(Math.random() * 100),
+    commentCount: Math.floor(Math.random() * 50),
+    author: `Author ${i + 1}`,
+    postType: randomPostType,
+    profile:
+      'https://media.hellobot.co/fixedmenu/%E1%84%89%E1%85%B5%E1%84%85%E1%85%A9_%E1%84%8B%E1%85%A1%E1%84%86%E1%85%AE%20%E1%84%8B%E1%85%B5%E1%84%85%E1%85%B3%E1%86%B7%20%E1%84%8C%E1%85%B5%E1%86%BA%E1%84%80%E1%85%B5.png',
+  };
+});
+
+const PostList = ({ posts }: PostListProps) => {
+  const navigate = useNavigate();
 
   return (
     <Container>
-      {dummyData.map((post, index) => {
-        const { postType, title, content, img, likeCount, commentCount, author, profile } = post;
+      {dummyData.map(post => {
+        const { postId, postType, title, content, preview, likeCount, commentCount, author, profile } = post;
 
         return (
-          <List key={index}>
-            <PostItem>
+          <List key={postId}>
+            <PostItem onClick={() => navigate(`/community/${postId}`)}>
               <Info>
                 <Flex>
                   <Badge>{postType}</Badge>
@@ -60,7 +68,7 @@ const PostList = ({ posts }: PostListProps) => {
                   </div>
                 </Profile>
               </Info>
-              {img ? <PostImage src={img} /> : <Box></Box>}
+              {preview ? <PostImage src={preview} /> : <Box></Box>}
             </PostItem>
           </List>
         );

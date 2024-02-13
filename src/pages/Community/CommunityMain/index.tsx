@@ -1,21 +1,18 @@
-import { useGetAllPosts } from 'api/CommunityAPI';
-import useInfiniteScroll from 'hooks/useInfiniteScroll';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import CommunityHeader from './CommunityHeader';
 import styled from 'styled-components';
 import OrderDropdown from './OrderDropdown';
-import PostList from 'components/PostList';
+import CommunityPostList from './CommunityPostList';
+import { useResetRecoilState } from 'recoil';
+import { communityParamsAtom } from 'recoil/atom';
 
 const Community = () => {
-  const { data, fetchNextPage, hasNextPage, refetch } = useGetAllPosts();
+  const resetParams = useResetRecoilState(communityParamsAtom);
 
-  const { ref } = useInfiniteScroll<HTMLDivElement>({
-    fetchData: () => {
-      fetchNextPage();
-    },
-    hasNextPage,
-  });
+  useEffect(() => {
+    resetParams();
+  }, [resetParams]);
 
   return (
     <>
@@ -26,9 +23,8 @@ const Community = () => {
 
       <Container>
         <OrderDropdown />
-        <PostList />
+        <CommunityPostList />
       </Container>
-      <div ref={ref}></div>
     </>
   );
 };
