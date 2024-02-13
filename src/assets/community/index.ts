@@ -9,3 +9,6 @@ export { ReactComponent as ItalicIcon } from './italic.svg';
 export { ReactComponent as UnderlineIcon } from './underline.svg';
 export { ReactComponent as CameraIcon } from './camera.svg';
 export { ReactComponent as DeleteIcon } from './delete.svg';
+export { ReactComponent as SearchIcon } from './search.svg';
+export { ReactComponent as HeartIcon } from './heart.svg';
+export { ReactComponent as CommentIcon } from './comment.svg';
