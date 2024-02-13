@@ -70,12 +70,12 @@ const Notification = () => {
   const { isOpen, toggleSelect, closeSelect } = useSelect();
   const [openNotification, setOpenNotification] = useState(false);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const res = await customAxios.get('notification/all');
-  //     console.log(res.data);
-  //   })();
-  // }, []);
+  useEffect(() => {
+    (async () => {
+      const res = await customAxios.get('notification/all');
+      console.log(res.data);
+    })();
+  }, []);
 
   return (
     <>
