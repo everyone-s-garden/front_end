@@ -57,6 +57,7 @@ const MobileToolBar = ({ value }: MobileToolBarProps) => {
             <Dropdown.Menu top={45}>
               {Object.keys(SIZE_TYPE).map((key, index) => (
                 <li key={index} onClick={e => handleClickSize(e, key as keyof typeof SIZE_TYPE)}>
+                  {/* TODO: 텍스트 크기 조절 */}
                   <Dropdown.Item>{key}</Dropdown.Item>
                 </li>
               ))}

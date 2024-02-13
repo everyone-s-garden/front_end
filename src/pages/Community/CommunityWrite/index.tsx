@@ -26,6 +26,7 @@ const CommunityWrite = () => {
   const { mutate: createPost } = useCreatePost();
   const navigate = useNavigate();
 
+  // TODO: 수정 페이지 구현 시 기존 게시글 정보를 불러와서 defaultValues로 설정
   const methods = useForm<Post>({
     defaultValues: {
       postType: '주제',

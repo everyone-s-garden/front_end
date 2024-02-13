@@ -86,6 +86,7 @@ const PostToolBar = ({ value }: PostToolBarProps) => {
               {Object.keys(SIZE_TYPE).map((key, index) => (
                 <li key={index} onClick={e => handleClickSize(e, key as keyof typeof SIZE_TYPE)}>
                   <Dropdown.Item>{key}</Dropdown.Item>
+                  {/* TODO: 텍스트 크기 조절 */}
                 </li>
               ))}
             </Dropdown.Menu>

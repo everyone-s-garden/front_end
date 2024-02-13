@@ -12,7 +12,6 @@ interface PostEditorProps {
 const PostEditor = ({ value, onChange }: PostEditorProps) => {
   const {
     setValue,
-    watch,
     register,
     formState: { errors },
   } = useFormContext<Post>();
