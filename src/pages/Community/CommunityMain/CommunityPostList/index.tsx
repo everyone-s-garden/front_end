@@ -8,9 +8,10 @@ import { communityParamsAtom } from 'recoil/atom';
 const CommunityPostList = () => {
   const [params, setParams] = useRecoilState(communityParamsAtom);
 
-  const { data, fetchNextPage, hasNextPage, refetch } = useGetAllPosts(params);
+  const { data, fetchNextPage, hasNextPage } = useGetAllPosts();
 
-  console.log(params);
+  console.log(data);
+  // console.log(params);
 
   const { ref } = useInfiniteScroll<HTMLDivElement>({
     fetchData: () => {

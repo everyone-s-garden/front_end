@@ -131,5 +131,5 @@ export const communityParamsAtom = atom<{
   orderBy: 'COMMENT_COUNT' | 'RECENT_DATE' | 'LIKE_COUNT' | 'OLDER_DATE' | '';
 }>({
   key: 'communityParams',
-  default: { searchContent: '', postType: '', orderBy: '' },
+  default: { searchContent: '', postType: 'ETC', orderBy: '' },
 });

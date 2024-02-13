@@ -1,5 +1,7 @@
 import { useInfiniteQuery, useMutation, useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import HttpRequest from './HttpRequest';
+import { useRecoilValue } from 'recoil';
+import { communityParamsAtom } from 'recoil/atom';
 
 interface PageParam {
   searchContent: string;
@@ -18,10 +20,26 @@ interface Post {
   images: FormData;
 }
 
+interface PostList {
+  postInfos: {
+    postId: number;
+    title: string;
+    likeCount: number;
+    commentCount: number;
+    content: string;
+    preview: string;
+    authorId: number;
+    postType: 'INFORMATION_SHARE' | 'GARDEN_SHOWCASE' | 'QUESTION' | 'ETC';
+    createdDate: string;
+  }[];
+}
+
 export const CommunityAPI = {
-  getAllPosts: async (pageParam: PageParam): Promise<any> => {
+  getAllPosts: async (pageParam: PageParam): Promise<PostList> => {
+    const orderBy = pageParam.orderBy || 'RECENT_DATE';
+
     const { data } = await HttpRequest.get(`v1/posts`, {
-      params: pageParam,
+      params: { ...pageParam, orderBy },
     });
     return data;
   },
@@ -35,19 +53,27 @@ export const CommunityAPI = {
   },
 };
 
-export const useGetAllPosts = (params: PageParam) => {
-  return useInfiniteQuery({
-    queryKey: ['posts'],
-    queryFn: ({ pageParam }) => CommunityAPI.getAllPosts(pageParam),
-    initialPageParam: {
-      ...params,
-      offset: 0,
-      limit: 10,
-    } as PageParam,
-    getNextPageParam: lastPage => {
-      console.log('이전 페이지: ', lastPage);
+export const useGetAllPosts = () => {
+  const params = useRecoilValue(communityParamsAtom);
 
-      return null;
+  return useInfiniteQuery({
+    queryKey: ['posts', params],
+    queryFn: ({ pageParam }) => CommunityAPI.getAllPosts({ ...pageParam, ...params }),
+    initialPageParam: {
+      offset: 0,
+      limit: 6,
+    } as PageParam,
+    getNextPageParam: (...pages) => {
+      const [data, , params] = pages;
+
+      if (data.postInfos.length < 6) {
+        return undefined;
+      }
+
+      return {
+        ...params,
+        offset: params.offset || 0 + 6,
+      };
     },
     select(data) {
       console.log('data: ', data);
