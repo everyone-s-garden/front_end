@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { CommentIcon, HeartIcon } from 'assets/community';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -18,29 +18,14 @@ interface PostListProps {
   }[];
 }
 
-const dummyData = Array.from({ length: 30 }, (_, i) => {
-  const postTypeOptions = ['INFORMATION_SHARE', 'GARDEN_SHOWCASE', 'QUESTION', 'ETC'];
-  const randomPostType = postTypeOptions[Math.floor(Math.random() * postTypeOptions.length)];
-
-  return {
-    postId: i + 1,
-    title: `저희 텃밭에서 몇가지 야채를 수확했어요 ! #텃밭 #수확의기쁨`,
-    content: `텃밭에서 키운 방울토마토와 상추를 수확했어요. 주말농장을 운영하는 내내 힘들기도하고 어떻게 시작을 해야 할지 모르는 상태에서 시작 했는데 수확해서 너무 기뻐요! 모르시는 것 있으면 아래 댓글 달아주시면 답변 해드리겠습니다!`,
-    preview:
-      (i + 1) % 2 === 0
-        ? 'https://media.hellobot.co/fixedmenu/%E1%84%89%E1%85%B5%E1%84%85%E1%85%A9_%E1%84%8B%E1%85%A1%E1%84%86%E1%85%AE%20%E1%84%8B%E1%85%B5%E1%84%85%E1%85%B3%E1%86%B7%20%E1%84%8C%E1%85%B5%E1%86%BA%E1%84%80%E1%85%B5.png'
-        : null,
-    likeCount: Math.floor(Math.random() * 100),
-    commentCount: Math.floor(Math.random() * 50),
-    author: `Author ${i + 1}`,
-    postType: randomPostType,
-    profile:
-      'https://media.hellobot.co/fixedmenu/%E1%84%89%E1%85%B5%E1%84%85%E1%85%A9_%E1%84%8B%E1%85%A1%E1%84%86%E1%85%AE%20%E1%84%8B%E1%85%B5%E1%84%85%E1%85%B3%E1%86%B7%20%E1%84%8C%E1%85%B5%E1%86%BA%E1%84%80%E1%85%B5.png',
-  };
-});
-
 const PostList = ({ posts }: PostListProps) => {
   const navigate = useNavigate();
+
+  const getPlainText = useCallback((content: string) => {
+    const $div = document.createElement('div');
+    $div.innerHTML = content;
+    return $div.textContent || $div.innerText || '';
+  }, []);
 
   return (
     <Container>
@@ -55,7 +40,7 @@ const PostList = ({ posts }: PostListProps) => {
                   <Badge>{postType}</Badge>
                   <h3>{title}</h3>
                 </Flex>
-                <summary>{content}</summary>
+                <summary>{getPlainText(content)}</summary>
                 <Profile>
                   <Author authorId={authorId} />
                   <div>
