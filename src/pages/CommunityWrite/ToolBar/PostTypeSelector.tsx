@@ -1,5 +1,5 @@
 import React from 'react';
-import Dropdown from '../Dropdown';
+import Dropdown from '../../../components/Dropdown';
 import { ArrowBelowIcon } from 'assets/community';
 import { useFormContext } from 'react-hook-form';
 import { Post } from '../types';

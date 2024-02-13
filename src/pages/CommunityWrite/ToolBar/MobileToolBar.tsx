@@ -1,6 +1,6 @@
 import React, { MouseEvent, useState } from 'react';
 import ToolBar from '.';
-import Dropdown from '../Dropdown';
+import Dropdown from '../../../components/Dropdown';
 import { useFormContext } from 'react-hook-form';
 import { BlockStyles, InlineStyles, Post } from '../types';
 import { ArrowBelowIcon, BoldIcon, ItalicIcon, UnderlineIcon } from 'assets/community';
