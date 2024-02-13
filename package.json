@@ -82,6 +82,7 @@
     "@tanstack/eslint-plugin-query": "^5.17.7",
     "@types/axios": "^0.14.0",
     "@types/draft-js": "^0.11.17",
+    "@types/draftjs-to-html": "^0.8.4",
     "@types/navermaps": "^3.6.4",
     "@types/react-datepicker": "^4.11.2",
     "@types/react-slick": "^0.23.13",

@@ -2246,13 +2246,20 @@
   resolved "https://registry.npmjs.org/@types/d3-timer/-/d3-timer-3.0.0.tgz"
   integrity sha512-HNB/9GHqu7Fo8AQiugyJbv6ZxYz58wef0esl4Mv828w1ZKpAshw/uFWVDUcIB9KKFeFKoxS3cHY07FFgtTRZ1g==
 
-"@types/draft-js@^0.11.17":
+"@types/draft-js@*", "@types/draft-js@^0.11.17":
   version "0.11.17"
   resolved "https://registry.npmjs.org/@types/draft-js/-/draft-js-0.11.17.tgz"
   integrity sha512-th0OwSPftG2r5rvGxS7nt8I7hcWMlrQ9OJcNx6MdXAwO797W78IGEsGWonO+turVBWEd3qylZRGBVtpEX9vSYQ==
   dependencies:
     "@types/react" "*"
     immutable "~3.7.4"
+
+"@types/draftjs-to-html@^0.8.4":
+  version "0.8.4"
+  resolved "https://registry.npmjs.org/@types/draftjs-to-html/-/draftjs-to-html-0.8.4.tgz"
+  integrity sha512-5FZcjFoJL57N/IttLCTCNI0krX+181oCl5hf76u3TqPkqBAphHrJAO9ReYesx9138kcObaYmpnWC2Yrqxoqd2Q==
+  dependencies:
+    "@types/draft-js" "*"
 
 "@types/eslint-scope@^3.7.3":
   version "3.7.4"

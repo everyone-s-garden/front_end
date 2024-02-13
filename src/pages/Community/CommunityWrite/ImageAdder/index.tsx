@@ -21,11 +21,7 @@ interface ImageAdderProps {
 }
 
 const ImageAdder = ({ imageFiles, setImageFiles }: ImageAdderProps) => {
-  const {
-    watch,
-    register,
-    formState: { errors },
-  } = useFormContext<Post>();
+  const { watch, register } = useFormContext<Post>();
 
   const images = watch('images');
 
@@ -72,9 +68,9 @@ const ImageAdder = ({ imageFiles, setImageFiles }: ImageAdderProps) => {
             id="fileInput"
             multiple={true}
             accept="image/jpg,image/png,image/jpeg,image/gif"
-            {...register('images', { required: '이미지를 추가해주세요.' })}
+            {...register('images')}
           />
-          <ImageLabel htmlFor="fileInput" errorState={!!errors.images}>
+          <ImageLabel htmlFor="fileInput">
             <div>
               <CameraIcon />
               <p>{imageFiles.length}/10</p>
@@ -108,13 +104,12 @@ const ImageBox = styled.li`
   flex-shrink: 0;
 `;
 
-const ImageLabel = styled.label<{ errorState?: boolean }>`
+const ImageLabel = styled.label`
   display: block;
   width: 100%;
   height: 100%;
   cursor: pointer;
   border-radius: 10px;
-  border: 1px solid ${({ errorState, theme }) => (errorState ? theme.colors.error : 'none')};
 
   & div {
     display: flex;

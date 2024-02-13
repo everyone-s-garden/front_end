@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import { useForm, SubmitHandler, FormProvider, Controller } from 'react-hook-form';
 import { useCreatePost } from 'api/CommunityAPI';
-import { EditorState } from 'draft-js';
+import { EditorState, convertToRaw } from 'draft-js';
 import { Post } from './types';
 import PostToolBar from './ToolBar/PostToolBar';
 import PostEditor from './PostEditor';
@@ -11,6 +11,8 @@ import ImageAdder from './ImageAdder';
 import { useNavigate } from 'react-router-dom';
 import MobileToolBar from './ToolBar/MobileToolBar';
 import PostTypeSelector from './ToolBar/PostTypeSelector';
+import draftToHtml from 'draftjs-to-html';
+import { POST_TYPE } from './constants';
 
 const CommunityWrite = () => {
   const [isActive, setIsActive] = useState(false);
@@ -59,14 +61,13 @@ const CommunityWrite = () => {
       return;
     }
 
-    if (!imageFiles.length) {
-      methods.setError('images', { type: 'required', message: '이미지를 1개 이상 업로드해주세요.' });
-      return;
-    }
     const formData = new FormData();
-    const contentStr = JSON.stringify(content);
+
+    const rawContentState = convertToRaw(content.getCurrentContent());
+    const markup = draftToHtml(rawContentState);
+
     /** 속닥속닥 게시글 blob */
-    const jsonBlob = new Blob([JSON.stringify({ title, content: contentStr, postType: 'INFORMATION_SHARE' })], {
+    const jsonBlob = new Blob([JSON.stringify({ title, content: markup, postType: POST_TYPE[postType] })], {
       type: 'application/json',
     });
 
