@@ -1,5 +1,5 @@
-import pc1 from 'assets/main/month/pc/1월.png';
-import pc2 from 'assets/main/month/pc/2월.png';
+import pc1 from 'assets/main/month/pc/1월.png';
+import pc2 from 'assets/main/month/pc/2월.png';
 import pc3 from 'assets/main/month/pc/3월.png';
 import pc4 from 'assets/main/month/pc/4월.png';
 import pc5 from 'assets/main/month/pc/5월.png';

@@ -4,7 +4,7 @@ const gardenBaseUrl = 'v2/gardens';
 
 export const getMyGardensAPI = {
   fetchLikeGardensAPI: async () => {
-    const res = await customAxios.get(`${gardenBaseUrl}/like`);
+    const res = await customAxios.get(`${gardenBaseUrl}/likes`);
     return res;
   },
   fetchRecentGardensAPI: async () => {
@@ -19,11 +19,15 @@ export const getMyGardensAPI = {
 
 export const getCropTradeAPI = {
   fetchSalesHistoryAPI: async () => {
-    const res = await customAxios.get('');
+    const res = await customAxios.get('v1/my/crops/bookmarks?offset=0&limit=10');
     return res;
   },
   fetchPurChaseHIstoryAPI: async () => {
     const res = await customAxios.get('v1/my/crops/buy?offset=0&limit=10');
+    return res;
+  },
+  fetchWishListAPI: async () => {
+    const res = await customAxios.get('v1/my/crops/bookmarks?offset=0&limit=10');
     return res;
   },
 };
