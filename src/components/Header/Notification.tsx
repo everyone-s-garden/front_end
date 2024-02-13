@@ -78,12 +78,6 @@ const Notification = () => {
   const [notifications, setNotifications] = useState<INotifications[]>([]);
 
   useEffect(() => {
-<<<<<<< HEAD
-    (async () => {
-      const res = await customAxios.get('notification/all');
-      console.log(res.data);
-    })();
-=======
     const fetchNotifications = async () => {
       try {
         const res = await customAxios.get('notification/new');
@@ -96,7 +90,6 @@ const Notification = () => {
     const intervalId = setInterval(fetchNotifications, 50000);
 
     return () => clearInterval(intervalId);
->>>>>>> 81840f87dd2acaba232cfede611f5ef0e21f7aac
   }, []);
 
   return (
