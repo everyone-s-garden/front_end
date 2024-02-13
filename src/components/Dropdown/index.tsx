@@ -8,6 +8,8 @@ interface TriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
 interface MenuProps {
   top: number;
+  portal?: '' | 'top' | 'top-right' | 'bottom-right';
+  width?: number;
 }
 
 interface ItemProps extends ButtonHTMLAttributes<HTMLButtonElement> {}
@@ -47,7 +49,7 @@ const Trigger = ({ children, ...rest }: PropsWithChildren<TriggerProps>) => {
   );
 };
 
-const Menu = ({ children, top }: PropsWithChildren<MenuProps>) => {
+const Menu = ({ children, top, portal = '', width = 120 }: PropsWithChildren<MenuProps>) => {
   const menuRef = useRef<HTMLUListElement>(null);
   const { visible, onClose } = useDropdown();
 
@@ -65,7 +67,7 @@ const Menu = ({ children, top }: PropsWithChildren<MenuProps>) => {
   }, [onClose]);
 
   return (
-    <DropdownMenu ref={menuRef} top={top} visible={visible}>
+    <DropdownMenu ref={menuRef} top={top} width={width} portal={portal} visible={visible}>
       {children}
     </DropdownMenu>
   );
@@ -104,8 +106,20 @@ const DropdownMenu = styled.ul<MenuProps & { visible: boolean }>`
   z-index: 2;
   background-color: white;
   left: 50%;
-  bottom: 0;
   transform: translateX(-50%);
+  ${({ portal }) => {
+    if (portal === 'top') {
+      return 'top: 0; left: 50%; transform: translateX(-50%);';
+    }
+    if (portal === 'top-right') {
+      return 'top: 0; right: 0;';
+    }
+    if (portal === 'bottom-right') {
+      return 'left: 0; transform: none;';
+    }
+    return 'bottom: 0;';
+  }};
+  bottom: 0;
   display: ${({ visible }) => (visible ? 'block' : 'none')};
   border: 1px solid ${({ theme }) => theme.colors.gray[200]};
   z-index: 300;
@@ -128,7 +142,7 @@ const DropdownMenu = styled.ul<MenuProps & { visible: boolean }>`
     top: ${({ top }) => top}px;
     position: absolute;
     bottom: auto;
-    width: 120px;
+    width: ${({ width }) => width + 'px'};
     border-radius: 10px;
 
     & li:first-child button {
@@ -154,7 +168,7 @@ const DropdownItem = styled.button`
 
   height: 60px;
   width: 100%;
-  padding: 15px;
+  padding: 15px 0;
   font-size: 16px;
 
   @media (${({ theme }) => theme.devices.mobile}) {
