@@ -1,12 +1,12 @@
 import React, { MouseEvent, useState } from 'react';
 import ToolBar from '.';
-import Dropdown from '../../../components/Dropdown';
 import { useFormContext } from 'react-hook-form';
 import { BlockStyles, InlineStyles, Post } from '../types';
 import { ArrowBelowIcon, BoldIcon, ItalicIcon, UnderlineIcon } from 'assets/community';
 import { ALIGN_TYPE, SIZE_TYPE } from '../constants';
 import { EditorState, RichUtils } from 'draft-js';
 import styled from 'styled-components';
+import Dropdown from 'components/Dropdown';
 
 const postTypes = ['정보 공유', '텃밭 자랑', '질문하기', '기타'] as const;
 

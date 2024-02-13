@@ -1,9 +1,9 @@
 import React from 'react';
-import Dropdown from '../../../components/Dropdown';
 import { ArrowBelowIcon } from 'assets/community';
 import { useFormContext } from 'react-hook-form';
 import { Post } from '../types';
 import styled from 'styled-components';
+import Dropdown from 'components/Dropdown';
 
 const postTypes = ['정보 공유', '텃밭 자랑', '질문하기', '기타'] as const;
 

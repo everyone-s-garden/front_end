@@ -33,8 +33,6 @@ const PostList = ({ posts }: PostListProps) => {
     };
   });
 
-  console.log(dummyData);
-
   return (
     <Container>
       {dummyData.map((post, index) => {

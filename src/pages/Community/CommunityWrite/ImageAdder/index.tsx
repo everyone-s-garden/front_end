@@ -97,25 +97,6 @@ const ImageAdder = ({ imageFiles, setImageFiles }: ImageAdderProps) => {
 
 export default ImageAdder;
 
-const ImageContainer = styled.ul`
-  display: flex;
-  margin: 0 auto;
-  border-top: 1px solid ${({ theme }) => theme.colors.gray[100]};
-  gap: 14px;
-  width: 100%;
-  max-width: 1188px;
-  overflow-x: auto;
-  padding: 0 20px;
-  padding-top: 16px;
-  margin-bottom: 16px;
-
-  @media (${({ theme }) => theme.devices.mobile}) {
-    margin-bottom: 0;
-    padding: 0 20px;
-    padding-top: 34px;
-  }
-`;
-
 const ImageInput = styled.input`
   display: none;
 `;

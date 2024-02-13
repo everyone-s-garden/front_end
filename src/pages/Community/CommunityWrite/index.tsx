@@ -36,7 +36,6 @@ const CommunityWrite = () => {
   const postType = methods.watch('postType');
   const title = methods.watch('title');
   const content = methods.watch('content');
-  const images = methods.watch('images');
 
   useEffect(() => {
     if (imageFiles.length) {

@@ -75,6 +75,11 @@ const Container = styled.div`
   .slick-track {
     display: flex;
     margin: 0;
+    margin-right: 10px;
+
+    & > div:first-child {
+      flex-shrink: 0;
+    }
 
     & > div {
       width: 110px;
