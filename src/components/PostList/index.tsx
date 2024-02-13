@@ -2,9 +2,10 @@ import React from 'react';
 import { CommentIcon, HeartIcon } from 'assets/community';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Author from './Author';
 
 interface PostListProps {
-  posts?: {
+  posts: {
     postId: number;
     title: string;
     likeCount: number;
@@ -13,7 +14,7 @@ interface PostListProps {
     preview: string;
     authorId: number;
     postType: 'INFORMATION_SHARE' | 'GARDEN_SHOWCASE' | 'QUESTION' | 'ETC';
-    createdAt: string;
+    createdDate: string;
   }[];
 }
 
@@ -43,8 +44,8 @@ const PostList = ({ posts }: PostListProps) => {
 
   return (
     <Container>
-      {dummyData.map(post => {
-        const { postId, postType, title, content, preview, likeCount, commentCount, author, profile } = post;
+      {posts.map(post => {
+        const { postId, postType, title, content, preview, likeCount, commentCount, authorId } = post;
 
         return (
           <List key={postId}>
@@ -54,10 +55,9 @@ const PostList = ({ posts }: PostListProps) => {
                   <Badge>{postType}</Badge>
                   <h3>{title}</h3>
                 </Flex>
-                <p>{content}</p>
+                <summary>{content}</summary>
                 <Profile>
-                  <img src={profile} alt="작성자 프로필 이미지" />
-                  <span>{author}</span>
+                  <Author authorId={authorId} />
                   <div>
                     <HeartIcon />
                     <span>{likeCount}</span>
@@ -131,7 +131,7 @@ const Info = styled.div`
     }
   }
 
-  & > p {
+  & > summary {
     display: none;
 
     @media (${({ theme }) => theme.devices.mobile}) {
@@ -222,6 +222,13 @@ const Profile = styled.div`
     & > span {
       font-size: 16px;
     }
+  }
+
+  & > figure {
+    height: 24px;
+    width: 24px;
+    background-color: ${({ theme }) => theme.colors.gray[100]};
+    border-radius: 50%;
   }
 `;
 

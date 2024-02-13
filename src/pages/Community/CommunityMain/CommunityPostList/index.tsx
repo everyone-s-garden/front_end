@@ -22,9 +22,7 @@ const CommunityPostList = () => {
 
   return (
     <>
-      <Suspense>
-        <PostList />
-      </Suspense>
+      {data && <PostList posts={data} />}
       <div ref={ref}></div>
     </>
   );
