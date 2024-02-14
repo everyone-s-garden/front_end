@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useMutation, useSuspenseInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
 import HttpRequest from './HttpRequest';
 import { useRecoilValue } from 'recoil';
 import { communityParamsAtom } from 'recoil/atom';
@@ -12,12 +12,14 @@ interface PageParam {
 }
 
 interface Post {
-  texts: {
-    title: string;
-    content: string;
-    postType: 'INFORMATION_SHARE' | 'GARDEN_SHOWCASE' | 'QUESTION' | 'ETC';
-  };
-  images: FormData;
+  commentCount: number;
+  likeCount: number;
+  authorId: number;
+  title: string;
+  content: string;
+  createdDate: string;
+  isLikeClick: boolean;
+  images: string[];
 }
 
 interface PostList {
@@ -34,7 +36,17 @@ interface PostList {
   }[];
 }
 
+interface Comment {
+  commentId: number;
+  parentId: number;
+  likeCount: number;
+  content: string;
+  authorId: number;
+  isLikeClick: boolean;
+}
+
 export const CommunityAPI = {
+  // Post
   getAllPosts: async (pageParam: PageParam): Promise<PostList> => {
     const orderBy = pageParam.orderBy || 'RECENT_DATE';
 
@@ -43,12 +55,66 @@ export const CommunityAPI = {
     });
     return data;
   },
-  getPost: async (id: number): Promise<any> => {
+  getPost: async (id: number): Promise<Post> => {
     const { data } = await HttpRequest.get(`v1/posts/${id}`);
     return data;
   },
   createPost: async (data: FormData): Promise<any> => {
     const res = await HttpRequest.post(`v1/posts`, data);
+    return res;
+  },
+  likePost: async (postId: number): Promise<any> => {
+    const res = await HttpRequest.post(`v1/posts/${postId}/likes`);
+    return res;
+  },
+  unlikePost: async (postId: number): Promise<any> => {
+    const res = await HttpRequest.delete(`v1/posts/${postId}/likes`);
+    return res;
+  },
+  editPost: async (data: FormData, postId: number): Promise<any> => {
+    const res = await HttpRequest.patch(`v1/posts/${postId}`, data);
+    return res;
+  },
+  deletePost: async (postId: number): Promise<any> => {
+    const res = await HttpRequest.delete(`v1/posts/${postId}`);
+    return res;
+  },
+  getPopularPosts: async (): Promise<PostList> => {
+    const { data } = await HttpRequest.get(`v1/posts/popular`);
+    return data;
+  },
+
+  // Comment
+  getComments: async (postId: number): Promise<{ commentInfos: Comment[] }> => {
+    const { data } = await HttpRequest.get(`v1/posts/${postId}/comments`);
+    return data;
+  },
+  createComment: async ({
+    postId,
+    content,
+    parentCommentId,
+  }: {
+    postId: number;
+    content: string;
+    parentCommentId: number;
+  }): Promise<any> => {
+    const res = await HttpRequest.post(`v1/posts/${postId}/comments`, { content, parentCommentId });
+    return res;
+  },
+  likeComment: async (commentId: number): Promise<any> => {
+    const res = await HttpRequest.post(`v1/posts/comments/${commentId}/likes`);
+    return res;
+  },
+  unlikeComment: async (commentId: number): Promise<any> => {
+    const res = await HttpRequest.delete(`v1/posts/comments/${commentId}/likes`);
+    return res;
+  },
+  editComment: async ({ commentId, content }: { postId: number; commentId: number; content: string }): Promise<any> => {
+    const res = await HttpRequest.patch(`v1/posts/comments/${commentId}`, { content });
+    return res;
+  },
+  deleteComment: async (commentId: number): Promise<any> => {
+    const res = await HttpRequest.delete(`v1/posts/comments/${commentId}`);
     return res;
   },
 };
