@@ -22,6 +22,7 @@
     "axios": "^1.3.5",
     "browser-image-compression": "^2.0.2",
     "caniuse-lite": "^1.0.30001570",
+    "dayjs": "^1.11.10",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
     "framer-motion": "^10.18.0",
