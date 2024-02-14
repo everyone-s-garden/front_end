@@ -37,6 +37,6 @@ const CommunityDetail = () => {
 
 export default CommunityDetail;
 
-const Container = styled.section`
+const Container = styled.article`
   margin-bottom: 20px;
 `;

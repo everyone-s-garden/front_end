@@ -49,7 +49,7 @@ const PostImageSlider = ({ images }: PostImageSliderProps) => {
 
 export default PostImageSlider;
 
-const Container = styled.section`
+const Container = styled.figure`
   height: 372px;
 
   & * {
