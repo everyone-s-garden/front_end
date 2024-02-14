@@ -44,7 +44,7 @@ const Container = styled.section`
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray[100]};
 
   @media (${({ theme }) => theme.devices.mobile}) {
-    padding-inline: 7.5px;
+    padding-inline: 27.5px;
     gap: 12px;
   }
 `;

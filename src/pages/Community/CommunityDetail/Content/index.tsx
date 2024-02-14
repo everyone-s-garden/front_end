@@ -37,6 +37,10 @@ const Container = styled.section`
 
   line-height: 1.5;
 
+  & > section {
+    /* padding-inline: 20px; */
+  }
+
   & h1 {
     font-size: 20px;
   }
@@ -60,7 +64,7 @@ const Container = styled.section`
   }
 `;
 
-const Report = styled.div`
+const Report = styled.section`
   text-align: right;
   margin-top: 24px;
 
