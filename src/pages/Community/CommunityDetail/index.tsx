@@ -5,6 +5,7 @@ import Title from './Title';
 import PopularPostList from './PopularPostList';
 import PostImageSlider from './PostImageSlider';
 import Content from './Content';
+import Author from './Author';
 
 const CommunityDetail = () => {
   // const;
@@ -31,6 +32,7 @@ const CommunityDetail = () => {
           ]}
         />
         <Content text="" />
+        <Author authorId={6} />
         <PopularPostList />
       </Container>
     </>

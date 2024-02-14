@@ -1,5 +1,6 @@
 import { useGetUser } from 'api/UserAPI';
 import React from 'react';
+import DefaultProfile from 'assets/default-profile.png';
 
 const Author = ({ authorId }: { authorId: number }) => {
   const { data: user } = useGetUser(authorId);
@@ -14,7 +15,7 @@ const Author = ({ authorId }: { authorId: number }) => {
 
   return (
     <>
-      {user.profileImageUrl ? <img src={user.profileImageUrl} alt="작성자 프로필 이미지" /> : <figure />}
+      <img src={user.profileImageUrl ?? DefaultProfile} alt="작성자 프로필 이미지" />
       <span>{user.nickname}</span>
     </>
   );
