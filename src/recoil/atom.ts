@@ -69,6 +69,15 @@ export const selectedMapLocationAtom = atom<ILocation | null>({
   default: null,
 });
 
+export const myLocationAtom = atom<ILocation>({
+  key: 'myLocation',
+  default: { position: '서울특별시', latitude: 37.576022, longitude: 126.9769 },
+});
+
+// export const recentListsAtom = atom<IGardens[]>({
+//   key: 'recentLists',
+//   default: [],
+// });
 // export const recentListsAtom = atom<IGardens[]>({
 //   key: 'recentLists',
 //   default: [],
@@ -118,7 +127,6 @@ export const memberName = atom<string | null>({
   key: 'memberName',
   default: null,
 });
-
 export const windowOffsetAtom = atom<{ width: number; height: number }>({
   key: 'offset',
   default: { width: window.innerWidth, height: window.innerHeight },

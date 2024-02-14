@@ -36,6 +36,9 @@ const DeleteAccount = () => {
         <p style={{ marginBottom: 60 }}>
           계정을 삭제하면 게시글,채팅 등 모든 활동 정보가 삭제됩니다. 계정 삭제 후 7일간 다시 가입할 수 없어요.
         </p>
+        <p style={{ marginBottom: 60 }}>
+          계정을 삭제하면 게시글,채팅 등 모든 활동 정보가 삭제됩니다. 계정 삭제 후 7일간 다시 가입할 수 없어요.
+        </p>
         <ButtonWrapper>
           <button onClick={() => nav(-1)} style={{ backgroundColor: '#9EC646', color: 'white' }}>
             뒤로가기
@@ -56,6 +59,7 @@ const Container = styled.section`
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     padding-top: 22px;
     padding-bottom: 0;
+    padding-bottom: 40px;
   }
 `;
 
@@ -110,10 +114,14 @@ const Li = styled.li`
 `;
 
 const ButtonWrapper = styled.div`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 10%;
   display: flex;
-  margin-left: auto;
   margin-right: auto;
   margin-top: auto;
+  margin-left: auto;
   button:first-child {
     margin-right: 21px;
     @media screen and (max-width: ${BREAK_POINT.MOBILE}) {

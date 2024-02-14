@@ -9,6 +9,21 @@ import { BREAK_POINT } from 'constants/style';
 import Weather from './Weather/Weather';
 
 const Main = () => {
+  // const token =
+  //   'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiUm9sZSI6IlVTRVIiLCJleHAiOjE3MDczMDY1OTN9.2Cnj3GbiC3OxKit8iFv84VzTd88_u8kSMMZoS6LGFb0';
+  // useEffect(() => {
+  //   (async () => {
+  //     const res = await (
+  //       await fetch('https://every-garden.kro.kr/v1/weathers/all', {
+  //         method: 'get',
+  //         headers: {
+  //           'access-token': token,
+  //         },
+  //       })
+  //     ).json();
+  //     console.log(res);
+  //   })();
+  // });
   return (
     <Container>
       <Helmet>
@@ -27,12 +42,13 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  max-width: 1440px;
   margin: 0 auto;
   gap: 40px;
+  padding-bottom: 57px;
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     gap: 80px;
+    padding-bottom: 92px;
   }
 `;
 

@@ -73,15 +73,14 @@ const SubHeader = ({
   const commentPostMatch = useMatch('/my/whisper/comment_post');
   const whisperLikeMatch = useMatch('/my/whisper/like');
 
+  // const res = await customAxios.get('members/my');
+  // const memberId = getItem('member_id');
+  // setMemberId(Number(memberId));
   return (
     <ButtonWrapper>
       {(myGardensMatch || indexRoutingMatch) && (
         <>
-          <Btn
-            onClick={() => nav('my_gardens/like')}
-            match={likeMatch !== null || indexRoutingMatch !== null}
-            secondary={true}
-          >
+          <Btn onClick={() => nav('my_gardens/like')} match={likeMatch !== null || indexRoutingMatch} secondary={true}>
             찜한텃밭
             {(likeMatch || indexRoutingMatch) && <ButtonHighlight layoutId="1" />}
           </Btn>
@@ -168,7 +167,7 @@ const Mypage = () => {
 
   const [isFeedbackOpen, setIsFeedbackOpen] = useRecoilState(isFeedbackOpenAtom);
   const windowWidth = useRecoilValue(windowOffsetAtom);
-  const indexRoutingMatch = useMatch('/my');
+  const indexRoutingMatch = useMatch('/my')?.pathname;
   return (
     <>
       {windowWidth.width > BREAK_POINT.MOBILE_NUMBER ? (
@@ -178,11 +177,11 @@ const Mypage = () => {
               <ButtonWrapper>
                 <Btn
                   onClick={() => nav('/my/my_gardens/like')}
-                  match={myGardensMatch !== null || indexRoutingMatch !== null}
+                  match={myGardensMatch !== null || indexRoutingMatch === '/my'}
                 >
                   나의 텃밭
                 </Btn>
-                <Btn onClick={() => nav('/my/crop_trade/sales_history')} match={cropTradeMatch !== null}>
+                <Btn onClick={() => nav('/my/crop_trade/regional_certification')} match={cropTradeMatch !== null}>
                   작물거래
                 </Btn>
                 <Btn onClick={() => nav('/my/garden_manage/my_garden_selling')} match={gardenManageMatch !== null}>
@@ -200,7 +199,7 @@ const Mypage = () => {
                 gardenManageMatch={gardenManageMatch !== null}
                 cropTradeMatch={cropTradeMatch !== null}
                 whisperMatch={whisperMatch !== null}
-                indexRoutingMatch={indexRoutingMatch !== null}
+                indexRoutingMatch={indexRoutingMatch === '/my'}
                 nav={nav}
               />
             </InnerHeader>

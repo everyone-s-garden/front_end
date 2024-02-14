@@ -12,6 +12,7 @@ import {
   isMyPostOpenAtom,
   isReportOpenAtom,
   selectedMapLocationAtom,
+  windowOffsetAtom,
 } from 'recoil/atom';
 import { getItem } from 'utils/session';
 import ReportModal from '../Modal/ReportModal';
@@ -29,12 +30,15 @@ import ReactGA from 'react-ga4';
 import ImageMagnifModal from '../Modal/ImageMagnifModal';
 import MyPostRemoveModal from '../Modal/MyPostRemoveModal';
 import { removeCookie } from 'utils/cookie';
-
 export interface ILocation {
   position: string;
   latitude: number;
   longitude: number;
 }
+
+// const NotificationComponenet = ({}) => {
+//   return null;
+// };
 
 const Nav = () => {
   const navigate = useNavigate();
@@ -61,6 +65,8 @@ const Nav = () => {
   const [searchText, setSearchText] = useState<string>('');
   const [show, setShow] = useState<boolean>(false);
   const [initialized, setInitialized] = useState(false);
+  const [Offset, setOffset] = useRecoilState(windowOffsetAtom);
+
   // Google Analytics 설정
   useEffect(() => {
     // localhost는 기록하지 않음
@@ -91,6 +97,37 @@ const Nav = () => {
   useEffect(() => {
     setIsLogin(Boolean(getItem('isLogin')));
   }, [isLogin, setIsLogin]);
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      setOffset({ width, height });
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      setOffset({ width, height });
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const getBackNavURL = () => {
     if (isMapPage || isMyPage) return '/';
@@ -357,7 +394,7 @@ const Button = styled.button<{ active: boolean }>`
   background-color: ${props => (props.active ? '#EAF1E8' : 'transparent')};
   border-radius: 15px;
   transition: all 0.2s ease-in;
-
+  position: relative;
   &:hover {
     transform: translateY(-3px);
   }

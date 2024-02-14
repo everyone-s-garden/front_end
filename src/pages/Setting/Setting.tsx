@@ -58,10 +58,19 @@ export default Setting;
 
 const Container = styled.div`
   flex: 1;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 62833b0086f350d45f8c02cd0b5e6aabbefe45c8
   padding-bottom: 100px;
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     /* padding-bottom: 0; */
   }
+<<<<<<< HEAD
+>>>>>>> ce0ea358495b325daec7f900e8123b46fa009f0f
+=======
+>>>>>>> 62833b0086f350d45f8c02cd0b5e6aabbefe45c8
 `;
 
 const Header = styled.div`
