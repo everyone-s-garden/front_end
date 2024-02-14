@@ -45,12 +45,21 @@ const devices = {
   desktop: `(min-width: 1024px)`,
 };
 
+const fontWeight = {
+  regular: 400,
+  medium: 500,
+  semiBold: 600,
+  bold: 700,
+};
+
 const theme = {
   colors,
   devices,
+  fontWeight,
 };
 
 export type Colors = typeof colors;
 export type Devices = typeof devices;
+export type FontWeight = typeof fontWeight;
 
 export default theme;

@@ -1,4 +1,5 @@
 export const setItem = (key: string, value: string) => {
+  console.log('setItem', key, value);
   return sessionStorage.setItem(key, JSON.stringify(value));
 };
 
@@ -7,5 +8,5 @@ export const removeItem = (key: string) => {
 };
 
 export const getItem = (key: string) => {
-  return sessionStorage.getItem(key);
+  return JSON.parse(sessionStorage.getItem(key) as string);
 };
