@@ -49,6 +49,7 @@ import FaqDetail from 'pages/Setting/Faq/FaqDetail';
 import EditUserProfile from 'pages/Setting/EditUserProfile';
 import Community from 'pages/Community/CommunityMain';
 import CommunityWrite from 'pages/Community/CommunityWrite';
+import CommunityDetail from 'pages/Community/CommunityDetail';
 // 모바일 100vh 세팅
 
 let vh = window.innerHeight * 0.01;
@@ -184,6 +185,10 @@ const router = createBrowserRouter([
       {
         path: '/community/write',
         element: <CommunityWrite />,
+      },
+      {
+        path: '/community/:postId',
+        element: <CommunityDetail />,
       },
       {
         path: '/faq',
