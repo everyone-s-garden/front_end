@@ -13,6 +13,7 @@ import MobileToolBar from './ToolBar/MobileToolBar';
 import PostTypeSelector from './ToolBar/PostTypeSelector';
 import draftToHtml from 'draftjs-to-html';
 import { POST_TYPE } from './constants';
+import convertToHtml from 'pages/Community/CommunityWrite/convertToHtml';
 
 const CommunityWrite = () => {
   const [isActive, setIsActive] = useState(false);
@@ -65,7 +66,7 @@ const CommunityWrite = () => {
     const formData = new FormData();
 
     const rawContentState = convertToRaw(content.getCurrentContent());
-    const markup = draftToHtml(rawContentState);
+    const markup = convertToHtml(rawContentState.blocks);
 
     /** 속닥속닥 게시글 blob */
     const jsonBlob = new Blob([JSON.stringify({ title, content: markup, postType: POST_TYPE[postType] })], {
