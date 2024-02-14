@@ -24,7 +24,9 @@ const PostList = ({ posts }: PostListProps) => {
   const getPlainText = useCallback((content: string) => {
     const $div = document.createElement('div');
     $div.innerHTML = content;
-    return $div.textContent || $div.innerText || '';
+
+    const text = $div.textContent || $div.innerText || '';
+    return text.replaceAll('\n', ' ');
   }, []);
 
   return (
