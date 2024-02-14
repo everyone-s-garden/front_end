@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Title from './Title';
 import PopularPostList from './PopularPostList';
 import PostImageSlider from './PostImageSlider';
+import Content from './Content';
 
 const CommunityDetail = () => {
   // const;
@@ -29,6 +30,7 @@ const CommunityDetail = () => {
             'https://www.jadam.kr/news/photo/200910/5841_7727_3726.jpg',
           ]}
         />
+        <Content text="" />
         <PopularPostList />
       </Container>
     </>

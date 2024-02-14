@@ -11,7 +11,6 @@ import ImageAdder from './ImageAdder';
 import { useNavigate } from 'react-router-dom';
 import MobileToolBar from './ToolBar/MobileToolBar';
 import PostTypeSelector from './ToolBar/PostTypeSelector';
-import draftToHtml from 'draftjs-to-html';
 import { POST_TYPE } from './constants';
 import convertToHtml from 'pages/Community/CommunityWrite/convertToHtml';
 
