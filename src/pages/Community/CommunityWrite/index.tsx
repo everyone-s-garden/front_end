@@ -78,8 +78,7 @@ const CommunityWrite = () => {
     formData.append('texts', jsonBlob);
 
     createPost(formData, {
-      onSuccess(data) {
-        console.log(data);
+      onSuccess() {
         navigate('/community');
       },
     });

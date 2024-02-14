@@ -72,12 +72,10 @@ export const useGetAllPosts = () => {
 
       return {
         ...params,
-        offset: params.offset || 0 + 6,
+        offset: (params.offset || 0) + 6,
       };
     },
     select(data) {
-      console.log('data: ', data);
-
       const posts = data.pages.reduce<PostList['postInfos']>((acc, item) => acc.concat(item.postInfos), []);
 
       return posts;
