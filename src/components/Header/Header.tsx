@@ -54,7 +54,7 @@ const Header = () => {
 const Container = styled.div`
   position: sticky;
   top: 0;
-  z-index: 99999;
+  z-index: 100;
   background-color: ${COLOR.BACKGROUND};
 `;
 

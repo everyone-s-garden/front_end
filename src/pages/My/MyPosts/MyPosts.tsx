@@ -16,7 +16,6 @@ const MyPosts = () => {
     })();
     return () => {};
   }, []);
-
   if (gardens.length === 0) {
     return <h1>게시글이 존재하지 않습니다.</h1>;
   }
