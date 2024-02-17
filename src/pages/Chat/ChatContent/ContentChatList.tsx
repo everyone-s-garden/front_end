@@ -19,7 +19,6 @@ const ContentChatList = ({ roomId, socketMessage, productInfo }: ContentChatList
   const { data: chatContents, fetchNextPage, hasNextPage } = useGetGardenChatContents({ roomId });
   const { target } = useIntersectionObserver({ fetchNextPage: fetchPrevChatContents, hasNextPage });
   const { partnerId, partnerProfileImage } = productInfo;
-  console.log(scrollRef.current?.scrollHeight);
 
   function fetchPrevChatContents() {
     if (!scrollRef.current) return;

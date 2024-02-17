@@ -26,12 +26,12 @@ const ChatContents = () => {
 
   useEffect(() => {
     client.current = new StompJS.Client({
-      brokerURL: 'wss://every-garden.kro.kr/ws/connect',
+      brokerURL: 'ws://every-garden.kro.kr/ws/connect',
       connectHeaders: {
         'access-token': token!,
       },
       // webSocketFactory: function () {
-      //   return new SockJS('https://every-garden.kro.kr/ws/connect');
+      //   return new SockJS('');
       // },
       debug: str => {
         console.log(str);
@@ -60,8 +60,6 @@ const ChatContents = () => {
   };
 
   if (!productInfo) return null;
-
-  console.log(productInfo);
 
   return (
     <Container>
