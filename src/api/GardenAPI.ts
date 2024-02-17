@@ -2,6 +2,8 @@ import customAxios from 'utils/token';
 import HttpRequest from './HttpRequest';
 import { getItem } from 'utils/session';
 import { GardenDetailType } from './type';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import { GardenPost, GetAllGardensResponse, Region } from 'types/Garden';
 
 export const GardenAPI = {
   getGardenByRegion: async (type: number, region: string) => {
@@ -29,4 +31,59 @@ export const GardenAPI = {
       return data;
     }
   },
+};
+
+const getAllGardens = async ({ pageParam }: { pageParam: number }): Promise<GetAllGardensResponse> => {
+  const response = await HttpRequest.get(`/v2/gardens/all?pageNumber=${pageParam}`);
+
+  return response.data;
+};
+
+export const useGetAllGardens = () => {
+  return useInfiniteQuery({
+    queryKey: ['allGardens'],
+    queryFn: ({ pageParam = 0 }) => getAllGardens({ pageParam }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.hasNext ? allPages.length : undefined;
+    },
+  });
+};
+
+const getRegionsName = async ({ regionName }: { regionName: string }): Promise<Region[]> => {
+  const response = await HttpRequest.get(`/v1/regions?address=${regionName}&offset=0&limit=10`);
+
+  return response.data.locationSearchResponses;
+};
+
+export const useGetRegionsName = ({ regionName }: { regionName: string }) => {
+  return useQuery({
+    queryKey: ['regionsName', regionName],
+    queryFn: () => getRegionsName({ regionName }),
+  });
+};
+
+const getRecentGardenPosts = async (): Promise<GardenPost[]> => {
+  const response = await HttpRequest.get('/v2/gardens/recent-created');
+
+  return response.data.recentCreatedGardenResponses;
+};
+
+export const useGetRecentGardenPosts = () => {
+  return useQuery({
+    queryKey: ['recentGardenPosts'],
+    queryFn: getRecentGardenPosts,
+  });
+};
+
+const likeGarden = async (gardenId: number) => {
+  const response = await HttpRequest.post('/v2/gardens/likes', { gardenId });
+
+  return response;
+};
+
+export const useLikeGarden = () => {
+  return useMutation({
+    mutationFn: likeGarden,
+  });
 };

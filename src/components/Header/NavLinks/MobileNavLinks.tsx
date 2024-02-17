@@ -3,6 +3,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import headerNavLinks from './headerNavLinks';
+import { motion } from 'framer-motion';
 
 const MobileNavLinks = () => {
   return (
@@ -10,7 +11,12 @@ const MobileNavLinks = () => {
       {headerNavLinks.map((link, idx) => {
         return (
           <StyledNavLink key={idx} to={link.href}>
-            {link.name}
+            {({ isActive }) => (
+              <>
+                {link.name}
+                {isActive && <Underline layoutId="underline_navLink" />}
+              </>
+            )}
           </StyledNavLink>
         );
       })}
@@ -20,10 +26,14 @@ const MobileNavLinks = () => {
 
 const NavContainer = styled.nav`
   display: flex;
+  justify-content: space-around;
   width: 100%;
-  padding: 0 13px 14px 13px;
-  border-bottom: 2px solid #d9d9d9;
-  overflow-x: auto;
+  padding: 0 13px 16px 13px;
+  border-bottom: 2px solid ${({ theme }) => theme.colors.gray[100]};
+
+  @media (min-width: 370px) {
+    padding: 0 13px 14px 13px;
+  }
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
     display: none;
@@ -31,25 +41,34 @@ const NavContainer = styled.nav`
 `;
 
 const StyledNavLink = styled(NavLink)`
-  font-size: 16px;
   font-weight: 700;
-  color: #d9d9d9;
+  color: ${({ theme }) => theme.colors.gray[200]};
   flex-shrink: 0;
-  padding: 0 13px;
+  padding: 0 10px;
+  font-size: 14px;
   position: relative;
+  flex-shrink: 0;
 
   &.active {
-    color: #414141;
-    &::after {
-      content: '';
-      display: block;
-      position: absolute;
-      bottom: -16px;
-      width: 100%;
-      left: 0;
-      height: 2px;
-      background-color: #f77800;
-    }
+    color: ${({ theme }) => theme.colors.gray[800]};
+  }
+
+  @media (min-width: 370px) {
+    padding: 0 13px;
+    font-size: 16px;
+  }
+`;
+
+const Underline = styled(motion.div)`
+  position: absolute;
+  bottom: -18px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: ${({ theme }) => theme.colors.orange[600]};
+
+  @media (min-width: 370px) {
+    bottom: -16px;
   }
 `;
 
