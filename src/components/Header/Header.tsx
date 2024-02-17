@@ -4,6 +4,7 @@ import { Link, Outlet } from 'react-router-dom';
 import { useNavermaps } from 'react-naver-maps';
 
 import logoImg from 'assets/logo_horizon.png';
+import { BREAK_POINT, COLOR } from 'constants/style';
 import NavLinks from './NavLinks/NavLinks';
 import MobileNavLinks from './NavLinks/MobileNavLinks';
 import UserItems from './UserItems';
@@ -29,7 +30,7 @@ const Header = () => {
 
   return (
     <>
-      <AppContainer>
+      <Container>
         <HeaderContainer>
           <Wrapper>
             <LinkWrapper>
@@ -42,24 +43,24 @@ const Header = () => {
           </Wrapper>
           <MobileNavLinks />
         </HeaderContainer>
-        <Main url={location.pathname}>
-          <Outlet context={{ navermaps }} />
-        </Main>
-      </AppContainer>
+      </Container>
+      <Main url={location.pathname}>
+        <Outlet context={{ navermaps }} />
+      </Main>
     </>
   );
 };
 
-const AppContainer = styled.div`
-  height: 100vh;
-`;
-
-const HeaderContainer = styled.header`
+const Container = styled.div`
   position: sticky;
   top: 0;
   z-index: 100;
-  height: 108px;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${COLOR.BACKGROUND};
+`;
+
+const HeaderContainer = styled.header`
+  max-width: 1252px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
 `;
@@ -67,9 +68,6 @@ const HeaderContainer = styled.header`
 const Wrapper = styled.div`
   display: flex;
   padding: 25px 20px;
-  width: 100%;
-  max-width: 1252px;
-  margin: 0 auto;
   justify-content: space-between;
   align-items: center;
 
@@ -92,7 +90,7 @@ const LogoImageContainer = styled(Link)`
   align-items: center;
   cursor: pointer;
 
-  @media ${({ theme }) => theme.devices.mobile} {
+  @media (min-width: ${BREAK_POINT.MOBILE}) {
     width: 163px;
     height: 28px;
   }
@@ -107,7 +105,7 @@ const LogoImage = styled.img`
 const Main = styled.main<{ url: string }>`
   flex: 1 1 auto;
   width: 100%;
-  height: calc(100vh - 108px);
+  overflow: ${props => (props.url === '/map' ? 'hidden' : 'visible')};
 `;
 
 export default Header;

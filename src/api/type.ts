@@ -9,6 +9,12 @@ export interface IPostListItem {
   gardenStatus: 'ACTIVE' | 'INACTIVE';
 }
 
+export interface ICropTradeItem {
+  cropPostId: number;
+  title: string;
+  imageUrl: string;
+}
+
 export interface IPurchaseListItem {
   cropPostId: number;
   title: string;
@@ -26,6 +32,30 @@ export interface GardenListType {
   latitude: number;
   longitude: number;
 }
+export interface GardesType {
+  gardenId: number;
+  gardenName: string;
+  gardenStatus: 'ACTIVE' | 'INACTIVE' | null | undefined;
+  gardenType: 'PRIVATE' | 'PUBLIC';
+  images: string[];
+  latitude: number;
+  longitude: number;
+  price: string;
+  size: string;
+}
+
+interface IMyManagedGarden {
+  myManagedGardenId: number;
+  gardenName: string;
+  useStartDate: string;
+  useEndDate: string;
+  images: string[];
+}
+
+export interface IMyManagedGardenList {
+  myManagedGardenGetResponses: IMyManagedGarden[];
+}
+
 export interface GardesType {
   gardenId: number;
   gardenName: string;

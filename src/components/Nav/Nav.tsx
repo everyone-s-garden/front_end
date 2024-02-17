@@ -65,7 +65,6 @@ const Nav = () => {
   const [searchText, setSearchText] = useState<string>('');
   const [show, setShow] = useState<boolean>(false);
   const [initialized, setInitialized] = useState(false);
-  const [openNotification, setOpenNotification] = useState(false);
   const [Offset, setOffset] = useRecoilState(windowOffsetAtom);
 
   // Google Analytics 설정
@@ -98,6 +97,22 @@ const Nav = () => {
   useEffect(() => {
     setIsLogin(Boolean(getItem('isLogin')));
   }, [isLogin, setIsLogin]);
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      setOffset({ width, height });
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;

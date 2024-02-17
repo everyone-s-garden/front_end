@@ -1,3 +1,4 @@
+import { ICropTradeItem } from 'api/type';
 import PostListItem from 'components/PostListItem';
 import { BREAK_POINT } from 'constants/style';
 import { motion } from 'framer-motion';
@@ -8,13 +9,17 @@ import { getCropTradeAPI } from 'utils/fetchGardenData';
 
 const SalesHistory = () => {
   const [selectedButton, setSelectedButton] = useState('판매중');
-
+  const [tradeItems, setTradeItems] = useState<ICropTradeItem[]>([]);
   useEffect(() => {
     (async () => {
       const res = await getCropTradeAPI.fetchSalesHistoryAPI();
-      console.log(res);
+      const { cropInfos } = res.data;
+      setTradeItems([...cropInfos]);
     })();
   }, []);
+  if (tradeItems.length === 0) {
+    return <h1>판매내역이 존재하지 않습니다.</h1>;
+  }
 
   return (
     <div style={{ flex: 1 }}>
@@ -33,7 +38,7 @@ const SalesHistory = () => {
         </RadioButton>
       </RadioButtonWrapper>
       <Container>
-        <PostListItem items={items} />
+        <PostListItem tradeItems={tradeItems} />
       </Container>
     </div>
   );

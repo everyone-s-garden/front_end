@@ -14,17 +14,17 @@ const postOptions = [
   {
     title: '판매하는 밭 등록하기',
     description: '판매 할 개인 밭을 등록해요',
-    link: '/',
+    link: '/1',
   },
   {
     title: '작물 거래 글쓰기',
     description: '다양한 작물을 판매하는 글을 등록해요',
-    link: '/',
+    link: '/2',
   },
   {
     title: '속닥속닥 글쓰기',
     description: '질문, 자랑, 공유 등 다양한 글을 작성해요',
-    link: '/',
+    link: '/community/write',
   },
 ];
 

@@ -1,21 +1,28 @@
+import { ICropTradeItem } from 'api/type';
 import { BREAK_POINT } from 'constants/style';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { purchaseItems } from 'utils/dummydata';
 import { getCropTradeAPI } from 'utils/fetchGardenData';
 
 const PurchaseHistory = () => {
+  const [tradeItem, setTradeItem] = useState<ICropTradeItem[]>([]);
   useEffect(() => {
     (async () => {
       const res = await getCropTradeAPI.fetchPurChaseHIstoryAPI();
-      console.log(res);
+      const { cropInfos } = res.data;
+      setTradeItem([...cropInfos]);
     })();
   }, []);
+
+  if (tradeItem.length === 0) {
+    return <h1>구매한 작물이 없습니다.</h1>;
+  }
 
   return (
     <Container>
       <Ul>
-        {purchaseItems.map((item, idx) => {
+        {tradeItem.map((item, idx) => {
           return (
             <li key={item.cropPostId}>
               <ImageWrapper>
