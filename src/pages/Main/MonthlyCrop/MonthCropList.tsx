@@ -11,8 +11,8 @@ const MonthCropList = ({ currentMonth }: { currentMonth: number }) => {
 
   return (
     <Container>
-      {/* <PcImg src={getMonthImage(currentMonth).pc} /> */}
-      {/* <MobileImg src={getMonthImage(currentMonth).mobile} /> */}
+      <PcImg src={getMonthImage(currentMonth).pc} />
+      <MobileImg src={getMonthImage(currentMonth).mobile} />
       <ListWrapper>
         {monthCrops[currentMonth - 1].cropInfos.map(crop => (
           <MonthCropItem key={crop.name} cropInfo={crop} />

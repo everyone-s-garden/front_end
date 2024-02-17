@@ -9,7 +9,7 @@ HttpRequest.interceptors.request.use(config => {
   const token = getItem('access_token');
 
   if (token) {
-    config.headers['access-token'] = JSON.parse(token);
+    config.headers['access-token'] = token;
   }
 
   return config;
