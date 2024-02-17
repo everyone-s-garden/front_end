@@ -32,10 +32,10 @@ const SearchInput = ({ map }: { map: naver.maps.Map | null }) => {
 
   const handleRegionItemClick = (region: Region) => {
     if (!map) return;
-    console.log(region);
+    closeSelect();
+    setRegionName(region.position);
     map.setZoom(16);
-    const { latitude, longitude } = region;
-    map.panTo(new navermaps.LatLng(longitude, latitude));
+    map.panTo(new navermaps.LatLng(region.longitude, region.latitude));
   };
 
   return (
