@@ -21,7 +21,7 @@ const Map = () => {
       </Helmet>
       <Loader isLoading={isInitializing} />
 
-      <OptionBar />
+      <OptionBar map={map} />
       <MapViewer>
         <MapDiv
           style={{

@@ -7,7 +7,7 @@ import { FONT_WEIGHT } from 'constants/style';
 import SelectList from 'components/SelectList';
 import SearchInput from './SearchInput';
 
-function OptionBar() {
+function OptionBar({ map }: { map: naver.maps.Map | null }) {
   const [searchType, setSearchType] = useRecoilState(searchTypeAtom);
 
   return (
@@ -27,7 +27,7 @@ function OptionBar() {
           </OptionButton>
         </OptionBox>
         <SelectList />
-        <SearchInput />
+        <SearchInput map={map} />
       </Option>
     </Container>
   );
