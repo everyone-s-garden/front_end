@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import HttpRequest from './HttpRequest';
 import { useRecoilValue } from 'recoil';
 import { communityParamsAtom } from 'recoil/atom';
@@ -55,8 +55,16 @@ export const CommunityAPI = {
     });
     return data;
   },
-  getPost: async (id: number): Promise<Post> => {
-    const { data } = await HttpRequest.get(`v1/posts/${id}`);
+  getPopularPosts: async (pageParam: PageParam): Promise<PostList> => {
+    const { data } = await HttpRequest.get(`v1/posts/popular`, {
+      params: { ...pageParam },
+    });
+    return data;
+  },
+  getPost: async (postId: number): Promise<Post> => {
+    const { data } = await HttpRequest.get(`v1/posts/${postId}`, {
+      params: { postId },
+    });
     return data;
   },
   createPost: async (data: FormData): Promise<any> => {
@@ -78,10 +86,6 @@ export const CommunityAPI = {
   deletePost: async (postId: number): Promise<any> => {
     const res = await HttpRequest.delete(`v1/posts/${postId}`);
     return res;
-  },
-  getPopularPosts: async (): Promise<PostList> => {
-    const { data } = await HttpRequest.get(`v1/posts/popular`);
-    return data;
   },
 
   // Comment
@@ -149,6 +153,70 @@ export const useGetAllPosts = () => {
   });
 };
 
+export const useGetPopularPosts = () => {
+  return useInfiniteQuery({
+    queryKey: ['posts', 'popularPosts'],
+    queryFn: ({ pageParam }) => CommunityAPI.getPopularPosts(pageParam),
+    initialPageParam: {
+      offset: 0,
+      limit: 6,
+    } as PageParam,
+    getNextPageParam: (...pages) => {
+      const [data, , params] = pages;
+
+      if (data.postInfos.length < 6) {
+        return undefined;
+      }
+
+      return {
+        ...params,
+        offset: (params.offset || 0) + 6,
+      };
+    },
+    select(data) {
+      const posts = data.pages.reduce<PostList['postInfos']>((acc, item) => acc.concat(item.postInfos), []);
+
+      return posts;
+    },
+  });
+};
+
 export const useCreatePost = () => {
   return useMutation({ mutationFn: CommunityAPI.createPost });
+};
+
+export const useGetPost = (id: number) => {
+  return useQuery({ queryKey: ['post', id], queryFn: () => CommunityAPI.getPost(id) });
+};
+
+export const useLikePost = () => {
+  return useMutation({ mutationFn: CommunityAPI.likePost });
+};
+
+export const useUnlikePost = () => {
+  return useMutation({ mutationFn: CommunityAPI.unlikePost });
+};
+
+export const useDeletePost = () => {
+  return useMutation({ mutationFn: CommunityAPI.deletePost });
+};
+
+export const useGetComments = (postId: number) => {
+  return useQuery({ queryKey: ['comments', postId], queryFn: () => CommunityAPI.getComments(postId) });
+};
+
+export const useCreateComment = () => {
+  return useMutation({ mutationFn: CommunityAPI.createComment });
+};
+
+export const useLikeComment = () => {
+  return useMutation({ mutationFn: CommunityAPI.likeComment });
+};
+
+export const useUnlikeComment = () => {
+  return useMutation({ mutationFn: CommunityAPI.unlikeComment });
+};
+
+export const useEditComment = () => {
+  return useMutation({ mutationFn: CommunityAPI.editComment });
 };

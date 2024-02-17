@@ -6,9 +6,18 @@ import PopularPostList from './PopularPostList';
 import PostImageSlider from './PostImageSlider';
 import Content from './Content';
 import Author from './Author';
+import { useParams } from 'react-router-dom';
+import { useGetPost } from 'api/CommunityAPI';
 
 const CommunityDetail = () => {
-  // const;
+  const { postId } = useParams();
+  const { data: post, isLoading } = useGetPost(Number(postId));
+
+  console.log(post);
+
+  if (isLoading || !post) {
+    return <></>;
+  }
 
   return (
     <>
@@ -16,23 +25,12 @@ const CommunityDetail = () => {
         <title>속닥속닥 상세 페이지</title>
       </Helmet>
 
+      {/* TODO: 타입 달라고 하기 */}
       <Container>
-        <Title
-          type="ETC"
-          createdAt="2024-02-13T19:20:30.45+01:00"
-          title="텃밭 자랑텃밭 자랑텃밭 자랑텃밭 자랑텃밭 자랑텃밭 자랑텃밭 자랑텃밭 자랑텃"
-        />
-        <PostImageSlider
-          images={[
-            'https://www.jadam.kr/news/photo/200910/5841_7727_3726.jpg',
-            'https://www.jadam.kr/news/photo/200910/5841_7727_3726.jpg',
-            'https://www.jadam.kr/news/photo/200910/5841_7727_3726.jpg',
-            'https://www.jadam.kr/news/photo/200910/5841_7727_3726.jpg',
-            'https://www.jadam.kr/news/photo/200910/5841_7727_3726.jpg',
-          ]}
-        />
-        <Content text="" />
-        <Author authorId={6} />
+        <Title type="ETC" createdAt={post.createdDate} title={post.title} />
+        <PostImageSlider images={post.images} />
+        <Content text={post.content} />
+        <Author authorId={post.authorId} />
         <PopularPostList />
       </Container>
     </>
