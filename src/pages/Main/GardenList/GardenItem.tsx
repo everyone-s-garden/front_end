@@ -1,22 +1,42 @@
-import { BREAK_POINT } from 'constants/style';
 import React from 'react';
 import styled from 'styled-components';
 import { ReactComponent as IconHeart } from '../../../assets/main/heart-icon.svg';
+import { GardenPost } from 'types/Garden';
+import { useRecoilValue } from 'recoil';
+import { isLoginAtom } from 'recoil/atom';
+import { useLikeGarden } from 'api/GardenAPI';
 
-const GardenItem = () => {
+const GardenItem = ({ gardenPost }: { gardenPost: GardenPost }) => {
+  const { address, gardenName, imageUrl, isLiked, price, recruitEndDate, recruitStartDate, gardenId } = gardenPost;
+  const { mutate: likeGarden } = useLikeGarden();
+  const isLogin = useRecoilValue(isLoginAtom);
+
+  const endDate = new Date(recruitEndDate);
+  const currentDate = new Date();
+
+  const term = Math.ceil((endDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
+
+  const handleLikeBtnClick = () => {
+    if (!isLogin) {
+      alert('로그인 후 이용해주세요');
+      return;
+    }
+    likeGarden(gardenId);
+  };
+
   return (
     <Container>
       <ImageWrapper>
-        <Img src="https://www.durenature.co.kr/data/editor/2104/thumb-85ad254c2972c9943bd748aaa69c0420_1617861428_3653_1024x683.jpg" />
-        <StyledIconHeart />
+        <Img src={imageUrl} />
+        <StyledIconHeart isLiked={isLiked} onClick={handleLikeBtnClick} />
       </ImageWrapper>
       <InfoWrapper>
         <Info>
-          <Name>클라인가르텐</Name>
-          <Address>경기도 용인</Address>
+          <Name>{gardenName}</Name>
+          <Address>{address.split(' ').slice(0, 2).join(' ')}</Address>
         </Info>
-        <Price>130,000 원</Price>
-        <Term>무제한</Term>
+        <Price>{price}</Price>
+        <Term>{term > 0 ? `${term}일 남음` : term === 0 ? '마감 임박' : '마감됨'}</Term>
       </InfoWrapper>
     </Container>
   );
@@ -29,13 +49,15 @@ const Container = styled.div`
   justify-content: center;
 `;
 
-const StyledIconHeart = styled(IconHeart)`
+const StyledIconHeart = styled(IconHeart)<{ isLiked: boolean }>`
+  cursor: pointer;
   position: absolute;
   left: 12px;
   top: 12px;
   width: 24px;
   height: 24px;
   stroke: white;
+  fill: ${({ theme, isLiked }) => (isLiked ? theme.colors.white : 'transparent')};
 `;
 
 const ImageWrapper = styled.div`
@@ -43,7 +65,7 @@ const ImageWrapper = styled.div`
   width: 190px;
   height: 129px;
 
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     width: 276px;
     height: 168px;
   }
@@ -61,7 +83,7 @@ const InfoWrapper = styled.div`
   flex-direction: column;
   gap: 4px;
 
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     gap: 8px;
   }
 `;
@@ -71,7 +93,7 @@ const Info = styled.div`
   align-items: center;
   gap: 4px;
 
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     gap: 8px;
   }
 `;
@@ -80,7 +102,7 @@ const Name = styled.div`
   font-size: 18px;
   font-weight: 500;
 
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     font-size: 20px;
   }
 `;
@@ -88,9 +110,9 @@ const Name = styled.div`
 const Address = styled.div`
   font-size: 14px;
   font-weight: 400;
-  color: #494949;
+  color: ${({ theme }) => theme.colors.gray[700]};
 
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     font-size: 16px;
   }
 `;
@@ -99,7 +121,7 @@ const Price = styled.div`
   font-size: 16px;
   font-weight: 700;
 
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     font-size: 18px;
   }
 `;
@@ -107,9 +129,9 @@ const Price = styled.div`
 const Term = styled.div`
   font-size: 16px;
   font-weight: 400;
-  color: #494949;
+  color: ${({ theme }) => theme.colors.gray[700]};
 
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     font-size: 18px;
   }
 `;

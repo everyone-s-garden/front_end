@@ -20,3 +20,14 @@ export interface Region {
   latitude: number;
   longitude: number;
 }
+
+export interface GardenPost {
+  gardenId: number;
+  gardenName: string;
+  address: string;
+  recruitStartDate: string;
+  recruitEndDate: string;
+  price: string;
+  isLiked: boolean;
+  imageUrl: string;
+}

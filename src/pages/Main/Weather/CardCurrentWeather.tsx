@@ -1,14 +1,15 @@
 import { useGetAllWeather } from 'api/WeatherAPI';
 import { WeatherData } from 'api/type';
+import Spinner from 'components/Spinner';
 import React, { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { myLocationAtom } from 'recoil/atom';
 import styled from 'styled-components';
 import getWeatherIcon from 'utils/getWeatherIcon';
 
 const CardCurrentWeather = () => {
   const [currentWeather, setCurrentWeather] = useState<WeatherData | null>(null);
-  const [myLocation, setMyLocation] = useRecoilState(myLocationAtom);
+  const myLocation = useRecoilValue(myLocationAtom);
   const { data, isSuccess } = useGetAllWeather();
 
   useEffect(() => {
@@ -18,22 +19,26 @@ const CardCurrentWeather = () => {
     }
   }, [data, myLocation.position]);
 
-  if (!isSuccess) return <div>로딩중</div>;
-
-  if (!currentWeather) return <div>날씨 정보가 없습니다.</div>;
-
   return (
     <Container>
-      <InfoWrapper>
-        <Temp>{currentWeather.temperatureValue}°</Temp>
-        <Divider />
-        <Weather>{currentWeather.skyValue}</Weather>
-        <WeatherInfoWrapper>
-          <MinMaxTemp></MinMaxTemp>
-          <Rainfall></Rainfall>
-        </WeatherInfoWrapper>
-      </InfoWrapper>
-      <WeatherImg src={getWeatherIcon(currentWeather.skyValue)} />
+      {isSuccess && currentWeather ? (
+        <>
+          <InfoWrapper>
+            <Temp>{currentWeather.temperatureValue}°</Temp>
+            <Divider />
+            <Weather>{currentWeather.skyValue}</Weather>
+            <WeatherInfoWrapper>
+              <MinMaxTemp></MinMaxTemp>
+              <Rainfall></Rainfall>
+            </WeatherInfoWrapper>
+          </InfoWrapper>
+          <WeatherImg src={getWeatherIcon(currentWeather.skyValue)} />
+        </>
+      ) : (
+        <LoaderWrapper>
+          <Spinner />
+        </LoaderWrapper>
+      )}
     </Container>
   );
 };
@@ -51,6 +56,14 @@ const Container = styled.div`
     justify-content: space-between;
     padding: 16px 30px;
   }
+`;
+
+const LoaderWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const InfoWrapper = styled.div`

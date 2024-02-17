@@ -2,8 +2,8 @@ import customAxios from 'utils/token';
 import HttpRequest from './HttpRequest';
 import { getItem } from 'utils/session';
 import { GardenDetailType } from './type';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { GetAllGardensResponse, Region } from 'types/Garden';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import { GardenPost, GetAllGardensResponse, Region } from 'types/Garden';
 
 export const GardenAPI = {
   getGardenByRegion: async (type: number, region: string) => {
@@ -60,5 +60,30 @@ export const useGetRegionsName = ({ regionName }: { regionName: string }) => {
   return useQuery({
     queryKey: ['regionsName', regionName],
     queryFn: () => getRegionsName({ regionName }),
+  });
+};
+
+const getRecentGardenPosts = async (): Promise<GardenPost[]> => {
+  const response = await HttpRequest.get('/v2/gardens/recent-created');
+
+  return response.data.recentCreatedGardenResponses;
+};
+
+export const useGetRecentGardenPosts = () => {
+  return useQuery({
+    queryKey: ['recentGardenPosts'],
+    queryFn: getRecentGardenPosts,
+  });
+};
+
+const likeGarden = async (gardenId: number) => {
+  const response = await HttpRequest.post('/v2/gardens/likes', { gardenId });
+
+  return response;
+};
+
+export const useLikeGarden = () => {
+  return useMutation({
+    mutationFn: likeGarden,
   });
 };
