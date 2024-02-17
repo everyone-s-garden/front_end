@@ -14,7 +14,7 @@ const Chat = () => {
 
 const Container = styled.div`
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 118px);
   max-width: 1200px;
   background-color: ${({ theme }) => theme.colors.white};
   margin: 0 auto;

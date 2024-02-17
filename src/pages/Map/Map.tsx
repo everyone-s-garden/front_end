@@ -51,7 +51,11 @@ const MapPage = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: calc(var(--vh, 1vh) * 100 - 108px);
+
+  /* @media (min-width: ${BREAK_POINT.MOBILE}) {
+    height: calc(var(--vh, 1vh) * 100 - 106px);
+  } */
 `;
 
 const MapViewer = styled.div`

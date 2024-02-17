@@ -38,7 +38,11 @@ export default OptionBar;
 const Container = styled.div`
   width: 100%;
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray[100]};
-  padding-bottom: 15px;
+  padding: 15px 0;
+
+  @media ${({ theme }) => theme.devices.mobile} {
+    padding: 0 0 15px 0;
+  }
 `;
 
 const Option = styled.div`
@@ -48,9 +52,13 @@ const Option = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  gap: 32px;
+  gap: 10px;
   max-width: 1265px;
   padding: 0 20px;
+
+  @media ${({ theme }) => theme.devices.mobile} {
+    gap: 32px;
+  }
 `;
 
 const OptionTitle = styled.span`
