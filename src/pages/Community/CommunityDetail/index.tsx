@@ -14,8 +14,6 @@ const CommunityDetail = () => {
   const { postId } = useParams();
   const { data: post, isLoading } = useGetPost(Number(postId));
 
-  // console.log(post);
-
   if (isLoading || !post || !postId) {
     return <></>;
   }

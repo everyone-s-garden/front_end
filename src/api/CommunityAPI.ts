@@ -187,8 +187,6 @@ export const useGetPopularPosts = () => {
     select(data) {
       const posts = data.pages.reduce<PostList['postInfos']>((acc, item) => acc.concat(item.postInfos), []);
 
-      console.log(posts);
-
       return posts;
     },
   });
