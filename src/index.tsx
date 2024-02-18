@@ -94,7 +94,7 @@ const router = createBrowserRouter([
         element: <TradingDetail />,
       },
       {
-        path: '/trading/create',
+        path: '/trading/write',
         element: <TradingCreate />,
       },
       {
@@ -106,7 +106,7 @@ const router = createBrowserRouter([
         element: <CommunityCreate />,
       },
       {
-        path: '/create-myGarden',
+        path: '/create-my-garden',
         element: <CreateMyGarden />,
       },
       {

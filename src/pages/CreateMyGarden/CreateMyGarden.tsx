@@ -52,6 +52,7 @@ const Container = styled.div`
 
   @media ${({ theme }) => theme.devices.mobile} {
     position: relative;
+    z-index: 0;
   }
 `;
 
