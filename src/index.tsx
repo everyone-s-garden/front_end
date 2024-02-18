@@ -27,6 +27,10 @@ import Review from 'pages/Review/Review';
 import ReceiveReview from 'pages/ReceiveReview/ReceiveReview';
 import Header from 'components/Header/Header';
 import NaverToken from 'pages/Login/Naver/token/token';
+import Trading from 'pages/Trading/Trading';
+import TradingDetail from './pages/Trading/TradingDetail/TradingDetail';
+import CommunityCreate from './pages/Community/CommunityCreate/CommunityCreate';
+import TradingCreate from './pages/Trading/TradingCreate/TradingCreate';
 import { ThemeProvider } from 'styled-components';
 import theme from 'styles/theme';
 import ChatContents from 'pages/Chat/ChatContent/ChatContents';
@@ -80,6 +84,26 @@ const router = createBrowserRouter([
       {
         path: '/map',
         element: <Map />,
+      },
+      {
+        path: '/trading',
+        element: <Trading />,
+      },
+      {
+        path: '/trading/:tradingId',
+        element: <TradingDetail />,
+      },
+      {
+        path: '/trading/create',
+        element: <TradingCreate />,
+      },
+      {
+        path: '/community',
+        element: <Community />,
+      },
+      {
+        path: '/community/create',
+        element: <CommunityCreate />,
       },
       {
         path: '/create-myGarden',
