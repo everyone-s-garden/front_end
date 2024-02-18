@@ -17,27 +17,27 @@ const onRequest = (config: InternalAxiosRequestConfig): InternalAxiosRequestConf
   // Set Headers Here
   // Check Authentication Here
   // Set Loading Start Here
-  let replaced_str = token.replaceAll('"', '');
+  // let replaced_str = token.replaceAll('"', '');
   if (method === 'get') {
     config.timeout = 15000;
     // config.headers.Authorization = `Bearer ${replaced_str}`;
-    config.headers['access-token'] = replaced_str;
+    config.headers['access-token'] = token;
   } else if (method === 'post') {
     config.timeout = 15000;
     // config.headers.Authorization = `Bearer ${replaced_str}`;
-    config.headers['access-token'] = replaced_str;
+    config.headers['access-token'] = token;
   } else if (method === 'delete') {
     config.timeout = 15000;
     // config.headers.Authorization = `Bearer ${replaced_str}`;
-    config.headers['access-token'] = replaced_str;
+    config.headers['access-token'] = token;
   } else if (method === 'patch') {
     config.timeout = 15000;
     // config.headers.Authorization = `Bearer ${replaced_str}`;
-    config.headers['access-token'] = replaced_str;
+    config.headers['access-token'] = token;
   } else if (method === 'put') {
     config.timeout = 15000;
     // config.headers.Authorization = `Bearer ${replaced_str}`;
-    config.headers['access-token'] = replaced_str;
+    config.headers['access-token'] = token;
   }
   return config;
 };
