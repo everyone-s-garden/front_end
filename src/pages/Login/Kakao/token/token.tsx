@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { isValidElement, useEffect, useState } from 'react';
 import axios, { AxiosResponse } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Loader from 'components/Loader';
 import { IData, IData_Sever } from './type';
 import { setItem } from 'utils/session';
-import { isLoginAtom } from 'recoil/atom';
+import { isLoginAtom, memberIdAtom } from 'recoil/atom';
 import { useSetRecoilState } from 'recoil';
 import { setCookie } from 'utils/cookie';
 const KaKaoToken = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const setMemberId = useSetRecoilState(memberIdAtom);
   const nav = useNavigate();
   const setIsLogin = useSetRecoilState<boolean>(isLoginAtom);
 
@@ -60,11 +61,13 @@ const KaKaoToken = () => {
       const code: string | null = new URLSearchParams(window.location.search).get('code');
       const kakao_token = await getKakaoApi(code);
       const response_server = await getServerApi(kakao_token);
-      const { accessToken, refreshToken } = response_server;
+      const { accessToken, refreshToken, memberId } = response_server;
+      setItem('member_id', memberId);
       setItem('access_token', accessToken);
       setCookie('refresh_token', refreshToken);
       setItem('isLogin', 'true');
       setIsLogin(true);
+      setMemberId(memberId);
       nav('/');
     } catch (err) {
       console.log(err);

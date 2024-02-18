@@ -4,7 +4,6 @@ import { IGardenDetail } from 'types/GardenDetail';
 import { ILocation } from 'components/Nav/Nav';
 import { IHashMyGarden } from 'types/MyGarden';
 import { getItem } from 'utils/session';
-import { IGardens } from 'pages/My/RecentPosts/RecentPosts';
 
 // Modal Atoms
 export const isReportOpenAtom = atom<boolean>({
@@ -70,28 +69,37 @@ export const selectedMapLocationAtom = atom<ILocation | null>({
   default: null,
 });
 
-export const recentListsAtom = atom<IGardens[]>({
-  key: 'recentLists',
-  default: [],
+export const myLocationAtom = atom<ILocation>({
+  key: 'myLocation',
+  default: { position: '서울특별시', latitude: 37.576022, longitude: 126.9769 },
 });
+
+// export const recentListsAtom = atom<IGardens[]>({
+//   key: 'recentLists',
+//   default: [],
+// });
+// export const recentListsAtom = atom<IGardens[]>({
+//   key: 'recentLists',
+//   default: [],
+// });
 
 export const recentPageAtom = atom<number>({
   key: 'recentPage',
   default: 1,
 });
-export const myListsAtom = atom<IGardens[]>({
-  key: 'myLists',
-  default: [],
-});
+// export const myListsAtom = atom<IGardens[]>({
+//   key: 'myLists',
+//   default: [],
+// });
 
 export const myPageAtom = atom<number>({
   key: 'myPage',
   default: 1,
 });
-export const likeListsAtom = atom<IGardens[]>({
-  key: 'likeLists',
-  default: [],
-});
+// export const likeListsAtom = atom<IGardens[]>({
+//   key: 'likeLists',
+//   default: [],
+// });
 
 export const likePageAtom = atom<number>({
   key: 'likePage',
@@ -109,4 +117,27 @@ export const feedbackCommentAtom = atom<string>({
 export const hasMyGardenAtom = atom<IHashMyGarden | null>({
   key: 'hasMyGarden',
   default: null,
+});
+
+export const memberIdAtom = atom<number | null>({
+  key: 'memberId',
+  default: null,
+});
+export const memberName = atom<string | null>({
+  key: 'memberName',
+  default: null,
+});
+export const windowOffsetAtom = atom<{ width: number; height: number }>({
+  key: 'offset',
+  default: { width: window.innerWidth, height: window.innerHeight },
+});
+
+// Community
+export const communityParamsAtom = atom<{
+  searchContent: string;
+  postType: 'INFORMATION_SHARE' | 'GARDEN_SHOWCASE' | 'QUESTION' | 'ETC' | '';
+  orderBy: 'COMMENT_COUNT' | 'RECENT_DATE' | 'LIKE_COUNT' | 'OLDER_DATE' | '';
+}>({
+  key: 'communityParams',
+  default: { searchContent: '', postType: 'ETC', orderBy: '' },
 });

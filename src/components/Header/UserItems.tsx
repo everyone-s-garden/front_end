@@ -1,15 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { isLoginAtom } from 'recoil/atom';
 import styled from 'styled-components';
 import { ReactComponent as UserIcon } from 'assets/user-icon.svg';
-import { BREAK_POINT } from 'constants/style';
 import PostOptions from './PostOptions';
 import Notification from './Notification';
 
 const UserItems = () => {
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
+  const nav = useNavigate();
 
   const logout = () => {
     sessionStorage.clear();
@@ -18,9 +18,9 @@ const UserItems = () => {
 
   return (
     <Container>
-      <Notification />
+      {/* <Notification /> */}
       {isLogin && <StyledLink to="/my">마이페이지</StyledLink>}
-      <StyledUserIcon login={isLogin} />
+      <StyledUserIcon onClick={() => nav('/my')} login={isLogin.toString()} />
       {isLogin ? (
         <StyledLink to="/" onClick={logout}>
           로그아웃
@@ -40,7 +40,7 @@ const Container = styled.div`
   flex-shrink: 0;
   position: relative;
 
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     gap: 30px;
   }
 `;
@@ -50,7 +50,7 @@ const StyledLink = styled(Link)`
   font-weight: 400;
   display: none;
 
-  @media (min-width: ${BREAK_POINT.TABLET}) {
+  @media ${({ theme }) => theme.devices.tablet} {
     display: block;
   }
 `;
@@ -60,9 +60,9 @@ const StyledUserIcon = styled(UserIcon)`
   height: 24px;
   display: block;
   fill: ${({ login }) => (login ? '#000' : 'transparent')};
-  stroke: #000;
+  stroke: ${({ theme }) => theme.colors.black};
   cursor: pointer;
-  @media (min-width: ${BREAK_POINT.TABLET}) {
+  @media ${({ theme }) => theme.devices.tablet} {
     display: none;
   }
 `;

@@ -1,15 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 import HttpRequest from './HttpRequest';
-import { MonthCrop } from 'types/Crop';
+import { MonthCropResponse } from 'types/Crop';
 
-const getMonthCrop = async (month: number): Promise<MonthCrop[]> => {
-  const response = await HttpRequest.get(`/v1/crop?month=${month}`);
-  return response.data;
+const getMonthCrop = async (): Promise<MonthCropResponse[]> => {
+  const response = await HttpRequest.get(`/v1/crops`);
+
+  return response.data.cropsResponses;
 };
 
-export const useGetMonthCrop = ({ month }: { month: number }) => {
+export const useGetMonthCrop = () => {
   return useQuery({
-    queryKey: ['monthlyCrop', month],
-    queryFn: () => getMonthCrop(month),
+    queryKey: ['monthlyCrop'],
+    queryFn: getMonthCrop,
   });
 };

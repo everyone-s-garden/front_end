@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import { useMatch, useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { Container as MapDiv, Marker, NaverMap } from 'react-naver-maps';
 import { Player } from '@lottiefiles/react-lottie-player';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { BREAK_POINT, COLOR } from '../../../constants/style';
-import { isReportOpenAtom, reportPostIdAtom } from '../../../recoil/atom';
+import { isReportOpenAtom, memberIdAtom, reportPostIdAtom } from '../../../recoil/atom';
 import ImageSlider from '../../../components/ImageSlider';
 import { ReactComponent as BackIcon } from 'assets/back-icon.svg';
 import { ReactComponent as MenuIcon } from 'assets/three-dot-icon.svg';
@@ -27,6 +27,7 @@ type PostDetailProps = {
 function PostDetail() {
   const { postId } = useParams();
   const { navermaps } = useOutletContext<PostDetailProps>();
+  const memberId = useRecoilValue(memberIdAtom);
   const nav = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState<boolean>(false);
@@ -34,9 +35,8 @@ function PostDetail() {
   const [__, setReportPostId] = useRecoilState(reportPostIdAtom);
   const animationRef = useRef<Player>(null);
   const [map, setMap] = useState<naver.maps.Map | null>(null);
-  const [post, setPost] = useState<IGardenDetail | null>(null);
+  const [post, setPost] = useState<any>(null);
   const [images, setImages] = useState<string[]>([]);
-  const userId = Number(getItem('userId'));
   const location = { lat: 37.3595704, long: 127.105399 };
   const fetchGardenData = async () => {
     if (!postId) return;
@@ -64,11 +64,11 @@ function PostDetail() {
       }
     }
   };
+
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchGardenData();
   }, [postId]); // postId가 변경될 때마다 데이터를 가져오도록 설정
-
   useEffect(() => {
     if (post && map) {
       // post와 map이 모두 존재할 때만 실행
@@ -79,7 +79,7 @@ function PostDetail() {
   }, [post, map]);
   const deletePost = async () => {
     try {
-      const res: AxiosResponse = await customAxios.delete(`v1/garden/${post?.id}`);
+      const res: AxiosResponse = await customAxios.delete(`v2/gardens/${post?.id}`);
       if (res.status === 204) nav('/my');
     } catch (err) {
       console.log(err);
@@ -103,7 +103,7 @@ function PostDetail() {
 
         <ContentSection>
           <Title>
-            {post?.name}
+            {post?.gardenName}
             <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
               <MenuIcon width="3" height="18" fill="#505462" />
             </button>
@@ -116,8 +116,8 @@ function PostDetail() {
               >
                 신고하기
               </DropDownBtn>
-              {userId === post?.userId && <DropDownBtn onClick={deletePost}>삭제하기</DropDownBtn>}
-              {userId === post?.userId && (
+              {memberId === post?.writerId && <DropDownBtn onClick={deletePost}>삭제하기</DropDownBtn>}
+              {memberId === post?.writerId && (
                 <DropDownBtn onClick={() => nav(`/my/post/edit/${postId}`)}>수정하기</DropDownBtn>
               )}
             </MenuDropdown>
@@ -127,9 +127,9 @@ function PostDetail() {
 
           <Facility>
             <h4>부대시설</h4>
-            {post?.facility?.toilet && <span>화장실</span>}
-            {post?.facility?.waterway && <span>수로</span>}
-            {post?.facility?.equipment && <span>농기구</span>}
+            {post?.gardenFacility?.isToilet && <span>화장실</span>}
+            {post?.gardenFacility?.isWaterway && <span>수로</span>}
+            {post?.gardenFacility?.isEquipment && <span>농기구</span>}
           </Facility>
           <Contact>
             <h4>연락처</h4>
@@ -137,7 +137,9 @@ function PostDetail() {
           </Contact>
 
           <Content>
-            {post?.content === null || post?.content === undefined ? '상세 설명이 없습니다.' : post.content}
+            {post?.gardenDescription === null || post?.gardenDescription === undefined
+              ? '상세 설명이 없습니다.'
+              : post.gardenDescription}
           </Content>
 
           <Location>
