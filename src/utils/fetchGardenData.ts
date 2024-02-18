@@ -31,3 +31,14 @@ export const getCropTradeAPI = {
     return res;
   },
 };
+
+export const handleLikeAPI = {
+  requestLikeAPI: async (id: number) => {
+    const res = await customAxios.post('v2/gardens/likes', { gardenId: id });
+    return res;
+  },
+  removeLikeAPI: async (id: number) => {
+    const res = await customAxios.delete('v2/gardens/likes', { data: { gardenId: id } });
+    return res;
+  },
+};

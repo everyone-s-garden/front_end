@@ -16,6 +16,7 @@ const RecentPosts = () => {
     })();
     return () => {};
   }, []);
+  console.log(gardens);
 
   if (gardens.length === 0) {
     return <h1>최근 본 게시글이 존재하지 않습니다.</h1>;
