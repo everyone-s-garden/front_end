@@ -1,7 +1,7 @@
 import { ICropTradeItem, IPostListItem, IPurchaseListItem } from 'api/type';
 import { BREAK_POINT } from 'constants/style';
 import React, { useState } from 'react';
-import { useMatch } from 'react-router-dom';
+import { useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import IconHeart from './icon/HeartIcon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,6 +11,7 @@ import { reportPostIdAtom, windowOffsetAtom } from 'recoil/atom';
 import EmptyImage from 'components/icon/EmptyImage';
 import customAxios from 'utils/token';
 import { useRecoilState } from 'recoil';
+import { handleLikeAPI } from 'utils/fetchGardenData';
 
 interface IItemsRendererPropss {
   items?: IPostListItem[];
@@ -42,6 +43,10 @@ const ItemRenderer = ({
   commentPostMatch,
   deletePost,
 }: IItemsRendererPropss) => {
+  const removeLike = async (id: number) => {
+    const res = await handleLikeAPI.removeLikeAPI(id);
+    console.log(res);
+  };
   return (
     <>
       {items?.map((item, idx) => {
@@ -57,7 +62,7 @@ const ItemRenderer = ({
               )}
 
               {(likeMatch || wishListMatch || whisperLikeMatch) && (
-                <div>
+                <div onClick={() => removeLike(item.gardenId)}>
                   <IconHeart fill="white" />
                 </div>
               )}
