@@ -2,15 +2,17 @@ import React from 'react';
 import GardenItem from './GardenItem';
 import styled from 'styled-components';
 import { BREAK_POINT } from 'constants/style';
+import { useGetRecentGardenPosts } from 'api/GardenAPI';
 
 const GardenList = () => {
+  const { data: recentGardenPosts } = useGetRecentGardenPosts();
+
   return (
     <Container>
-      <Title>모두의 텃밭에서 수도권 지역 텃밭을 추천드려요!</Title>
+      <Title>방금 등록된 따끈따끈한 텃밭!</Title>
       <GardenItemWrapper>
-        {Array.from({ length: 4 }).map((_, index) => (
-          <GardenItem key={index} />
-        ))}
+        {recentGardenPosts &&
+          recentGardenPosts.map(gardenPost => <GardenItem gardenPost={gardenPost} key={gardenPost.gardenId} />)}
       </GardenItemWrapper>
     </Container>
   );

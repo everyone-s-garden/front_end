@@ -131,6 +131,20 @@ export const CommunityAPI = {
     const res = await HttpRequest.delete(`v1/posts/comments/${commentId}`);
     return res;
   },
+
+  // MyPost
+  getMyPosts: async (): Promise<PostList> => {
+    const { data } = await HttpRequest.get(`/v1/my/posts?offset=0&limit=10`);
+    return data.postInfos;
+  },
+  getMyLikedPosts: async (): Promise<PostList> => {
+    const { data } = await HttpRequest.get(`/v1/my/posts/likes?offset=0&limit=10`);
+    return data.postInfos;
+  },
+  getMyCommentedPosts: async (): Promise<PostList> => {
+    const { data } = await HttpRequest.get(`/v1/my/posts/comments?offset=0&limit=10`);
+    return data.postInfos;
+  },
 };
 
 export const useGetAllPosts = () => {
@@ -279,4 +293,16 @@ export const useUnlikeComment = () => {
 
 export const useEditComment = () => {
   return useMutation({ mutationFn: CommunityAPI.editComment });
+};
+
+export const useGetMyPosts = () => {
+  return useQuery({ queryKey: ['myPosts'], queryFn: CommunityAPI.getMyPosts });
+};
+
+export const useGetMyCommentedPosts = () => {
+  return useQuery({ queryKey: ['myCommentedPosts'], queryFn: CommunityAPI.getMyCommentedPosts });
+};
+
+export const useGetMyLikedPosts = () => {
+  return useQuery({ queryKey: ['myLikedPosts'], queryFn: CommunityAPI.getMyLikedPosts });
 };

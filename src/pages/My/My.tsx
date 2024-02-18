@@ -120,22 +120,22 @@ const SubHeader = ({
       )}
       {gardenManageMatch && (
         <>
-          <Btn
+          {/* <Btn
             onClick={() => nav('garden_manage/my_garden_selling')}
             match={gardenSellingMatch !== null}
             secondary={true}
           >
             나의 분양중인 텃밭
             {gardenSellingMatch && <ButtonHighlight layoutId="1" />}
-          </Btn>
+          </Btn> */}
           <Btn onClick={() => nav('garden_manage/my_garden_using')} match={gardenUsingMatch !== null} secondary={true}>
-            내가 이용하는 텃밭
+            나의 텃밭
             {gardenUsingMatch && <ButtonHighlight layoutId="1" />}
           </Btn>
-          <Btn onClick={() => nav('garden_manage/like')} match={likeGardenMatch !== null} secondary={true}>
+          {/* <Btn onClick={() => nav('garden_manage/like')} match={likeGardenMatch !== null} secondary={true}>
             내가 찜한 텃밭
             {likeGardenMatch && <ButtonHighlight layoutId="1" />}
-          </Btn>
+          </Btn> */}
         </>
       )}
 
@@ -184,7 +184,7 @@ const Mypage = () => {
                 <Btn onClick={() => nav('/my/crop_trade/regional_certification')} match={cropTradeMatch !== null}>
                   작물거래
                 </Btn>
-                <Btn onClick={() => nav('/my/garden_manage/my_garden_selling')} match={gardenManageMatch !== null}>
+                <Btn onClick={() => nav('/my/garden_manage/my_garden_using')} match={gardenManageMatch !== null}>
                   텃밭관리
                 </Btn>
                 <Btn onClick={() => nav('/my/whisper/my_post')} match={whisperMatch !== null}>
@@ -232,8 +232,9 @@ const Container = styled.div`
   width: 100%;
   justify-content: center;
 
-  @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
+  @media ${({ theme }) => theme.devices.mobile} {
     margin-top: 0px;
+    padding: 0;
   }
 `;
 
@@ -245,14 +246,14 @@ const Header = styled.div`
 const InnerHeader = styled.div`
   height: 48px;
   border-top: 1px solid;
-  border-color: #d9d9d9;
+  border-color: ${({ theme }) => theme.colors.gray[100]};
   :last-child {
     border-bottom: 1px solid;
-    border-color: #d9d9d9;
+    border-color: ${({ theme }) => theme.colors.gray[100]};
   }
 
   :first-child > div > button {
-    color: #d9d9d9;
+    color: ${({ theme }) => theme.colors.gray[100]};
   }
   :last-child > div > button {
     color: #9e9e9e;

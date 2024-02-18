@@ -1,3 +1,4 @@
+import { useGetMyGardens } from 'api/GardenAPI';
 import PostListItem from 'components/PostListItem';
 import { BREAK_POINT } from 'constants/style';
 import React, { useState } from 'react';
@@ -5,6 +6,7 @@ import styled from 'styled-components';
 import { usingItem } from 'utils/dummydata';
 
 const GardenUsing = () => {
+  const { data: myGardensData } = useGetMyGardens();
   const [openMenu, setOpenMenu] = useState(false);
 
   const item = usingItem.myManagedGardenGetResponses[0];
@@ -21,18 +23,12 @@ const GardenUsing = () => {
   }
   // 함수 사용 예
 
+  console.log(myGardensData);
+
   return (
     <div style={{ flex: 1 }}>
       <Menu>
         <div style={{ fontWeight: 600 }}>나의 텃밭</div>
-        {openMenu ? (
-          <MenuButtonWrapper>
-            <div>삭제</div>
-            <div onClick={() => setOpenMenu(false)}>취소</div>
-          </MenuButtonWrapper>
-        ) : (
-          <div onClick={() => setOpenMenu(true)}>편집</div>
-        )}
       </Menu>
       <div
         style={{

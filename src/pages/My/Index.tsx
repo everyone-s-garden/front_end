@@ -33,9 +33,9 @@ const myPageMobileRouter = [
     id: Math.random() + 3,
     title: '텃밭 관리',
     child: [
-      { id: Math.random() + 17, childTitle: '나의 분양중인 텃밭', path: 'garden_manage/my_garden_selling' },
-      { id: Math.random() + 18, childTitle: '내가 이용하는 텃밭', path: 'garden_manage/my_garden_using' },
-      { id: Math.random() + 19, childTitle: '내가 찜한 텃밭', path: 'garden_manage/like' },
+      // { id: Math.random() + 17, childTitle: '나의 분양중인 텃밭', path: 'garden_manage/my_garden_selling' },
+      { id: Math.random() + 18, childTitle: '나의 텃밭', path: 'garden_manage/my_garden_using' },
+      // { id: Math.random() + 19, childTitle: '내가 찜한 텃밭', path: 'garden_manage/like' },
     ],
   },
   {

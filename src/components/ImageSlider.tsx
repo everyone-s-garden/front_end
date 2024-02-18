@@ -14,7 +14,6 @@ interface ImageSliderProps {
 }
 
 function ImageSlider({ images }: ImageSliderProps) {
-  console.log(images);
   const sliderRef = useRef<HTMLDivElement>(null);
   const selectedGardenId = useRecoilValue(selectedGardenIdAtom);
   const setImageMagnifImages = useSetRecoilState(imageMagnifImagesAtom);

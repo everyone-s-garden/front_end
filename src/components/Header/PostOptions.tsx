@@ -7,9 +7,9 @@ import useSelect from 'hooks/useSelect';
 
 const postOptions = [
   {
-    title: '나의 밭 등록하기',
+    title: '나의 텃밭 등록하기',
     description: '현재 가지고 있는 밭을 등록해요',
-    link: '/',
+    link: '/create-myGarden',
   },
   {
     title: '판매하는 밭 등록하기',
@@ -30,16 +30,17 @@ const postOptions = [
 
 const PostOptions = () => {
   const { toggleSelect, isOpen, closeSelect } = useSelect();
+
   return (
     <>
-      <PostBtn onClick={toggleSelect} onBlur={closeSelect}>
+      <PostBtn onClick={toggleSelect}>
         <StyledPlusIcon />
         글쓰기
       </PostBtn>
       {isOpen && (
         <SelectContainer>
           {postOptions.map(({ link, title, description }) => (
-            <StyledLink to={link} key={link}>
+            <StyledLink to={link} key={link} onClick={closeSelect}>
               <Title>{title}</Title>
               <Description>{description}</Description>
             </StyledLink>
@@ -51,14 +52,14 @@ const PostOptions = () => {
 };
 
 const PostBtn = styled.button`
-  background-color: #fceec0;
+  background-color: ${({ theme }) => theme.colors.green[500]};
   border-radius: 10px;
   padding: 8px 12px;
   display: none;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.white};
   font-size: 18px;
   font-weight: 500;
 
@@ -71,7 +72,7 @@ const StyledPlusIcon = styled(PlusIcon)`
   width: 16px;
   height: 16px;
   & path {
-    stroke: #000;
+    stroke: ${({ theme }) => theme.colors.white};
   }
 `;
 
@@ -79,7 +80,6 @@ const SelectContainer = styled.div`
   position: absolute;
   right: 0;
   top: 50px;
-  z-index: 100000;
   background-color: #fff;
   border: 1px solid #d9d9d9;
   border-radius: 10px;

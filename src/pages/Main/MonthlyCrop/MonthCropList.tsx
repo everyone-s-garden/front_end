@@ -11,8 +11,8 @@ const MonthCropList = ({ currentMonth }: { currentMonth: number }) => {
 
   return (
     <Container>
-      {/* <PcImg src={getMonthImage(currentMonth).pc} /> */}
-      {/* <MobileImg src={getMonthImage(currentMonth).mobile} /> */}
+      <PcImg src={getMonthImage(currentMonth).pc} />
+      <MobileImg src={getMonthImage(currentMonth).mobile} />
       <ListWrapper>
         {monthCrops[currentMonth - 1].cropInfos.map(crop => (
           <MonthCropItem key={crop.name} cropInfo={crop} />
@@ -66,7 +66,7 @@ const ListWrapper = styled.ul`
   overflow-y: scroll;
 
   @media ${({ theme }) => theme.devices.mobile} {
-    max-height: 228px;
+    max-height: 225px;
     min-width: 265px;
   }
 `;
