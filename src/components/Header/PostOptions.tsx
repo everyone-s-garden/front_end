@@ -51,14 +51,14 @@ const PostOptions = () => {
 };
 
 const PostBtn = styled.button`
-  background-color: #fceec0;
+  background-color: ${({ theme }) => theme.colors.green[500]};
   border-radius: 10px;
   padding: 8px 12px;
   display: none;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.white};
   font-size: 18px;
   font-weight: 500;
 
@@ -71,7 +71,7 @@ const StyledPlusIcon = styled(PlusIcon)`
   width: 16px;
   height: 16px;
   & path {
-    stroke: #000;
+    stroke: ${({ theme }) => theme.colors.white};
   }
 `;
 

@@ -22,10 +22,15 @@ import RecentPosts from 'pages/My/RecentPosts/RecentPosts';
 import MyPosts from 'pages/My/MyPosts/MyPosts';
 import { HelmetProvider } from 'react-helmet-async';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import Chat from 'pages/Chat/Chat';
+import Review from 'pages/Review/Review';
+import ReceiveReview from 'pages/ReceiveReview/ReceiveReview';
 import Header from 'components/Header/Header';
 import NaverToken from 'pages/Login/Naver/token/token';
 import { ThemeProvider } from 'styled-components';
 import theme from 'styles/theme';
+import ChatContents from 'pages/Chat/ChatContent/ChatContents';
+import StartContent from 'pages/Chat/ChatContent/StartContent';
 
 import GardenSelling from 'pages/My/GardenManage/gardenSelling/GardenSelling';
 import GardenUsing from 'pages/My/GardenManage/gardenUsing/GardenUsing';
@@ -224,6 +229,28 @@ const router = createBrowserRouter([
       {
         path: '/my/oauth/naver',
         element: <NaverToken />,
+      },
+      {
+        path: '/chat',
+        element: <Chat />,
+        children: [
+          {
+            index: true,
+            element: <StartContent />,
+          },
+          {
+            path: ':chatId',
+            element: <ChatContents />,
+          },
+        ],
+      },
+      {
+        path: '/review',
+        element: <Review />,
+      },
+      {
+        path: '/receive-review',
+        element: <ReceiveReview />,
       },
     ],
   },

@@ -21,7 +21,7 @@ const Map = () => {
       </Helmet>
       <Loader isLoading={isInitializing} />
 
-      <OptionBar />
+      <OptionBar map={map} />
       <MapViewer>
         <MapDiv
           style={{
@@ -49,14 +49,13 @@ export default Map;
 
 const MapPage = styled.div`
   position: relative;
-  width: 100vw;
-  height: calc(var(--vh, 1vh) * 100 - 51px);
   display: flex;
   flex-direction: column;
+  height: calc(var(--vh, 1vh) * 100 - 108px);
 
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
+  /* @media (min-width: ${BREAK_POINT.MOBILE}) {
     height: calc(var(--vh, 1vh) * 100 - 106px);
-  }
+  } */
 `;
 
 const MapViewer = styled.div`

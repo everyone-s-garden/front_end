@@ -125,8 +125,8 @@ const ForeignObject = styled.foreignObject<{ x: number; y: number }>`
   width: 20px;
   height: 20px;
 
-  x: ${props => props.x};
-  y: ${props => props.y};
+  /* x: ${props => props.x}; */
+  /* y: ${props => props.y}; */
 
   @media ${({ theme }) => theme.devices.tablet} {
     width: 40px;
