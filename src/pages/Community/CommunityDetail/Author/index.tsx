@@ -71,6 +71,7 @@ const Nickname = styled.div`
     font-size: 14px;
     color: ${({ theme }) => theme.colors.gray[700]};
     text-align: left;
+    width: fit-content;
   }
 `;
 

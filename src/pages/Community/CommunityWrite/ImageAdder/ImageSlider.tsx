@@ -71,6 +71,7 @@ const Container = styled.div`
   max-width: 1188px;
   margin: 0 auto;
   padding: 0 20px;
+  margin-bottom: 16px;
 
   .slick-track {
     display: flex;
@@ -128,6 +129,7 @@ const Container = styled.div`
 
   @media (${({ theme }) => theme.devices.mobile}) {
     padding: 0;
+    margin-bottom: 80px;
   }
 `;
 

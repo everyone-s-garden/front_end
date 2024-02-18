@@ -34,6 +34,11 @@ const convertToHtml = (data: RawDraftContentBlock[]): string => {
   let htmlString = '';
 
   data.forEach(block => {
+    if (block.text.length === 0) {
+      htmlString += blockTypeOpen[block.type] + '\n' + blockTypeClose[block.type];
+      return;
+    }
+
     const blockData = block.inlineStyleRanges
       .reduce<[number, string][]>((acc, { offset, length, style }) => {
         return acc.concat([

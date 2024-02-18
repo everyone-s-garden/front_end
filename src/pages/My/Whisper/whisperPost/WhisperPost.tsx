@@ -1,9 +1,11 @@
+import { useGetMyPosts } from 'api/CommunityAPI';
 import PostListItem from 'components/PostListItem';
 import React from 'react';
 import styled from 'styled-components';
 import { items } from 'utils/dummydata';
 
 const WhisperPost = () => {
+  const { data: postedData } = useGetMyPosts();
   return (
     <Container>
       <PostListItem items={items} />

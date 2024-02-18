@@ -7,9 +7,9 @@ import useSelect from 'hooks/useSelect';
 
 const postOptions = [
   {
-    title: '나의 밭 등록하기',
+    title: '나의 텃밭 등록하기',
     description: '현재 가지고 있는 밭을 등록해요',
-    link: '/',
+    link: '/create-myGarden',
   },
   {
     title: '판매하는 밭 등록하기',
@@ -30,16 +30,17 @@ const postOptions = [
 
 const PostOptions = () => {
   const { toggleSelect, isOpen, closeSelect } = useSelect();
+
   return (
     <>
-      <PostBtn onClick={toggleSelect} onBlur={closeSelect}>
+      <PostBtn onClick={toggleSelect}>
         <StyledPlusIcon />
         글쓰기
       </PostBtn>
       {isOpen && (
         <SelectContainer>
           {postOptions.map(({ link, title, description }) => (
-            <StyledLink to={link} key={link}>
+            <StyledLink to={link} key={link} onClick={closeSelect}>
               <Title>{title}</Title>
               <Description>{description}</Description>
             </StyledLink>
@@ -79,7 +80,6 @@ const SelectContainer = styled.div`
   position: absolute;
   right: 0;
   top: 50px;
-  z-index: 100000;
   background-color: #fff;
   border: 1px solid #d9d9d9;
   border-radius: 10px;

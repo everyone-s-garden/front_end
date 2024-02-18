@@ -126,8 +126,11 @@ const Container = styled.div`
   margin: 0 auto;
   max-width: 1440px;
   width: 100%;
-  height: 80vh;
-  margin-bottom: 100px;
+  height: calc(100vh - 113px);
+
+  & > div {
+    overflow: hidden;
+  }
 
   & .disabled {
     background-color: ${({ theme }) => theme.colors.orange[200]};
@@ -136,14 +139,20 @@ const Container = styled.div`
 
   @media (${({ theme }) => theme.devices.mobile}) {
     padding: 0 20px;
+    height: calc(100vh - 120px);
   }
 `;
 
 const Form = styled.form`
   width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+
+  @media (${({ theme }) => theme.devices.mobile}) {
+    height: auto;
+  }
 `;
 
 const SubmitBtn = styled.input`
@@ -151,7 +160,6 @@ const SubmitBtn = styled.input`
   height: 60px;
   flex-shrink: 0;
   margin: 0 auto;
-  margin-top: 100px;
   background-color: ${({ theme }) => theme.colors.orange[600]};
   color: #fff;
   font-size: 18px;
@@ -160,13 +168,11 @@ const SubmitBtn = styled.input`
   border-radius: 0;
   cursor: pointer;
 
-  position: fixed;
-  bottom: 0;
-
   @media (${({ theme }) => theme.devices.mobile}) {
-    position: relative;
     width: 350px;
     height: 56px;
     border-radius: 10px;
+    margin-bottom: 100px;
+    flex-shrink: 0;
   }
 `;
