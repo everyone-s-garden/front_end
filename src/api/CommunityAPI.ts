@@ -7,8 +7,16 @@ interface PageParam {
   searchContent: string;
   offset?: number;
   limit?: number;
+  hour?: number;
   postType: 'INFORMATION_SHARE' | 'GARDEN_SHOWCASE' | 'QUESTION' | 'ETC' | '';
   orderBy: 'COMMENT_COUNT' | 'RECENT_DATE' | 'LIKE_COUNT' | 'OLDER_DATE' | '';
+}
+
+interface CommentParam {
+  postId: number;
+  offset: number;
+  limit: number;
+  orderBy: 'RECENT_DATE' | 'LIKE_COUNT' | 'OLDER_DATE';
 }
 
 interface Post {
@@ -38,7 +46,7 @@ interface PostList {
 
 interface Comment {
   commentId: number;
-  parentId: number;
+  parentId: number | null;
   likeCount: number;
   content: string;
   authorId: number;
@@ -89,8 +97,10 @@ export const CommunityAPI = {
   },
 
   // Comment
-  getComments: async (postId: number): Promise<{ commentInfos: Comment[] }> => {
-    const { data } = await HttpRequest.get(`v1/posts/${postId}/comments`);
+  getComments: async (commentParam: CommentParam): Promise<{ commentInfos: Comment[] }> => {
+    const { data } = await HttpRequest.get(`v1/posts/${commentParam.postId}/comments`, {
+      params: commentParam,
+    });
     return data;
   },
   createComment: async ({
@@ -155,11 +165,12 @@ export const useGetAllPosts = () => {
 
 export const useGetPopularPosts = () => {
   return useInfiniteQuery({
-    queryKey: ['posts', 'popularPosts'],
+    queryKey: ['posts', 'popular'],
     queryFn: ({ pageParam }) => CommunityAPI.getPopularPosts(pageParam),
     initialPageParam: {
       offset: 0,
       limit: 6,
+      hour: 168,
     } as PageParam,
     getNextPageParam: (...pages) => {
       const [data, , params] = pages;
@@ -175,6 +186,8 @@ export const useGetPopularPosts = () => {
     },
     select(data) {
       const posts = data.pages.reduce<PostList['postInfos']>((acc, item) => acc.concat(item.postInfos), []);
+
+      console.log(posts);
 
       return posts;
     },
@@ -202,7 +215,56 @@ export const useDeletePost = () => {
 };
 
 export const useGetComments = (postId: number) => {
-  return useQuery({ queryKey: ['comments', postId], queryFn: () => CommunityAPI.getComments(postId) });
+  return useQuery({
+    queryKey: ['comments', postId],
+    queryFn: () =>
+      CommunityAPI.getComments({
+        postId,
+        offset: 0,
+        limit: 1000,
+        orderBy: 'OLDER_DATE',
+      }),
+    select(data) {
+      const parentCommentsMap = new Map<
+        number,
+        Omit<Comment, 'parentId'> & { subComments: Omit<Comment, 'parentId'>[] }
+      >();
+      const subComments: Comment[] = [];
+
+      data.commentInfos.forEach(comment => {
+        const { authorId, commentId, content, isLikeClick, likeCount, parentId } = comment;
+
+        if (parentId) {
+          subComments.push(comment);
+          return;
+        }
+
+        parentCommentsMap.set(commentId, {
+          authorId,
+          commentId,
+          content,
+          isLikeClick,
+          likeCount,
+          subComments: [],
+        });
+      });
+
+      subComments.forEach(comment => {
+        const { authorId, commentId, content, isLikeClick, likeCount, parentId } = comment;
+
+        if (!parentId) return;
+
+        const parentComment = parentCommentsMap.get(parentId)!;
+
+        parentCommentsMap.set(parentId, {
+          ...parentComment,
+          subComments: parentComment.subComments.concat({ authorId, commentId, content, isLikeClick, likeCount }),
+        });
+      });
+
+      return Array.from(parentCommentsMap.values());
+    },
+  });
 };
 
 export const useCreateComment = () => {

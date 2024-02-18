@@ -8,14 +8,15 @@ import Content from './Content';
 import Author from './Author';
 import { useParams } from 'react-router-dom';
 import { useGetPost } from 'api/CommunityAPI';
+import Comments from './Comments';
 
 const CommunityDetail = () => {
   const { postId } = useParams();
   const { data: post, isLoading } = useGetPost(Number(postId));
 
-  console.log(post);
+  // console.log(post);
 
-  if (isLoading || !post) {
+  if (isLoading || !post || !postId) {
     return <></>;
   }
 
@@ -31,6 +32,8 @@ const CommunityDetail = () => {
         <PostImageSlider images={post.images} />
         <Content text={post.content} />
         <Author authorId={post.authorId} />
+        {/* <Comments postId={postId} /> */}
+
         <PopularPostList />
       </Container>
     </>
