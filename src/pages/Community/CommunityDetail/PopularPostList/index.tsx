@@ -1,12 +1,11 @@
-import { useGetAllPosts } from 'api/CommunityAPI';
+import { useGetPopularPosts } from 'api/CommunityAPI';
 import PostList from 'components/PostList';
 import useInfiniteScroll from 'hooks/useInfiniteScroll';
 import React from 'react';
 import styled from 'styled-components';
 
 const PopularPostList = () => {
-  // TODO: 인기글 데이터로 변경
-  const { data, fetchNextPage, hasNextPage } = useGetAllPosts();
+  const { data, fetchNextPage, hasNextPage } = useGetPopularPosts();
 
   const { ref } = useInfiniteScroll<HTMLDivElement>({
     fetchData: () => {

@@ -18,6 +18,13 @@ interface PostListProps {
   }[];
 }
 
+const POST_TYPE = {
+  INFORMATION_SHARE: '정보공유',
+  GARDEN_SHOWCASE: '텃밭 자랑',
+  QUESTION: '질문하기',
+  ETC: '기타',
+};
+
 const PostList = ({ posts }: PostListProps) => {
   const navigate = useNavigate();
 
@@ -29,6 +36,7 @@ const PostList = ({ posts }: PostListProps) => {
     return text.replaceAll('\n', ' ');
   }, []);
 
+  // TODO: key random 값으로 바꾸기
   return (
     <Container>
       {posts.map(post => {
@@ -39,7 +47,7 @@ const PostList = ({ posts }: PostListProps) => {
             <PostItem onClick={() => navigate(`/community/${postId}`)}>
               <Info>
                 <Flex>
-                  <Badge>{postType}</Badge>
+                  <Badge>{POST_TYPE[postType]}</Badge>
                   <h3>{title}</h3>
                 </Flex>
                 <summary>{getPlainText(content)}</summary>

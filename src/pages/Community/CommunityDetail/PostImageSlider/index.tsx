@@ -26,6 +26,8 @@ const RightArrow = ({ className, onClick }: CustomArrowProps) => {
 };
 
 const PostImageSlider = ({ images }: PostImageSliderProps) => {
+  if (images.length === 0) return null;
+
   const settings: Settings = {
     dots: false,
     infinite: false,

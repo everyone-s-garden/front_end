@@ -71,6 +71,7 @@ const Container = styled.div`
   flex-grow: 1;
   font-size: 16px;
   margin: 0 auto;
+  margin-bottom: 16px;
   display: flex;
   flex-direction: column;
 
@@ -95,6 +96,7 @@ const Container = styled.div`
 
   @media (${({ theme }) => theme.devices.mobile}) {
     margin-top: 48px;
+    margin-bottom: 34px;
   }
 `;
 
@@ -125,7 +127,6 @@ const Title = styled.input`
 `;
 
 const EditorContainer = styled.section`
-  margin-top: 40px;
   position: relative;
   flex-grow: 1;
 
@@ -136,6 +137,13 @@ const EditorContainer = styled.section`
   .DraftEditor-root {
     position: relative;
     height: 100%;
+    padding: 33px 0;
+    border-bottom: 1px solid ${({ theme }) => theme.colors.gray[100]};
+
+    @media (${({ theme }) => theme.devices.mobile}) {
+      padding: 40px 0;
+      min-height: 300px;
+    }
   }
   .public-DraftEditorPlaceholder-root {
     position: relative;
