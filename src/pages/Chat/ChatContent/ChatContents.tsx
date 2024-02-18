@@ -26,7 +26,7 @@ const ChatContents = () => {
 
   useEffect(() => {
     client.current = new StompJS.Client({
-      brokerURL: 'ws://every-garden.kro.kr/ws/connect',
+      brokerURL: 'wss://every-garden.kro.kr/ws/connect',
       connectHeaders: {
         'access-token': token!,
       },
@@ -78,11 +78,12 @@ const Container = styled.div`
   top: 0;
   left: 0;
   right: 0;
-  z-index: 101;
+  z-index: 91;
 
   @media ${({ theme }) => theme.devices.tablet} {
     position: relative;
     display: block;
+    z-index: 80;
   }
 `;
 

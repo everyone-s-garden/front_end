@@ -51,7 +51,7 @@ const MapPage = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  height: calc(var(--vh, 1vh) * 100 - 108px);
+  height: calc(100vh - 118px);
 
   /* @media (min-width: ${BREAK_POINT.MOBILE}) {
     height: calc(var(--vh, 1vh) * 100 - 106px);

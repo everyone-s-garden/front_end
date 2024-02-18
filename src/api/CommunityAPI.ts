@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import HttpRequest from './HttpRequest';
 import { useRecoilValue } from 'recoil';
 import { communityParamsAtom } from 'recoil/atom';
@@ -117,6 +117,20 @@ export const CommunityAPI = {
     const res = await HttpRequest.delete(`v1/posts/comments/${commentId}`);
     return res;
   },
+
+  // MyPost
+  getMyPosts: async (): Promise<PostList> => {
+    const { data } = await HttpRequest.get(`/v1/my/posts?offset=0&limit=10`);
+    return data.postInfos;
+  },
+  getMyLikedPosts: async (): Promise<PostList> => {
+    const { data } = await HttpRequest.get(`/v1/my/posts/likes?offset=0&limit=10`);
+    return data.postInfos;
+  },
+  getMyCommentedPosts: async (): Promise<PostList> => {
+    const { data } = await HttpRequest.get(`/v1/my/posts/comments?offset=0&limit=10`);
+    return data.postInfos;
+  },
 };
 
 export const useGetAllPosts = () => {
@@ -151,4 +165,16 @@ export const useGetAllPosts = () => {
 
 export const useCreatePost = () => {
   return useMutation({ mutationFn: CommunityAPI.createPost });
+};
+
+export const useGetMyPosts = () => {
+  return useQuery({ queryKey: ['myPosts'], queryFn: CommunityAPI.getMyPosts });
+};
+
+export const useGetMyCommentedPosts = () => {
+  return useQuery({ queryKey: ['myCommentedPosts'], queryFn: CommunityAPI.getMyCommentedPosts });
+};
+
+export const useGetMyLikedPosts = () => {
+  return useQuery({ queryKey: ['myLikedPosts'], queryFn: CommunityAPI.getMyLikedPosts });
 };

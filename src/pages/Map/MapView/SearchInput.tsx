@@ -6,7 +6,7 @@ import { Region } from 'types/Garden';
 import { useNavermaps } from 'react-naver-maps';
 
 const SearchInput = ({ map }: { map: naver.maps.Map | null }) => {
-  const { closeSelect, isOpen, openSelect, toggleSelect } = useSelect();
+  const { closeSelect, isOpen, openSelect } = useSelect();
   const navermaps = useNavermaps();
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [regionName, setRegionName] = useState<string>('');

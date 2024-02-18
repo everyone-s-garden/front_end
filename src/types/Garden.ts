@@ -31,3 +31,17 @@ export interface GardenPost {
   isLiked: boolean;
   imageUrl: string;
 }
+
+export interface MyGarden {
+  myManagedGardenId: number;
+  gardenName: string;
+  useStartDate: string;
+  useEndDate: string;
+  images: string[];
+}
+
+export interface GardenForNameSearch {
+  gardenId: number;
+  gardenName: string;
+  address: string;
+}
