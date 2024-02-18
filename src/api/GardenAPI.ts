@@ -3,7 +3,7 @@ import HttpRequest from './HttpRequest';
 import { getItem } from 'utils/session';
 import { GardenDetailType } from './type';
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
-import { GardenPost, GetAllGardensResponse, Region } from 'types/Garden';
+import { GardenForNameSearch, GardenPost, GetAllGardensResponse, MyGarden, Region } from 'types/Garden';
 
 export const GardenAPI = {
   getGardenByRegion: async (type: number, region: string) => {
@@ -85,5 +85,43 @@ const likeGarden = async (gardenId: number) => {
 export const useLikeGarden = () => {
   return useMutation({
     mutationFn: likeGarden,
+  });
+};
+
+const getMyGardens = async (): Promise<MyGarden[]> => {
+  const response = await HttpRequest.get('/v2/gardens/my-managed');
+
+  return response.data.myManagedGardenGetResponses;
+};
+
+export const useGetMyGardens = () => {
+  return useQuery({
+    queryKey: ['myGardens'],
+    queryFn: getMyGardens,
+  });
+};
+
+const getGardenListForName = async (gardenName: string): Promise<GardenForNameSearch[]> => {
+  const response = await HttpRequest.get(`/v2/gardens?gardenName=${gardenName}&pageNumber=0`);
+
+  return response.data.gardenSearchResponses;
+};
+
+export const useGetGardenListForName = (gardenName: string) => {
+  return useQuery({
+    queryKey: ['gardenListForName', gardenName],
+    queryFn: () => getGardenListForName(gardenName),
+  });
+};
+
+const createMyGarden = async (garden: { gardenId: number; useStartDate: string; useEndDate: string }) => {
+  const response = await HttpRequest.post('/v2/gardens/my-managed', garden);
+
+  return response;
+};
+
+export const useCreateMyGarden = () => {
+  return useMutation({
+    mutationFn: createMyGarden,
   });
 };
