@@ -61,12 +61,6 @@ const KaKaoToken = () => {
     try {
       const code: string | null = new URLSearchParams(window.location.search).get('code');
 
-      console.log('REACT_APP_KAKAO_REDIRECT_URI`', process.env.REACT_APP_KAKAO_REDIRECT_URI);
-
-      console.log('REACT_APP_API_BASE_URL`', process.env.REACT_APP_API_BASE_URL);
-      console.log('REACT_APP_KAKAO_REST_API_KEY`', process.env.REACT_APP_KAKAO_REST_API_KEY);
-      console.log('REACT_APP_API_KAKAO_CLIENT_SECRET`', process.env.REACT_APP_API_KAKAO_CLIENT_SECRET);
-
       const kakao_token = await getKakaoApi(code);
       const response_server = await getServerApi(kakao_token);
       const { accessToken, refreshToken, memberId } = response_server;
