@@ -15,6 +15,12 @@ const KaKaoToken = () => {
 
   const getKakaoApi = async (code: string | null) => {
     if (!code) return;
+
+    console.log('REACT_APP_NAVER_API_KEY', process.env.REACT_APP_NAVER_API_KEY);
+    console.log('REACT_APP_NAVER_CLIENT_SECRET', process.env.REACT_APP_NAVER_API_KEY);
+    console.log('REACT_APP_NAVER_SCOPE', process.env.REACT_APP_NAVER_API_KEY);
+    console.log('REACT_APP_NAVER_REDIRECT_URL`', process.env.REACT_APP_NAVER_API_KEY);
+
     try {
       const res_kakao: AxiosResponse = await axios.post<IData>(
         `https://kauth.kakao.com/oauth/token`,
