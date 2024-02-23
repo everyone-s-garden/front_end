@@ -62,9 +62,14 @@ const KaKaoToken = () => {
       const code: string | null = new URLSearchParams(window.location.search).get('code');
 
       console.log('REACT_APP_NAVER_API_KEY', process.env.REACT_APP_NAVER_API_KEY);
-      console.log('REACT_APP_NAVER_CLIENT_SECRET', process.env.REACT_APP_NAVER_API_KEY);
-      console.log('REACT_APP_NAVER_SCOPE', process.env.REACT_APP_NAVER_API_KEY);
-      console.log('REACT_APP_NAVER_REDIRECT_URL`', process.env.REACT_APP_NAVER_API_KEY);
+      console.log('REACT_APP_NAVER_CLIENT_SECRET', process.env.REACT_APP_NAVER_CLIENT_SECRET);
+      console.log('REACT_APP_NAVER_SCOPE', process.env.REACT_APP_NAVER_SCOPE);
+      console.log('REACT_APP_NAVER_REDIRECT_URL`', process.env.REACT_APP_NAVER_REDIRECT_URL);
+      console.log('REACT_APP_KAKAO_REDIRECT_URI`', process.env.REACT_APP_KAKAO_REDIRECT_URI);
+      console.log('REACT_APP_NAVER_CLIENT_ID`', process.env.REACT_APP_NAVER_CLIENT_ID);
+      console.log('REACT_APP_API_BASE_URL`', process.env.REACT_APP_API_BASE_URL);
+      console.log('REACT_APP_KAKAO_REST_API_KEY`', process.env.REACT_APP_KAKAO_REST_API_KEY);
+      console.log('REACT_APP_API_KAKAO_CLIENT_SECRET`', process.env.REACT_APP_API_KAKAO_CLIENT_SECRET);
 
       const kakao_token = await getKakaoApi(code);
       const response_server = await getServerApi(kakao_token);
