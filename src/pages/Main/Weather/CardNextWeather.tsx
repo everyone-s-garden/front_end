@@ -19,6 +19,9 @@ const CardNextWeather = () => {
   );
   const { data: timeData, isFetching: timeFetching } = useGetPerTimeWeather(myLocation.latitude, myLocation.longitude);
 
+  console.log(timeData);
+  console.log(weeklyData);
+
   useEffect(() => {
     if (weeklyData) {
       setMyLocation(prev => {
@@ -52,7 +55,10 @@ const CardNextWeather = () => {
                 </TimeWrapper>
                 <WeeklyWeatherWrapper>
                   <Tag>주간별 날씨</Tag>
-                  <WeeklyWeather weeklyData={weeklyData} />
+                  <WeeklyWeather
+                    nextDayData={timeData.weatherTimeResponses[timeData.weatherTimeResponses.length - 1].skyStatus}
+                    weeklyData={weeklyData}
+                  />
                 </WeeklyWeatherWrapper>
               </>
             )}

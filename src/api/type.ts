@@ -56,41 +56,41 @@ export interface IMyManagedGardenList {
   myManagedGardenGetResponses: IMyManagedGarden[];
 }
 
-export interface GardesType {
-  gardenId: number;
-  gardenName: string;
-  gardenStatus: 'ACTIVE' | 'INACTIVE' | null | undefined;
-  gardenType: 'PRIVATE' | 'PUBLIC';
-  images: string[];
-  latitude: number;
-  longitude: number;
-  price: string;
-  size: string;
-}
+// export interface GardesType {
+//   gardenId: number;
+//   gardenName: string;
+//   gardenStatus: 'ACTIVE' | 'INACTIVE' | null | undefined;
+//   gardenType: 'PRIVATE' | 'PUBLIC';
+//   images: string[];
+//   latitude: number;
+//   longitude: number;
+//   price: string;
+//   size: string;
+// }
 
-interface IMyManagedGarden {
-  myManagedGardenId: number;
-  gardenName: string;
-  useStartDate: string;
-  useEndDate: string;
-  images: string[];
-}
+// interface IMyManagedGarden {
+//   myManagedGardenId: number;
+//   gardenName: string;
+//   useStartDate: string;
+//   useEndDate: string;
+//   images: string[];
+// }
 
-export interface IMyManagedGardenList {
-  myManagedGardenGetResponses: IMyManagedGarden[];
-}
+// export interface IMyManagedGardenList {
+//   myManagedGardenGetResponses: IMyManagedGarden[];
+// }
 
-export interface GardesType {
-  gardenId: number;
-  gardenName: string;
-  gardenStatus: 'ACTIVE' | 'INACTIVE' | null | undefined;
-  gardenType: 'PRIVATE' | 'PUBLIC';
-  images: string[];
-  latitude: number;
-  longitude: number;
-  price: string;
-  size: string;
-}
+// export interface GardesType {
+//   gardenId: number;
+//   gardenName: string;
+//   gardenStatus: 'ACTIVE' | 'INACTIVE' | null | undefined;
+//   gardenType: 'PRIVATE' | 'PUBLIC';
+//   images: string[];
+//   latitude: number;
+//   longitude: number;
+//   price: string;
+//   size: string;
+// }
 
 export interface GardenDetailType {
   gardenId: number;
@@ -174,10 +174,6 @@ interface WeatherTimeData {
 }
 
 export interface GetWeeklyWeatherResponse {
-  skyStatusTwoDaysAfter: string;
-  skyStatusThreeDaysAfter: string;
-  skyStatusFourDaysAfter: string;
-  skyStatusFiveDaysAfter: string;
-  skyStatusSixDaysAfter: string;
+  status: string[];
   regionName: string;
 }

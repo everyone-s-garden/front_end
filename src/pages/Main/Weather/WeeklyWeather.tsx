@@ -6,38 +6,33 @@ import getWeatherIcon from 'utils/getWeatherIcon';
 
 const WEEK = ['일', '월', '화', '수', '목', '금', '토'];
 
-const WeeklyWeather = ({ weeklyData }: { weeklyData: GetWeeklyWeatherResponse }) => {
+const WeeklyWeather = ({ nextDayData, weeklyData }: { nextDayData: string; weeklyData: GetWeeklyWeatherResponse }) => {
   const today = new Date().getDay();
 
   return (
     <Container>
       <WeatherItem>
-        <WeatherImg src={getWeatherIcon(weeklyData.skyStatusTwoDaysAfter)} />
+        <WeatherImg src={getWeatherIcon(nextDayData)} />
         <Day>{WEEK[(today + 1) % 7]}</Day>
       </WeatherItem>
-      <WeatherItem>
-        <WeatherImg src={getWeatherIcon(weeklyData.skyStatusThreeDaysAfter)} />
-        <Day>{WEEK[(today + 2) % 7]}</Day>
-      </WeatherItem>
-      <WeatherItem>
-        <WeatherImg src={getWeatherIcon(weeklyData.skyStatusFourDaysAfter)} />
-        <Day>{WEEK[(today + 3) % 7]}</Day>
-      </WeatherItem>
-      <WeatherItem>
-        <WeatherImg src={getWeatherIcon(weeklyData.skyStatusFiveDaysAfter)} />
-        <Day>{WEEK[(today + 4) % 7]}</Day>
-      </WeatherItem>
-      <WeatherItem>
-        <WeatherImg src={getWeatherIcon(weeklyData.skyStatusSixDaysAfter)} />
-        <Day>{WEEK[(today + 5) % 7]}</Day>
-      </WeatherItem>
+      {weeklyData.status.map((status, index) => (
+        <WeatherItem key={index}>
+          <WeatherImg src={getWeatherIcon(status)} />
+          <Day>{WEEK[(today + index + 2) % 7]}</Day>
+        </WeatherItem>
+      ))}
     </Container>
   );
 };
 
 const Container = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  /* padding: 0 5px; */
+
+  @media (min-width: ${BREAK_POINT.MOBILE}) {
+    padding: 0 30px;
+  }
 `;
 
 const WeatherItem = styled.div`

@@ -5,15 +5,17 @@ import getWeatherIcon from 'utils/getWeatherIcon';
 import { LineChart, Line, XAxis, ResponsiveContainer } from 'recharts';
 
 const TimeWeather = ({ timeData }: { timeData: GetPerTimeWeatherResponse }) => {
-  const timeWeather = timeData.weatherTimeResponses.sort((a, b) => {
-    if (a.fsctDate < b.fsctDate) return -1;
-    if (a.fsctDate > b.fsctDate) return 1;
+  const timeWeather = timeData.weatherTimeResponses
+    .sort((a, b) => {
+      if (a.fsctDate < b.fsctDate) return -1;
+      if (a.fsctDate > b.fsctDate) return 1;
 
-    if (a.fsctTime < b.fsctTime) return -1;
-    if (a.fsctTime > b.fsctTime) return 1;
+      if (a.fsctTime < b.fsctTime) return -1;
+      if (a.fsctTime > b.fsctTime) return 1;
 
-    return 0;
-  });
+      return 0;
+    })
+    .slice(0, 9);
 
   const CustomLabel = (props: any) => {
     const { index, x, y } = props;
@@ -33,7 +35,7 @@ const TimeWeather = ({ timeData }: { timeData: GetPerTimeWeatherResponse }) => {
     return (
       <>
         <Time x={x} y={y}>
-          {payload.value.slice(0, 2)} 시
+          {payload.value.slice(0, 2)}시
         </Time>
         <MobileTemp x={x} y={y + 20}>
           {timeWeather[index].temperature}°
