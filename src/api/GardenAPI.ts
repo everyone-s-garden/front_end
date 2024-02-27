@@ -63,16 +63,16 @@ export const useGetRegionsName = ({ regionName }: { regionName: string }) => {
   });
 };
 
-const getRecentGardenPosts = async (): Promise<GardenPost[]> => {
-  const response = await HttpRequest.get('/v2/gardens/recent-created');
+const getRecentGardenPosts = async ({ memberId }: { memberId: number }): Promise<GardenPost[]> => {
+  const response = await HttpRequest.get(`/v2/gardens/recent-created?memberId=${memberId}`);
 
   return response.data.recentCreatedGardenResponses;
 };
 
-export const useGetRecentGardenPosts = () => {
+export const useGetRecentGardenPosts = (memberId: number) => {
   return useQuery({
-    queryKey: ['recentGardenPosts'],
-    queryFn: getRecentGardenPosts,
+    queryKey: ['recentGardenPosts', memberId],
+    queryFn: () => getRecentGardenPosts({ memberId }),
   });
 };
 

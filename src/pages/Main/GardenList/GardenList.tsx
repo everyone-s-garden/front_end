@@ -3,9 +3,12 @@ import GardenItem from './GardenItem';
 import styled from 'styled-components';
 import { BREAK_POINT } from 'constants/style';
 import { useGetRecentGardenPosts } from 'api/GardenAPI';
+import { useRecoilValue } from 'recoil';
+import { memberIdAtom } from 'recoil/atom';
 
 const GardenList = () => {
-  const { data: recentGardenPosts } = useGetRecentGardenPosts();
+  const memberId = useRecoilValue(memberIdAtom);
+  const { data: recentGardenPosts } = useGetRecentGardenPosts(memberId ?? 0);
 
   return (
     <Container>
