@@ -54,8 +54,8 @@ const TimeWeather = ({ timeData }: { timeData: GetPerTimeWeatherResponse }) => {
           data={timeWeather}
           margin={{
             top: 20,
-            right: 20,
-            left: 20,
+            right: 15,
+            left: 15,
             bottom: 40,
           }}
         >
@@ -82,8 +82,8 @@ const TimeWeather = ({ timeData }: { timeData: GetPerTimeWeatherResponse }) => {
           data={timeWeather}
           margin={{
             top: 35,
-            right: 80,
-            left: 80,
+            right: 25,
+            left: 25,
             bottom: 90,
           }}
         >

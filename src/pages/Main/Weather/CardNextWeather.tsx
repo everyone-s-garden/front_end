@@ -19,9 +19,6 @@ const CardNextWeather = () => {
   );
   const { data: timeData, isFetching: timeFetching } = useGetPerTimeWeather(myLocation.latitude, myLocation.longitude);
 
-  console.log(timeData);
-  console.log(weeklyData);
-
   useEffect(() => {
     if (weeklyData) {
       setMyLocation(prev => {

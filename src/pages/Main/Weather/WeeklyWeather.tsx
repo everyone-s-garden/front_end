@@ -28,11 +28,6 @@ const WeeklyWeather = ({ nextDayData, weeklyData }: { nextDayData: string; weekl
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  /* padding: 0 5px; */
-
-  @media (min-width: ${BREAK_POINT.MOBILE}) {
-    padding: 0 30px;
-  }
 `;
 
 const WeatherItem = styled.div`

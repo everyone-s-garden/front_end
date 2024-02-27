@@ -77,6 +77,7 @@ export const useGetRecentGardenPosts = (memberId: number) => {
 };
 
 const likeGarden = async (gardenId: number) => {
+  console.log('gardenId', gardenId);
   const response = await HttpRequest.post('/v2/gardens/likes', { gardenId });
 
   return response;
@@ -114,8 +115,8 @@ export const useGetGardenListForName = (gardenName: string) => {
   });
 };
 
-const createMyGarden = async (garden: { gardenId: number; useStartDate: string; useEndDate: string }) => {
-  const response = await HttpRequest.post('/v2/gardens/my-managed', garden);
+const createMyGarden = async (formData: FormData) => {
+  const response = await HttpRequest.post('/v2/gardens/my-managed', formData);
 
   return response;
 };

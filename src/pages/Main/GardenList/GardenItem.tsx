@@ -7,7 +7,18 @@ import { isLoginAtom } from 'recoil/atom';
 import { useLikeGarden } from 'api/GardenAPI';
 
 const GardenItem = ({ gardenPost }: { gardenPost: GardenPost }) => {
-  const { address, gardenName, imageUrl, isLiked, price, recruitEndDate, recruitStartDate, gardenId } = gardenPost;
+  const {
+    address,
+    gardenName,
+    imageUrl,
+    isLiked,
+    price,
+    recruitEndDate,
+    recruitStartDate,
+    gardenId,
+    latitude,
+    longitude,
+  } = gardenPost;
   const { mutate: likeGarden } = useLikeGarden();
   const isLogin = useRecoilValue(isLoginAtom);
 
@@ -16,6 +27,7 @@ const GardenItem = ({ gardenPost }: { gardenPost: GardenPost }) => {
 
   const term = Math.ceil((endDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
 
+  console.log(isLiked);
   const handleLikeBtnClick = () => {
     if (!isLogin) {
       alert('로그인 후 이용해주세요');
