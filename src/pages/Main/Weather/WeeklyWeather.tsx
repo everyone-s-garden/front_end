@@ -60,10 +60,10 @@ const WeatherImg = styled.img`
 `;
 
 const Day = styled.div`
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   @media (min-width: ${BREAK_POINT.MOBILE}) {
-    font-size: 24px;
+    font-size: 18px;
   }
 `;
 

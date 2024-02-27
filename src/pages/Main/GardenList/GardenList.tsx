@@ -36,14 +36,13 @@ const Container = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: 20px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 700;
   word-break: keep-all;
   line-height: 30px;
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
-    font-size: 26px;
-    font-weight: 700;
+    font-size: 24px;
     line-height: normal;
   }
 `;

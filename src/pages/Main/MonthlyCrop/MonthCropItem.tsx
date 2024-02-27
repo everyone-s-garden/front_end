@@ -58,10 +58,10 @@ const TitleWrapper = styled(motion.div)`
 `;
 
 const Title = styled.h2`
-  font-size: 20px;
-  font-weight: 500;
+  font-size: 18px;
+  font-weight: 600;
   @media ${({ theme }) => theme.devices.mobile} {
-    font-size: 24px;
+    font-size: 20px;
   }
 `;
 

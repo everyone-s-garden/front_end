@@ -58,9 +58,9 @@ const LocationWrapper = styled.div`
 
 const Location = styled.div`
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
   @media ${({ theme }) => theme.devices.mobile} {
-    font-size: 24px;
+    font-size: 20px;
   }
 `;
 
@@ -68,7 +68,7 @@ const Time = styled.div`
   font-size: 14px;
   font-weight: 400;
   @media ${({ theme }) => theme.devices.mobile} {
-    font-size: 20px;
+    font-size: 18px;
   }
 `;
 
@@ -91,7 +91,7 @@ const BtnContent = styled.span`
   font-size: 14px;
   font-weight: 400;
   @media ${({ theme }) => theme.devices.mobile} {
-    font-size: 20px;
+    font-size: 18px;
   }
 `;
 

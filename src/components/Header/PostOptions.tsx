@@ -16,11 +16,11 @@ const postOptions = [
     description: '판매 할 개인 밭을 등록해요',
     link: '#',
   },
-  {
-    title: '작물 거래 글쓰기',
-    description: '다양한 작물을 판매하는 글을 등록해요',
-    link: '/trading/write',
-  },
+  // {
+  //   title: '작물 거래 글쓰기',
+  //   description: '다양한 작물을 판매하는 글을 등록해요',
+  //   link: '/trading/write',
+  // },
   {
     title: '속닥속닥 글쓰기',
     description: '질문, 자랑, 공유 등 다양한 글을 작성해요',
@@ -60,7 +60,7 @@ const PostBtn = styled.button`
   justify-content: center;
   gap: 8px;
   color: ${({ theme }) => theme.colors.white};
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
 
   @media (min-width: ${BREAK_POINT.TABLET}) {

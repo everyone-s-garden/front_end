@@ -64,7 +64,7 @@ const DetailInfoWrapper = styled.div`
 `;
 
 const Nickname = styled.span`
-  font-weight: 600;
+  font-weight: 700;
   font-size: 18px;
 `;
 

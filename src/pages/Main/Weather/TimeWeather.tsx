@@ -148,13 +148,13 @@ const Time = styled.text`
   text-anchor: middle;
 
   @media ${({ theme }) => theme.devices.tablet} {
-    font-size: 24px;
+    font-size: 18px;
   }
 `;
 
 const Temp = styled.text`
-  font-size: 24px;
-  font-weight: 500;
+  font-size: 20px;
+  font-weight: 600;
   text-anchor: middle;
   display: none;
 
@@ -164,8 +164,8 @@ const Temp = styled.text`
 `;
 
 const MobileTemp = styled.text`
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 600;
   text-anchor: middle;
 
   @media ${({ theme }) => theme.devices.tablet} {
