@@ -10,11 +10,11 @@ const Comments = ({ postId }: { postId: string }) => {
     return <></>;
   }
 
-  const commentCount = comments.length + comments.reduce((acc, curr) => acc + curr.subComments.length, 0);
+  // const commentCount = comments.length + comments.reduce((acc, curr) => acc + curr.subComments.length, 0);
 
   return (
     <Container>
-      <div>
+      {/* <div>
         <img src={defaultProfile} alt="프로필 이미지" />
         <input type="text" placeholder="댓글을 입력해주세요" />
       </div>
@@ -26,7 +26,7 @@ const Comments = ({ postId }: { postId: string }) => {
             <div></div>
           </div>
         );
-      })}
+      })} */}
     </Container>
   );
 };

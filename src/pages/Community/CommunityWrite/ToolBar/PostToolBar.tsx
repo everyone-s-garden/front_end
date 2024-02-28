@@ -84,10 +84,9 @@ const PostToolBar = ({ value }: PostToolBarProps) => {
             </Dropdown.Trigger>
             <Dropdown.Menu top={45}>
               {Object.keys(SIZE_TYPE).map((key, index) => (
-                <li key={index} onClick={e => handleClickSize(e, key as keyof typeof SIZE_TYPE)}>
+                <SizeLi key={index} onClick={e => handleClickSize(e, key as keyof typeof SIZE_TYPE)}>
                   <Dropdown.Item>{key}</Dropdown.Item>
-                  {/* TODO: 텍스트 크기 조절 */}
-                </li>
+                </SizeLi>
               ))}
             </Dropdown.Menu>
           </Dropdown>
@@ -144,5 +143,31 @@ const Container = styled.div`
 
   @media (${({ theme }) => theme.devices.mobile}) {
     display: block;
+  }
+`;
+
+const SizeLi = styled.li`
+  & button {
+    font-weight: ${({ theme }) => theme.fontWeight.medium};
+  }
+
+  &:nth-child(2) {
+    & button {
+      font-size: 20px;
+      font-weight: ${({ theme }) => theme.fontWeight.bold};
+    }
+  }
+
+  &:nth-child(3) {
+    & button {
+      font-size: 18px;
+      font-weight: ${({ theme }) => theme.fontWeight.semiBold};
+    }
+  }
+
+  &:nth-child(4) {
+    & button {
+      font-size: 14px;
+    }
   }
 `;

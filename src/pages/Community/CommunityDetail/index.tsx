@@ -24,12 +24,11 @@ const CommunityDetail = () => {
         <title>속닥속닥 상세 페이지</title>
       </Helmet>
 
-      {/* TODO: 타입 달라고 하기 */}
       <Container>
-        <Title type="ETC" createdAt={post.createdDate} title={post.title} />
+        <Title type={post.postType} createdAt={post.createdDate} title={post.title} />
         <PostImageSlider images={post.images} />
         <Content text={post.content} />
-        <Author authorId={post.authorId} />
+        <Author userInfo={post.userInfo} />
         {/* <Comments postId={postId} /> */}
 
         <PopularPostList />

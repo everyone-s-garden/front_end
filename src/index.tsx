@@ -29,7 +29,6 @@ import Header from 'components/Header/Header';
 import NaverToken from 'pages/Login/Naver/token/token';
 import Trading from 'pages/Trading/Trading';
 import TradingDetail from './pages/Trading/TradingDetail/TradingDetail';
-import CommunityCreate from './pages/Community/CommunityCreate/CommunityCreate';
 import TradingCreate from './pages/Trading/TradingCreate/TradingCreate';
 import { ThemeProvider } from 'styled-components';
 import theme from 'styles/theme';
@@ -100,10 +99,6 @@ const router = createBrowserRouter([
       {
         path: '/community',
         element: <Community />,
-      },
-      {
-        path: '/community/create',
-        element: <CommunityCreate />,
       },
       {
         path: '/create-my-garden',

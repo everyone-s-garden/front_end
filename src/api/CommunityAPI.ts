@@ -22,12 +22,20 @@ interface CommentParam {
 interface Post {
   commentCount: number;
   likeCount: number;
-  authorId: number;
+  userInfo: User;
   title: string;
   content: string;
   createdDate: string;
   isLikeClick: boolean;
+  postType: 'INFORMATION_SHARE' | 'GARDEN_SHOWCASE' | 'QUESTION' | 'ETC';
   images: string[];
+}
+
+interface User {
+  userId: number;
+  profile: string | null;
+  name: string;
+  memberMannerGrade: string;
 }
 
 interface PostList {
@@ -38,7 +46,7 @@ interface PostList {
     commentCount: number;
     content: string;
     preview: string;
-    authorId: number;
+    userInfo: User;
     postType: 'INFORMATION_SHARE' | 'GARDEN_SHOWCASE' | 'QUESTION' | 'ETC';
     createdDate: string;
   }[];
@@ -49,7 +57,7 @@ interface Comment {
   parentId: number | null;
   likeCount: number;
   content: string;
-  authorId: number;
+  userInfo: User;
   isLikeClick: boolean;
 }
 
@@ -237,44 +245,36 @@ export const useGetComments = (postId: number) => {
         orderBy: 'OLDER_DATE',
       }),
     select(data) {
-      const parentCommentsMap = new Map<
-        number,
-        Omit<Comment, 'parentId'> & { subComments: Omit<Comment, 'parentId'>[] }
-      >();
-      const subComments: Comment[] = [];
-
-      data.commentInfos.forEach(comment => {
-        const { authorId, commentId, content, isLikeClick, likeCount, parentId } = comment;
-
-        if (parentId) {
-          subComments.push(comment);
-          return;
-        }
-
-        parentCommentsMap.set(commentId, {
-          authorId,
-          commentId,
-          content,
-          isLikeClick,
-          likeCount,
-          subComments: [],
-        });
-      });
-
-      subComments.forEach(comment => {
-        const { authorId, commentId, content, isLikeClick, likeCount, parentId } = comment;
-
-        if (!parentId) return;
-
-        const parentComment = parentCommentsMap.get(parentId)!;
-
-        parentCommentsMap.set(parentId, {
-          ...parentComment,
-          subComments: parentComment.subComments.concat({ authorId, commentId, content, isLikeClick, likeCount }),
-        });
-      });
-
-      return Array.from(parentCommentsMap.values());
+      // const parentCommentsMap = new Map<
+      //   number,
+      //   Omit<Comment, 'parentId'> & { subComments: Omit<Comment, 'parentId'>[] }
+      // >();
+      // const subComments: Comment[] = [];
+      // data.commentInfos.forEach(comment => {
+      //   const { authorId, commentId, content, isLikeClick, likeCount, parentId } = comment;
+      //   if (parentId) {
+      //     subComments.push(comment);
+      //     return;
+      //   }
+      //   parentCommentsMap.set(commentId, {
+      //     authorId,
+      //     commentId,
+      //     content,
+      //     isLikeClick,
+      //     likeCount,
+      //     subComments: [],
+      //   });
+      // });
+      // subComments.forEach(comment => {
+      //   const { authorId, commentId, content, isLikeClick, likeCount, parentId } = comment;
+      //   if (!parentId) return;
+      //   const parentComment = parentCommentsMap.get(parentId)!;
+      //   parentCommentsMap.set(parentId, {
+      //     ...parentComment,
+      //     subComments: parentComment.subComments.concat({ authorId, commentId, content, isLikeClick, likeCount }),
+      //   });
+      // });
+      // return Array.from(parentCommentsMap.values());
     },
   });
 };

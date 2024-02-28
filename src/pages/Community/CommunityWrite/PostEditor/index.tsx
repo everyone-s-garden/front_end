@@ -74,15 +74,20 @@ const Container = styled.div`
   margin-bottom: 16px;
   display: flex;
   flex-direction: column;
-
-  & h1 {
+  & * {
+    font-weight: ${({ theme }) => theme.fontWeight.medium};
+  }
+  & h1 * {
     font-size: 20px;
+    font-weight: ${({ theme }) => theme.fontWeight.bold};
   }
-  & h2 {
+  & h2 * {
     font-size: 18px;
+    font-weight: ${({ theme }) => theme.fontWeight.semiBold};
   }
-  & h3 {
+  & h3 * {
     font-size: 14px;
+    font-weight: ${({ theme }) => theme.fontWeight.medium};
   }
   & .align-left div {
     text-align: left;
@@ -142,7 +147,7 @@ const EditorContainer = styled.section`
 
     @media (${({ theme }) => theme.devices.mobile}) {
       padding: 40px 0;
-      min-height: 300px;
+      min-height: 635px;
     }
   }
   .public-DraftEditorPlaceholder-root {

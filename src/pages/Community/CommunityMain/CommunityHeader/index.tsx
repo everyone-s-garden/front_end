@@ -46,7 +46,7 @@ const Info = styled.div`
   }
 
   & p {
-    font-size: 20px;
+    font-size: 16px;
     color: ${({ theme }) => theme.colors.gray[700]};
   }
 

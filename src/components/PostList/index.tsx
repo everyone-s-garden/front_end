@@ -12,7 +12,12 @@ interface PostListProps {
     commentCount: number;
     content: string;
     preview: string;
-    authorId: number;
+    userInfo: {
+      userId: number;
+      profile: string | null;
+      name: string;
+      memberMannerGrade: string;
+    };
     postType: 'INFORMATION_SHARE' | 'GARDEN_SHOWCASE' | 'QUESTION' | 'ETC';
     createdDate: string;
   }[];
@@ -40,7 +45,7 @@ const PostList = ({ posts }: PostListProps) => {
   return (
     <Container>
       {posts.map(post => {
-        const { postId, postType, title, content, preview, likeCount, commentCount, authorId } = post;
+        const { postId, postType, title, content, preview, likeCount, commentCount, userInfo } = post;
 
         return (
           <List key={postId}>
@@ -52,7 +57,7 @@ const PostList = ({ posts }: PostListProps) => {
                 </Flex>
                 <summary>{getPlainText(content)}</summary>
                 <Profile>
-                  <Author authorId={authorId} />
+                  <Author userInfo={userInfo} />
                   <div>
                     <HeartIcon />
                     <span>{likeCount}</span>
