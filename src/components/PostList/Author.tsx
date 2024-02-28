@@ -1,22 +1,20 @@
-import { useGetUser } from 'api/UserAPI';
 import React from 'react';
 import DefaultProfile from 'assets/default-profile.png';
 
-const Author = ({ authorId }: { authorId: number }) => {
-  const { data: user } = useGetUser(authorId);
+interface AuthorProps {
+  userInfo: {
+    userId: number;
+    profile: string | null;
+    name: string;
+    memberMannerGrade: string;
+  };
+}
 
-  if (!user) {
-    return (
-      <>
-        <figure />
-      </>
-    );
-  }
-
+const Author = ({ userInfo }: AuthorProps) => {
   return (
     <>
-      <img src={user.profileImageUrl ?? DefaultProfile} alt="작성자 프로필 이미지" />
-      <span>{user.nickname}</span>
+      <img src={userInfo.profile ?? DefaultProfile} alt="작성자 프로필 이미지" />
+      <span>{userInfo.name}</span>
     </>
   );
 };
