@@ -124,6 +124,10 @@ const ImageLabel = styled.label`
     font-size: 16px;
     color: ${({ theme }) => theme.colors.orange[600]};
   }
+
+  & svg {
+    fill: ${({ theme }) => theme.colors.orange[600]} !important;
+  }
 `;
 
 const ImageDelBtn = styled.button`

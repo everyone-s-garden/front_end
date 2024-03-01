@@ -125,3 +125,15 @@ export const useCreateMyGarden = () => {
     mutationFn: createMyGarden,
   });
 };
+
+const createGarden = async (garden: FormData) => {
+  const response = await HttpRequest.post('/v2/gardens', garden);
+
+  return response;
+};
+
+export const useCreateGarden = () => {
+  return useMutation({
+    mutationFn: createGarden,
+  });
+};

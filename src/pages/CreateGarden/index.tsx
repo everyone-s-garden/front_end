@@ -1,10 +1,12 @@
-import { useGetRegionsName } from 'api/GardenAPI';
+import { useCreateGarden, useGetRegionsName } from 'api/GardenAPI';
 import { SearchIcon } from 'assets/community';
 import useDebounce from 'hooks/useDebounce';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import { GardenFields } from 'types/Garden';
+import ImageAdder from './ImageAdder';
+import { useNavigate } from 'react-router-dom';
 
 const CreateGarden = () => {
   const [gardenFields, setGardenFields] = useState<GardenFields>({
@@ -25,9 +27,13 @@ const CreateGarden = () => {
   });
   const [submitActive, setSubmitActive] = useState(false);
   const [regionVisible, setRegionVisible] = useState(false);
+  const [imageFiles, setImageFiles] = useState<{ file: Blob; src: string }[]>([]);
 
   const debouncedAddress = useDebounce(gardenFields.address, 500);
   const { data } = useGetRegionsName({ regionName: debouncedAddress });
+
+  const { mutate: createGarden } = useCreateGarden();
+  const navigate = useNavigate();
 
   const validateDateRange = useCallback((start: string, end: string) => {
     if (!start || !end) {
@@ -38,9 +44,44 @@ const CreateGarden = () => {
   }, []);
 
   useEffect(() => {
-    console.log(gardenFields);
-    Object.values(gardenFields).some(value => value.length === 0) ? setSubmitActive(false) : setSubmitActive(true);
-  }, [gardenFields]);
+    Object.values(gardenFields).some(value => value.length === 0) || imageFiles.length === 0
+      ? setSubmitActive(false)
+      : setSubmitActive(true);
+  }, [gardenFields, imageFiles.length]);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (gardenFields.gardenDescription.length < 10) {
+      alert('상세 내용을 10자 이상 입력해주세요.');
+      return;
+    }
+
+    const formData = new FormData();
+
+    /** 분양 텃밭 form blob */
+    const jsonBlob = new Blob(
+      [
+        JSON.stringify({
+          ...gardenFields,
+          recruitStartDate: gardenFields.recruitStartDate.replaceAll('-', '.'),
+          recruitEndDate: gardenFields.recruitEndDate.replaceAll('-', '.'),
+        }),
+      ],
+      { type: 'application/json' },
+    );
+
+    imageFiles.forEach(({ file }) => {
+      formData.append('gardenImages', file);
+    });
+    formData.append('gardenCreateRequest', jsonBlob);
+
+    createGarden(formData, {
+      onSuccess() {
+        navigate('/map');
+      },
+    });
+  };
 
   return (
     <>
@@ -50,8 +91,8 @@ const CreateGarden = () => {
 
       <Container>
         <Title>분양 텃밭 등록하기</Title>
-        <form>
-          <div>이미지 슬라이더</div>
+        <form onSubmit={handleSubmit}>
+          <ImageAdder imageFiles={imageFiles} setImageFiles={setImageFiles} />
 
           <FieldGroup>
             <InputBox>
@@ -106,7 +147,6 @@ const CreateGarden = () => {
                 type="date"
                 value={gardenFields.recruitEndDate}
                 onChange={({ target: { value } }) => {
-                  console.log(value);
                   if (!validateDateRange(gardenFields.recruitStartDate, value)) {
                     alert('모집 시작일보다 빠를 수 없습니다.');
                     return;
@@ -226,8 +266,12 @@ const Container = styled.section`
     padding-inline: 20px;
   }
 
-  & > form > div:not(:last-child) {
-    height: 166px;
+  & > form {
+    padding-top: 26px;
+
+    @media (${({ theme }) => theme.devices.mobile}) {
+      padding-top: 0;
+    }
   }
 `;
 
