@@ -36,8 +36,6 @@ const ImageSlider = ({ children }: PropsWithChildren<{ size?: number }>) => {
         settings: {
           slidesToShow: 6,
           slidesToScroll: 1,
-          infinite: true,
-          dots: true,
         },
       },
       {
