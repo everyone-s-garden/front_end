@@ -9,7 +9,6 @@ const GardenUsing = () => {
   const { data: myGardensData } = useGetMyGardens();
   const [openMenu, setOpenMenu] = useState(false);
 
-  const item = usingItem.myManagedGardenGetResponses[0];
   function calculateDaysBetweenDates(startDateString: string, endDateString: string) {
     const startDate = new Date(startDateString.replace(/\./g, '/'));
     const endDate = new Date(endDateString.replace(/\./g, '/'));
@@ -21,48 +20,49 @@ const GardenUsing = () => {
 
     return diffInDays;
   }
-  // 함수 사용 예
 
-  console.log(myGardensData);
+  if (!myGardensData) return null;
 
   return (
     <div style={{ flex: 1 }}>
       <Menu>
         <div style={{ fontWeight: 600 }}>나의 텃밭</div>
       </Menu>
-      <div
-        style={{
-          display: 'flex',
-          border: '1px solid #D7D7D7',
-          marginBottom: 32,
-          padding: '20px 21px',
-          borderRadius: 18,
-        }}
-        key={item.myManagedGardenId}
-      >
-        <ImageWrapper>
-          <img src={item.images[0]} />
-        </ImageWrapper>
+      {myGardensData.map(item => (
+        <div
+          style={{
+            display: 'flex',
+            border: '1px solid #D7D7D7',
+            marginBottom: 32,
+            padding: '20px 21px',
+            borderRadius: 18,
+          }}
+          key={item.myManagedGardenId}
+        >
+          <ImageWrapper>
+            <img src={item.images[0]} />
+          </ImageWrapper>
 
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <DateOfUse>
-            <span>사용기한이 {calculateDaysBetweenDates(item.useStartDate, item.useEndDate)}일 남았습니다</span>
-            <span style={{ fontSize: 14, color: '#5A5A5A' }}>
-              ({item.useStartDate} ~ {item.useEndDate})
-            </span>
-          </DateOfUse>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <DateOfUse>
+              <span>사용기한이 {calculateDaysBetweenDates(item.useStartDate, item.useEndDate)}일 남았습니다</span>
+              <span style={{ fontSize: 14, color: '#5A5A5A' }}>
+                ({item.useStartDate} ~ {item.useEndDate})
+              </span>
+            </DateOfUse>
 
-          <div style={{ marginBottom: 8 }}>
-            <span style={{ marginRight: 8 }}>이름</span>
-            <span style={{ fontWeight: 600 }}>{item.gardenName}</span>
-          </div>
-          <div style={{ marginBottom: 8 }}>
-            <span style={{ marginRight: 8 }}>정보</span>
-            <span style={{ fontWeight: 600, marginRight: 8 }}>경기도 · 용인</span>
-            <span style={{ fontWeight: 600 }}> 8평</span>
+            <div style={{ marginBottom: 8 }}>
+              <span style={{ marginRight: 8 }}>이름</span>
+              <span style={{ fontWeight: 600 }}>{item.gardenName}</span>
+            </div>
+            <div style={{ marginBottom: 8 }}>
+              <span style={{ marginRight: 8 }}>정보</span>
+              <span style={{ fontWeight: 600, marginRight: 8 }}>경기도 · 용인</span>
+              <span style={{ fontWeight: 600 }}> 8평</span>
+            </div>
           </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 };

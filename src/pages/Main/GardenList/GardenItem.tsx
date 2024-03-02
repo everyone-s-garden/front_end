@@ -4,7 +4,7 @@ import { ReactComponent as IconHeart } from '../../../assets/main/heart-icon.svg
 import { GardenPost } from 'types/Garden';
 import { useRecoilValue } from 'recoil';
 import { isLoginAtom } from 'recoil/atom';
-import { useLikeGarden } from 'api/GardenAPI';
+import { useLikeGarden, useUnLikeGarden } from 'api/GardenAPI';
 
 const GardenItem = ({ gardenPost }: { gardenPost: GardenPost }) => {
   const {
@@ -20,6 +20,7 @@ const GardenItem = ({ gardenPost }: { gardenPost: GardenPost }) => {
     longitude,
   } = gardenPost;
   const { mutate: likeGarden } = useLikeGarden();
+  const { mutate: unLikeGarden } = useUnLikeGarden();
   const isLogin = useRecoilValue(isLoginAtom);
 
   const endDate = new Date(recruitEndDate);
@@ -27,13 +28,17 @@ const GardenItem = ({ gardenPost }: { gardenPost: GardenPost }) => {
 
   const term = Math.ceil((endDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
 
-  console.log(isLiked);
   const handleLikeBtnClick = () => {
     if (!isLogin) {
       alert('로그인 후 이용해주세요');
       return;
     }
-    likeGarden(gardenId);
+
+    if (isLiked) {
+      unLikeGarden(gardenId);
+    } else {
+      likeGarden(gardenId);
+    }
   };
 
   return (
@@ -88,6 +93,7 @@ const Img = styled.img`
   height: 100%;
   object-fit: cover;
   border-radius: 10px;
+  background-color: ${({ theme }) => theme.colors.gray[100]};
 `;
 
 const InfoWrapper = styled.div`

@@ -123,9 +123,9 @@ export const memberIdAtom = atom<number | null>({
   key: 'memberId',
   default: null,
 });
-export const memberName = atom<string | null>({
+export const memberName = atom<number>({
   key: 'memberName',
-  default: null,
+  default: 0,
 });
 export const windowOffsetAtom = atom<{ width: number; height: number }>({
   key: 'offset',

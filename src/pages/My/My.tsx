@@ -179,11 +179,11 @@ const Mypage = () => {
                   onClick={() => nav('/my/my_gardens/like')}
                   match={myGardensMatch !== null || indexRoutingMatch === '/my'}
                 >
-                  나의 텃밭
+                  내 주변 분양
                 </Btn>
-                <Btn onClick={() => nav('/my/crop_trade/regional_certification')} match={cropTradeMatch !== null}>
+                {/* <Btn onClick={() => nav('/my/crop_trade/regional_certification')} match={cropTradeMatch !== null}>
                   작물거래
-                </Btn>
+                </Btn> */}
                 <Btn onClick={() => nav('/my/garden_manage/my_garden_using')} match={gardenManageMatch !== null}>
                   텃밭관리
                 </Btn>

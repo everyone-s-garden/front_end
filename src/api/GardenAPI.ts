@@ -2,7 +2,7 @@ import customAxios from 'utils/token';
 import HttpRequest from './HttpRequest';
 import { getItem } from 'utils/session';
 import { GardenDetailType } from './type';
-import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { GardenForNameSearch, GardenPost, GetAllGardensResponse, MyGarden, Region } from 'types/Garden';
 
 export const GardenAPI = {
@@ -77,15 +77,36 @@ export const useGetRecentGardenPosts = (memberId: number) => {
 };
 
 const likeGarden = async (gardenId: number) => {
-  console.log('gardenId', gardenId);
   const response = await HttpRequest.post('/v2/gardens/likes', { gardenId });
 
   return response;
 };
 
 export const useLikeGarden = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: likeGarden,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['recentGardenPosts'] });
+    },
+  });
+};
+
+const unLikeGarden = async (gardenId: number) => {
+  const response = await HttpRequest.delete('/v2/gardens/likes', { data: { gardenId } });
+
+  return response;
+};
+
+export const useUnLikeGarden = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: unLikeGarden,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['recentGardenPosts'] });
+    },
   });
 };
 

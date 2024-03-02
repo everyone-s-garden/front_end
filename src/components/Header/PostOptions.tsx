@@ -4,6 +4,8 @@ import { BREAK_POINT } from 'constants/style';
 import { Link } from 'react-router-dom';
 import { ReactComponent as PlusIcon } from 'assets/plus-icon.svg';
 import useSelect from 'hooks/useSelect';
+import { useRecoilValue } from 'recoil';
+import { isLoginAtom } from 'recoil/atom';
 
 const postOptions = [
   {
@@ -30,14 +32,23 @@ const postOptions = [
 
 const PostOptions = () => {
   const { toggleSelect, isOpen, closeSelect } = useSelect();
+  const isLogin = useRecoilValue(isLoginAtom);
+
+  const handlePostBtnClick = () => {
+    if (!isLogin) {
+      alert('로그인 후 이용 가능합니다.');
+    } else {
+      toggleSelect();
+    }
+  };
 
   return (
     <>
-      <PostBtn onClick={toggleSelect}>
+      <PostBtn onClick={handlePostBtnClick}>
         <StyledPlusIcon />
         글쓰기
       </PostBtn>
-      <MobilePostBtn onClick={toggleSelect}>
+      <MobilePostBtn onClick={handlePostBtnClick}>
         <StyledPlusIcon />
       </MobilePostBtn>
       {isOpen && (

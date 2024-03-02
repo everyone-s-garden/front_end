@@ -27,6 +27,7 @@ const CreateMyGarden = () => {
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     if (!garden) return;
+
     const formData = new FormData();
     formData.append(
       'myManagedGardenCreateRequest',
@@ -36,7 +37,7 @@ const CreateMyGarden = () => {
             gardenId: garden.gardenId,
             useStartDate: term.useStartDate.replaceAll('-', '.'),
             useEndDate: term.useEndDate.replaceAll('-', '.'),
-            // description,
+            description: description,
           }),
         ],
         {
@@ -47,8 +48,9 @@ const CreateMyGarden = () => {
     images.forEach(image => {
       formData.append('gardenImage', image.file);
     });
-    createMyGarden(formData);
-    // navigate('/my/garden_manage/my_garden_using');
+    createMyGarden(formData, {
+      onSuccess: () => navigate('/my/garden_manage/my_garden_using'),
+    });
   };
 
   const handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
