@@ -80,6 +80,9 @@ const CreateGarden = () => {
       onSuccess() {
         navigate('/map');
       },
+      onError(error, variables, context) {
+        alert('분양 텃밭 등록에 실패했습니다.');
+      },
     });
   };
 
