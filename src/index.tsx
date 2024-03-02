@@ -59,6 +59,7 @@ import Community from 'pages/Community/CommunityMain';
 import CommunityWrite from 'pages/Community/CommunityWrite';
 import CommunityDetail from 'pages/Community/CommunityDetail';
 import CreateMyGarden from 'pages/CreateMyGarden/CreateMyGarden';
+import CreateGarden from 'pages/CreateGarden';
 
 // 모바일 100vh 세팅
 
@@ -103,6 +104,10 @@ const router = createBrowserRouter([
       {
         path: '/create-my-garden',
         element: <CreateMyGarden />,
+      },
+      {
+        path: '/create-garden',
+        element: <CreateGarden />,
       },
       {
         path: '/my',

@@ -12,9 +12,9 @@ const postOptions = [
     link: '/create-my-garden',
   },
   {
-    title: '판매하는 텃밭 등록하기',
+    title: '분양하는 텃밭 등록하기',
     description: '판매 할 개인 밭을 등록해요',
-    link: '#',
+    link: '/create-garden',
   },
   {
     title: '작물 거래 글쓰기',

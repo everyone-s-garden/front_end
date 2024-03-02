@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
-import { Post } from '../types';
 import { CameraIcon, DeleteIcon } from 'assets/community';
 import ImageSlider from './ImageSlider';
 
@@ -21,43 +20,11 @@ interface ImageAdderProps {
 }
 
 const ImageAdder = ({ imageFiles, setImageFiles }: ImageAdderProps) => {
-  const { watch, register } = useFormContext<Post>();
-
-  const images = watch('images');
-
   const handleDelete = (image: string) => {
     setImageFiles(imageFiles.filter(({ src }) => src !== image));
   };
 
-  useEffect(() => {
-    if (!images || !images.length) return;
-
-    const imageFiles = Object.values(images);
-
-    if (images.length > 10) {
-      alert('이미지는 10개까지만 업로드 가능합니다.');
-
-      setImageFiles(
-        imageFiles.slice(0, 10).map(image => {
-          return {
-            file: image,
-            src: URL.createObjectURL(image),
-          };
-        }),
-      );
-
-      return;
-    }
-
-    setImageFiles(
-      imageFiles.map(image => {
-        return {
-          file: image,
-          src: URL.createObjectURL(image),
-        };
-      }),
-    );
-  }, [images, setImageFiles]);
+  useEffect(() => {}, []);
 
   return (
     <>
@@ -68,7 +35,23 @@ const ImageAdder = ({ imageFiles, setImageFiles }: ImageAdderProps) => {
             id="fileInput"
             multiple={true}
             accept="image/jpg,image/png,image/jpeg,image/gif"
-            {...register('images')}
+            onChange={e => {
+              const imageFiles = Object.values(e.target.files as FileList);
+
+              //if (imageFiles.length > 10) {
+              //  alert('이미지는 10개까지만 업로드 가능합니다.');
+              //  return;
+              //}
+
+              setImageFiles(
+                imageFiles.map(image => {
+                  return {
+                    file: image,
+                    src: URL.createObjectURL(image),
+                  };
+                }),
+              );
+            }}
           />
           <ImageLabel htmlFor="fileInput">
             <div>
@@ -80,7 +63,7 @@ const ImageAdder = ({ imageFiles, setImageFiles }: ImageAdderProps) => {
 
         {imageFiles.map(({ src }) => (
           <ImageBox key={src}>
-            <ImageDelBtn>
+            <ImageDelBtn type="button">
               <DeleteIcon onClick={() => handleDelete(src)} />
             </ImageDelBtn>
             <Image src={src} alt="이미지 미리보기" />
@@ -100,7 +83,7 @@ const ImageInput = styled.input`
 const ImageBox = styled.li`
   position: relative;
   border-radius: 10px;
-  background-color: ${({ theme }) => theme.colors.orange[100]};
+  background-color: ${({ theme }) => theme.colors.green[100]};
   flex-shrink: 0;
 `;
 
@@ -122,11 +105,11 @@ const ImageLabel = styled.label`
 
   & p {
     font-size: 16px;
-    color: ${({ theme }) => theme.colors.orange[600]};
+    color: ${({ theme }) => theme.colors.green[500]};
   }
 
   & svg {
-    fill: ${({ theme }) => theme.colors.orange[600]} !important;
+    fill: ${({ theme }) => theme.colors.green[500]} !important;
   }
 `;
 
