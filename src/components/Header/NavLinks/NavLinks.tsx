@@ -3,12 +3,18 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import headerNavLinks from './headerNavLinks';
+import { useRecoilValue } from 'recoil';
+import { isLoginAtom } from 'recoil/atom';
 
 const NavLinks = () => {
+  const isLogin = useRecoilValue(isLoginAtom);
+
   return (
     <NavContainer>
       {headerNavLinks.map((link, idx) => {
         if (link.name === '홈') return;
+
+        if (link.name === '채팅' && !isLogin) return;
 
         return (
           <StyledNavLink key={idx} to={link.href}>

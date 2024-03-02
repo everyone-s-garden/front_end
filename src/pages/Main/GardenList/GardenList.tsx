@@ -3,11 +3,10 @@ import GardenItem from './GardenItem';
 import styled from 'styled-components';
 import { BREAK_POINT } from 'constants/style';
 import { useGetRecentGardenPosts } from 'api/GardenAPI';
-import { useRecoilValue } from 'recoil';
-import { memberIdAtom } from 'recoil/atom';
+import { getItem } from 'utils/session';
 
 const GardenList = () => {
-  const memberId = useRecoilValue(memberIdAtom);
+  const memberId = getItem('member_id');
   const { data: recentGardenPosts } = useGetRecentGardenPosts(memberId ?? 0);
 
   return (
@@ -36,14 +35,13 @@ const Container = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: 20px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 700;
   word-break: keep-all;
   line-height: 30px;
 
   @media (min-width: ${BREAK_POINT.MOBILE}) {
-    font-size: 26px;
-    font-weight: 700;
+    font-size: 24px;
     line-height: normal;
   }
 `;

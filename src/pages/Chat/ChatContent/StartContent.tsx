@@ -1,15 +1,31 @@
 import React from 'react';
 import { ReactComponent as ClickIcon } from 'assets/chat/click-icon.svg';
 import styled from 'styled-components';
+import { useGetGardenChatRooms } from 'api/ChatAPI';
 
 const StartContent = () => {
+  const { data } = useGetGardenChatRooms();
+
+  if (!data) return null;
+
   return (
     <Container>
       <BlankHeader />
       <ContentWrapper>
         <StyledClickIcon />
-        <Content>대화창을 클릭하여</Content>
-        <Content>채팅을 시작해보세요</Content>
+        {data.responses.length === 0 ? (
+          <Content>
+            채팅을 시작하여
+            <br />
+            거래를 해보세요!
+          </Content>
+        ) : (
+          <Content>
+            대화창을 클릭하여
+            <br />
+            채팅을 시작해보세요
+          </Content>
+        )}
       </ContentWrapper>
     </Container>
   );
@@ -49,9 +65,10 @@ const ContentWrapper = styled.div`
 `;
 
 const Content = styled.p`
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 600;
-  line-height: 30px;
+  line-height: 25px;
+  text-align: center;
   color: ${({ theme }) => theme.colors.gray[700]};
 `;
 

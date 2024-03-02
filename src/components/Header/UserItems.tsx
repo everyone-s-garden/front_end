@@ -16,11 +16,19 @@ const UserItems = () => {
     setIsLogin(false);
   };
 
+  const handleUserIconClick = () => {
+    if (!isLogin) {
+      nav('/login');
+    } else {
+      nav('/my');
+    }
+  };
+
   return (
     <Container>
       {/* <Notification /> */}
       {isLogin && <StyledLink to="/my">마이페이지</StyledLink>}
-      <StyledUserIcon onClick={() => nav('/my')} login={isLogin.toString()} />
+      <StyledUserIcon onClick={handleUserIconClick} login={isLogin} />
       {isLogin ? (
         <StyledLink to="/" onClick={logout}>
           로그아웃

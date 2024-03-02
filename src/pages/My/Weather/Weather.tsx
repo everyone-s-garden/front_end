@@ -118,11 +118,7 @@ function Weather() {
           const tempWeeklyData = [
             perTData.weatherTimeResponses[0].skyStatus,
             ...perTData.weatherTimeResponses.slice(5).map(data => data.skyStatus),
-            weeklyData.skyStatusTwoDaysAfter,
-            weeklyData.skyStatusThreeDaysAfter,
-            weeklyData.skyStatusFourDaysAfter,
-            weeklyData.skyStatusFiveDaysAfter,
-            weeklyData.skyStatusSixDaysAfter,
+            ...weeklyData.status,
           ];
 
           setPTimeData(tempPTData);

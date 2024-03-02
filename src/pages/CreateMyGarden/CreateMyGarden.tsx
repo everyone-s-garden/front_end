@@ -1,6 +1,4 @@
-import ImageAdder from 'pages/Community/CommunityWrite/ImageAdder';
-import React, { useState } from 'react';
-import { Controller, FormProvider, useForm } from 'react-hook-form';
+import React, { FormEvent, useState } from 'react';
 import styled from 'styled-components';
 import GardenNameInput from './GardenNameInput';
 import GardenLocation from './GardenLocation';
@@ -8,30 +6,76 @@ import GardenTerm from './GardenTerm';
 import { GardenForNameSearch } from 'types/Garden';
 import { useCreateMyGarden } from 'api/GardenAPI';
 import { useNavigate } from 'react-router-dom';
+import GardenImageInput from './GardenImageInput';
 
 const CreateMyGarden = () => {
   const navigate = useNavigate();
   const { mutate: createMyGarden } = useCreateMyGarden();
+  const [images, setImages] = useState<
+    {
+      file: Blob;
+      src: string;
+    }[]
+  >([]);
   const [garden, setGarden] = useState<GardenForNameSearch | null>(null);
   const [term, setTerm] = useState({
     useStartDate: '',
     useEndDate: '',
   });
+  const [description, setDescription] = useState('');
 
-  const handleSubmit = () => {
-    createMyGarden({ gardenId: garden!.gardenId, useStartDate: term.useStartDate, useEndDate: term.useEndDate });
-    navigate('/my-garden');
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    if (!garden) return;
+
+    const formData = new FormData();
+    formData.append(
+      'myManagedGardenCreateRequest',
+      new Blob(
+        [
+          JSON.stringify({
+            gardenId: garden.gardenId,
+            useStartDate: term.useStartDate.replaceAll('-', '.'),
+            useEndDate: term.useEndDate.replaceAll('-', '.'),
+            description: description,
+          }),
+        ],
+        {
+          type: 'application/json',
+        },
+      ),
+    );
+    images.forEach(image => {
+      formData.append('gardenImage', image.file);
+    });
+    createMyGarden(formData, {
+      onSuccess: () => navigate('/my/garden_manage/my_garden_using'),
+    });
   };
+
+  const handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDescription(event.target.value);
+  };
+
+  const activeButton =
+    images.length > 0 && garden && term.useStartDate && term.useEndDate && description ? false : true;
 
   return (
     <Container>
       <Title>나의 텃밭 등록하기</Title>
+      <GardenImageInput images={images} setImages={setImages} />
       <Form>
         <GardenNameInput setGarden={setGarden} />
         <GardenLocation garden={garden} />
         <GardenTerm term={term} setTerm={setTerm} />
-        <Description placeholder="텃밭에 대한 설명을 입력해주세요." />
-        <Button onClick={handleSubmit}>등록하기</Button>
+        <Description
+          placeholder="텃밭에 대한 설명을 입력해주세요."
+          value={description}
+          onChange={handleDescriptionChange}
+        />
+        <Button disabled={activeButton} activeButton={activeButton} onClick={handleSubmit}>
+          등록하기
+        </Button>
       </Form>
     </Container>
   );
@@ -86,12 +130,12 @@ const Form = styled.form`
   }
 `;
 
-const Button = styled.button`
+const Button = styled.button<{ activeButton: boolean }>`
   color: ${({ theme }) => theme.colors.white};
   background-color: ${({ theme }) => theme.colors.green[500]};
   width: 100%;
   height: 56px;
-  opacity: 0.5;
+  opacity: ${({ activeButton }) => (activeButton ? 0.3 : 1)};
   position: absolute;
   left: 0;
   bottom: 0;

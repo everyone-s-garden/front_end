@@ -59,7 +59,6 @@ const Message = styled.p<Pick<ChatBubbleProps, 'isMine'>>`
   border-radius: 10px;
 
   @media ${({ theme }) => theme.devices.tablet} {
-    font-size: 20px;
     padding: 10px 13px;
   }
 `;

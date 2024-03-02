@@ -26,12 +26,11 @@ const Container = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: 20px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 700;
 
   @media ${({ theme }) => theme.devices.mobile} {
-    font-size: 26px;
-    font-weight: 700;
+    font-size: 24px;
   }
 `;
 

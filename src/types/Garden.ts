@@ -30,6 +30,8 @@ export interface GardenPost {
   price: string;
   isLiked: boolean;
   imageUrl: string;
+  latitude: number;
+  longitude: number;
 }
 
 export interface MyGarden {
