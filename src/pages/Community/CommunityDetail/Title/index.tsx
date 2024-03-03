@@ -61,6 +61,7 @@ const Type = styled.p`
   background-color: ${({ theme }) => theme.colors.orange[200]};
   padding: 4px 6px;
   font-size: 16px;
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
 
   @media (${({ theme }) => theme.devices.mobile}) {
     padding: 6px 10px;

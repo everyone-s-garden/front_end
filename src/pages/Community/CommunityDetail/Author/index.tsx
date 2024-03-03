@@ -1,25 +1,27 @@
-import { useGetUser } from 'api/UserAPI';
 import React from 'react';
 import DefaultProfile from 'assets/default-profile.png';
 import styled from 'styled-components';
 
-const Author = ({ authorId }: { authorId: number }) => {
-  const { data: user } = useGetUser(authorId);
+interface AuthorProps {
+  userInfo: {
+    userId: number;
+    profile: string | null;
+    name: string;
+    memberMannerGrade: string;
+  };
+}
 
-  if (!user) {
-    return <Container />;
-  }
-
+const Author = ({ userInfo }: AuthorProps) => {
   return (
     <Container>
-      <Image src={user.profileImageUrl ?? DefaultProfile} alt="작성자 프로필 이미지" />
+      <Image src={userInfo.profile ?? DefaultProfile} alt="작성자 프로필 이미지" />
       <Nickname>
-        <span>{user.nickname}</span>
+        <span>{userInfo.name}</span>
         {/* TODO: 텃밭 페이지로 */}
         <button onClick={() => {}}>텃밭 보러 가기</button>
       </Nickname>
       <Grade>
-        <span>{user.memberMannerGrade}</span>
+        <span>{userInfo.memberMannerGrade}</span>
         {/* TODO: 등급 안내로 */}
         <button onClick={() => {}}>등급 안내</button>
       </Grade>

@@ -5,15 +5,17 @@ import getWeatherIcon from 'utils/getWeatherIcon';
 import { LineChart, Line, XAxis, ResponsiveContainer } from 'recharts';
 
 const TimeWeather = ({ timeData }: { timeData: GetPerTimeWeatherResponse }) => {
-  const timeWeather = timeData.weatherTimeResponses.sort((a, b) => {
-    if (a.fsctDate < b.fsctDate) return -1;
-    if (a.fsctDate > b.fsctDate) return 1;
+  const timeWeather = timeData.weatherTimeResponses
+    .sort((a, b) => {
+      if (a.fsctDate < b.fsctDate) return -1;
+      if (a.fsctDate > b.fsctDate) return 1;
 
-    if (a.fsctTime < b.fsctTime) return -1;
-    if (a.fsctTime > b.fsctTime) return 1;
+      if (a.fsctTime < b.fsctTime) return -1;
+      if (a.fsctTime > b.fsctTime) return 1;
 
-    return 0;
-  });
+      return 0;
+    })
+    .slice(0, 9);
 
   const CustomLabel = (props: any) => {
     const { index, x, y } = props;
@@ -33,7 +35,7 @@ const TimeWeather = ({ timeData }: { timeData: GetPerTimeWeatherResponse }) => {
     return (
       <>
         <Time x={x} y={y}>
-          {payload.value.slice(0, 2)} 시
+          {payload.value.slice(0, 2)}시
         </Time>
         <MobileTemp x={x} y={y + 20}>
           {timeWeather[index].temperature}°
@@ -52,8 +54,8 @@ const TimeWeather = ({ timeData }: { timeData: GetPerTimeWeatherResponse }) => {
           data={timeWeather}
           margin={{
             top: 20,
-            right: 20,
-            left: 20,
+            right: 15,
+            left: 15,
             bottom: 40,
           }}
         >
@@ -80,8 +82,8 @@ const TimeWeather = ({ timeData }: { timeData: GetPerTimeWeatherResponse }) => {
           data={timeWeather}
           margin={{
             top: 35,
-            right: 80,
-            left: 80,
+            right: 25,
+            left: 25,
             bottom: 90,
           }}
         >
@@ -148,13 +150,13 @@ const Time = styled.text`
   text-anchor: middle;
 
   @media ${({ theme }) => theme.devices.tablet} {
-    font-size: 24px;
+    font-size: 18px;
   }
 `;
 
 const Temp = styled.text`
-  font-size: 24px;
-  font-weight: 500;
+  font-size: 20px;
+  font-weight: 600;
   text-anchor: middle;
   display: none;
 
@@ -164,8 +166,8 @@ const Temp = styled.text`
 `;
 
 const MobileTemp = styled.text`
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 600;
   text-anchor: middle;
 
   @media ${({ theme }) => theme.devices.tablet} {

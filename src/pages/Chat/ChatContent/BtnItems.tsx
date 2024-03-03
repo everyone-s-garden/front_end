@@ -40,7 +40,6 @@ const ReviewBtn = styled.button`
   width: 100%;
 
   @media ${({ theme }) => theme.devices.tablet} {
-    font-size: 18px;
     padding: 10px 28px;
   }
 `;

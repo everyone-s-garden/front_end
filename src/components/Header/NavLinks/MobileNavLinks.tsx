@@ -4,11 +4,16 @@ import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import headerNavLinks from './headerNavLinks';
 import { motion } from 'framer-motion';
+import { useRecoilValue } from 'recoil';
+import { isLoginAtom } from 'recoil/atom';
 
 const MobileNavLinks = () => {
+  const isLogin = useRecoilValue(isLoginAtom);
+
   return (
     <NavContainer>
       {headerNavLinks.map((link, idx) => {
+        if (link.name === '채팅' && !isLogin) return;
         return (
           <StyledNavLink key={idx} to={link.href}>
             {({ isActive }) => (

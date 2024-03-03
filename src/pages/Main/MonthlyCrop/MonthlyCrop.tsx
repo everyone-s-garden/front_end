@@ -54,12 +54,11 @@ const Container = styled.div`
 `;
 
 const Title = styled.h2`
-  font-size: 20px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 700;
   word-break: keep-all;
   @media (min-width: ${BREAK_POINT.MOBILE}) {
-    font-size: 26px;
-    font-weight: 700;
+    font-size: 24px;
   }
 `;
 

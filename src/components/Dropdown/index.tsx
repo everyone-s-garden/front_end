@@ -99,7 +99,11 @@ const DropdownContainer = styled.div`
   }
 `;
 
-const DropdownTrigger = styled.button``;
+const DropdownTrigger = styled.button`
+  & span {
+    font-weight: ${({ theme }) => theme.fontWeight.medium};
+  }
+`;
 
 const DropdownMenu = styled.ul<MenuProps & { visible: boolean }>`
   position: fixed;

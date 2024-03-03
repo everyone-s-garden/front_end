@@ -52,7 +52,10 @@ const CardNextWeather = () => {
                 </TimeWrapper>
                 <WeeklyWeatherWrapper>
                   <Tag>주간별 날씨</Tag>
-                  <WeeklyWeather weeklyData={weeklyData} />
+                  <WeeklyWeather
+                    nextDayData={timeData.weatherTimeResponses[timeData.weatherTimeResponses.length - 1].skyStatus}
+                    weeklyData={weeklyData}
+                  />
                 </WeeklyWeatherWrapper>
               </>
             )}
@@ -73,7 +76,7 @@ const Tag = styled.span`
   border-radius: 8px;
   border: 1px solid ${({ theme }) => theme.colors.orange[600]};
   background: #fed;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.orange[600]};
   width: fit-content;
@@ -126,12 +129,12 @@ const ETCBtn = styled(motion.div)`
   justify-content: center;
   border-top: 1px solid ${({ theme }) => theme.colors.gray[100]};
   color: ${({ theme }) => theme.colors.gray[700]};
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 600;
   gap: 16px;
   cursor: pointer;
   @media ${({ theme }) => theme.devices.mobile} {
-    font-size: 18px;
+    font-size: 20px;
   }
 `;
 

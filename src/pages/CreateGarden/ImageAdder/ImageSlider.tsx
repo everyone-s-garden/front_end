@@ -25,7 +25,7 @@ const ImageSlider = ({ children }: PropsWithChildren<{ size?: number }>) => {
   const settings: Settings = {
     dots: false,
     infinite: false,
-    slidesToShow: 8,
+    slidesToShow: 3.5,
     slidesToScroll: 1,
     prevArrow: <LeftArrow />,
     nextArrow: <RightArrow />,
@@ -34,21 +34,14 @@ const ImageSlider = ({ children }: PropsWithChildren<{ size?: number }>) => {
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 6,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 992,
-        settings: {
-          slidesToShow: 5,
+          slidesToShow: 3.5,
           slidesToScroll: 1,
         },
       },
       {
         breakpoint: 640,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 3.5,
           slidesToScroll: 1,
         },
       },
@@ -66,10 +59,8 @@ export default ImageSlider;
 
 const Container = styled.div`
   width: 100%;
-  max-width: 1188px;
   margin: 0 auto;
   padding: 0 20px;
-  margin-bottom: 16px;
 
   .slick-track {
     display: flex;
@@ -81,16 +72,16 @@ const Container = styled.div`
     }
 
     & > div {
-      width: 110px;
-      height: 110px;
+      width: 100px;
+      height: 100px;
 
       &:not(:last-child) {
         margin-right: 10px;
       }
 
-      @media (${({ theme }) => theme.devices.tablet}) {
-        height: 136px;
-        width: 136px;
+      @media (${({ theme }) => theme.devices.mobile}) {
+        height: 166px;
+        width: 166px;
       }
 
       & div,
@@ -127,7 +118,6 @@ const Container = styled.div`
 
   @media (${({ theme }) => theme.devices.mobile}) {
     padding: 0;
-    margin-bottom: 80px;
   }
 `;
 

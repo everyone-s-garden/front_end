@@ -51,7 +51,8 @@ const Container = styled.div`
 
 const List = styled.li`
   & button {
-    font-size: 18px;
+    font-size: 16px;
+    font-weight: ${({ theme }) => theme.fontWeight.medium};
     color: ${({ theme }) => theme.colors.gray[700]};
   }
 `;

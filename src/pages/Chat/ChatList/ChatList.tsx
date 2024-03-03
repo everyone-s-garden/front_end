@@ -4,7 +4,7 @@ import ChatListItem from './ChatListItem';
 import { motion } from 'framer-motion';
 import { useGetGardenChatRooms } from 'api/ChatAPI';
 
-const NAV_LIST = ['내 주변 분양', '작물거래'];
+const NAV_LIST = ['내 주변 분양'];
 
 const ChatList = () => {
   const [selected, setSelected] = useState(NAV_LIST[0]);
@@ -24,7 +24,7 @@ const ChatList = () => {
         ))}
       </Nav>
       <ChatListUl>
-        {data.responses.map(chat => (
+        {data?.responses.map(chat => (
           <ChatListItem key={chat.chatRoomId} chat={chat} />
         ))}
       </ChatListUl>

@@ -2,7 +2,7 @@ import customAxios from 'utils/token';
 import HttpRequest from './HttpRequest';
 import { getItem } from 'utils/session';
 import { GardenDetailType } from './type';
-import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { GardenForNameSearch, GardenPost, GetAllGardensResponse, MyGarden, Region } from 'types/Garden';
 
 export const GardenAPI = {
@@ -63,16 +63,16 @@ export const useGetRegionsName = ({ regionName }: { regionName: string }) => {
   });
 };
 
-const getRecentGardenPosts = async (): Promise<GardenPost[]> => {
-  const response = await HttpRequest.get('/v2/gardens/recent-created');
+const getRecentGardenPosts = async ({ memberId }: { memberId: number }): Promise<GardenPost[]> => {
+  const response = await HttpRequest.get(`/v2/gardens/recent-created?memberId=${memberId}`);
 
   return response.data.recentCreatedGardenResponses;
 };
 
-export const useGetRecentGardenPosts = () => {
+export const useGetRecentGardenPosts = (memberId: number) => {
   return useQuery({
-    queryKey: ['recentGardenPosts'],
-    queryFn: getRecentGardenPosts,
+    queryKey: ['recentGardenPosts', memberId],
+    queryFn: () => getRecentGardenPosts({ memberId }),
   });
 };
 
@@ -83,8 +83,30 @@ const likeGarden = async (gardenId: number) => {
 };
 
 export const useLikeGarden = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: likeGarden,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['recentGardenPosts'] });
+    },
+  });
+};
+
+const unLikeGarden = async (gardenId: number) => {
+  const response = await HttpRequest.delete('/v2/gardens/likes', { data: { gardenId } });
+
+  return response;
+};
+
+export const useUnLikeGarden = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: unLikeGarden,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['recentGardenPosts'] });
+    },
   });
 };
 
@@ -114,8 +136,8 @@ export const useGetGardenListForName = (gardenName: string) => {
   });
 };
 
-const createMyGarden = async (garden: { gardenId: number; useStartDate: string; useEndDate: string }) => {
-  const response = await HttpRequest.post('/v2/gardens/my-managed', garden);
+const createMyGarden = async (formData: FormData) => {
+  const response = await HttpRequest.post('/v2/gardens/my-managed', formData);
 
   return response;
 };
@@ -123,5 +145,17 @@ const createMyGarden = async (garden: { gardenId: number; useStartDate: string; 
 export const useCreateMyGarden = () => {
   return useMutation({
     mutationFn: createMyGarden,
+  });
+};
+
+const createGarden = async (garden: FormData) => {
+  const response = await HttpRequest.post('/v2/gardens', garden);
+
+  return response;
+};
+
+export const useCreateGarden = () => {
+  return useMutation({
+    mutationFn: createGarden,
   });
 };

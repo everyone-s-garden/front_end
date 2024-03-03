@@ -46,6 +46,7 @@ const Container = styled.ul`
     width: 100%;
     height: 100%;
     font-size: 14px;
+    font-weight: ${({ theme }) => theme.fontWeight.medium};
 
     @media (${({ theme }) => theme.devices.mobile}) {
       font-size: 18px;

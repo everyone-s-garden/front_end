@@ -29,7 +29,6 @@ import Header from 'components/Header/Header';
 import NaverToken from 'pages/Login/Naver/token/token';
 import Trading from 'pages/Trading/Trading';
 import TradingDetail from './pages/Trading/TradingDetail/TradingDetail';
-import CommunityCreate from './pages/Community/CommunityCreate/CommunityCreate';
 import TradingCreate from './pages/Trading/TradingCreate/TradingCreate';
 import { ThemeProvider } from 'styled-components';
 import theme from 'styles/theme';
@@ -60,6 +59,7 @@ import Community from 'pages/Community/CommunityMain';
 import CommunityWrite from 'pages/Community/CommunityWrite';
 import CommunityDetail from 'pages/Community/CommunityDetail';
 import CreateMyGarden from 'pages/CreateMyGarden/CreateMyGarden';
+import CreateGarden from 'pages/CreateGarden';
 
 // 모바일 100vh 세팅
 
@@ -102,12 +102,12 @@ const router = createBrowserRouter([
         element: <Community />,
       },
       {
-        path: '/community/create',
-        element: <CommunityCreate />,
-      },
-      {
         path: '/create-my-garden',
         element: <CreateMyGarden />,
+      },
+      {
+        path: '/create-garden',
+        element: <CreateGarden />,
       },
       {
         path: '/my',

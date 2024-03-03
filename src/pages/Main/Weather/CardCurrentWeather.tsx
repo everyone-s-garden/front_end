@@ -6,6 +6,7 @@ import { useRecoilValue } from 'recoil';
 import { myLocationAtom } from 'recoil/atom';
 import styled from 'styled-components';
 import getWeatherIcon from 'utils/getWeatherIcon';
+import SunnyIcon from 'assets/main/weather/sunny-card.svg';
 
 const CardCurrentWeather = () => {
   const [currentWeather, setCurrentWeather] = useState<WeatherData | null>(null);
@@ -23,16 +24,12 @@ const CardCurrentWeather = () => {
     <Container>
       {isSuccess && currentWeather ? (
         <>
+          <WeatherImg src={currentWeather.skyValue === '맑음' ? SunnyIcon : getWeatherIcon(currentWeather.skyValue)} />
           <InfoWrapper>
             <Temp>{currentWeather.temperatureValue}°</Temp>
             <Divider />
             <Weather>{currentWeather.skyValue}</Weather>
-            <WeatherInfoWrapper>
-              <MinMaxTemp></MinMaxTemp>
-              <Rainfall></Rainfall>
-            </WeatherInfoWrapper>
           </InfoWrapper>
-          <WeatherImg src={getWeatherIcon(currentWeather.skyValue)} />
         </>
       ) : (
         <LoaderWrapper>
@@ -45,16 +42,15 @@ const CardCurrentWeather = () => {
 
 const Container = styled.div`
   background-color: #fff4e7;
-  height: 148px;
-  padding: 16px;
+  padding: 25px 25px 25px 15px;
+  height: 100px;
   display: flex;
-  flex-direction: column;
   gap: 15px;
   overflow: hidden;
+  justify-content: space-between;
   @media ${({ theme }) => theme.devices.mobile} {
-    flex-direction: row-reverse;
-    justify-content: space-between;
-    padding: 16px 30px;
+    height: 148px;
+    padding: 16px 60px 16px 50px;
   }
 `;
 
@@ -71,10 +67,8 @@ const InfoWrapper = styled.div`
   align-items: center;
   height: 40px;
   gap: 22px;
-  @media ${({ theme }) => theme.devices.mobile} {
-    height: 100%;
-    justify-content: center;
-  }
+  justify-content: center;
+  height: 100%;
 `;
 
 const Divider = styled.div`
@@ -102,16 +96,11 @@ const Weather = styled.div`
   }
 `;
 
-const WeatherInfoWrapper = styled.div``;
-
-const MinMaxTemp = styled.div``;
-
-const Rainfall = styled.div``;
-
 const WeatherImg = styled.img`
   width: 140px;
   height: 140px;
   @media ${({ theme }) => theme.devices.mobile} {
+    margin-top: 15px;
     width: 228px;
     height: 228px;
   }
