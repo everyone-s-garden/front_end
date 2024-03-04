@@ -9,6 +9,7 @@ import { NavigateFunction, Outlet, useMatch, useNavigate, useOutletContext } fro
 import { motion } from 'framer-motion';
 import user_default_profile_image from 'assets/my/profile-image.png';
 import user_profile_flower_icon from 'assets/user_profile_flower_icon.png';
+import Feedback from './Feedback/Feedback';
 
 type AfterLoginProps = {
   navermaps: typeof naver.maps;
@@ -220,6 +221,7 @@ const Mypage = () => {
           <Outlet context={navermaps} />
         </Container>
       )}
+      <Feedback />
     </>
   );
 };
