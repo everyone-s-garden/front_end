@@ -6,10 +6,12 @@ import { ReactComponent as FeedBackIcon } from 'assets/my/feedback-icon.svg';
 import { ReactComponent as ArrowIcon } from 'assets/my/arrow-icon.svg';
 import useSelect from 'hooks/useSelect';
 import FeedbackImageInput from './FeedbackImageInput';
+import { useCreateFeedback } from 'api/UserAPI';
 
 const TypeSelect = ['텃밭 분양', '작물 판매', '속닥속닥', '채팅 관련', '마이페이지', '기타'];
 
 const Feedback = () => {
+  const { mutate: createFeedback } = useCreateFeedback();
   const [isFeedbackOpen, setIsFeedbackOpen] = useRecoilState(isFeedbackOpenAtom);
   const [type, setType] = useState<string>('의견 유형');
   const { isOpen, toggleSelect } = useSelect();
@@ -26,6 +28,65 @@ const Feedback = () => {
   };
 
   if (!isFeedbackOpen) return null;
+
+  const isValidateForm = type !== '의견 유형' && content.length > 0;
+
+  const handleSubmit = () => {
+    if (!isValidateForm) return;
+
+    let feedbackType = '';
+    switch (type) {
+      case '텃밭 분양':
+        feedbackType = 'GARDEN';
+        break;
+      case '작물 판매':
+        feedbackType = 'CROP';
+        break;
+      case '속닥속닥':
+        feedbackType = 'COMMUNITY';
+        break;
+      case '채팅 관련':
+        feedbackType = 'CHAT';
+        break;
+      case '마이페이지':
+        feedbackType = 'MYPAGE';
+        break;
+      case '기타':
+        feedbackType = 'ETC';
+        break;
+      default:
+        break;
+    }
+    const formData = new FormData();
+
+    if (!feedbackType) return;
+
+    formData.append('feedbackType', feedbackType);
+    formData.append('content', content);
+    formData.append(
+      'texts',
+      new Blob(
+        [
+          JSON.stringify({
+            content: content,
+            feedbackType: feedbackType,
+          }),
+        ],
+        { type: 'application/json' },
+      ),
+    );
+    images.forEach(image => {
+      formData.append('images', image.file);
+    });
+    createFeedback(formData, {
+      onSuccess: () => {
+        setType('의견 유형');
+        setContent('');
+        setImages([]);
+        setIsFeedbackOpen(false);
+      },
+    });
+  };
 
   return (
     <FeedbackBackground onClick={handleFeedbackBackgroundClick}>
@@ -58,7 +119,9 @@ const Feedback = () => {
         </TypeSelectWrapper>
         <Content placeholder="문의사항을 입력해주세요." value={content} onChange={e => setContent(e.target.value)} />
         <FeedbackImageInput images={images} setImages={setImages} />
-        <Button>등록하기</Button>
+        <Button onClick={handleSubmit} isValidateForm={isValidateForm}>
+          등록하기
+        </Button>
       </FeedbackWrapper>
     </FeedbackBackground>
   );
@@ -146,6 +209,7 @@ const SelectContainer = styled.div`
   width: 100%;
   left: 0;
   top: 40px;
+  z-index: 1001;
 
   & > div:last-child {
     border: none;
@@ -183,7 +247,7 @@ const Content = styled.textarea`
   }
 `;
 
-const Button = styled.button`
+const Button = styled.button<{ isValidateForm: boolean }>`
   position: absolute;
   bottom: 0;
   left: 0;
@@ -194,6 +258,7 @@ const Button = styled.button`
   font-size: 16px;
   font-weight: 600;
   border-radius: 0 0 10px 10px;
+  opacity: ${({ isValidateForm }) => (isValidateForm ? 1 : 0.5)};
 `;
 
 export default Feedback;

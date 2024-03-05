@@ -10,10 +10,14 @@ import { motion } from 'framer-motion';
 import user_default_profile_image from 'assets/my/profile-image.png';
 import user_profile_flower_icon from 'assets/user_profile_flower_icon.png';
 import Feedback from './Feedback/Feedback';
+import { useGetMyInfo } from 'api/UserAPI';
 
 type AfterLoginProps = {
   navermaps: typeof naver.maps;
 };
+
+const GRADE_CONVERT = ['씨앗', '새싹', '가지', '열매', '수확', '농사꾼'];
+const GRADE = ['SEED', 'SPROUT', 'STEM', 'FRUIT', 'HARVEST', 'FARMER'];
 
 interface ISubHeaderProps {
   myGardensMatch?: boolean;
@@ -31,18 +35,27 @@ const UserInfoComponent = ({
   setIsFeedbackOpen: React.Dispatch<SetStateAction<boolean>>;
   windowWidth?: number;
 }) => {
+  const { data } = useGetMyInfo();
+
+  console.log(data);
+
+  if (!data) return null;
+
   return (
     <MenuContainer>
       <UserInfoWrapper>
         <UserInfoInnerWrapper>
           <img src={user_default_profile_image} style={{ widows: 25, height: 25 }} />
           <div>
-            <span>텃린이</span>
+            <span>{data.nickname}</span>
+            <span>{data.email}</span>
           </div>
         </UserInfoInnerWrapper>
         <UserInfoBottomWrapper>
           <img src={user_profile_flower_icon} width={42} height={42} />
-          <span style={{ fontSize: 16, color: '#fff' }}>씨앗 등급</span>
+          <span style={{ fontSize: 16, color: '#fff' }}>
+            {GRADE_CONVERT[GRADE.indexOf(data.memberMannerGrade)]} 등급
+          </span>
         </UserInfoBottomWrapper>
       </UserInfoWrapper>
       {windowWidth && windowWidth > BREAK_POINT.MOBILE_NUMBER ? (
@@ -319,6 +332,10 @@ const UserInfoWrapper = styled.div`
 `;
 const MenuContainer = styled.div`
   margin-right: 72px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 24px;
   @media screen and (max-width: ${BREAK_POINT.TABLET}) {
     margin-right: 24px;
   }
@@ -346,6 +363,9 @@ const UserInfoInnerWrapper = styled.div`
   span:first-of-type {
     font-size: 16px;
     color: #fff;
+    background-color: #ea803d;
+    padding: 4px 10px;
+    border-radius: 10px;
   }
 
   button {
@@ -355,9 +375,16 @@ const UserInfoInnerWrapper = styled.div`
     border-radius: 4px;
   }
   div {
-    background-color: #ea803d;
     padding: 4px 10px;
     border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+
+    span:last-of-type {
+      text-align: center;
+      padding-top: 10px;
+      color: ${({ theme }) => theme.colors.orange[500]};
+    }
   }
   @media screen and (max-width: ${BREAK_POINT.MOBILE}) {
     padding-top: 15px;
@@ -368,6 +395,7 @@ const UserInfoInnerWrapper = styled.div`
 const UserInfoBottomWrapper = styled.div`
   background-color: #ea803d;
   flex: 1;
+  padding: 5px 0;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   display: flex;
