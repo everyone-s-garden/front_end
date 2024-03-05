@@ -37,8 +37,6 @@ const UserInfoComponent = ({
 }) => {
   const { data } = useGetMyInfo();
 
-  console.log(data);
-
   if (!data) return null;
 
   return (
@@ -366,6 +364,7 @@ const UserInfoInnerWrapper = styled.div`
     background-color: #ea803d;
     padding: 4px 10px;
     border-radius: 10px;
+    width: fit-content;
   }
 
   button {
@@ -379,9 +378,11 @@ const UserInfoInnerWrapper = styled.div`
     border-radius: 8px;
     display: flex;
     flex-direction: column;
+    align-items: center;
 
     span:last-of-type {
       text-align: center;
+      font-size: 10px;
       padding-top: 10px;
       color: ${({ theme }) => theme.colors.orange[500]};
     }
