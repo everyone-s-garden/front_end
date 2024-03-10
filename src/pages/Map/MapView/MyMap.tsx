@@ -1,15 +1,16 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import { Listener, NaverMap, useNavermaps } from 'react-naver-maps';
 import { useQuery } from '@tanstack/react-query';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
-import { gardensAtom, searchTypeAtom, selectedMapLocationAtom } from 'recoil/atom';
+import { gardensAtom, isExpandAtom, searchTypeAtom, selectedGardenIdAtom, selectedMapLocationAtom } from 'recoil/atom';
 import MarkerCluster from './MarkerCluster';
 import MyLocationBtn from './MyLocationBtn';
 import MyLocationMarker from './MyLocationMarker';
 import findMyGeoLocation from 'utils/findMyGeoLocation';
 import MiniLoader from 'components/MiniLoader';
 import { GardenAPI } from 'api/GardenAPI';
+import { useLocation } from 'react-router-dom';
 
 interface MyMapProps {
   isLoading: boolean;
@@ -28,6 +29,9 @@ const MyMap = ({ isLoading, setIsLoading, setIsInitializing, map, setMap }: MyMa
   const [searchType] = useRecoilState(searchTypeAtom);
   const [_, setGardens] = useRecoilState(gardensAtom);
   const selectedLocation = useRecoilValue(selectedMapLocationAtom);
+  const locationRouter = useLocation();
+  const setSelectedGarden = useSetRecoilState(selectedGardenIdAtom);
+  const setIsExpand = useSetRecoilState(isExpandAtom);
 
   const fetchGardenData = () => {
     return GardenAPI.getGardenByCoordinate(searchType, map!);
@@ -42,10 +46,17 @@ const MyMap = ({ isLoading, setIsLoading, setIsInitializing, map, setMap }: MyMa
 
     const { location } = await findMyGeoLocation();
     myLocation.current = location;
-    map.setCenter(new navermaps.LatLng(location.lat, location.lng));
+
+    if (locationRouter.state) {
+      map.setCenter(new navermaps.LatLng(locationRouter.state.latitude, locationRouter.state.longitude));
+      setSelectedGarden(locationRouter.state.gardenId);
+      setIsExpand(true);
+    } else {
+      map.setCenter(new navermaps.LatLng(location.lat, location.lng));
+    }
 
     setIsInitializing(false);
-  }, [map, navermaps.LatLng, setIsInitializing]);
+  }, [map, navermaps.LatLng, setIsInitializing, locationRouter.state, setSelectedGarden, setIsExpand]);
 
   const moveMyLocation = async () => {
     if (!map) return;
