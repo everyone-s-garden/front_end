@@ -183,7 +183,7 @@ const YellowBtn = styled.button`
   justify-content: space-between;
   align-items: center;
   background-color: #f7cc8a;
-  border-radius: 11px;
+  border-radius: 10px;
 
   cursor: pointer;
 

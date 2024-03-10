@@ -5,6 +5,7 @@ import { GardenPost } from 'types/Garden';
 import { useRecoilValue } from 'recoil';
 import { isLoginAtom } from 'recoil/atom';
 import { useLikeGarden, useUnLikeGarden } from 'api/GardenAPI';
+import { useNavigate } from 'react-router-dom';
 
 const GardenItem = ({ gardenPost }: { gardenPost: GardenPost }) => {
   const {
@@ -19,6 +20,7 @@ const GardenItem = ({ gardenPost }: { gardenPost: GardenPost }) => {
     latitude,
     longitude,
   } = gardenPost;
+  const navigate = useNavigate();
   const { mutate: likeGarden } = useLikeGarden();
   const { mutate: unLikeGarden } = useUnLikeGarden();
   const isLogin = useRecoilValue(isLoginAtom);
@@ -28,7 +30,8 @@ const GardenItem = ({ gardenPost }: { gardenPost: GardenPost }) => {
 
   const term = Math.ceil((endDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
 
-  const handleLikeBtnClick = () => {
+  const handleLikeBtnClick = (event: MouseEvent) => {
+    event.stopPropagation();
     if (!isLogin) {
       alert('로그인 후 이용해주세요');
       return;
@@ -41,8 +44,12 @@ const GardenItem = ({ gardenPost }: { gardenPost: GardenPost }) => {
     }
   };
 
+  const handlePostClick = () => {
+    navigate('/map', { state: { latitude, longitude, gardenId } });
+  };
+
   return (
-    <Container>
+    <Container onClick={handlePostClick}>
       <ImageWrapper>
         <Img src={imageUrl} />
         <StyledIconHeart isLiked={isLiked} onClick={handleLikeBtnClick} />
@@ -64,6 +71,7 @@ const Container = styled.div`
   gap: 8px;
   flex-direction: column;
   justify-content: center;
+  cursor: pointer;
 `;
 
 const StyledIconHeart = styled(IconHeart)<{ isLiked: boolean }>`
