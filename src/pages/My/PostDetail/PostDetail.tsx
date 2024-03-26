@@ -203,7 +203,7 @@ function PostDetail() {
         </ContentSection>
       </MainContent>
 
-      <ContactGardenModal isOpen={isContactModalOpen} setIsOpen={setIsContactModalOpen} contact={post?.contact} />
+      <ContactGardenModal isOpen={isContactModalOpen} setIsOpen={setIsContactModalOpen} postData={post} />
     </Container>
   );
 }

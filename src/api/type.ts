@@ -117,6 +117,7 @@ export interface GardenDetailType {
     isEquipment: boolean;
   };
   isLiked: boolean;
+  roomId: number;
 }
 
 export interface GardenUsing {

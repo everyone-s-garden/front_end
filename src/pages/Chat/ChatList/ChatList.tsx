@@ -10,8 +10,6 @@ const ChatList = () => {
   const [selected, setSelected] = useState(NAV_LIST[0]);
   const { data } = useGetGardenChatRooms();
 
-  if (!data) return null;
-
   return (
     <ChatListContainer>
       <Title>채팅</Title>

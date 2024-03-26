@@ -64,6 +64,7 @@ function GardenDetail() {
   useEffect(() => {
     fetchGardenData();
   }, [selectedGarden]);
+
   return (
     <DetailDiv>
       <DetailContainer>
@@ -138,7 +139,7 @@ function GardenDetail() {
         <ApplyBtn onClick={() => setIsContactModalOpen(true)}>신청하기</ApplyBtn>
       </Buttons>
 
-      <ContactGardenModal isOpen={isContactModalOpen} setIsOpen={setIsContactModalOpen} contact={postData?.contact} />
+      <ContactGardenModal isOpen={isContactModalOpen} setIsOpen={setIsContactModalOpen} postData={postData} />
     </DetailDiv>
   );
 }

@@ -7,44 +7,34 @@ import copyIcon from 'assets/contact/copy.svg';
 import callIcon from 'assets/contact/call.svg';
 import emailIcon from 'assets/contact/email.svg';
 import sadIcon from 'assets/contact/sad_face.svg';
-import { useSetRecoilState } from 'recoil';
-import { NotiContentAtom } from 'recoil/atom';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { NotiContentAtom, selectedGardenIdAtom } from 'recoil/atom';
+import { GardenDetailType } from 'api/type';
+import { useNavigate } from 'react-router-dom';
+import { GardenAPI } from 'api/GardenAPI';
+import { useCreateGardenChatRoom } from 'api/ChatAPI';
 
 interface ContactGardenModalProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  contact: string | undefined;
+  postData: GardenDetailType | null;
 }
 
-function ContactGardenModal({ isOpen, setIsOpen, contact }: ContactGardenModalProps) {
+function ContactGardenModal({ isOpen, setIsOpen, postData }: ContactGardenModalProps) {
+  const selectedGarden = useRecoilValue(selectedGardenIdAtom);
   const setContent = useSetRecoilState(NotiContentAtom);
+  const navigate = useNavigate();
+  const { mutate: createChatRoom } = useCreateGardenChatRoom();
 
   const [isCallNTextAvail, setIsCallNTextAvail] = useState<boolean>(true);
   const isDesktopEnv = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
     ? false
     : true;
 
-  const onCopyClicked = () => {
-    navigator.clipboard.writeText(contact!);
-    setContent('복사 되었습니다.');
-  };
-
-  const onCallClicked = () => {
-    if (isDesktopEnv === true || !contact) {
-      setIsCallNTextAvail(false);
-      return;
-    }
-
-    window.location.href = `tel:+82${contact.replaceAll('-', '')}`;
-  };
-
-  const onTextClicked = () => {
-    if (isDesktopEnv === true || !contact) {
-      setIsCallNTextAvail(false);
-      return;
-    }
-
-    window.location.href = `sms:+82${contact.replaceAll('-', '')}`;
+  const fetchGardenData = async () => {
+    if (!selectedGarden) return;
+    const { data } = await GardenAPI.getGardenDetail(selectedGarden);
+    return data;
   };
 
   useEffect(() => {
@@ -60,6 +50,40 @@ function ContactGardenModal({ isOpen, setIsOpen, contact }: ContactGardenModalPr
     };
   }, [isCallNTextAvail]);
 
+  if (!postData) return null;
+
+  const onCopyClicked = () => {
+    navigator.clipboard.writeText(postData.contact);
+    setContent('복사 되었습니다.');
+  };
+
+  const onCallClicked = () => {
+    if (isDesktopEnv === true || !postData.contact) {
+      setIsCallNTextAvail(false);
+      return;
+    }
+
+    window.location.href = `tel:+82${postData.contact.replaceAll('-', '')}`;
+  };
+
+  const onChattingClicked = async () => {
+    // if (isDesktopEnv === true || !postData.contact) {
+    //   setIsCallNTextAvail(false);
+    //   return;
+    // }
+
+    // window.location.href = `sms:+82${postData.contact.replaceAll('-', '')}`;
+    if (postData.roomId === -1) {
+      createChatRoom({ postId: postData.gardenId, writerId: postData.writerId });
+      const newData = await fetchGardenData();
+      if (newData) {
+        navigate(`/chat/${newData.roomId}`);
+      }
+    } else {
+      navigate(`/chat/${postData.roomId}`);
+    }
+  };
+
   return (
     <ModalBackground isOpen={isOpen} onClick={() => setIsOpen(false)}>
       <ModalContainer
@@ -70,11 +94,11 @@ function ContactGardenModal({ isOpen, setIsOpen, contact }: ContactGardenModalPr
         <CloseIcon src={closeIcon} alt="close" onClick={() => setIsOpen(false)} />
 
         <ModalContent>
-          {contact ? (
+          {postData ? (
             <>
               <ModalTitle>연락하기</ModalTitle>
               <CopyContact>
-                {contact}
+                {postData.contact}
                 <button onClick={onCopyClicked}>
                   <img src={copyIcon} />
                 </button>
@@ -82,14 +106,14 @@ function ContactGardenModal({ isOpen, setIsOpen, contact }: ContactGardenModalPr
               <Buttons>
                 <button onClick={onCallClicked}>
                   <img src={callIcon} />
-                  전화걸기
+                  연락하기
                 </button>
-                <button onClick={onTextClicked}>
+                <button onClick={onChattingClicked}>
                   <img src={emailIcon} />
-                  문자하기
+                  채팅하기
                 </button>
               </Buttons>
-              <Instruction isCallNTextAvail={isCallNTextAvail}>전화와 문자는 모바일에서만 가능해요</Instruction>
+              <Instruction isCallNTextAvail={isCallNTextAvail}>연락하기는 모바일에서만 가능해요</Instruction>
             </>
           ) : (
             <Container>
